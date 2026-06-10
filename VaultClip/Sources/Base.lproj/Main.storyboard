@@ -982,7 +982,7 @@
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oEK-pg-YYN">
                                 <rect key="frame" x="173" y="131" width="93" height="19"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="Version 1.1.1" id="Xnq-Kb-aEf">
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Version 1.1.2" id="Xnq-Kb-aEf">
                                     <font key="font" metaFont="system" size="16"/>
                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

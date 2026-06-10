@@ -3,6 +3,15 @@
 <plist version="1.0">
 <dict>
 	<!--
+	  Required for Keychain access under Hardened Runtime (ad-hoc and Developer ID).
+	  With ad-hoc signing AppIdentifierPrefix is empty, so the group resolves to
+	  the bundle id (VaultClip).
+	-->
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)$(CFBundleIdentifier)</string>
+	</array>
+	<!--
 	  Required for ad-hoc / local builds: CocoaPods frameworks are signed
 	  separately from the main app. Without this, dyld rejects them under
 	  Hardened Runtime (different Team IDs). Developer ID release builds

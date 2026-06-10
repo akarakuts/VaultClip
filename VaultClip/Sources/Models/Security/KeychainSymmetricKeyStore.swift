@@ -31,6 +31,16 @@ struct KeychainSymmetricKeyStore {
     /// Ensures the encryption key exists before history I/O. Call once at launch.
     @discardableResult
     func loadOrCreateKey() throws -> SymmetricKey {
+        do {
+            return try performLoadOrCreate()
+        } catch KeychainError.osStatus(errSecMissingEntitlement) {
+            // Item left by a build that used SecAccessControl without proper signing.
+            try deleteKey(service: service)
+            return try performLoadOrCreate()
+        }
+    }
+
+    private func performLoadOrCreate() throws -> SymmetricKey {
         if let existing = try load(service: service) {
             return existing
         }
@@ -41,6 +51,13 @@ struct KeychainSymmetricKeyStore {
         let new = SymmetricKey(size: .bits256)
         try save(new, service: service)
         return new
+    }
+
+    private func deleteKey(service: String) throws {
+        let status = SecItemDelete(lookupQuery(service: service, returnData: false) as CFDictionary)
+        guard status == errSecSuccess || status == errSecItemNotFound else {
+            throw KeychainError.osStatus(status)
+        }
     }
 
     private func lookupQuery(service: String, returnData: Bool) -> [String: Any] {
@@ -75,7 +92,9 @@ struct KeychainSymmetricKeyStore {
 
     private func save(_ key: SymmetricKey, service: String) throws {
         let data = key.withUnsafeBytes { Data($0) }
-        var attributes: [String: Any] = [
+        // Plain accessibility only — SecAccessControl/userPresence needs a proper
+        // Developer ID signature and breaks ad-hoc/GitHub DMG builds (-34018).
+        let attributes: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
             kSecAttrAccount as String: account,
@@ -83,17 +102,6 @@ struct KeychainSymmetricKeyStore {
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
             kSecAttrSynchronizable as String: false,
         ]
-
-        // Require user authentication when the key is read (Touch ID / login password).
-        var accessError: Unmanaged<CFError>?
-        if let access = SecAccessControlCreateWithFlags(
-            nil,
-            kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
-            .userPresence,
-            &accessError
-        ) {
-            attributes[kSecAttrAccessControl as String] = access
-        }
 
         var status = SecItemAdd(attributes as CFDictionary, nil)
         if status == errSecDuplicateItem {
@@ -145,6 +153,13 @@ enum EncryptionKeyBootstrap {
         }
         if status == errSecAuthFailed {
             return "Keychain denied access to the encryption key. Open Keychain Access, find the entry \"\(KeychainSymmetricKeyStore.default.account)\" for VaultClip, and allow access for this application."
+        }
+        if status == errSecMissingEntitlement {
+            return """
+            VaultClip could not use the Keychain (missing entitlement, error \(status)). \
+            Quit the app, delete any broken \"\(KeychainSymmetricKeyStore.default.account)\" entry for VaultClip in Keychain Access, then launch again. \
+            If the problem persists, reinstall the latest build from GitHub Releases.
+            """
         }
         return "Keychain error (\(status)). Encrypted history cannot be read or saved until access is granted."
     }
