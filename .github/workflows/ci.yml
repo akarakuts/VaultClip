@@ -37,7 +37,7 @@ jobs:
         run: |
           xcodebuild \
             -workspace VaultClip.xcworkspace \
-            -scheme VaultClip \
+            -scheme "VaultClip XCTest" \
             -configuration Release \
             -destination 'platform=macOS' \
             -derivedDataPath DerivedData \
