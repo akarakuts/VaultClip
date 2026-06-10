@@ -1,0 +1,48 @@
+# CI — build and test on pushes to master and pull requests.
+
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-and-test:
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install CocoaPods dependencies
+        run: pod install
+
+      - name: Build Release
+        run: |
+          xcodebuild \
+            -workspace VaultClip.xcworkspace \
+            -scheme VaultClip \
+            -configuration Release \
+            -destination 'platform=macOS' \
+            -derivedDataPath DerivedData \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Run unit tests
+        run: |
+          xcodebuild \
+            -workspace VaultClip.xcworkspace \
+            -scheme VaultClip \
+            -configuration Release \
+            -destination 'platform=macOS' \
+            -derivedDataPath DerivedData \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            test \
+            -only-testing:VaultClipTests

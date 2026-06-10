@@ -1,0 +1,57 @@
+# Release — build VaultClip.dmg and publish a GitHub Release when a version tag is pushed.
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install create-dmg
+        run: brew install create-dmg
+
+      - name: Install CocoaPods dependencies
+        run: pod install
+
+      - name: Build Release
+        run: |
+          xcodebuild \
+            -workspace VaultClip.xcworkspace \
+            -scheme VaultClip \
+            -configuration Release \
+            -destination 'platform=macOS' \
+            -derivedDataPath DerivedData \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Create DMG
+        run: |
+          cp -R DerivedData/Build/Products/Release/VaultClip.app .
+          ./create-installer.sh VaultClip
+          ls -lh VaultClip.dmg
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: VaultClip-${{ github.ref_name }}
+          path: VaultClip.dmg
+          retention-days: 90
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: VaultClip ${{ github.ref_name }}
+          generate_release_notes: true
+          files: VaultClip.dmg

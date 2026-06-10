@@ -982,7 +982,7 @@
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oEK-pg-YYN">
                                 <rect key="frame" x="173" y="131" width="93" height="19"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="Version 1.0.1" id="Xnq-Kb-aEf">
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Version 1.1.1" id="Xnq-Kb-aEf">
                                     <font key="font" metaFont="system" size="16"/>
                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1006,7 +1006,7 @@
                                                     <string key="content">VaultClip — GNU GPL v3 or later.
 Based on Yippy by Matthew Davidson (MIT), https://github.com/mattDavo/Yippy
 Fork and modifications: Aleksey Karakuts — aleksey@karakuts.com
-https://github.com/akarakuts/</string>
+https://github.com/akarakuts/VaultClip</string>
                                                     <attributes>
                                                         <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                         <font key="NSFont" metaFont="system"/>

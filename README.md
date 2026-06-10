@@ -1,10 +1,14 @@
 # VaultClip
 
+[![Release](https://img.shields.io/github/v/release/akarakuts/VaultClip)](https://github.com/akarakuts/VaultClip/releases)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![macOS](https://img.shields.io/badge/macOS-10.15%2B-000000?logo=apple)](https://github.com/akarakuts/VaultClip)
+
 macOS clipboard manager with on-disk encrypted history, Favorites and Passwords tabs, and filtering of copies from password managers.
 
 Open-source fork of [Yippy](https://github.com/mattDavo/Yippy) by Matthew Davidson. The original idea and UX are preserved; this fork adds stronger security, up-to-date toolchains, and the **VaultClip** rebrand.
 
-**Русский:** [README.ru.md](README.ru.md)
+**Repository:** [github.com/akarakuts/VaultClip](https://github.com/akarakuts/VaultClip) · **Русский:** [README.ru.md](README.ru.md)
 
 ![screenshot](images/screenshot.jpg)
 
@@ -170,7 +174,7 @@ Change the panel toggle in **Preferences → Hot Key**.
 
 ## Installation
 
-1. Download `VaultClip.dmg` from repository releases **or** build from source (below).
+1. Download `VaultClip.dmg` from [GitHub Releases](https://github.com/akarakuts/VaultClip/releases) **or** build from source (below).
 2. Drag `VaultClip.app` into Applications.
 3. On first launch, grant **Accessibility** (Welcome screen / System Settings → Privacy & Security → Accessibility).
 4. When Keychain prompts appear, allow access to the encryption key.
@@ -211,7 +215,7 @@ Install [create-dmg](https://github.com/andreyvit/create-dmg), place `VaultClip.
 
 ## Development
 
-Contributions welcome: issues, pull requests, feedback.
+Contributions welcome: [issues](https://github.com/akarakuts/VaultClip/issues) and [pull requests](https://github.com/akarakuts/VaultClip/pulls).
 
 Project layout:
 

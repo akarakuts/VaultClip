@@ -1,10 +1,14 @@
 # VaultClip
 
+[![Release](https://img.shields.io/github/v/release/akarakuts/VaultClip)](https://github.com/akarakuts/VaultClip/releases)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![macOS](https://img.shields.io/badge/macOS-10.15%2B-000000?logo=apple)](https://github.com/akarakuts/VaultClip)
+
 Менеджер буфера обмена для macOS с шифрованием истории на диске, вкладками «Избранное» и «Пароли» и фильтрацией копий из менеджеров паролей.
 
 Форк open source проекта [Yippy](https://github.com/mattDavo/Yippy) (Matthew Davidson). Оригинальная идея и UX сохранены; в этом форке добавлены усиленная безопасность, актуальные тулчейны и переименование в **VaultClip**.
 
-**English:** [README.md](README.md)
+**Репозиторий:** [github.com/akarakuts/VaultClip](https://github.com/akarakuts/VaultClip) · **English:** [README.md](README.md)
 
 ![screenshot](images/screenshot.jpg)
 
@@ -170,7 +174,7 @@ VaultClip хранит всё локально на Mac. Ни история, н
 
 ## Установка
 
-1. Скачайте `VaultClip.dmg` из релизов репозитория **или** соберите из исходников (ниже).
+1. Скачайте `VaultClip.dmg` из [релизов на GitHub](https://github.com/akarakuts/VaultClip/releases) **или** соберите из исходников (ниже).
 2. Перетащите `VaultClip.app` в «Программы».
 3. При первом запуске разрешите **Accessibility** (см. Welcome / System Settings → Privacy & Security → Accessibility).
 4. При запросе Keychain — разрешите доступ к ключу шифрования.
@@ -211,7 +215,7 @@ xcodebuild -workspace VaultClip.xcworkspace -scheme VaultClip -configuration Rel
 
 ## Разработка
 
-Контрибуции приветствуются: issues, pull requests, отзывы.
+Контрибуции приветствуются: [issues](https://github.com/akarakuts/VaultClip/issues) и [pull requests](https://github.com/akarakuts/VaultClip/pulls).
 
 Структура проекта:
 
