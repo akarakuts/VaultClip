@@ -1,0 +1,125 @@
+//
+//  ClipHotKeyTests.swift
+//  VaultClipTests
+//
+//  Copyright (C) 2019 Matthew Davidson
+//  Copyright (C) 2026 Aleksey Karakuts <aleksey@karakuts.com>
+//
+//  SPDX-License-Identifier: GPL-3.0-or-later
+//
+import XCTest
+import HotKey  // Normally this would be a @testable import, but this is not currently supported by the Swift Package Manager. See: https://stackoverflow.com/a/52672307
+@testable import VaultClip
+
+class ClipHotKeyTests: XCTestCase {
+    
+    var hotKey: HotKey!
+    var clipHotKey: ClipHotKey!
+
+    override func setUp() {
+        hotKey = HotKey(key: .a, modifiers: .none)
+        clipHotKey = ClipHotKey(hotKey: hotKey)
+    }
+    
+    func testKeyUp() {
+        // 1. Given a handler registered to the hot key
+        let keyUpHandlerCalled = expectation(description: "keyUpHandlerCalled")
+        let handler = {
+            keyUpHandlerCalled.fulfill()
+        }
+        clipHotKey.onUp(handler)
+        
+        // 2. When we have a key up event
+        hotKey.simulateKeyUp()
+        
+        // 3. Then the handler should be called
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+    
+    func testKeyDown() {
+        // 1. Given a handler registered to the hot key
+        let keyDownHandlerCalled = expectation(description: "keyDownHandlerCalled")
+        let handler = {
+            keyDownHandlerCalled.fulfill()
+        }
+        clipHotKey.onDown(handler)
+        
+        // 2. When we have a key down event
+        hotKey.simulateKeyDown()
+        
+        // 3. Then the handler should be called
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+    
+    func testIsPaused() {
+        // 1. Given a handler registered to the hot key
+        let keyDownHandlerCalled = expectation(description: "keyDownHandlerCalled")
+        keyDownHandlerCalled.isInverted = true
+        let handler = {
+            keyDownHandlerCalled.fulfill()
+        }
+        clipHotKey.isPaused = true
+        clipHotKey.onDown(handler)
+        
+        // 2. When we have a key down event
+        hotKey.simulateKeyDown()
+        
+        // 3. Then the handler should be called
+        waitForExpectations(timeout: 0.5, handler: nil)
+    }
+    
+    func testLongPress() {
+        // 1. Given a handler registered to the hot key and the following long press settings
+        let keyDownHandlerCalled = expectation(description: "keyDownHandlerCalled")
+        keyDownHandlerCalled.expectedFulfillmentCount = 4
+        let handler = {
+            keyDownHandlerCalled.fulfill()
+        }
+        clipHotKey.onLong(handler)
+        clipHotKey.longPressStartingInterval = 0.5
+        clipHotKey.longPressAcceleration = 2
+        clipHotKey.longPressMinInterval = 0.1
+        
+        // 2. When we have a long press event
+        // 0.5 + 0.25 + 0.125 + 0.1 = 0.975 => 4
+        // ROund to 0.98 to be safe
+        hotKey.simulateKeyPress(for: 0.98)
+        
+        // 3. Then the handler should be called multiple times
+        waitForExpectations(timeout: 1.1, handler: nil)
+    }
+}
+
+// MARK: - Partial Hot Key Mock
+// On partial mock is possible because the HotKey class is final.
+
+extension HotKey {
+    
+    func simulateKeyDown() {
+        if !isPaused {
+            if let handler = keyDownHandler {
+                handler()
+            }
+        }
+    }
+    
+    func simulateKeyUp() {
+        if !isPaused {
+            if let handler = keyUpHandler {
+                handler()
+            }
+        }
+    }
+    
+    func simulateKeyPress() {
+        simulateKeyDown()
+        simulateKeyUp()
+    }
+    
+    func simulateKeyPress(for interval: TimeInterval) {
+        simulateKeyDown()
+        Timer.scheduledTimer(withTimeInterval: interval, repeats: false) { _ in
+            self.simulateKeyUp()
+        }
+    }
+}

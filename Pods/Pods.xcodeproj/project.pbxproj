@@ -15,7 +15,7 @@
 		0405F6FB39C14289D33B4B31808AC943 /* _RXDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AC88FD8C8F0C5207C3432754FB335B7 /* _RXDelegateProxy.m */; };
 		047617BC9F514EBD74961F07C2608342 /* RxTableViewDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80E255A47E0E5304ADF70B31991C76C /* RxTableViewDelegateProxy.swift */; };
 		05E0EB9B073E62FD3737C8AB07378D44 /* UISearchController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB2FC0D6FF83001AA9E07416B366E69 /* UISearchController+Rx.swift */; };
-		05E8E9313BACC49FCA89A003D33F9E74 /* Pods-Yippy-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = DFEA4738104FCFADB12738531D911FCC /* Pods-Yippy-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		05E8E9313BACC49FCA89A003D33F9E74 /* Pods-VaultClip-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = DFEA4738104FCFADB12738531D911FCC /* Pods-VaultClip-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		066E058C144F2FF7C1213BB098618EC1 /* NSObject+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A209E8ABCAFDF23CCA5B4CCD5CA2CFD /* NSObject+Rx.swift */; };
 		067DDC9A229ED596C9C2A4B29910B985 /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E41DDDB886827678775668A6690752 /* UIViewController+Rx.swift */; };
 		07295C633C5C80ED8665D2D071109BF0 /* AsMaybe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1177A83AF1E888E7C118DEB39718C552 /* AsMaybe.swift */; };
@@ -286,7 +286,7 @@
 		C422A7C72C13719CD41B86500581EB3B /* BlockingObservable+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85BF1D8C279FFDC0978835CAF476E5AF /* BlockingObservable+Operators.swift */; };
 		C4563D2CADB7424A7DDFBACBE234387B /* Driver+Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918D40B9FCAF0CD65946CA0D43A33EA9 /* Driver+Subscription.swift */; };
 		C483620E494E8D4F76F45FACCAB9B359 /* RxTableViewDataSourceProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE7301613F89EA4C535665CB395092E /* RxTableViewDataSourceProxy.swift */; };
-		C69FD79CEAE15562AA3E45EE6D3E8BDF /* Pods-YippyUITests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C0A5CBA11FC104531DF6DDA95E8F74E5 /* Pods-YippyUITests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C69FD79CEAE15562AA3E45EE6D3E8BDF /* Pods-VaultClipUITests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C0A5CBA11FC104531DF6DDA95E8F74E5 /* Pods-VaultClipUITests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C779086C9BA76CD30A692240EE489C04 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCF2650C9CE51ABD205A1B2C23DB688 /* Switch.swift */; };
 		C7CA870255C8BD5AEFBCCBB0267F2202 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 562CD424F5F54A670645DDF85B8E0DE3 /* RxSwift.framework */; };
 		C7E87DFA65FF4680FEB2ADE388BAC6AF /* RxCocoaRuntime.h in Headers */ = {isa = PBXBuildFile; fileRef = F9FFED364EA59B5C1F366C030364F618 /* RxCocoaRuntime.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -327,7 +327,7 @@
 		E21F0CF86C16D2EF9645538797FB2356 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405A81868F181F0B3298384D8F909362 /* Utils.swift */; };
 		E224FA3BF6D9126B06E1E0FA6C26123A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FF5246C109ECBEF3CE998BDF491082C /* XCTest.framework */; };
 		E299BC77771D31C354A8BCB42968E0AD /* UIGestureRecognizer+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3DD27484E76A073F445F43FB985944 /* UIGestureRecognizer+Rx.swift */; };
-		E36060F3C4B32D7D9119B85DFAA14DBB /* Pods-Yippy-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5426A8647CB250476C5FAA3DF4B0CFAF /* Pods-Yippy-dummy.m */; };
+		E36060F3C4B32D7D9119B85DFAA14DBB /* Pods-VaultClip-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5426A8647CB250476C5FAA3DF4B0CFAF /* Pods-VaultClip-dummy.m */; };
 		E4BEC823ECAE826C408D6B7DE6AB9204 /* Bag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB16393EC279F2CFB1E5B25DA3A8968 /* Bag.swift */; };
 		E542B154E07A069029A924A6A67DC9E3 /* Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93087EBF0D44245D17BE73A912B9FEE3 /* Default.swift */; };
 		E60FB91C7AB9FCC92F57708452B323DF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ED929BF88B1CACF953EE63722BCE5BA /* Cocoa.framework */; };
@@ -335,7 +335,7 @@
 		E6AC58420598D4BA9CE6B7D137F9ADA7 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 562CD424F5F54A670645DDF85B8E0DE3 /* RxSwift.framework */; };
 		E6AC7197809655EB58BB26437D5EC916 /* Deprecated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BACAFF78F81A65D6F8BF46C0D8A0F8 /* Deprecated.swift */; };
 		E7E1DA26D3A8E19496E2482726E05C2C /* RxCocoa-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B3A65EEED6FDA7FF78936C219DB5BF /* RxCocoa-dummy.m */; };
-		E8D4A28CF56E433F89A14DC5E7438036 /* Pods-YippyTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A55A2F41211E1B9CB575C4D8104340B1 /* Pods-YippyTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E8D4A28CF56E433F89A14DC5E7438036 /* Pods-VaultClipTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A55A2F41211E1B9CB575C4D8104340B1 /* Pods-VaultClipTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E948655790684E076D41703C2D3A354B /* RxRelay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FC875397C5DEC3EBFD3A61FC1069B55 /* RxRelay.framework */; };
 		EBA3D04E690CE7056DB001FA59062B64 /* TextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98975685616F5100F00DBD130606CA6 /* TextInput.swift */; };
 		EC85DAB1B5D0EDD359D6AE23362AF21B /* TestSchedulerVirtualTimeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B78D49AE2F02DE90BF7E60FE8F484AF /* TestSchedulerVirtualTimeConverter.swift */; };
@@ -343,7 +343,7 @@
 		EDDBC7AA12A27EF6E0614157C7C59CA2 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786C3AAAD2957DA44ABE05F5B6C9896A /* Driver.swift */; };
 		EF8F082E796EE6591DF1DD78F892E764 /* Date+Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0AE016205F1BCDBD8D73A872B35F89 /* Date+Dispatch.swift */; };
 		F03B9FB9E11BBB13A5152EFDB425E660 /* Just.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87291795B24CF12ACA70179C0C993D1 /* Just.swift */; };
-		F07CCC91890E245E3E43A0070AA0429B /* Pods-YippyTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E9369168DDD274A4900614FE4C2FAC /* Pods-YippyTests-dummy.m */; };
+		F07CCC91890E245E3E43A0070AA0429B /* Pods-VaultClipTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E9369168DDD274A4900614FE4C2FAC /* Pods-VaultClipTests-dummy.m */; };
 		F228EB4C484F6BD45374C769408D52D0 /* Platform.Linux.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42251A4DF68CCEB7672D1C8881C6E3EF /* Platform.Linux.swift */; };
 		F38128A2BBFCA10EB52EDA70D1AF24E2 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7E301DE6AC0ADAFBB3F3D4B988F425 /* Queue.swift */; };
 		F391B003C1CF01B1BAE30005F5159D40 /* SharedSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94C30CDA778764E41A72069425EF6758 /* SharedSequence.swift */; };
@@ -359,7 +359,7 @@
 		FB0E2D50D2A6114684175B9222695156 /* Maybe.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAB6B0ADE7807176195EEAF56B88C40 /* Maybe.swift */; };
 		FB5697CDF278BF8F6BE2A315986515AB /* UITabBar+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC864CF94AD177108D351E312542611 /* UITabBar+Rx.swift */; };
 		FCD3A55D13314040EE9AC22819524D27 /* UITabBarItem+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A62D5942F2BFCC328BB27D685C6EB6 /* UITabBarItem+Rx.swift */; };
-		FD0F93E1C5AE9B2FA4AA1D8B1CADEEC4 /* Pods-YippyUITests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA87D3B84DE91713DD65DF93EF98C21 /* Pods-YippyUITests-dummy.m */; };
+		FD0F93E1C5AE9B2FA4AA1D8B1CADEEC4 /* Pods-VaultClipUITests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA87D3B84DE91713DD65DF93EF98C21 /* Pods-VaultClipUITests-dummy.m */; };
 		FE37FD4E642B58C22BCD6EA76C372A2E /* NSButton+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455C451F405624B2B3B8F93C72E67392 /* NSButton+Rx.swift */; };
 		FEFB6D6A47FA5622F28EB5EBDB6AC3A1 /* Recorded+Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BA3F0E02B5FBC1E91BD2AC50E31734 /* Recorded+Event.swift */; };
 /* End PBXBuildFile section */
@@ -461,14 +461,14 @@
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 1DCA08B27A8D80BE40A7EB722C544B79;
-			remoteInfo = "Pods-Yippy";
+			remoteInfo = "Pods-VaultClip";
 		};
 		964A8BB1CE9310E22DC8F5B7EA5B1F76 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 1DCA08B27A8D80BE40A7EB722C544B79;
-			remoteInfo = "Pods-Yippy";
+			remoteInfo = "Pods-VaultClip";
 		};
 		A18959768021D07FDF77561AA6A36790 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -551,12 +551,12 @@
 
 /* Begin PBXFileReference section */
 		0103F52FEFF7F45C6B9436D2A9802D67 /* Default.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Default.xcconfig; sourceTree = "<group>"; };
-		0138D3F686832EBB09E3F8E2100DA7E5 /* Pods-YippyUITests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-YippyUITests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		0138D3F686832EBB09E3F8E2100DA7E5 /* Pods-VaultClipUITests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-VaultClipUITests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		0158F5EEEFC70245D7EAE6BD0C3844BB /* Do.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Do.swift; path = RxSwift/Observables/Do.swift; sourceTree = "<group>"; };
 		031893FD3D882E436EC541DF783B1276 /* RxTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = RxTest.framework; path = RxTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		035EA1BA59C208281420EF59BD79E6CB /* _RXDelegateProxy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = _RXDelegateProxy.h; path = RxCocoa/Runtime/include/_RXDelegateProxy.h; sourceTree = "<group>"; };
 		03FDC09A612B49A62D78269D22F14885 /* TestScheduler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TestScheduler.swift; path = RxTest/Schedulers/TestScheduler.swift; sourceTree = "<group>"; };
-		040C020C19531C42832954729AA42025 /* Pods-YippyUITests.beta release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-YippyUITests.beta release.xcconfig"; sourceTree = "<group>"; };
+		040C020C19531C42832954729AA42025 /* Pods-VaultClipUITests.beta release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VaultClipUITests.beta release.xcconfig"; sourceTree = "<group>"; };
 		0430D29D63625032BD553B169C4FE1CE /* ObservableConvertibleType+Blocking.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ObservableConvertibleType+Blocking.swift"; path = "RxBlocking/ObservableConvertibleType+Blocking.swift"; sourceTree = "<group>"; };
 		045F3D67F878B0162B8D9351A0EBB770 /* URLSession+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "URLSession+Rx.swift"; path = "RxCocoa/Foundation/URLSession+Rx.swift"; sourceTree = "<group>"; };
 		04810A09912F5CD27C2CC14FC5118FAD /* UISlider+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UISlider+Rx.swift"; path = "RxCocoa/iOS/UISlider+Rx.swift"; sourceTree = "<group>"; };
@@ -574,7 +574,7 @@
 		0AA1274CF7008F14E28FDD0E0FC65C66 /* UINavigationController+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UINavigationController+Rx.swift"; path = "RxCocoa/iOS/UINavigationController+Rx.swift"; sourceTree = "<group>"; };
 		0BA85BCAF0045F28155119BAF99C92D5 /* RefCountDisposable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RefCountDisposable.swift; path = RxSwift/Disposables/RefCountDisposable.swift; sourceTree = "<group>"; };
 		0BB16393EC279F2CFB1E5B25DA3A8968 /* Bag.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Bag.swift; path = Platform/DataStructures/Bag.swift; sourceTree = "<group>"; };
-		0BCE2869AF629C0955DD7BFE1658998B /* Pods-YippyUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-YippyUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		0BCE2869AF629C0955DD7BFE1658998B /* Pods-VaultClipUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VaultClipUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		0D414CBC463DDD6A9F6FC3202E41490B /* RxScrollViewDelegateProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxScrollViewDelegateProxy.swift; path = RxCocoa/iOS/Proxies/RxScrollViewDelegateProxy.swift; sourceTree = "<group>"; };
 		0D8DD24C78CF55D9FFDCB2BDD797E89F /* Cancelable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Cancelable.swift; path = RxSwift/Cancelable.swift; sourceTree = "<group>"; };
 		0DE8BD647C5D0869489B60CAED2800CD /* Lock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Lock.swift; path = RxSwift/Concurrency/Lock.swift; sourceTree = "<group>"; };
@@ -592,7 +592,7 @@
 		1574826B69C2907424B7483E3909DFCC /* NSControl+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSControl+Rx.swift"; path = "RxCocoa/macOS/NSControl+Rx.swift"; sourceTree = "<group>"; };
 		15B8B5FB74D192C068BF980944079E19 /* RxCollectionViewDataSourcePrefetchingProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxCollectionViewDataSourcePrefetchingProxy.swift; path = RxCocoa/iOS/Proxies/RxCollectionViewDataSourcePrefetchingProxy.swift; sourceTree = "<group>"; };
 		15E40AD9A9C7C02951949EE884F6ABA2 /* RxTableViewDataSourceType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxTableViewDataSourceType.swift; path = RxCocoa/iOS/Protocols/RxTableViewDataSourceType.swift; sourceTree = "<group>"; };
-		16E9369168DDD274A4900614FE4C2FAC /* Pods-YippyTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-YippyTests-dummy.m"; sourceTree = "<group>"; };
+		16E9369168DDD274A4900614FE4C2FAC /* Pods-VaultClipTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-VaultClipTests-dummy.m"; sourceTree = "<group>"; };
 		1916E05E10F939B0B8EE0397192E2877 /* Deferred.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Deferred.swift; path = RxSwift/Observables/Deferred.swift; sourceTree = "<group>"; };
 		19658CEB605ED8BB0761E95EA41309ED /* SectionedViewDataSourceType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SectionedViewDataSourceType.swift; path = RxCocoa/Common/SectionedViewDataSourceType.swift; sourceTree = "<group>"; };
 		198A4265203C314EF42E6634C53B0850 /* ConnectableObservableType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConnectableObservableType.swift; path = RxSwift/ConnectableObservableType.swift; sourceTree = "<group>"; };
@@ -622,20 +622,20 @@
 		2528D3CAB1D21006F38350C717EB3916 /* RecursiveLock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RecursiveLock.swift; path = Platform/RecursiveLock.swift; sourceTree = "<group>"; };
 		25357C8AB8D9AE332F459E645BF9D092 /* RxTest-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "RxTest-dummy.m"; sourceTree = "<group>"; };
 		25F63A531105CD4E1E4CCF5B918C5494 /* RxBlocking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = RxBlocking.framework; path = RxBlocking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		26820B7E92AA435913967C0E70312D1C /* Pods-YippyTests.beta debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-YippyTests.beta debug.xcconfig"; sourceTree = "<group>"; };
+		26820B7E92AA435913967C0E70312D1C /* Pods-VaultClipTests.beta debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VaultClipTests.beta debug.xcconfig"; sourceTree = "<group>"; };
 		269B6DDBC74ECC46B8B1D561E8403BBB /* _RXObjCRuntime.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = _RXObjCRuntime.m; path = RxCocoa/Runtime/_RXObjCRuntime.m; sourceTree = "<group>"; };
 		26B8486DCCC12C625F2D5EE5723F9074 /* ObserverType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ObserverType.swift; path = RxSwift/ObserverType.swift; sourceTree = "<group>"; };
 		27BACAFF78F81A65D6F8BF46C0D8A0F8 /* Deprecated.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Deprecated.swift; path = RxSwift/Deprecated.swift; sourceTree = "<group>"; };
-		27CAECADBA842E68C46259051438956C /* Pods-YippyUITests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-YippyUITests-frameworks.sh"; sourceTree = "<group>"; };
-		28320F63545B0C4873E9106031E1D624 /* Pods-YippyTests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-YippyTests-Info.plist"; sourceTree = "<group>"; };
+		27CAECADBA842E68C46259051438956C /* Pods-VaultClipUITests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-VaultClipUITests-frameworks.sh"; sourceTree = "<group>"; };
+		28320F63545B0C4873E9106031E1D624 /* Pods-VaultClipTests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-VaultClipTests-Info.plist"; sourceTree = "<group>"; };
 		29220A711A3B45E97B0777525658BD08 /* LoginServiceKit-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "LoginServiceKit-Info.plist"; sourceTree = "<group>"; };
 		2A209E8ABCAFDF23CCA5B4CCD5CA2CFD /* NSObject+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSObject+Rx.swift"; path = "RxCocoa/Foundation/NSObject+Rx.swift"; sourceTree = "<group>"; };
 		2A892F3A7C31A7D15A5FDDF414D58384 /* UIControl+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIControl+Rx.swift"; path = "RxCocoa/iOS/UIControl+Rx.swift"; sourceTree = "<group>"; };
 		2AB7A8B12CB04EA303D1234701DA8C3D /* Observable+Bind.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Observable+Bind.swift"; path = "RxCocoa/Common/Observable+Bind.swift"; sourceTree = "<group>"; };
-		2B893D80E28782ACDB67BB7E117B0986 /* Pods-YippyTests.beta release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-YippyTests.beta release.xcconfig"; sourceTree = "<group>"; };
+		2B893D80E28782ACDB67BB7E117B0986 /* Pods-VaultClipTests.beta release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VaultClipTests.beta release.xcconfig"; sourceTree = "<group>"; };
 		2C4E700DFC5AE2FFA2EF01606420EC3E /* UIAlertAction+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIAlertAction+Rx.swift"; path = "RxCocoa/iOS/UIAlertAction+Rx.swift"; sourceTree = "<group>"; };
 		2D8B1FD94C70CDAA5EBAC7021EEBF8F7 /* RxPickerViewDataSourceProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxPickerViewDataSourceProxy.swift; path = RxCocoa/iOS/Proxies/RxPickerViewDataSourceProxy.swift; sourceTree = "<group>"; };
-		2DCAA3FB4CAD646370BFE8996A789D30 /* Pods-Yippy-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Yippy-acknowledgements.markdown"; sourceTree = "<group>"; };
+		2DCAA3FB4CAD646370BFE8996A789D30 /* Pods-VaultClip-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-VaultClip-acknowledgements.markdown"; sourceTree = "<group>"; };
 		2E7E301DE6AC0ADAFBB3F3D4B988F425 /* Queue.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Queue.swift; path = Platform/DataStructures/Queue.swift; sourceTree = "<group>"; };
 		3014257B63554EB899EA2AAFC4EFC18C /* RxSearchControllerDelegateProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxSearchControllerDelegateProxy.swift; path = RxCocoa/iOS/Proxies/RxSearchControllerDelegateProxy.swift; sourceTree = "<group>"; };
 		315FD9D2D40ED573851F9B7BE1A2FA57 /* SkipWhile.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SkipWhile.swift; path = RxSwift/Observables/SkipWhile.swift; sourceTree = "<group>"; };
@@ -649,16 +649,16 @@
 		33E80ED4688C15B473487F8CA208F3CC /* Event+Equatable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Event+Equatable.swift"; path = "RxTest/Event+Equatable.swift"; sourceTree = "<group>"; };
 		340221D0978A71D35E1BAAA15BABAF12 /* CombineLatest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CombineLatest.swift; path = RxSwift/Observables/CombineLatest.swift; sourceTree = "<group>"; };
 		34254EF509F72A7784E44EE5584B7195 /* ObservableType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ObservableType.swift; path = RxSwift/ObservableType.swift; sourceTree = "<group>"; };
-		345B204E809F8C2F88540663BFB95F4C /* Pods_YippyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_YippyTests.framework; path = "Pods-YippyTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		345B204E809F8C2F88540663BFB95F4C /* Pods_VaultClipTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_VaultClipTests.framework; path = "Pods-VaultClipTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		36F391CF0CD400A17AC1B28F7977B842 /* SubscribeOn.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SubscribeOn.swift; path = RxSwift/Observables/SubscribeOn.swift; sourceTree = "<group>"; };
-		37AEB512CD8A6D454648EEC1A4A29F82 /* Pods-Yippy.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Yippy.modulemap"; sourceTree = "<group>"; };
+		37AEB512CD8A6D454648EEC1A4A29F82 /* Pods-VaultClip.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-VaultClip.modulemap"; sourceTree = "<group>"; };
 		37CC09864DD6C8CB8B853B316AA263C4 /* Default-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Default-Info.plist"; sourceTree = "<group>"; };
 		3A0679909ECEF06E9675651204AE2207 /* UICollectionView+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UICollectionView+Rx.swift"; path = "RxCocoa/iOS/UICollectionView+Rx.swift"; sourceTree = "<group>"; };
 		3A3A83B0E22E27A869AC1594709963DD /* ScheduledItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ScheduledItem.swift; path = RxSwift/Schedulers/Internal/ScheduledItem.swift; sourceTree = "<group>"; };
 		3AD4F03896DF7238A2A44F1A3BB126E9 /* ControlTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ControlTarget.swift; path = RxCocoa/Common/ControlTarget.swift; sourceTree = "<group>"; };
 		3AF2B03B83108F2CC882E2A7245BEF42 /* DelaySubscription.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DelaySubscription.swift; path = RxSwift/Observables/DelaySubscription.swift; sourceTree = "<group>"; };
 		3B76D78DF59A1A20AC63FCBED46905C8 /* AsSingle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AsSingle.swift; path = RxSwift/Observables/AsSingle.swift; sourceTree = "<group>"; };
-		3C506640C6FB7E80C1D962F9AC868347 /* Pods-Yippy.beta debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Yippy.beta debug.xcconfig"; sourceTree = "<group>"; };
+		3C506640C6FB7E80C1D962F9AC868347 /* Pods-VaultClip.beta debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VaultClip.beta debug.xcconfig"; sourceTree = "<group>"; };
 		3CB125A576B47C7812584983965289B9 /* UIWebView+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIWebView+Rx.swift"; path = "RxCocoa/iOS/UIWebView+Rx.swift"; sourceTree = "<group>"; };
 		3D21F965872B03DBD550E6B6D4AE09C2 /* Buffer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Buffer.swift; path = RxSwift/Observables/Buffer.swift; sourceTree = "<group>"; };
 		3E42B210FE7FE12B51B6B7017DB89D59 /* AddRef.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AddRef.swift; path = RxSwift/Observables/AddRef.swift; sourceTree = "<group>"; };
@@ -668,14 +668,14 @@
 		3F9EB37DE9F4C384DB24CC4512FDCBC8 /* CombineLatest+Collection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CombineLatest+Collection.swift"; path = "RxSwift/Observables/CombineLatest+Collection.swift"; sourceTree = "<group>"; };
 		3FC5E7979BA8BDD042F21DBE11722753 /* Sample.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Sample.swift; path = RxSwift/Observables/Sample.swift; sourceTree = "<group>"; };
 		3FD09F25B7951C548D0A94D4CCAC7D25 /* Materialize.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Materialize.swift; path = RxSwift/Observables/Materialize.swift; sourceTree = "<group>"; };
-		400D9F62E330F4C9DCD439986CFE0149 /* Pods-YippyUITests.beta debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-YippyUITests.beta debug.xcconfig"; sourceTree = "<group>"; };
+		400D9F62E330F4C9DCD439986CFE0149 /* Pods-VaultClipUITests.beta debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VaultClipUITests.beta debug.xcconfig"; sourceTree = "<group>"; };
 		405A81868F181F0B3298384D8F909362 /* Utils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Utils.swift; path = RxRelay/Utils.swift; sourceTree = "<group>"; };
 		40FA26E4B50AD460C464EB4DD68D41BD /* RxTest.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = RxTest.modulemap; sourceTree = "<group>"; };
 		41B4974B9E77BE9D7330A197F92ADABD /* ColdObservable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ColdObservable.swift; path = RxTest/ColdObservable.swift; sourceTree = "<group>"; };
 		4201F2E818D0F1B86F07648422E33925 /* AtomicInt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AtomicInt.swift; path = Platform/AtomicInt.swift; sourceTree = "<group>"; };
 		42251A4DF68CCEB7672D1C8881C6E3EF /* Platform.Linux.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Platform.Linux.swift; path = Platform/Platform.Linux.swift; sourceTree = "<group>"; };
 		42B3496222BEA3E60E53BC6A439298E6 /* ControlEvent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ControlEvent.swift; path = RxCocoa/Traits/ControlEvent.swift; sourceTree = "<group>"; };
-		42D9D5D6746E21E8857FB882B314808D /* Pods-Yippy.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Yippy.xctest.xcconfig"; sourceTree = "<group>"; };
+		42D9D5D6746E21E8857FB882B314808D /* Pods-VaultClip.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VaultClip.xctest.xcconfig"; sourceTree = "<group>"; };
 		44D1A35B4146674193AB7B2442713F94 /* ToArray.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToArray.swift; path = RxSwift/Observables/ToArray.swift; sourceTree = "<group>"; };
 		455C451F405624B2B3B8F93C72E67392 /* NSButton+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSButton+Rx.swift"; path = "RxCocoa/macOS/NSButton+Rx.swift"; sourceTree = "<group>"; };
 		45A43485A6959CD62BDF7BF8FBF4D5D1 /* Enumerated.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Enumerated.swift; path = RxSwift/Observables/Enumerated.swift; sourceTree = "<group>"; };
@@ -685,7 +685,7 @@
 		47CBC8E69778720A2A0EA417A4C2C53C /* RxBlocking-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "RxBlocking-Info.plist"; sourceTree = "<group>"; };
 		481F8EF732AEA5418BEBE8D206D831D5 /* Empty.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Empty.swift; path = RxSwift/Observables/Empty.swift; sourceTree = "<group>"; };
 		483FD69F943301DC2F4430F6719B781D /* ScheduledItemType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ScheduledItemType.swift; path = RxSwift/Schedulers/Internal/ScheduledItemType.swift; sourceTree = "<group>"; };
-		494E23F2DBF6FD31D57264FE4C79619A /* Pods-YippyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-YippyTests.release.xcconfig"; sourceTree = "<group>"; };
+		494E23F2DBF6FD31D57264FE4C79619A /* Pods-VaultClipTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VaultClipTests.release.xcconfig"; sourceTree = "<group>"; };
 		4A0F21576042C9B3F20B201727A539CF /* Observable+Bind.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Observable+Bind.swift"; path = "RxRelay/Observable+Bind.swift"; sourceTree = "<group>"; };
 		4A6B833BCCFFF1F882B967E4408DCCB4 /* UIActivityIndicatorView+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIActivityIndicatorView+Rx.swift"; path = "RxCocoa/iOS/UIActivityIndicatorView+Rx.swift"; sourceTree = "<group>"; };
 		4AA5CAD98AFDF1FD13174B522823C368 /* BehaviorRelay.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BehaviorRelay.swift; path = RxRelay/BehaviorRelay.swift; sourceTree = "<group>"; };
@@ -695,16 +695,16 @@
 		4DEF847B125A4748A16A4526B7590DA1 /* SharedSequence+Operators.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "SharedSequence+Operators.swift"; path = "RxCocoa/Traits/SharedSequence/SharedSequence+Operators.swift"; sourceTree = "<group>"; };
 		4E2A6D88FD08D341259586EF09F7A78C /* SerialDispatchQueueScheduler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SerialDispatchQueueScheduler.swift; path = RxSwift/Schedulers/SerialDispatchQueueScheduler.swift; sourceTree = "<group>"; };
 		4E3453540B2424F70F11B1240EAA869F /* Debug.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Debug.swift; path = RxSwift/Observables/Debug.swift; sourceTree = "<group>"; };
-		4FA87D3B84DE91713DD65DF93EF98C21 /* Pods-YippyUITests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-YippyUITests-dummy.m"; sourceTree = "<group>"; };
+		4FA87D3B84DE91713DD65DF93EF98C21 /* Pods-VaultClipUITests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-VaultClipUITests-dummy.m"; sourceTree = "<group>"; };
 		4FC875397C5DEC3EBFD3A61FC1069B55 /* RxRelay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxRelay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FFE3A3EEAC6979691FA45CE02432794 /* DefaultIfEmpty.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DefaultIfEmpty.swift; path = RxSwift/Observables/DefaultIfEmpty.swift; sourceTree = "<group>"; };
-		5065585B75AEAA1BBFD81582A8E7A202 /* Pods-Yippy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Yippy.release.xcconfig"; sourceTree = "<group>"; };
+		5065585B75AEAA1BBFD81582A8E7A202 /* Pods-VaultClip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VaultClip.release.xcconfig"; sourceTree = "<group>"; };
 		514484B74EADA5454091F68B3CA82F6F /* Range.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Range.swift; path = RxSwift/Observables/Range.swift; sourceTree = "<group>"; };
 		515929FF5158BB9F9B6A39AC62B03AF8 /* BehaviorSubject.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BehaviorSubject.swift; path = RxSwift/Subjects/BehaviorSubject.swift; sourceTree = "<group>"; };
 		52D6415DF07630F50B8473011778E9BC /* Subscription.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Subscription.swift; path = RxTest/Subscription.swift; sourceTree = "<group>"; };
 		52EE71A6670BB7C33143561D4F12586E /* RxWebViewDelegateProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxWebViewDelegateProxy.swift; path = RxCocoa/iOS/Proxies/RxWebViewDelegateProxy.swift; sourceTree = "<group>"; };
 		53E62E9CD62B3BF05F97F8730B891F42 /* InfiniteSequence.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InfiniteSequence.swift; path = Platform/DataStructures/InfiniteSequence.swift; sourceTree = "<group>"; };
-		5426A8647CB250476C5FAA3DF4B0CFAF /* Pods-Yippy-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Yippy-dummy.m"; sourceTree = "<group>"; };
+		5426A8647CB250476C5FAA3DF4B0CFAF /* Pods-VaultClip-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-VaultClip-dummy.m"; sourceTree = "<group>"; };
 		544B255DBB8A715AD72A19909478FE46 /* AsyncLock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AsyncLock.swift; path = RxSwift/Concurrency/AsyncLock.swift; sourceTree = "<group>"; };
 		5468E77EC29E6C9EA5F75711435F76B1 /* AnonymousObserver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AnonymousObserver.swift; path = RxSwift/Observers/AnonymousObserver.swift; sourceTree = "<group>"; };
 		54CBE7E00CDA1DD79EB09AB545CEEDF4 /* RxSwift-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "RxSwift-Info.plist"; sourceTree = "<group>"; };
@@ -715,7 +715,7 @@
 		5725CC8353DB7C286A37DB56CD4D4D25 /* RxRelay-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "RxRelay-dummy.m"; sourceTree = "<group>"; };
 		57B3A65EEED6FDA7FF78936C219DB5BF /* RxCocoa-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "RxCocoa-dummy.m"; sourceTree = "<group>"; };
 		57EC1FC1B3C02D0ABA7645D2AB32AEEB /* RxTabBarDelegateProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxTabBarDelegateProxy.swift; path = RxCocoa/iOS/Proxies/RxTabBarDelegateProxy.swift; sourceTree = "<group>"; };
-		5894638AD443BE0FE4C3E1B442712E2E /* Pods-YippyUITests.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-YippyUITests.xctest.xcconfig"; sourceTree = "<group>"; };
+		5894638AD443BE0FE4C3E1B442712E2E /* Pods-VaultClipUITests.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VaultClipUITests.xctest.xcconfig"; sourceTree = "<group>"; };
 		59B5164BDF4CAD635096C8A8E66E1F25 /* SynchronizedUnsubscribeType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SynchronizedUnsubscribeType.swift; path = RxSwift/Concurrency/SynchronizedUnsubscribeType.swift; sourceTree = "<group>"; };
 		59C51A8B4CCAB3829B104C3A2EC4CE98 /* ShareReplayScope.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ShareReplayScope.swift; path = RxSwift/Observables/ShareReplayScope.swift; sourceTree = "<group>"; };
 		5B78D49AE2F02DE90BF7E60FE8F484AF /* TestSchedulerVirtualTimeConverter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TestSchedulerVirtualTimeConverter.swift; path = RxTest/Schedulers/TestSchedulerVirtualTimeConverter.swift; sourceTree = "<group>"; };
@@ -729,7 +729,7 @@
 		5F23CB67E68B1CF33F855F6930E49EE0 /* RxTest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxTest.swift; path = RxTest/RxTest.swift; sourceTree = "<group>"; };
 		607D01E400E5420B735232DC4632D659 /* TestableObservable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TestableObservable.swift; path = RxTest/TestableObservable.swift; sourceTree = "<group>"; };
 		60C7167D28AF6197B3F064F9C199D41D /* TestableObserver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TestableObserver.swift; path = RxTest/TestableObserver.swift; sourceTree = "<group>"; };
-		62CCDD9A0BD64E0A72B964B8DCE69150 /* Pods-YippyTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-YippyTests.modulemap"; sourceTree = "<group>"; };
+		62CCDD9A0BD64E0A72B964B8DCE69150 /* Pods-VaultClipTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-VaultClipTests.modulemap"; sourceTree = "<group>"; };
 		632038C00630A7BD9BB3F549EF921EA2 /* RxSwift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "RxSwift-dummy.m"; sourceTree = "<group>"; };
 		63AD20CDE419252786ADE0347C7BBAE2 /* UITextField+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UITextField+Rx.swift"; path = "RxCocoa/iOS/UITextField+Rx.swift"; sourceTree = "<group>"; };
 		655A725F41321228063F837B7E7452D0 /* Bag.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Bag.swift; path = Platform/DataStructures/Bag.swift; sourceTree = "<group>"; };
@@ -750,7 +750,7 @@
 		7522FC49DFF4E76B9F1360D39C05FCFC /* DelegateProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DelegateProxy.swift; path = RxCocoa/Common/DelegateProxy.swift; sourceTree = "<group>"; };
 		76CD861B6943947EFECEAE493A26E8B1 /* DistinctUntilChanged.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DistinctUntilChanged.swift; path = RxSwift/Observables/DistinctUntilChanged.swift; sourceTree = "<group>"; };
 		786C3AAAD2957DA44ABE05F5B6C9896A /* Driver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Driver.swift; path = RxCocoa/Traits/Driver/Driver.swift; sourceTree = "<group>"; };
-		796EDC0B085665E0C5EF5D33BF08481A /* Pods-Yippy-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Yippy-Info.plist"; sourceTree = "<group>"; };
+		796EDC0B085665E0C5EF5D33BF08481A /* Pods-VaultClip-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-VaultClip-Info.plist"; sourceTree = "<group>"; };
 		79D9521FF02F486E1913BF8C8AF6DEAD /* DispatchQueue+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "DispatchQueue+Extensions.swift"; path = "Platform/DispatchQueue+Extensions.swift"; sourceTree = "<group>"; };
 		79FC6F9F3963366854814ED527AF9777 /* Event.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Event.swift; path = RxSwift/Event.swift; sourceTree = "<group>"; };
 		7C12FF3D5BAD1F85498C36665438C61C /* Default-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Default-dummy.m"; sourceTree = "<group>"; };
@@ -767,11 +767,11 @@
 		814EF02AFA7CC9DA62898BDB4A2AC0D6 /* UISegmentedControl+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UISegmentedControl+Rx.swift"; path = "RxCocoa/iOS/UISegmentedControl+Rx.swift"; sourceTree = "<group>"; };
 		81969BB43EC41C3DE586475074000746 /* Observable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Observable.swift; path = RxSwift/Observable.swift; sourceTree = "<group>"; };
 		820475DEE643F008B5FBA1874C6447A9 /* LoginServiceKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = LoginServiceKit.framework; path = LoginServiceKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8275D9A49B436B0E18D5A6B9152F7D13 /* Pods-Yippy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Yippy.debug.xcconfig"; sourceTree = "<group>"; };
+		8275D9A49B436B0E18D5A6B9152F7D13 /* Pods-VaultClip.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VaultClip.debug.xcconfig"; sourceTree = "<group>"; };
 		8295EB3C849678DF6F349E0AD270985B /* Binder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Binder.swift; path = RxCocoa/Common/Binder.swift; sourceTree = "<group>"; };
 		83758EDD6000E6059A4CEAA1025CBD47 /* Completable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Completable.swift; path = RxSwift/Traits/Completable.swift; sourceTree = "<group>"; };
 		837FACD35CC842F1D25D1E74987DFE2D /* InfiniteSequence.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InfiniteSequence.swift; path = Platform/DataStructures/InfiniteSequence.swift; sourceTree = "<group>"; };
-		840327CAAEB5B816CDBC4557EC7F4524 /* Pods-YippyTests.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-YippyTests.xctest.xcconfig"; sourceTree = "<group>"; };
+		840327CAAEB5B816CDBC4557EC7F4524 /* Pods-VaultClipTests.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VaultClipTests.xctest.xcconfig"; sourceTree = "<group>"; };
 		845D42117EB16118BE7ABAE3C1879398 /* RxRelay.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = RxRelay.modulemap; sourceTree = "<group>"; };
 		84636B091C26ECD29F9217A110C41E2A /* RxSwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = RxSwift.modulemap; sourceTree = "<group>"; };
 		8518EC73F1BA77F6AF8BB9DA8A0A92A1 /* RxTabBarControllerDelegateProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxTabBarControllerDelegateProxy.swift; path = RxCocoa/iOS/Proxies/RxTabBarControllerDelegateProxy.swift; sourceTree = "<group>"; };
@@ -789,7 +789,7 @@
 		8CF3CEDA2B6F075133347D32672393AA /* InvocableType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InvocableType.swift; path = RxSwift/Schedulers/Internal/InvocableType.swift; sourceTree = "<group>"; };
 		8F067FE56609E97043F0ABE5EEBE68D5 /* SkipUntil.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SkipUntil.swift; path = RxSwift/Observables/SkipUntil.swift; sourceTree = "<group>"; };
 		908209521A994C1C533502DC8AECA35A /* RxCocoa-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RxCocoa-umbrella.h"; sourceTree = "<group>"; };
-		9118230C3D9BE8615C084CE6C2974E64 /* Pods-Yippy-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Yippy-frameworks.sh"; sourceTree = "<group>"; };
+		9118230C3D9BE8615C084CE6C2974E64 /* Pods-VaultClip-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-VaultClip-frameworks.sh"; sourceTree = "<group>"; };
 		918D40B9FCAF0CD65946CA0D43A33EA9 /* Driver+Subscription.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Driver+Subscription.swift"; path = "RxCocoa/Traits/Driver/Driver+Subscription.swift"; sourceTree = "<group>"; };
 		91B05203E67D6022B2AC1FECBD46483C /* RxTest-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "RxTest-Info.plist"; sourceTree = "<group>"; };
 		925454D1735EB37CF36D5731F2D121D6 /* Error.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Error.swift; path = RxSwift/Observables/Error.swift; sourceTree = "<group>"; };
@@ -812,9 +812,9 @@
 		A0E1708D17EB0E7AA500A0D5CCC67304 /* SwitchIfEmpty.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwitchIfEmpty.swift; path = RxSwift/Observables/SwitchIfEmpty.swift; sourceTree = "<group>"; };
 		A23155D5C6E54FFF922E642665A27B17 /* Recorded.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Recorded.swift; path = RxTest/Recorded.swift; sourceTree = "<group>"; };
 		A4C255DAD54E825137A6FD74D8FDDDE4 /* RxSearchBarDelegateProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxSearchBarDelegateProxy.swift; path = RxCocoa/iOS/Proxies/RxSearchBarDelegateProxy.swift; sourceTree = "<group>"; };
-		A55A2F41211E1B9CB575C4D8104340B1 /* Pods-YippyTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-YippyTests-umbrella.h"; sourceTree = "<group>"; };
+		A55A2F41211E1B9CB575C4D8104340B1 /* Pods-VaultClipTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-VaultClipTests-umbrella.h"; sourceTree = "<group>"; };
 		A58F1E59EE653B05FB6D9DBE5737EB4D /* UILabel+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UILabel+Rx.swift"; path = "RxCocoa/iOS/UILabel+Rx.swift"; sourceTree = "<group>"; };
-		A5C33AFD779E9C572F92499771ACA7C5 /* Pods-YippyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-YippyTests.debug.xcconfig"; sourceTree = "<group>"; };
+		A5C33AFD779E9C572F92499771ACA7C5 /* Pods-VaultClipTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VaultClipTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A5F667072473DEA144426912D9B99C86 /* SwiftSupport.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwiftSupport.swift; path = RxSwift/SwiftSupport/SwiftSupport.swift; sourceTree = "<group>"; };
 		A7A9886EEE2F39B4DF8B4D7F59DAE566 /* UIPickerView+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIPickerView+Rx.swift"; path = "RxCocoa/iOS/UIPickerView+Rx.swift"; sourceTree = "<group>"; };
 		A8022B7895E7FB7DE19339B9595519DD /* Reactive.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Reactive.swift; path = RxSwift/Reactive.swift; sourceTree = "<group>"; };
@@ -824,13 +824,13 @@
 		A88B44EC6F8EB7B7693F123803877C8B /* UINavigationItem+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UINavigationItem+Rx.swift"; path = "RxCocoa/iOS/UINavigationItem+Rx.swift"; sourceTree = "<group>"; };
 		AA56FC709FF076CAB87D3500309643C9 /* DispatchQueue+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "DispatchQueue+Extensions.swift"; path = "Platform/DispatchQueue+Extensions.swift"; sourceTree = "<group>"; };
 		AA924714B0F19DAD09E16A99B178A212 /* LoginServiceKit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = LoginServiceKit.xcconfig; sourceTree = "<group>"; };
-		AB1D18E38E79A399DE7BED96BC421B6F /* Pods-YippyUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-YippyUITests.release.xcconfig"; sourceTree = "<group>"; };
+		AB1D18E38E79A399DE7BED96BC421B6F /* Pods-VaultClipUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VaultClipUITests.release.xcconfig"; sourceTree = "<group>"; };
 		ABAB6B0ADE7807176195EEAF56B88C40 /* Maybe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Maybe.swift; path = RxSwift/Traits/Maybe.swift; sourceTree = "<group>"; };
 		ABDBDA649461E9442B573CF8A501E5DA /* DelegateProxyType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DelegateProxyType.swift; path = RxCocoa/Common/DelegateProxyType.swift; sourceTree = "<group>"; };
 		ACE71A7368AADE956D57BA7D69EFF814 /* RecursiveLock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RecursiveLock.swift; path = Platform/RecursiveLock.swift; sourceTree = "<group>"; };
 		AD4A39F62A5DB008E9513C5EBFE71E26 /* Skip.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Skip.swift; path = RxSwift/Observables/Skip.swift; sourceTree = "<group>"; };
 		AE0E82BE35AD3DDDBE5FBB28B6D8835A /* Throttle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Throttle.swift; path = RxSwift/Observables/Throttle.swift; sourceTree = "<group>"; };
-		AE6104AF0446D7935BFC949C5CECD43B /* Pods-Yippy.beta release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Yippy.beta release.xcconfig"; sourceTree = "<group>"; };
+		AE6104AF0446D7935BFC949C5CECD43B /* Pods-VaultClip.beta release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VaultClip.beta release.xcconfig"; sourceTree = "<group>"; };
 		AEC53703A1698ABC20E18AC4FCC48034 /* BehaviorRelay+Driver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "BehaviorRelay+Driver.swift"; path = "RxCocoa/Traits/Driver/BehaviorRelay+Driver.swift"; sourceTree = "<group>"; };
 		AFD95ABACE8E4AB2198D50453DD0874A /* Default-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Default-prefix.pch"; sourceTree = "<group>"; };
 		AFDAE45D639D4A605895787CBA0DC5B7 /* AtomicInt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AtomicInt.swift; path = Platform/AtomicInt.swift; sourceTree = "<group>"; };
@@ -839,7 +839,7 @@
 		B1FA53CBE74E6BB6BBD4413395582328 /* NotificationCenter+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NotificationCenter+Rx.swift"; path = "RxCocoa/Foundation/NotificationCenter+Rx.swift"; sourceTree = "<group>"; };
 		B334A79AA60412DBFF852A3C08F9FD15 /* Bag.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Bag.swift; path = Platform/DataStructures/Bag.swift; sourceTree = "<group>"; };
 		B367C2DC44C40FEFDF3A8CA30D3C463E /* RxCocoa-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RxCocoa-prefix.pch"; sourceTree = "<group>"; };
-		B501A1DC6A85131E1C7897907C9376E6 /* Pods-YippyTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-YippyTests-frameworks.sh"; sourceTree = "<group>"; };
+		B501A1DC6A85131E1C7897907C9376E6 /* Pods-VaultClipTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-VaultClipTests-frameworks.sh"; sourceTree = "<group>"; };
 		B5B7FCD746AB5DD212F8BDEAF8B9E919 /* Queue.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Queue.swift; path = Platform/DataStructures/Queue.swift; sourceTree = "<group>"; };
 		B608E26F17035BB38C2BAA24BA9115C5 /* Never.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Never.swift; path = RxSwift/Observables/Never.swift; sourceTree = "<group>"; };
 		B6D5F3505912B8F6FF00EDFE8AD0CDED /* Signal.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Signal.swift; path = RxCocoa/Traits/Signal/Signal.swift; sourceTree = "<group>"; };
@@ -862,10 +862,10 @@
 		BE2AA06D98B269D226ED71FA8A9C10E4 /* Concat.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Concat.swift; path = RxSwift/Observables/Concat.swift; sourceTree = "<group>"; };
 		BE747943668C981EF92D77B4F39BC821 /* Window.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Window.swift; path = RxSwift/Observables/Window.swift; sourceTree = "<group>"; };
 		BEAE5997223CF9C30967E65BBEDAFD82 /* BlockingObservable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BlockingObservable.swift; path = RxBlocking/BlockingObservable.swift; sourceTree = "<group>"; };
-		BEFCAD760058B9A0E6C3BF6E5B2BD126 /* Pods_YippyUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_YippyUITests.framework; path = "Pods-YippyUITests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF6266AD59572EDE9623E81BC430E126 /* Pods-Yippy-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Yippy-acknowledgements.plist"; sourceTree = "<group>"; };
+		BEFCAD760058B9A0E6C3BF6E5B2BD126 /* Pods_VaultClipUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_VaultClipUITests.framework; path = "Pods-VaultClipUITests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF6266AD59572EDE9623E81BC430E126 /* Pods-VaultClip-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-VaultClip-acknowledgements.plist"; sourceTree = "<group>"; };
 		C093BBB9594A0960BEA74C8C07E6386F /* RxPickerViewAdapter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxPickerViewAdapter.swift; path = RxCocoa/iOS/DataSources/RxPickerViewAdapter.swift; sourceTree = "<group>"; };
-		C0A5CBA11FC104531DF6DDA95E8F74E5 /* Pods-YippyUITests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-YippyUITests-umbrella.h"; sourceTree = "<group>"; };
+		C0A5CBA11FC104531DF6DDA95E8F74E5 /* Pods-VaultClipUITests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-VaultClipUITests-umbrella.h"; sourceTree = "<group>"; };
 		C12217795C25B48691E9755F4E10AFA0 /* NSLayoutConstraint+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSLayoutConstraint+Rx.swift"; path = "RxCocoa/Common/NSLayoutConstraint+Rx.swift"; sourceTree = "<group>"; };
 		C1CBE65D7F8007BF306E1A3D697B2166 /* KeyPathBinder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KeyPathBinder.swift; path = RxCocoa/Common/KeyPathBinder.swift; sourceTree = "<group>"; };
 		C1FE54A664978112259D0D977FEBB65B /* SubscriptionDisposable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SubscriptionDisposable.swift; path = RxSwift/Disposables/SubscriptionDisposable.swift; sourceTree = "<group>"; };
@@ -873,7 +873,7 @@
 		C43CE5CBECB828D892873EBA65876800 /* _RXKVOObserver.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = _RXKVOObserver.m; path = RxCocoa/Runtime/_RXKVOObserver.m; sourceTree = "<group>"; };
 		C4C1F0FE5B28CA34A7407C26A48C968E /* Zip.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Zip.swift; path = RxSwift/Observables/Zip.swift; sourceTree = "<group>"; };
 		C4DCFC13CEF8E962230A032087185C5D /* Amb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Amb.swift; path = RxSwift/Observables/Amb.swift; sourceTree = "<group>"; };
-		C4EF12BEF429A15A05CE0B16FE1D8FFF /* Pods-YippyTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-YippyTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		C4EF12BEF429A15A05CE0B16FE1D8FFF /* Pods-VaultClipTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-VaultClipTests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		C5517DC4FD7B44620178BDBDC3052732 /* Merge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Merge.swift; path = RxSwift/Observables/Merge.swift; sourceTree = "<group>"; };
 		C5948567E48A787F8C68B2D1BD9ECAF3 /* Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Rx.swift; path = RxSwift/Rx.swift; sourceTree = "<group>"; };
 		C59C73496279B15E6EABFDE9F8EF8AF3 /* RxBlocking-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RxBlocking-umbrella.h"; sourceTree = "<group>"; };
@@ -894,9 +894,9 @@
 		D292995746D2A1EFA27429EE8653B381 /* PriorityQueue.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PriorityQueue.swift; path = Platform/DataStructures/PriorityQueue.swift; sourceTree = "<group>"; };
 		D2F4D51F6597DDF310CF379E4A86C39E /* RxBlocking-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "RxBlocking-dummy.m"; sourceTree = "<group>"; };
 		D3E4D28D1A5B6B92905B13FB088DE8EE /* SerialDisposable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SerialDisposable.swift; path = RxSwift/Disposables/SerialDisposable.swift; sourceTree = "<group>"; };
-		D4B9DC09F25AEEABECC77AB40D751742 /* Pods-YippyUITests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-YippyUITests.modulemap"; sourceTree = "<group>"; };
+		D4B9DC09F25AEEABECC77AB40D751742 /* Pods-VaultClipUITests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-VaultClipUITests.modulemap"; sourceTree = "<group>"; };
 		D5323B45F3D8DE1DED5C71C21767F694 /* UIImageView+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIImageView+Rx.swift"; path = "RxCocoa/iOS/UIImageView+Rx.swift"; sourceTree = "<group>"; };
-		D548420876E640F18100790AE7F140BE /* Pods_Yippy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Yippy.framework; path = "Pods-Yippy.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D548420876E640F18100790AE7F140BE /* Pods_VaultClip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_VaultClip.framework; path = "Pods-VaultClip.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D569F7BF06EF2891F9253778589366EF /* RunLoopLock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RunLoopLock.swift; path = RxBlocking/RunLoopLock.swift; sourceTree = "<group>"; };
 		D65A6B90C12AAAC639782E38F584D8F5 /* Default.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Default.modulemap; sourceTree = "<group>"; };
 		D680A398425A8286B7CF831A9E11A32B /* InfiniteSequence.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InfiniteSequence.swift; path = Platform/DataStructures/InfiniteSequence.swift; sourceTree = "<group>"; };
@@ -910,10 +910,10 @@
 		DBB2FC0D6FF83001AA9E07416B366E69 /* UISearchController+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UISearchController+Rx.swift"; path = "RxCocoa/iOS/UISearchController+Rx.swift"; sourceTree = "<group>"; };
 		DE7FFC7D80935F70B60976C7EEA6DB25 /* TakeLast.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TakeLast.swift; path = RxSwift/Observables/TakeLast.swift; sourceTree = "<group>"; };
 		DFCB9638F43784A748831A3CA0C60AAE /* HistoricalScheduler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HistoricalScheduler.swift; path = RxSwift/Schedulers/HistoricalScheduler.swift; sourceTree = "<group>"; };
-		DFEA4738104FCFADB12738531D911FCC /* Pods-Yippy-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Yippy-umbrella.h"; sourceTree = "<group>"; };
+		DFEA4738104FCFADB12738531D911FCC /* Pods-VaultClip-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-VaultClip-umbrella.h"; sourceTree = "<group>"; };
 		DFF0793467985F761B79F1AEB10701DD /* RxTest-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RxTest-prefix.pch"; sourceTree = "<group>"; };
 		E0165726C9F15A867119F76E9158278C /* BooleanDisposable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BooleanDisposable.swift; path = RxSwift/Disposables/BooleanDisposable.swift; sourceTree = "<group>"; };
-		E07FE04A891D297F8183C9AD848F04A1 /* Pods-YippyUITests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-YippyUITests-Info.plist"; sourceTree = "<group>"; };
+		E07FE04A891D297F8183C9AD848F04A1 /* Pods-VaultClipUITests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-VaultClipUITests-Info.plist"; sourceTree = "<group>"; };
 		E1A82F50EAD24BA5BE7D0A532D9D4BF7 /* _RXKVOObserver.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = _RXKVOObserver.h; path = RxCocoa/Runtime/include/_RXKVOObserver.h; sourceTree = "<group>"; };
 		E25E05FC37C980527BDC074F8216046B /* Resources.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Resources.swift; path = RxBlocking/Resources.swift; sourceTree = "<group>"; };
 		E2AF0067E998B48ECC8BD71078D58334 /* TakeWhile.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TakeWhile.swift; path = RxSwift/Observables/TakeWhile.swift; sourceTree = "<group>"; };
@@ -946,7 +946,7 @@
 		F2A80E7D4CCCB5FAE001317627EA2E01 /* UITabBarController+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UITabBarController+Rx.swift"; path = "RxCocoa/iOS/UITabBarController+Rx.swift"; sourceTree = "<group>"; };
 		F3AAA65AB80ADDACDEBBF12CBC47EEE1 /* CompactMap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CompactMap.swift; path = RxSwift/Observables/CompactMap.swift; sourceTree = "<group>"; };
 		F54408E91BC2B36CFDFC182DF0A7FAD6 /* ConcurrentMainScheduler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConcurrentMainScheduler.swift; path = RxSwift/Schedulers/ConcurrentMainScheduler.swift; sourceTree = "<group>"; };
-		F5D094C96D953073728220A6F80E8982 /* Pods-YippyTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-YippyTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		F5D094C96D953073728220A6F80E8982 /* Pods-VaultClipTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-VaultClipTests-acknowledgements.plist"; sourceTree = "<group>"; };
 		F65F59D81B5E5433E624CAEB94FD0C9D /* PriorityQueue.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PriorityQueue.swift; path = Platform/DataStructures/PriorityQueue.swift; sourceTree = "<group>"; };
 		F6949ADFA88CB3DBCC753B402597E1C8 /* Optional.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Optional.swift; path = RxSwift/Observables/Optional.swift; sourceTree = "<group>"; };
 		F80E255A47E0E5304ADF70B31991C76C /* RxTableViewDelegateProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxTableViewDelegateProxy.swift; path = RxCocoa/iOS/Proxies/RxTableViewDelegateProxy.swift; sourceTree = "<group>"; };
@@ -956,7 +956,7 @@
 		FA46FFFC8D9D884B95D4160FF34CF95A /* ObserveOn.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ObserveOn.swift; path = RxSwift/Observables/ObserveOn.swift; sourceTree = "<group>"; };
 		FB32114FF64D8608C61AF24E5EE59526 /* Platform.Darwin.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Platform.Darwin.swift; path = Platform/Platform.Darwin.swift; sourceTree = "<group>"; };
 		FB4CAF3A513F01A4BBFBB12CA3C407E8 /* First.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = First.swift; path = RxSwift/Observables/First.swift; sourceTree = "<group>"; };
-		FBBE801AADB67ACB73263D6139C80456 /* Pods-YippyUITests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-YippyUITests-acknowledgements.plist"; sourceTree = "<group>"; };
+		FBBE801AADB67ACB73263D6139C80456 /* Pods-VaultClipUITests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-VaultClipUITests-acknowledgements.plist"; sourceTree = "<group>"; };
 		FD75A7470412EEFC761990FDB5E81DAF /* ReplaySubject.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReplaySubject.swift; path = RxSwift/Subjects/ReplaySubject.swift; sourceTree = "<group>"; };
 		FDECE4FB79712F2F362417DC5287E340 /* Map.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Map.swift; path = RxSwift/Observables/Map.swift; sourceTree = "<group>"; };
 		FF4A14330A356F06A05CB2674523F345 /* NSView+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSView+Rx.swift"; path = "RxCocoa/macOS/NSView+Rx.swift"; sourceTree = "<group>"; };
@@ -1228,44 +1228,44 @@
 			path = "../Target Support Files/RxSwift";
 			sourceTree = "<group>";
 		};
-		10DF3342FD995FC8A4D991182FF6F3F3 /* Pods-YippyUITests */ = {
+		10DF3342FD995FC8A4D991182FF6F3F3 /* Pods-VaultClipUITests */ = {
 			isa = PBXGroup;
 			children = (
-				D4B9DC09F25AEEABECC77AB40D751742 /* Pods-YippyUITests.modulemap */,
-				0138D3F686832EBB09E3F8E2100DA7E5 /* Pods-YippyUITests-acknowledgements.markdown */,
-				FBBE801AADB67ACB73263D6139C80456 /* Pods-YippyUITests-acknowledgements.plist */,
-				4FA87D3B84DE91713DD65DF93EF98C21 /* Pods-YippyUITests-dummy.m */,
-				27CAECADBA842E68C46259051438956C /* Pods-YippyUITests-frameworks.sh */,
-				E07FE04A891D297F8183C9AD848F04A1 /* Pods-YippyUITests-Info.plist */,
-				C0A5CBA11FC104531DF6DDA95E8F74E5 /* Pods-YippyUITests-umbrella.h */,
-				400D9F62E330F4C9DCD439986CFE0149 /* Pods-YippyUITests.beta debug.xcconfig */,
-				040C020C19531C42832954729AA42025 /* Pods-YippyUITests.beta release.xcconfig */,
-				0BCE2869AF629C0955DD7BFE1658998B /* Pods-YippyUITests.debug.xcconfig */,
-				AB1D18E38E79A399DE7BED96BC421B6F /* Pods-YippyUITests.release.xcconfig */,
-				5894638AD443BE0FE4C3E1B442712E2E /* Pods-YippyUITests.xctest.xcconfig */,
+				D4B9DC09F25AEEABECC77AB40D751742 /* Pods-VaultClipUITests.modulemap */,
+				0138D3F686832EBB09E3F8E2100DA7E5 /* Pods-VaultClipUITests-acknowledgements.markdown */,
+				FBBE801AADB67ACB73263D6139C80456 /* Pods-VaultClipUITests-acknowledgements.plist */,
+				4FA87D3B84DE91713DD65DF93EF98C21 /* Pods-VaultClipUITests-dummy.m */,
+				27CAECADBA842E68C46259051438956C /* Pods-VaultClipUITests-frameworks.sh */,
+				E07FE04A891D297F8183C9AD848F04A1 /* Pods-VaultClipUITests-Info.plist */,
+				C0A5CBA11FC104531DF6DDA95E8F74E5 /* Pods-VaultClipUITests-umbrella.h */,
+				400D9F62E330F4C9DCD439986CFE0149 /* Pods-VaultClipUITests.beta debug.xcconfig */,
+				040C020C19531C42832954729AA42025 /* Pods-VaultClipUITests.beta release.xcconfig */,
+				0BCE2869AF629C0955DD7BFE1658998B /* Pods-VaultClipUITests.debug.xcconfig */,
+				AB1D18E38E79A399DE7BED96BC421B6F /* Pods-VaultClipUITests.release.xcconfig */,
+				5894638AD443BE0FE4C3E1B442712E2E /* Pods-VaultClipUITests.xctest.xcconfig */,
 			);
-			name = "Pods-YippyUITests";
-			path = "Target Support Files/Pods-YippyUITests";
+			name = "Pods-VaultClipUITests";
+			path = "Target Support Files/Pods-VaultClipUITests";
 			sourceTree = "<group>";
 		};
-		13B92174A8932DE17464AD68C49657A6 /* Pods-Yippy */ = {
+		13B92174A8932DE17464AD68C49657A6 /* Pods-VaultClip */ = {
 			isa = PBXGroup;
 			children = (
-				37AEB512CD8A6D454648EEC1A4A29F82 /* Pods-Yippy.modulemap */,
-				2DCAA3FB4CAD646370BFE8996A789D30 /* Pods-Yippy-acknowledgements.markdown */,
-				BF6266AD59572EDE9623E81BC430E126 /* Pods-Yippy-acknowledgements.plist */,
-				5426A8647CB250476C5FAA3DF4B0CFAF /* Pods-Yippy-dummy.m */,
-				9118230C3D9BE8615C084CE6C2974E64 /* Pods-Yippy-frameworks.sh */,
-				796EDC0B085665E0C5EF5D33BF08481A /* Pods-Yippy-Info.plist */,
-				DFEA4738104FCFADB12738531D911FCC /* Pods-Yippy-umbrella.h */,
-				3C506640C6FB7E80C1D962F9AC868347 /* Pods-Yippy.beta debug.xcconfig */,
-				AE6104AF0446D7935BFC949C5CECD43B /* Pods-Yippy.beta release.xcconfig */,
-				8275D9A49B436B0E18D5A6B9152F7D13 /* Pods-Yippy.debug.xcconfig */,
-				5065585B75AEAA1BBFD81582A8E7A202 /* Pods-Yippy.release.xcconfig */,
-				42D9D5D6746E21E8857FB882B314808D /* Pods-Yippy.xctest.xcconfig */,
+				37AEB512CD8A6D454648EEC1A4A29F82 /* Pods-VaultClip.modulemap */,
+				2DCAA3FB4CAD646370BFE8996A789D30 /* Pods-VaultClip-acknowledgements.markdown */,
+				BF6266AD59572EDE9623E81BC430E126 /* Pods-VaultClip-acknowledgements.plist */,
+				5426A8647CB250476C5FAA3DF4B0CFAF /* Pods-VaultClip-dummy.m */,
+				9118230C3D9BE8615C084CE6C2974E64 /* Pods-VaultClip-frameworks.sh */,
+				796EDC0B085665E0C5EF5D33BF08481A /* Pods-VaultClip-Info.plist */,
+				DFEA4738104FCFADB12738531D911FCC /* Pods-VaultClip-umbrella.h */,
+				3C506640C6FB7E80C1D962F9AC868347 /* Pods-VaultClip.beta debug.xcconfig */,
+				AE6104AF0446D7935BFC949C5CECD43B /* Pods-VaultClip.beta release.xcconfig */,
+				8275D9A49B436B0E18D5A6B9152F7D13 /* Pods-VaultClip.debug.xcconfig */,
+				5065585B75AEAA1BBFD81582A8E7A202 /* Pods-VaultClip.release.xcconfig */,
+				42D9D5D6746E21E8857FB882B314808D /* Pods-VaultClip.xctest.xcconfig */,
 			);
-			name = "Pods-Yippy";
-			path = "Target Support Files/Pods-Yippy";
+			name = "Pods-VaultClip";
+			path = "Target Support Files/Pods-VaultClip";
 			sourceTree = "<group>";
 		};
 		2FBE393E1DF144E2C22A44DEE329720C /* Default */ = {
@@ -1345,24 +1345,24 @@
 			path = "../Target Support Files/RxCocoa";
 			sourceTree = "<group>";
 		};
-		8C690B9B333113DAC61346AF0CDAAF48 /* Pods-YippyTests */ = {
+		8C690B9B333113DAC61346AF0CDAAF48 /* Pods-VaultClipTests */ = {
 			isa = PBXGroup;
 			children = (
-				62CCDD9A0BD64E0A72B964B8DCE69150 /* Pods-YippyTests.modulemap */,
-				C4EF12BEF429A15A05CE0B16FE1D8FFF /* Pods-YippyTests-acknowledgements.markdown */,
-				F5D094C96D953073728220A6F80E8982 /* Pods-YippyTests-acknowledgements.plist */,
-				16E9369168DDD274A4900614FE4C2FAC /* Pods-YippyTests-dummy.m */,
-				B501A1DC6A85131E1C7897907C9376E6 /* Pods-YippyTests-frameworks.sh */,
-				28320F63545B0C4873E9106031E1D624 /* Pods-YippyTests-Info.plist */,
-				A55A2F41211E1B9CB575C4D8104340B1 /* Pods-YippyTests-umbrella.h */,
-				26820B7E92AA435913967C0E70312D1C /* Pods-YippyTests.beta debug.xcconfig */,
-				2B893D80E28782ACDB67BB7E117B0986 /* Pods-YippyTests.beta release.xcconfig */,
-				A5C33AFD779E9C572F92499771ACA7C5 /* Pods-YippyTests.debug.xcconfig */,
-				494E23F2DBF6FD31D57264FE4C79619A /* Pods-YippyTests.release.xcconfig */,
-				840327CAAEB5B816CDBC4557EC7F4524 /* Pods-YippyTests.xctest.xcconfig */,
+				62CCDD9A0BD64E0A72B964B8DCE69150 /* Pods-VaultClipTests.modulemap */,
+				C4EF12BEF429A15A05CE0B16FE1D8FFF /* Pods-VaultClipTests-acknowledgements.markdown */,
+				F5D094C96D953073728220A6F80E8982 /* Pods-VaultClipTests-acknowledgements.plist */,
+				16E9369168DDD274A4900614FE4C2FAC /* Pods-VaultClipTests-dummy.m */,
+				B501A1DC6A85131E1C7897907C9376E6 /* Pods-VaultClipTests-frameworks.sh */,
+				28320F63545B0C4873E9106031E1D624 /* Pods-VaultClipTests-Info.plist */,
+				A55A2F41211E1B9CB575C4D8104340B1 /* Pods-VaultClipTests-umbrella.h */,
+				26820B7E92AA435913967C0E70312D1C /* Pods-VaultClipTests.beta debug.xcconfig */,
+				2B893D80E28782ACDB67BB7E117B0986 /* Pods-VaultClipTests.beta release.xcconfig */,
+				A5C33AFD779E9C572F92499771ACA7C5 /* Pods-VaultClipTests.debug.xcconfig */,
+				494E23F2DBF6FD31D57264FE4C79619A /* Pods-VaultClipTests.release.xcconfig */,
+				840327CAAEB5B816CDBC4557EC7F4524 /* Pods-VaultClipTests.xctest.xcconfig */,
 			);
-			name = "Pods-YippyTests";
-			path = "Target Support Files/Pods-YippyTests";
+			name = "Pods-VaultClipTests";
+			path = "Target Support Files/Pods-VaultClipTests";
 			sourceTree = "<group>";
 		};
 		8DC56FA34C1ABDB987F262682ED99CE7 /* RxRelay */ = {
@@ -1575,9 +1575,9 @@
 			children = (
 				322495573AE656C7D2D8C73C5E4D6203 /* Default.framework */,
 				820475DEE643F008B5FBA1874C6447A9 /* LoginServiceKit.framework */,
-				D548420876E640F18100790AE7F140BE /* Pods_Yippy.framework */,
-				345B204E809F8C2F88540663BFB95F4C /* Pods_YippyTests.framework */,
-				BEFCAD760058B9A0E6C3BF6E5B2BD126 /* Pods_YippyUITests.framework */,
+				D548420876E640F18100790AE7F140BE /* Pods_VaultClip.framework */,
+				345B204E809F8C2F88540663BFB95F4C /* Pods_VaultClipTests.framework */,
+				BEFCAD760058B9A0E6C3BF6E5B2BD126 /* Pods_VaultClipUITests.framework */,
 				25F63A531105CD4E1E4CCF5B918C5494 /* RxBlocking.framework */,
 				BC432FD48A5932251F1CAFBC4BF74894 /* RxCocoa.framework */,
 				FF8B264DFE802855D5D67E7CDDABFC3C /* RxRelay.framework */,
@@ -1604,9 +1604,9 @@
 		C9AD1AF994ADE0147D04EBD4A82DED8E /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				13B92174A8932DE17464AD68C49657A6 /* Pods-Yippy */,
-				8C690B9B333113DAC61346AF0CDAAF48 /* Pods-YippyTests */,
-				10DF3342FD995FC8A4D991182FF6F3F3 /* Pods-YippyUITests */,
+				13B92174A8932DE17464AD68C49657A6 /* Pods-VaultClip */,
+				8C690B9B333113DAC61346AF0CDAAF48 /* Pods-VaultClipTests */,
+				10DF3342FD995FC8A4D991182FF6F3F3 /* Pods-VaultClipUITests */,
 			);
 			name = "Targets Support Files";
 			sourceTree = "<group>";
@@ -1680,7 +1680,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C69FD79CEAE15562AA3E45EE6D3E8BDF /* Pods-YippyUITests-umbrella.h in Headers */,
+				C69FD79CEAE15562AA3E45EE6D3E8BDF /* Pods-VaultClipUITests-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1734,7 +1734,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E8D4A28CF56E433F89A14DC5E7438036 /* Pods-YippyTests-umbrella.h in Headers */,
+				E8D4A28CF56E433F89A14DC5E7438036 /* Pods-VaultClipTests-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1742,7 +1742,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				05E8E9313BACC49FCA89A003D33F9E74 /* Pods-Yippy-umbrella.h in Headers */,
+				05E8E9313BACC49FCA89A003D33F9E74 /* Pods-VaultClip-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1757,9 +1757,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		1DCA08B27A8D80BE40A7EB722C544B79 /* Pods-Yippy */ = {
+		1DCA08B27A8D80BE40A7EB722C544B79 /* Pods-VaultClip */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6E04FA909785D46BF5D5F79BFCF8DC /* Build configuration list for PBXNativeTarget "Pods-Yippy" */;
+			buildConfigurationList = 1D6E04FA909785D46BF5D5F79BFCF8DC /* Build configuration list for PBXNativeTarget "Pods-VaultClip" */;
 			buildPhases = (
 				F21F20326825E80029253AB04E99BCF3 /* Headers */,
 				C9B993AEE93916F3A0B11849DB6ADC9D /* Sources */,
@@ -1775,9 +1775,9 @@
 				873DAA7796A8C62732D4866BC48969DD /* PBXTargetDependency */,
 				F1E1371D11352341438E70172562518A /* PBXTargetDependency */,
 			);
-			name = "Pods-Yippy";
-			productName = "Pods-Yippy";
-			productReference = D548420876E640F18100790AE7F140BE /* Pods_Yippy.framework */;
+			name = "Pods-VaultClip";
+			productName = "Pods-VaultClip";
+			productReference = D548420876E640F18100790AE7F140BE /* Pods_VaultClip.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		4363B3DEE0E244A6E95B497FB82E7385 /* LoginServiceKit */ = {
@@ -1855,9 +1855,9 @@
 			productReference = 322495573AE656C7D2D8C73C5E4D6203 /* Default.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		AB39A146082B98AF9ACD39CB9B3EA4C4 /* Pods-YippyUITests */ = {
+		AB39A146082B98AF9ACD39CB9B3EA4C4 /* Pods-VaultClipUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 220B7B34A29ECEBF2955DEFFD994B060 /* Build configuration list for PBXNativeTarget "Pods-YippyUITests" */;
+			buildConfigurationList = 220B7B34A29ECEBF2955DEFFD994B060 /* Build configuration list for PBXNativeTarget "Pods-VaultClipUITests" */;
 			buildPhases = (
 				1152B9B90F3729B64540A6D6DC8DA341 /* Headers */,
 				8DC6C7B476FC76D05DF9801D0B0DB350 /* Sources */,
@@ -1876,14 +1876,14 @@
 				8FFD72359B389A97C2350E2657470358 /* PBXTargetDependency */,
 				9383765308A1D4DCC0E5F3D2095C61CC /* PBXTargetDependency */,
 			);
-			name = "Pods-YippyUITests";
-			productName = "Pods-YippyUITests";
-			productReference = BEFCAD760058B9A0E6C3BF6E5B2BD126 /* Pods_YippyUITests.framework */;
+			name = "Pods-VaultClipUITests";
+			productName = "Pods-VaultClipUITests";
+			productReference = BEFCAD760058B9A0E6C3BF6E5B2BD126 /* Pods_VaultClipUITests.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		AC4E7F7F6CDDD723A1B2DFDEA83A434F /* Pods-YippyTests */ = {
+		AC4E7F7F6CDDD723A1B2DFDEA83A434F /* Pods-VaultClipTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9DE5725741E69A9ECEDF01FE19DA0420 /* Build configuration list for PBXNativeTarget "Pods-YippyTests" */;
+			buildConfigurationList = 9DE5725741E69A9ECEDF01FE19DA0420 /* Build configuration list for PBXNativeTarget "Pods-VaultClipTests" */;
 			buildPhases = (
 				D911D867154FCA861ED48523A4B863DB /* Headers */,
 				219F6D3CED8EE0C1705AA98AE00ABD7E /* Sources */,
@@ -1902,9 +1902,9 @@
 				92D2A159D979B849B2C8C09254D4D43D /* PBXTargetDependency */,
 				D6934B1F3321EFDA6F6F613DC23426EB /* PBXTargetDependency */,
 			);
-			name = "Pods-YippyTests";
-			productName = "Pods-YippyTests";
-			productReference = 345B204E809F8C2F88540663BFB95F4C /* Pods_YippyTests.framework */;
+			name = "Pods-VaultClipTests";
+			productName = "Pods-VaultClipTests";
+			productReference = 345B204E809F8C2F88540663BFB95F4C /* Pods_VaultClipTests.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		C8D93C508E21FFD4EE60D335DD6C22E3 /* RxTest */ = {
@@ -1986,9 +1986,9 @@
 			targets = (
 				9723A18E34398070D1208EAEC8B4DFA6 /* Default */,
 				4363B3DEE0E244A6E95B497FB82E7385 /* LoginServiceKit */,
-				1DCA08B27A8D80BE40A7EB722C544B79 /* Pods-Yippy */,
-				AC4E7F7F6CDDD723A1B2DFDEA83A434F /* Pods-YippyTests */,
-				AB39A146082B98AF9ACD39CB9B3EA4C4 /* Pods-YippyUITests */,
+				1DCA08B27A8D80BE40A7EB722C544B79 /* Pods-VaultClip */,
+				AC4E7F7F6CDDD723A1B2DFDEA83A434F /* Pods-VaultClipTests */,
+				AB39A146082B98AF9ACD39CB9B3EA4C4 /* Pods-VaultClipUITests */,
 				F243B36381C0CE83CCFF789AC38F0D36 /* RxBlocking */,
 				7AD0C6DCDC9CEC8A3C7C10C7FEE07BE6 /* RxCocoa */,
 				4622BFEF3DC16E8BD15EEFC30D4D0084 /* RxRelay */,
@@ -2360,7 +2360,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F07CCC91890E245E3E43A0070AA0429B /* Pods-YippyTests-dummy.m in Sources */,
+				F07CCC91890E245E3E43A0070AA0429B /* Pods-VaultClipTests-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2413,7 +2413,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FD0F93E1C5AE9B2FA4AA1D8B1CADEEC4 /* Pods-YippyUITests-dummy.m in Sources */,
+				FD0F93E1C5AE9B2FA4AA1D8B1CADEEC4 /* Pods-VaultClipUITests-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2421,7 +2421,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E36060F3C4B32D7D9119B85DFAA14DBB /* Pods-Yippy-dummy.m in Sources */,
+				E36060F3C4B32D7D9119B85DFAA14DBB /* Pods-VaultClip-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2530,8 +2530,8 @@
 		};
 		8504FD0BCCA22EF9ED6E3CBBE82D71EF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "Pods-Yippy";
-			target = 1DCA08B27A8D80BE40A7EB722C544B79 /* Pods-Yippy */;
+			name = "Pods-VaultClip";
+			target = 1DCA08B27A8D80BE40A7EB722C544B79 /* Pods-VaultClip */;
 			targetProxy = 964A8BB1CE9310E22DC8F5B7EA5B1F76 /* PBXContainerItemProxy */;
 		};
 		873DAA7796A8C62732D4866BC48969DD /* PBXTargetDependency */ = {
@@ -2560,8 +2560,8 @@
 		};
 		97F1C7F0A0D62D7066A1844AC956D356 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "Pods-Yippy";
-			target = 1DCA08B27A8D80BE40A7EB722C544B79 /* Pods-Yippy */;
+			name = "Pods-VaultClip";
+			target = 1DCA08B27A8D80BE40A7EB722C544B79 /* Pods-VaultClip */;
 			targetProxy = 8BE48C56A1C9CC904B01F0DEC2856043 /* PBXContainerItemProxy */;
 		};
 		9990EA2B0CC2EEF7D7645B95F9BF7616 /* PBXTargetDependency */ = {
@@ -2651,7 +2651,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxRelay/RxRelay.modulemap";
 				PRODUCT_MODULE_NAME = RxRelay;
 				PRODUCT_NAME = RxRelay;
@@ -2666,7 +2666,7 @@
 		};
 		0209DA3339415AFBADD6F0C6B9BD5997 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A5C33AFD779E9C572F92499771ACA7C5 /* Pods-YippyTests.debug.xcconfig */;
+			baseConfigurationReference = A5C33AFD779E9C572F92499771ACA7C5 /* Pods-VaultClipTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -2682,7 +2682,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Target Support Files/Pods-YippyTests/Pods-YippyTests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-VaultClipTests/Pods-VaultClipTests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2691,7 +2691,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MODULEMAP_FILE = "Target Support Files/Pods-YippyTests/Pods-YippyTests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-VaultClipTests/Pods-VaultClipTests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -2728,7 +2728,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxCocoa/RxCocoa.modulemap";
 				PRODUCT_MODULE_NAME = RxCocoa;
 				PRODUCT_NAME = RxCocoa;
@@ -2743,7 +2743,7 @@
 		};
 		0B96B86E727FF662B9178BCC28E6C13D /* Beta Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2B893D80E28782ACDB67BB7E117B0986 /* Pods-YippyTests.beta release.xcconfig */;
+			baseConfigurationReference = 2B893D80E28782ACDB67BB7E117B0986 /* Pods-VaultClipTests.beta release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -2759,7 +2759,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Target Support Files/Pods-YippyTests/Pods-YippyTests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-VaultClipTests/Pods-VaultClipTests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2768,7 +2768,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MODULEMAP_FILE = "Target Support Files/Pods-YippyTests/Pods-YippyTests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-VaultClipTests/Pods-VaultClipTests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -2805,7 +2805,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxTest/RxTest.modulemap";
 				PRODUCT_MODULE_NAME = RxTest;
 				PRODUCT_NAME = RxTest;
@@ -2970,7 +2970,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxCocoa/RxCocoa.modulemap";
 				PRODUCT_MODULE_NAME = RxCocoa;
 				PRODUCT_NAME = RxCocoa;
@@ -3008,7 +3008,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/LoginServiceKit/LoginServiceKit.modulemap";
 				PRODUCT_MODULE_NAME = LoginServiceKit;
 				PRODUCT_NAME = LoginServiceKit;
@@ -3045,7 +3045,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxSwift/RxSwift.modulemap";
 				PRODUCT_MODULE_NAME = RxSwift;
 				PRODUCT_NAME = RxSwift;
@@ -3082,7 +3082,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxBlocking/RxBlocking.modulemap";
 				PRODUCT_MODULE_NAME = RxBlocking;
 				PRODUCT_NAME = RxBlocking;
@@ -3120,7 +3120,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/LoginServiceKit/LoginServiceKit.modulemap";
 				PRODUCT_MODULE_NAME = LoginServiceKit;
 				PRODUCT_NAME = LoginServiceKit;
@@ -3157,7 +3157,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxSwift/RxSwift.modulemap";
 				PRODUCT_MODULE_NAME = RxSwift;
 				PRODUCT_NAME = RxSwift;
@@ -3195,7 +3195,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/Default/Default.modulemap";
 				PRODUCT_MODULE_NAME = Default;
 				PRODUCT_NAME = Default;
@@ -3292,7 +3292,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxRelay/RxRelay.modulemap";
 				PRODUCT_MODULE_NAME = RxRelay;
 				PRODUCT_NAME = RxRelay;
@@ -3307,7 +3307,7 @@
 		};
 		48222ED66A046995BFB3E51FE030892E /* Beta Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 400D9F62E330F4C9DCD439986CFE0149 /* Pods-YippyUITests.beta debug.xcconfig */;
+			baseConfigurationReference = 400D9F62E330F4C9DCD439986CFE0149 /* Pods-VaultClipUITests.beta debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -3323,7 +3323,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Target Support Files/Pods-YippyUITests/Pods-YippyUITests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-VaultClipUITests/Pods-VaultClipUITests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3332,7 +3332,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MODULEMAP_FILE = "Target Support Files/Pods-YippyUITests/Pods-YippyUITests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-VaultClipUITests/Pods-VaultClipUITests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -3370,7 +3370,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/Default/Default.modulemap";
 				PRODUCT_MODULE_NAME = Default;
 				PRODUCT_NAME = Default;
@@ -3407,7 +3407,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxRelay/RxRelay.modulemap";
 				PRODUCT_MODULE_NAME = RxRelay;
 				PRODUCT_NAME = RxRelay;
@@ -3444,7 +3444,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxSwift/RxSwift.modulemap";
 				PRODUCT_MODULE_NAME = RxSwift;
 				PRODUCT_NAME = RxSwift;
@@ -3459,7 +3459,7 @@
 		};
 		5725B0A38C0DBA0C68679A72B015D47C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 494E23F2DBF6FD31D57264FE4C79619A /* Pods-YippyTests.release.xcconfig */;
+			baseConfigurationReference = 494E23F2DBF6FD31D57264FE4C79619A /* Pods-VaultClipTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -3475,7 +3475,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Target Support Files/Pods-YippyTests/Pods-YippyTests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-VaultClipTests/Pods-VaultClipTests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3484,7 +3484,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MODULEMAP_FILE = "Target Support Files/Pods-YippyTests/Pods-YippyTests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-VaultClipTests/Pods-VaultClipTests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -3499,7 +3499,7 @@
 		};
 		62C98B7B36D362B5C6D19800688BAFDA /* Beta Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AE6104AF0446D7935BFC949C5CECD43B /* Pods-Yippy.beta release.xcconfig */;
+			baseConfigurationReference = AE6104AF0446D7935BFC949C5CECD43B /* Pods-VaultClip.beta release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -3515,7 +3515,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Target Support Files/Pods-Yippy/Pods-Yippy-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-VaultClip/Pods-VaultClip-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3524,7 +3524,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MODULEMAP_FILE = "Target Support Files/Pods-Yippy/Pods-Yippy.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-VaultClip/Pods-VaultClip.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -3539,7 +3539,7 @@
 		};
 		6480FF388EDC815D5B41468A32935CF5 /* Beta Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 040C020C19531C42832954729AA42025 /* Pods-YippyUITests.beta release.xcconfig */;
+			baseConfigurationReference = 040C020C19531C42832954729AA42025 /* Pods-VaultClipUITests.beta release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -3555,7 +3555,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Target Support Files/Pods-YippyUITests/Pods-YippyUITests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-VaultClipUITests/Pods-VaultClipUITests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3564,7 +3564,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MODULEMAP_FILE = "Target Support Files/Pods-YippyUITests/Pods-YippyUITests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-VaultClipUITests/Pods-VaultClipUITests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -3579,7 +3579,7 @@
 		};
 		6A17AE94F606CB05530991C7E796E4A3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AB1D18E38E79A399DE7BED96BC421B6F /* Pods-YippyUITests.release.xcconfig */;
+			baseConfigurationReference = AB1D18E38E79A399DE7BED96BC421B6F /* Pods-VaultClipUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -3595,7 +3595,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Target Support Files/Pods-YippyUITests/Pods-YippyUITests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-VaultClipUITests/Pods-VaultClipUITests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3604,7 +3604,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MODULEMAP_FILE = "Target Support Files/Pods-YippyUITests/Pods-YippyUITests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-VaultClipUITests/Pods-VaultClipUITests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -3641,7 +3641,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxTest/RxTest.modulemap";
 				PRODUCT_MODULE_NAME = RxTest;
 				PRODUCT_NAME = RxTest;
@@ -3678,7 +3678,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxTest/RxTest.modulemap";
 				PRODUCT_MODULE_NAME = RxTest;
 				PRODUCT_NAME = RxTest;
@@ -3716,7 +3716,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/LoginServiceKit/LoginServiceKit.modulemap";
 				PRODUCT_MODULE_NAME = LoginServiceKit;
 				PRODUCT_NAME = LoginServiceKit;
@@ -3731,7 +3731,7 @@
 		};
 		8D00360476E9539CAAF05495EAE96936 /* XCTest */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 42D9D5D6746E21E8857FB882B314808D /* Pods-Yippy.xctest.xcconfig */;
+			baseConfigurationReference = 42D9D5D6746E21E8857FB882B314808D /* Pods-VaultClip.xctest.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -3747,7 +3747,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Target Support Files/Pods-Yippy/Pods-Yippy-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-VaultClip/Pods-VaultClip-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3756,7 +3756,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MODULEMAP_FILE = "Target Support Files/Pods-Yippy/Pods-Yippy.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-VaultClip/Pods-VaultClip.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -3857,7 +3857,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxBlocking/RxBlocking.modulemap";
 				PRODUCT_MODULE_NAME = RxBlocking;
 				PRODUCT_NAME = RxBlocking;
@@ -3894,7 +3894,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxSwift/RxSwift.modulemap";
 				PRODUCT_MODULE_NAME = RxSwift;
 				PRODUCT_NAME = RxSwift;
@@ -3931,7 +3931,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxBlocking/RxBlocking.modulemap";
 				PRODUCT_MODULE_NAME = RxBlocking;
 				PRODUCT_NAME = RxBlocking;
@@ -3968,7 +3968,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxCocoa/RxCocoa.modulemap";
 				PRODUCT_MODULE_NAME = RxCocoa;
 				PRODUCT_NAME = RxCocoa;
@@ -4005,7 +4005,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxBlocking/RxBlocking.modulemap";
 				PRODUCT_MODULE_NAME = RxBlocking;
 				PRODUCT_NAME = RxBlocking;
@@ -4020,7 +4020,7 @@
 		};
 		B677F40503A2E7182394A3CFB3CD9AD2 /* XCTest */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5894638AD443BE0FE4C3E1B442712E2E /* Pods-YippyUITests.xctest.xcconfig */;
+			baseConfigurationReference = 5894638AD443BE0FE4C3E1B442712E2E /* Pods-VaultClipUITests.xctest.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -4036,7 +4036,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Target Support Files/Pods-YippyUITests/Pods-YippyUITests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-VaultClipUITests/Pods-VaultClipUITests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4045,7 +4045,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MODULEMAP_FILE = "Target Support Files/Pods-YippyUITests/Pods-YippyUITests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-VaultClipUITests/Pods-VaultClipUITests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -4060,7 +4060,7 @@
 		};
 		C2586CB58F021A50127CCD05EA995BA2 /* Beta Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3C506640C6FB7E80C1D962F9AC868347 /* Pods-Yippy.beta debug.xcconfig */;
+			baseConfigurationReference = 3C506640C6FB7E80C1D962F9AC868347 /* Pods-VaultClip.beta debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -4076,7 +4076,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Target Support Files/Pods-Yippy/Pods-Yippy-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-VaultClip/Pods-VaultClip-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4085,7 +4085,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MODULEMAP_FILE = "Target Support Files/Pods-Yippy/Pods-Yippy.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-VaultClip/Pods-VaultClip.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -4122,7 +4122,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxCocoa/RxCocoa.modulemap";
 				PRODUCT_MODULE_NAME = RxCocoa;
 				PRODUCT_NAME = RxCocoa;
@@ -4159,7 +4159,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxBlocking/RxBlocking.modulemap";
 				PRODUCT_MODULE_NAME = RxBlocking;
 				PRODUCT_NAME = RxBlocking;
@@ -4197,7 +4197,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/LoginServiceKit/LoginServiceKit.modulemap";
 				PRODUCT_MODULE_NAME = LoginServiceKit;
 				PRODUCT_NAME = LoginServiceKit;
@@ -4212,7 +4212,7 @@
 		};
 		CBC083B1BC29FDA95C326518183A6C3D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5065585B75AEAA1BBFD81582A8E7A202 /* Pods-Yippy.release.xcconfig */;
+			baseConfigurationReference = 5065585B75AEAA1BBFD81582A8E7A202 /* Pods-VaultClip.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -4228,7 +4228,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Target Support Files/Pods-Yippy/Pods-Yippy-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-VaultClip/Pods-VaultClip-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4237,7 +4237,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MODULEMAP_FILE = "Target Support Files/Pods-Yippy/Pods-Yippy.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-VaultClip/Pods-VaultClip.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -4274,7 +4274,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxRelay/RxRelay.modulemap";
 				PRODUCT_MODULE_NAME = RxRelay;
 				PRODUCT_NAME = RxRelay;
@@ -4311,7 +4311,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxTest/RxTest.modulemap";
 				PRODUCT_MODULE_NAME = RxTest;
 				PRODUCT_NAME = RxTest;
@@ -4326,7 +4326,7 @@
 		};
 		DE0170A085755954079147ED905CD5EF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8275D9A49B436B0E18D5A6B9152F7D13 /* Pods-Yippy.debug.xcconfig */;
+			baseConfigurationReference = 8275D9A49B436B0E18D5A6B9152F7D13 /* Pods-VaultClip.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -4342,7 +4342,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Target Support Files/Pods-Yippy/Pods-Yippy-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-VaultClip/Pods-VaultClip-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4351,7 +4351,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MODULEMAP_FILE = "Target Support Files/Pods-Yippy/Pods-Yippy.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-VaultClip/Pods-VaultClip.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -4366,7 +4366,7 @@
 		};
 		E052FDCA1D02D6971E88E7CF2F1CE1A1 /* Beta Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 26820B7E92AA435913967C0E70312D1C /* Pods-YippyTests.beta debug.xcconfig */;
+			baseConfigurationReference = 26820B7E92AA435913967C0E70312D1C /* Pods-VaultClipTests.beta debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -4382,7 +4382,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Target Support Files/Pods-YippyTests/Pods-YippyTests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-VaultClipTests/Pods-VaultClipTests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4391,7 +4391,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MODULEMAP_FILE = "Target Support Files/Pods-YippyTests/Pods-YippyTests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-VaultClipTests/Pods-VaultClipTests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -4428,7 +4428,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxRelay/RxRelay.modulemap";
 				PRODUCT_MODULE_NAME = RxRelay;
 				PRODUCT_NAME = RxRelay;
@@ -4526,7 +4526,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/Default/Default.modulemap";
 				PRODUCT_MODULE_NAME = Default;
 				PRODUCT_NAME = Default;
@@ -4564,7 +4564,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/Default/Default.modulemap";
 				PRODUCT_MODULE_NAME = Default;
 				PRODUCT_NAME = Default;
@@ -4579,7 +4579,7 @@
 		};
 		EE24CC2AAB5058A598598D3B49215C38 /* XCTest */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 840327CAAEB5B816CDBC4557EC7F4524 /* Pods-YippyTests.xctest.xcconfig */;
+			baseConfigurationReference = 840327CAAEB5B816CDBC4557EC7F4524 /* Pods-VaultClipTests.xctest.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -4595,7 +4595,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Target Support Files/Pods-YippyTests/Pods-YippyTests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-VaultClipTests/Pods-VaultClipTests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4604,7 +4604,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MODULEMAP_FILE = "Target Support Files/Pods-YippyTests/Pods-YippyTests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-VaultClipTests/Pods-VaultClipTests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -4641,7 +4641,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxSwift/RxSwift.modulemap";
 				PRODUCT_MODULE_NAME = RxSwift;
 				PRODUCT_NAME = RxSwift;
@@ -4678,7 +4678,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxTest/RxTest.modulemap";
 				PRODUCT_MODULE_NAME = RxTest;
 				PRODUCT_NAME = RxTest;
@@ -4715,7 +4715,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/RxCocoa/RxCocoa.modulemap";
 				PRODUCT_MODULE_NAME = RxCocoa;
 				PRODUCT_NAME = RxCocoa;
@@ -4730,7 +4730,7 @@
 		};
 		F5F4977856760EA087E3A28306B74DEA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0BCE2869AF629C0955DD7BFE1658998B /* Pods-YippyUITests.debug.xcconfig */;
+			baseConfigurationReference = 0BCE2869AF629C0955DD7BFE1658998B /* Pods-VaultClipUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -4746,7 +4746,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Target Support Files/Pods-YippyUITests/Pods-YippyUITests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-VaultClipUITests/Pods-VaultClipUITests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4755,7 +4755,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MODULEMAP_FILE = "Target Support Files/Pods-YippyUITests/Pods-YippyUITests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-VaultClipUITests/Pods-VaultClipUITests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -4793,7 +4793,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/LoginServiceKit/LoginServiceKit.modulemap";
 				PRODUCT_MODULE_NAME = LoginServiceKit;
 				PRODUCT_NAME = LoginServiceKit;
@@ -4831,7 +4831,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULEMAP_FILE = "Target Support Files/Default/Default.modulemap";
 				PRODUCT_MODULE_NAME = Default;
 				PRODUCT_NAME = Default;
@@ -4847,7 +4847,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6E04FA909785D46BF5D5F79BFCF8DC /* Build configuration list for PBXNativeTarget "Pods-Yippy" */ = {
+		1D6E04FA909785D46BF5D5F79BFCF8DC /* Build configuration list for PBXNativeTarget "Pods-VaultClip" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C2586CB58F021A50127CCD05EA995BA2 /* Beta Debug */,
@@ -4859,7 +4859,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		220B7B34A29ECEBF2955DEFFD994B060 /* Build configuration list for PBXNativeTarget "Pods-YippyUITests" */ = {
+		220B7B34A29ECEBF2955DEFFD994B060 /* Build configuration list for PBXNativeTarget "Pods-VaultClipUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				48222ED66A046995BFB3E51FE030892E /* Beta Debug */,
@@ -4943,7 +4943,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9DE5725741E69A9ECEDF01FE19DA0420 /* Build configuration list for PBXNativeTarget "Pods-YippyTests" */ = {
+		9DE5725741E69A9ECEDF01FE19DA0420 /* Build configuration list for PBXNativeTarget "Pods-VaultClipTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E052FDCA1D02D6971E88E7CF2F1CE1A1 /* Beta Debug */,

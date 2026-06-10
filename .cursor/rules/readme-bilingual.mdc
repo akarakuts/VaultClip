@@ -1,0 +1,31 @@
+---
+description: Keep README.md (English) and README.ru.md (Russian) in sync when project docs change
+alwaysApply: true
+---
+
+# Bilingual README (VaultClip)
+
+This repository maintains **two** user-facing README files at the repo root:
+
+| File | Language | Audience |
+|------|----------|----------|
+| `README.md` | English | Default; bundled in the app Resources |
+| `README.ru.md` | Russian | Russian readers |
+
+## When to update
+
+Whenever you change **user-visible behaviour**, **security**, **installation/build steps**, **keyboard shortcuts**, **data paths**, or **project structure** documented in README:
+
+1. Update **both** files in the same change.
+2. Keep section structure aligned (same headings, tables, code blocks).
+3. Preserve cross-links at the top:
+   - `README.md` → `**Русский:** [README.ru.md](README.ru.md)`
+   - `README.ru.md` → `**English:** [README.md](README.md)`
+4. Keep the upstream [Yippy](https://github.com/mattDavo/Yippy) fork credit in both files.
+5. Use **Contact** / **Контакты** with `aleksey@karakuts.com` per workspace contact rules.
+
+## Do not
+
+- Put Russian-only prose in `README.md` or English-only prose in `README.ru.md` (except proper nouns, paths, and keyboard symbols).
+- Update only one README when the other would become stale.
+- Add `README.ru.md` to the app bundle unless explicitly requested — only `README.md` is copied into Resources.

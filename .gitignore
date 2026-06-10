@@ -5,6 +5,12 @@
 ## Build generated
 build/
 DerivedData/
+*.dmg
+*.app
+*.profraw
+
+## macOS
+.DS_Store
 
 ## Various settings
 *.pbxuser
