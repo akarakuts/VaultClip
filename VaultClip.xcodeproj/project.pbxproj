@@ -155,7 +155,7 @@
 		E5F6A7B81123456789001 /* HistoryItem+CopiedAt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F6A7B70123456789001 /* HistoryItem+CopiedAt.swift */; };
 		F7A8B9CA1123456789001 /* HistoryItem+Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9C91123456789001 /* HistoryItem+Favorite.swift */; };
 		F7A8B9CC1123456789001 /* HistoryListMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9CB1123456789001 /* HistoryListMode.swift */; };
-		A1B2C3D41123456789001 /* HistoryTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D31123456789001 /* HistoryTabBarView.swift */; };
+		A1B2C3D71123456789001 /* HistoryTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D31123456789001 /* HistoryTabBarView.swift */; };
 		A1B2C3D61123456789001 /* HistoryItem+Password.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D51123456789001 /* HistoryItem+Password.swift */; };
 		B2C3D4E71123456789001 /* PasswordCommentPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E61123456789001 /* PasswordCommentPrompt.swift */; };
 		B8A057305B33D2028FC0EC05 /* Pods_VaultClipUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06717A6CF5535260A83784EF /* Pods_VaultClipUITests.framework */; };
@@ -1172,7 +1172,7 @@
 				E5F6A7B81123456789001 /* HistoryItem+CopiedAt.swift in Sources */,
 				F7A8B9CA1123456789001 /* HistoryItem+Favorite.swift in Sources */,
 				F7A8B9CC1123456789001 /* HistoryListMode.swift in Sources */,
-				A1B2C3D41123456789001 /* HistoryTabBarView.swift in Sources */,
+				A1B2C3D71123456789001 /* HistoryTabBarView.swift in Sources */,
 				A1B2C3D61123456789001 /* HistoryItem+Password.swift in Sources */,
 				B2C3D4E71123456789001 /* PasswordCommentPrompt.swift in Sources */,
 				34D018E5232A2B73006259E1 /* WaitingViewController.swift in Sources */,
