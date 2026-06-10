@@ -90,16 +90,13 @@ VaultClip stores everything locally on your Mac. History and keys are never sent
 
 - History payloads are written with **AES-GCM** (CryptoKit, 256-bit key).
 - On-disk format: `VC1` prefix + sealed box (nonce ‖ ciphertext ‖ tag).
-- The symmetric key lives in the **macOS Keychain**:
-  - service: `VaultClip`, account: `history-data-key`;
-  - `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`, no iCloud sync;
-  - new keys request **user presence** (Touch ID / login password).
+- The symmetric key is stored at `~/Library/Application Support/com.karakuts.VaultClip/.history-encryption-key` (mode **0600**, excluded from backup). Legacy Keychain entries (`VaultClip`, `MatthewDavidson.Yippy`) are migrated on first launch.
 - **Metadata** (favorite flag, password flag, comment, copy time, source bundle id) uses the same encryption layer.
 - Legacy **plaintext** files are read on open and re-encrypted on the next write. If decryption fails, raw bytes are returned so data is not lost after a key change.
 
 ### Filesystem hardening
 
-- History directory: `~/Library/Application Support/VaultClip/history/` with mode **0700** (owner only).
+- History directory: `~/Library/Application Support/com.karakuts.VaultClip/history/` with mode **0700** (owner only).
 - Before writing, paths are checked to reject **symlinks** outside the expected Application Support tree.
 - Pasteboard type filenames are **sanitized** (encoding of `%`, `/`, `:`).
 
@@ -129,24 +126,24 @@ Additional pasteboard types are dropped (transient, concealed, auto-generated, a
 | Permission | Why |
 |------------|-----|
 | **Accessibility** | One-shot ⌘V simulation into the previously focused app. No keystroke logging. |
-| **Keychain** | Stores the encryption key; denial shows a dialog with a link to Keychain Access. |
+| **Encryption key file** | Local AES key in Application Support (no Keychain prompt on ad-hoc builds). |
 
 System prompt strings are in `VaultClip/Supporting Files/Info.plist`.
 
 ### Data locations
 
 ```
-~/Library/Application Support/VaultClip/
+~/Library/Application Support/com.karakuts.VaultClip/
 ├── history/          # encrypted items (per UUID)
 ├── error.log
 └── warning.log
 ```
 
-Settings: `~/Library/Preferences/VaultClip.plist` (UserDefaults).
+Settings: `~/Library/Preferences/com.karakuts.VaultClip.plist` (UserDefaults).
 
-**Migration from Yippy:** on first launch after upgrading, data is moved from `~/Library/Application Support/MatthewDavidson.Yippy/`, and settings plus the Keychain key are copied automatically.
+**Migration from Yippy / VaultClip 1.1.2:** on first launch, data is moved from `MatthewDavidson.Yippy` and `VaultClip` folders; settings and encryption keys are copied automatically.
 
-Deleting the `history-data-key` entry for VaultClip in Keychain Access **permanently breaks** decryption of existing history; the app will create a new key and start fresh.
+Deleting `.history-encryption-key` **permanently breaks** decryption of existing history; the app will create a new key and start fresh.
 
 ---
 
@@ -177,7 +174,8 @@ Change the panel toggle in **Preferences → Hot Key**.
 1. Download `VaultClip.dmg` from [GitHub Releases](https://github.com/akarakuts/VaultClip/releases) **or** build from source (below).
 2. Drag `VaultClip.app` into Applications.
 3. On first launch, grant **Accessibility** (Welcome screen / System Settings → Privacy & Security → Accessibility).
-4. When Keychain prompts appear, allow access to the encryption key.
+4. Install to **/Applications** (not from the DMG directly) so macOS keeps Accessibility permission stable.
+5. In **System Settings → Privacy & Security → Accessibility**, enable **VaultClip** once. Remove stale entries for old copies if the list shows duplicates.
 
 ### Build from source
 

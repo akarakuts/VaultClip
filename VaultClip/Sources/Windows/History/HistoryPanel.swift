@@ -75,7 +75,10 @@ class HistoryPanel {
             return
         }
 
-        guard Helper.isControlGranted(showPopup: true) else { return }
+        guard Helper.isControlGranted(showPopup: false) else {
+            Helper.notifyPasteBlockedIfNeeded()
+            return
+        }
         Helper.pressCommandV()
     }
     

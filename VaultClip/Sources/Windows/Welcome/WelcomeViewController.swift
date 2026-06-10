@@ -24,5 +24,6 @@ class WelcomeViewController: NSViewController {
         view.window?.close()
         Controller.main.helpWindowController.showWindow(sender)
         _ = Helper.isControlGranted(showPopup: true)
+        Helper.openAccessibilitySettings()
     }
 }

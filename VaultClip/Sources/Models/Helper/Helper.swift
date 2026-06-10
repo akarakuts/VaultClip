@@ -35,6 +35,14 @@ class Helper {
     static func isControlGranted(showPopup: Bool) -> Bool {
         return Helper.accessControlHelper.isControlGranted(showPopup: showPopup)
     }
+
+    static func openAccessibilitySettings() {
+        AccessControlHelper.openAccessibilitySettings()
+    }
+
+    static func notifyPasteBlockedIfNeeded() {
+        AccessControlHelper.notifyPasteBlockedIfNeeded()
+    }
 }
 
 

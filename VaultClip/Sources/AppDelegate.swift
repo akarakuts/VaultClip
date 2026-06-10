@@ -23,7 +23,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         checkLaunchArgs()
         AppDataMigrator.migrateIfNeeded()
         Controller.main = Controller(state: State.main, settings: Settings.main)
-        
+        LaunchAtLoginHelper.reconcile(wantsLaunchAtLogin: Controller.main.state.launchAtLogin.value)
+        LaunchAtLoginHelper.warnIfRunningFromTransientLocation()
+
         showWelcomeIfNeeded()
 
         setupHotKey()

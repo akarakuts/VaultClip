@@ -133,6 +133,8 @@
 		34AAA1010000000000000004 /* AESGCMDataEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA1010000000000000003 /* AESGCMDataEncryptor.swift */; };
 		34AAA1010000000000000006 /* KeychainSymmetricKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA1010000000000000005 /* KeychainSymmetricKeyStore.swift */; };
 		34AAA101000000000000000C /* SecureStorageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA101000000000000000B /* SecureStorageHelper.swift */; };
+		34AAA1010000000000000012 /* SymmetricKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA1010000000000000011 /* SymmetricKeyStore.swift */; };
+		34AAA1010000000000000010 /* LaunchAtLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA101000000000000000F /* LaunchAtLoginHelper.swift */; };
 		34AAA101000000000000000E /* AppDataMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA101000000000000000D /* AppDataMigrator.swift */; };
 		34CA01FE235D3AE700EB067C /* DataFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CA01FD235D3AE700EB067C /* DataFileManager.swift */; };
 		34CA0200235D3D5C00EB067C /* DataFileManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CA01FF235D3D5C00EB067C /* DataFileManagerMock.swift */; };
@@ -313,6 +315,8 @@
 		34AAA1010000000000000003 /* AESGCMDataEncryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESGCMDataEncryptor.swift; sourceTree = "<group>"; };
 		34AAA1010000000000000005 /* KeychainSymmetricKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainSymmetricKeyStore.swift; sourceTree = "<group>"; };
 		34AAA101000000000000000B /* SecureStorageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorageHelper.swift; sourceTree = "<group>"; };
+		34AAA1010000000000000011 /* SymmetricKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetricKeyStore.swift; sourceTree = "<group>"; };
+		34AAA101000000000000000F /* LaunchAtLoginHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginHelper.swift; sourceTree = "<group>"; };
 		34AAA101000000000000000D /* AppDataMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataMigrator.swift; sourceTree = "<group>"; };
 		34CA01FD235D3AE700EB067C /* DataFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataFileManager.swift; sourceTree = "<group>"; };
 		34CA01FF235D3D5C00EB067C /* DataFileManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataFileManagerMock.swift; sourceTree = "<group>"; };
@@ -493,6 +497,7 @@
 			isa = PBXGroup;
 			children = (
 				341D9D3F233AE8A1008A2BE6 /* Helper.swift */,
+				34AAA101000000000000000F /* LaunchAtLoginHelper.swift */,
 				34268123233EE82200BA226A /* AccessControlHelper.swift */,
 				D4E5F6A60123456789001 /* SourceAppIconProvider.swift */,
 				34268125233EE83700BA226A /* AccessControlHelperMock.swift */,
@@ -683,6 +688,7 @@
 				34AAA1010000000000000001 /* DataEncryptor.swift */,
 				34AAA1010000000000000003 /* AESGCMDataEncryptor.swift */,
 				34AAA1010000000000000005 /* KeychainSymmetricKeyStore.swift */,
+				34AAA1010000000000000011 /* SymmetricKeyStore.swift */,
 				34AAA101000000000000000B /* SecureStorageHelper.swift */,
 				34AAA101000000000000000D /* AppDataMigrator.swift */,
 			);
@@ -1198,7 +1204,9 @@
 				34AAA1010000000000000002 /* DataEncryptor.swift in Sources */,
 				34AAA1010000000000000004 /* AESGCMDataEncryptor.swift in Sources */,
 				34AAA1010000000000000006 /* KeychainSymmetricKeyStore.swift in Sources */,
+				34AAA1010000000000000012 /* SymmetricKeyStore.swift in Sources */,
 				34AAA101000000000000000C /* SecureStorageHelper.swift in Sources */,
+				34AAA1010000000000000010 /* LaunchAtLoginHelper.swift in Sources */,
 				34AAA101000000000000000E /* AppDataMigrator.swift in Sources */,
 				34AAA1010000000000000008 /* NSStoryboard+VaultClip.swift in Sources */,
 				34B5C42E23580CD9005247EB /* ClipError.swift in Sources */,
@@ -1427,7 +1435,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 112;
+				CURRENT_PROJECT_VERSION = 113;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1435,8 +1443,8 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.1.2;
-				PRODUCT_BUNDLE_IDENTIFIER = VaultClip;
+				MARKETING_VERSION = 1.1.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = VaultClip;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1453,7 +1461,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 112;
+				CURRENT_PROJECT_VERSION = 113;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1461,8 +1469,8 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.1.2;
-				PRODUCT_BUNDLE_IDENTIFIER = VaultClip;
+				MARKETING_VERSION = 1.1.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = VaultClip;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1485,7 +1493,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = VaultClipTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClipTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VaultClip.app/Contents/MacOS/VaultClip";
@@ -1507,7 +1515,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = VaultClipTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClipTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VaultClip.app/Contents/MacOS/VaultClip";
@@ -1528,7 +1536,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = VaultClipUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClipUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = VaultClip;
@@ -1549,7 +1557,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = VaultClipUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClipUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = VaultClip;
@@ -1627,7 +1635,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 112;
+				CURRENT_PROJECT_VERSION = 113;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1635,8 +1643,8 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.1.2;
-				PRODUCT_BUNDLE_IDENTIFIER = VaultClip.Beta;
+				MARKETING_VERSION = 1.1.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip.Beta;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "VaultClip Beta";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1660,7 +1668,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = VaultClipTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClipTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VaultClip.app/Contents/MacOS/VaultClip";
@@ -1681,7 +1689,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = VaultClipUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClipUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = VaultClip;
@@ -1752,7 +1760,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 112;
+				CURRENT_PROJECT_VERSION = 113;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1760,8 +1768,8 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.1.2;
-				PRODUCT_BUNDLE_IDENTIFIER = VaultClip.Beta;
+				MARKETING_VERSION = 1.1.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip.Beta;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "VaultClip Beta";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1785,7 +1793,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = VaultClipTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClipTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VaultClip.app/Contents/MacOS/VaultClip";
@@ -1806,7 +1814,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = VaultClipUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClipUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = VaultClip;
@@ -1884,7 +1892,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 112;
+				CURRENT_PROJECT_VERSION = 113;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1892,8 +1900,8 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.1.2;
-				PRODUCT_BUNDLE_IDENTIFIER = VaultClipXCTest;
+				MARKETING_VERSION = 1.1.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClipXCTest;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG XCTEST";
@@ -1917,7 +1925,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = VaultClipTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClipTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VaultClip.app/Contents/MacOS/VaultClip";
@@ -1938,7 +1946,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = VaultClipUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClipUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = VaultClip;

@@ -99,7 +99,7 @@ VaultClip хранит всё локально на Mac. Ни история, н
 
 ### Права на файловую систему
 
-- Каталог истории: `~/Library/Application Support/VaultClip/history/` с правами **0700** (только владелец).
+- Каталог истории: `~/Library/Application Support/com.karakuts.VaultClip/history/` с правами **0700** (только владелец).
 - Перед записью проверяется, что путь **не symlink** и лежит внутри ожидаемого Application Support.
 - Имена файлов типов pasteboard **санитизируются** (кодирование `%`, `/`, `:`).
 
@@ -129,24 +129,24 @@ VaultClip хранит всё локально на Mac. Ни история, н
 | Разрешение | Зачем |
 |------------|--------|
 | **Accessibility** | Однократная симуляция ⌘V в ранее активное приложение. Keystroke logging не ведётся. |
-| **Keychain** | Хранение ключа шифрования; при отказе показывается диалог с переходом в Keychain Access. |
+| **Encryption key** | Ключ AES хранится в `~/Library/Application Support/com.karakuts.VaultClip/.history-encryption-key` (права 0600); при первом запуске мигрируется из Keychain, если был. |
 
 Описания для системных диалогов — в `VaultClip/Supporting Files/Info.plist`.
 
 ### Где лежат данные
 
 ```
-~/Library/Application Support/VaultClip/
+~/Library/Application Support/com.karakuts.VaultClip/
 ├── history/          # зашифрованные элементы (по UUID)
 ├── error.log
 └── warning.log
 ```
 
-Настройки — `~/Library/Preferences/VaultClip.plist` (через UserDefaults).
+Настройки — `~/Library/Preferences/com.karakuts.VaultClip.plist` (через UserDefaults).
 
-**Миграция с Yippy:** при первом запуске после обновления данные переносятся из `~/Library/Application Support/MatthewDavidson.Yippy/`, настройки и ключ Keychain копируются автоматически.
+**Миграция с Yippy / VaultClip 1.1.2:** при первом запуске данные переносятся из `MatthewDavidson.Yippy` и `VaultClip`, настройки и ключ шифрования копируются автоматически.
 
-Удаление записи `history-data-key` для VaultClip в Keychain Access **необратимо ломает** расшифровку старой истории; приложение создаст новый ключ и начнёт писать заново.
+Удаление файла `.history-encryption-key` **необратимо ломает** расшифровку истории; приложение создаст новый ключ и начнёт писать заново.
 
 ---
 
@@ -177,7 +177,8 @@ VaultClip хранит всё локально на Mac. Ни история, н
 1. Скачайте `VaultClip.dmg` из [релизов на GitHub](https://github.com/akarakuts/VaultClip/releases) **или** соберите из исходников (ниже).
 2. Перетащите `VaultClip.app` в «Программы».
 3. При первом запуске разрешите **Accessibility** (см. Welcome / System Settings → Privacy & Security → Accessibility).
-4. При запросе Keychain — разрешите доступ к ключу шифрования.
+4. Установите в **/Applications** (не запускайте с DMG) — иначе macOS сбрасывает Accessibility при каждом пути.
+5. В списке Accessibility удалите старые дубликаты VaultClip, оставьте копию из `/Applications/VaultClip.app`.
 
 ### Сборка из исходников
 

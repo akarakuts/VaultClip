@@ -12,9 +12,9 @@ import CryptoKit
 
 final class AESGCMDataEncryptor: DataEncryptor {
 
-    private let keyStore: KeychainSymmetricKeyStore
+    private let keyStore: SymmetricKeyStore
 
-    init(keyStore: KeychainSymmetricKeyStore = .default) {
+    init(keyStore: SymmetricKeyStore = .default) {
         self.keyStore = keyStore
     }
 

@@ -11,18 +11,16 @@ import Foundation
 
 enum AppDataMigrator {
 
-    private static let didMigrateKey = "didMigrateFromMatthewDavidsonYippy"
-
     static func migrateIfNeeded() {
-        guard !UserDefaults.standard.bool(forKey: didMigrateKey) else { return }
-        migrateApplicationSupport()
-        migrateUserDefaults()
-        UserDefaults.standard.set(true, forKey: didMigrateKey)
+        migrateApplicationSupportIfNeeded(from: Constants.branding.legacyBundleIdentifier)
+        migrateApplicationSupportIfNeeded(from: "VaultClip")
+        migrateUserDefaultsIfNeeded(from: Constants.branding.legacyBundleIdentifier)
+        migrateUserDefaultsIfNeeded(from: "VaultClip")
     }
 
-    private static func migrateApplicationSupport() {
+    private static func migrateApplicationSupportIfNeeded(from legacyFolder: String) {
         let fm = FileManager.default
-        let legacy = Constants.urls.legacyAppSupport
+        let legacy = Constants.urls.applicationSupport.appendingPathComponent(legacyFolder, isDirectory: true)
         let current = Constants.urls.appSupport
 
         guard fm.fileExists(atPath: legacy.path) else { return }
@@ -32,20 +30,22 @@ enum AppDataMigrator {
             try fm.moveItem(at: legacy, to: current)
         } catch {
             #if DEBUG
-            print("AppDataMigrator: failed to move Application Support: \(error)")
+            print("AppDataMigrator: failed to move Application Support from \(legacyFolder): \(error)")
             #endif
         }
     }
 
-    private static func migrateUserDefaults() {
+    private static func migrateUserDefaultsIfNeeded(from legacyDomain: String) {
         guard UserDefaults.standard.data(forKey: "settings") == nil else { return }
+        guard let legacy = UserDefaults.standard.persistentDomain(forName: legacyDomain) else { return }
 
-        let legacyDomain = Constants.branding.legacyBundleIdentifier
-        guard let legacy = UserDefaults.standard.persistentDomain(forName: legacyDomain),
-              let settingsData = legacy["settings"] as? Data else {
-            return
+        if let settingsData = legacy["settings"] as? Data {
+            UserDefaults.standard.set(settingsData, forKey: "settings")
         }
-
-        UserDefaults.standard.set(settingsData, forKey: "settings")
+        for (key, value) in legacy where key != "settings" {
+            if UserDefaults.standard.object(forKey: key) == nil {
+                UserDefaults.standard.set(value, forKey: key)
+            }
+        }
     }
 }

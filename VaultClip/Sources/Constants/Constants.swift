@@ -15,7 +15,7 @@ struct Constants {
     /// User-visible application name (menu bar, alerts, system permission strings).
     struct branding {
         static let displayName = "VaultClip"
-        static let bundleIdentifier = "VaultClip"
+        static let bundleIdentifier = "com.karakuts.VaultClip"
         static let legacyBundleIdentifier = "MatthewDavidson.Yippy"
         static let historyTabTitle = "History"
         static let favoritesTabTitle = "Favorites"

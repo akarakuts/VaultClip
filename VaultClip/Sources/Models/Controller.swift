@@ -256,10 +256,9 @@ class Controller {
         let launchAtLogin = !state.launchAtLogin.value
         state.launchAtLogin.accept(launchAtLogin)
         if launchAtLogin {
-            LoginServiceKit.addLoginItems()
-        }
-        else {
-            LoginServiceKit.removeLoginItems()
+            LaunchAtLoginHelper.enable()
+        } else {
+            LaunchAtLoginHelper.disable()
         }
     }
 }
