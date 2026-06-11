@@ -164,6 +164,7 @@
 		D4E5F6A71123456789001 /* SourceAppIconProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F6A60123456789001 /* SourceAppIconProvider.swift */; };
 		E5F6A7B81123456789001 /* HistoryItem+CopiedAt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F6A7B70123456789001 /* HistoryItem+CopiedAt.swift */; };
 		F6A7B8C91123456789001 /* HistoryListTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7B8C80123456789001 /* HistoryListTheme.swift */; };
+		F6A7B8CA11234567890002 /* HistoryListTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7B8C80123456789001 /* HistoryListTheme.swift */; };
 		F7A8B9CA1123456789001 /* HistoryItem+Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9C91123456789001 /* HistoryItem+Favorite.swift */; };
 		F7A8B9CC1123456789001 /* HistoryListMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9CB1123456789001 /* HistoryListMode.swift */; };
 		F7A8B9CE1123456789001 /* HistoryFavoritesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9CD1123456789001 /* HistoryFavoritesTests.swift */; };
@@ -1309,6 +1310,7 @@
 				348D526723878E160024A5C7 /* PanelPosition.swift in Sources */,
 				345B14B42341B37A00C2D0DA /* KeyPressMock.swift in Sources */,
 				345B14A823406E0500C2D0DA /* Constants.swift in Sources */,
+				F6A7B8CA11234567890002 /* HistoryListTheme.swift in Sources */,
 				345B14962340493600C2D0DA /* XCUIApplication+Windows.swift in Sources */,
 				345B149423403B8F00C2D0DA /* AccessControlMock.swift in Sources */,
 				345B14A3234060BB00C2D0DA /* XCUIApplication+StaticTexts.swift in Sources */,
