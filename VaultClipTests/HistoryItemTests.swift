@@ -63,6 +63,15 @@ class HistoryItemTests: XCTestCase {
         XCTAssertNil(res)
     }
     
+    func testGetPlainStringFromNSStringPboardType() {
+        let legacyType = NSPasteboard.PasteboardType(rawValue: "NSStringPboardType")
+        let item = HistoryItem(
+            unsavedData: [legacyType: "Довольно вам".data(using: .utf8)!],
+            cache: cache
+        )
+        XCTAssertEqual(item.getPlainString(), "Довольно вам")
+    }
+
     func testDataForTypeInUnsavedData() {
         // 1. For an item with a type
         XCTAssertTrue(savedItem.types.contains(.string))

@@ -1,0 +1,1536 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "about.info_body" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip — GNU GPL v3 or later.\nBased on Yippy by Matthew Davidson (MIT), https://github.com/mattDavo/Yippy\nFork and modifications: Aleksey Karakuts — aleksey@karakuts.com\nhttps://github.com/akarakuts/VaultClip"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip — GNU GPL v3 или новее.\nНа основе Yippy Matthew Davidson (MIT), https://github.com/mattDavo/Yippy\nФорк и доработки: Aleksey Karakuts — aleksey@karakuts.com\nhttps://github.com/akarakuts/VaultClip"
+          }
+        }
+      }
+    },
+    "about.version" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %@ (%@)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Версия %@ (%@)"
+          }
+        }
+      }
+    },
+    "accessibility.paste_blocked_body" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip needs Accessibility to paste into other apps with ⌘V.\n\nOpen System Settings → Privacy & Security → Accessibility, enable VaultClip, then try again. Install the app to /Applications and keep a single copy to avoid macOS resetting the permission."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip нужен Универсальный доступ для вставки ⌘V в другие приложения.\n\nОткройте Системные настройки → Конфиденциальность и безопасность → Универсальный доступ, включите VaultClip и попробуйте снова. Установите приложение в /Applications и держите одну копию, чтобы macOS не сбрасывал разрешение."
+          }
+        }
+      }
+    },
+    "accessibility.paste_blocked_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accessibility permission required"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нужно разрешение Универсального доступа"
+          }
+        }
+      }
+    },
+    "accessibility.required_body" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip needs Accessibility to paste into other apps (⌘V simulation) and to monitor some system events.\n\n1. Install VaultClip to /Applications (not from the DMG directly).\n2. Open System Settings → Privacy & Security → Accessibility.\n3. Enable VaultClip, then quit and reopen the app."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip нужен Универсальный доступ для вставки в другие приложения (имитация ⌘V) и отслеживания части системных событий.\n\n1. Установите VaultClip в /Applications (не запускайте с DMG).\n2. Откройте Системные настройки → Конфиденциальность и безопасность → Универсальный доступ.\n3. Включите VaultClip, затем завершите и снова откройте приложение."
+          }
+        }
+      }
+    },
+    "accessibility.required_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accessibility access required"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Требуется доступ Универсального доступа"
+          }
+        }
+      }
+    },
+    "accessibility.required_unsigned_suffix" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\n\nThis build was not code-signed; reinstall from a freshly built VaultClip.dmg."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\n\nСборка не подписана кодом; переустановите из свежего VaultClip.dmg."
+          }
+        }
+      }
+    },
+    "alert.clear_history.message" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favorites and saved passwords can be kept or removed together with all items."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Избранное и сохранённые пароли можно оставить или удалить вместе со всеми элементами."
+          }
+        }
+      }
+    },
+    "alert.clear_history.title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear history?"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очистить историю?"
+          }
+        }
+      }
+    },
+    "common.cancel" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отмена"
+          }
+        }
+      }
+    },
+    "common.ok" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "common.open_keychain_access" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Keychain Access"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открыть «Связку ключей»"
+          }
+        }
+      }
+    },
+    "common.open_settings" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открыть настройки"
+          }
+        }
+      }
+    },
+    "common.quit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quit"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выход"
+          }
+        }
+      }
+    },
+    "common.save" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохранить"
+          }
+        }
+      }
+    },
+    "common.start_fresh" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start Fresh"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начать заново"
+          }
+        }
+      }
+    },
+    "context.add_favorites" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add to Favorites"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить в избранное"
+          }
+        }
+      }
+    },
+    "context.copy_login" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy Login"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Копировать логин"
+          }
+        }
+      }
+    },
+    "context.copy_password" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy Password"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Копировать пароль"
+          }
+        }
+      }
+    },
+    "context.delete" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить"
+          }
+        }
+      }
+    },
+    "context.edit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Изменить…"
+          }
+        }
+      }
+    },
+    "context.remove_favorites" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove from Favorites"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Убрать из избранного"
+          }
+        }
+      }
+    },
+    "context.remove_from_passwords" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove from Passwords"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Убрать из паролей"
+          }
+        }
+      }
+    },
+    "context.save_to_passwords" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save to Passwords…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохранить в пароли…"
+          }
+        }
+      }
+    },
+    "count.favorite_one" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 favorite"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 избранное"
+          }
+        }
+      }
+    },
+    "count.favorites" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld favorites"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld избранных"
+          }
+        }
+      }
+    },
+    "count.items" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld items"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld элементов"
+          }
+        }
+      }
+    },
+    "count.matches" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld matches"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld совпадений"
+          }
+        }
+      }
+    },
+    "count.password_one" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 password"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 пароль"
+          }
+        }
+      }
+    },
+    "count.passwords" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld passwords"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld паролей"
+          }
+        }
+      }
+    },
+    "count.pinned_limit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld items (limit %2$lld, pinned items protected)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld элементов (лимит %2$lld, закреплённые защищены)"
+          }
+        }
+      }
+    },
+    "empty.favorites" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No favorites yet. Right-click an item → Add to Favorites"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Избранного пока нет. ПКМ по элементу → Добавить в избранное"
+          }
+        }
+      }
+    },
+    "empty.passwords" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No passwords saved. Right-click an item → Save to Passwords…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паролей пока нет. ПКМ по элементу → Сохранить в пароли…"
+          }
+        }
+      }
+    },
+    "encryption.decrypt_body" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip found encrypted history but no matching encryption key. This can happen after an interrupted update or if the Keychain entry was removed.\n\nQuit and restore ~/Library/Application Support/com.karakuts.VaultClip from a backup, or start with an empty history."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip нашёл зашифрованную историю, но нет подходящего ключа. Так бывает после прерванного обновления или удаления записи из Связки ключей.\n\nЗавершите работу и восстановите ~/Library/Application Support/com.karakuts.VaultClip из резервной копии или начните с пустой истории."
+          }
+        }
+      }
+    },
+    "encryption.decrypt_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cannot decrypt clipboard history"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удаётся расшифровать историю буфера"
+          }
+        }
+      }
+    },
+    "encryption.key_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip cannot access its encryption key"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip не может получить ключ шифрования"
+          }
+        }
+      }
+    },
+    "encryption.keychain_denied" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keychain denied access to the encryption key. Open Keychain Access, find the entry \"%@\" for VaultClip, and allow access for this application."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Связка ключей отклонила доступ к ключу. Откройте «Связку ключей», найдите запись «%@» для VaultClip и разрешите доступ этому приложению."
+          }
+        }
+      }
+    },
+    "encryption.keychain_entitlement" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip could not use the Keychain (missing entitlement, error %d). Reinstall from a signed build (./build-dmg.sh && ./install-app.sh), then launch again."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip не смог использовать Связку ключей (нет entitlement, ошибка %d). Переустановите подписанную сборку (./build-dmg.sh && ./install-app.sh) и запустите снова."
+          }
+        }
+      }
+    },
+    "encryption.keychain_generic" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keychain error (%d). Encrypted history cannot be read or saved until access is granted."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ошибка Связки ключей (%d). Зашифрованную историю нельзя читать или сохранять, пока доступ не будет выдан."
+          }
+        }
+      }
+    },
+    "encryption.keychain_unlock" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock your Mac and try again. VaultClip needs Keychain access to read encrypted clipboard history."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разблокируйте Mac и попробуйте снова. VaultClip нужен доступ к Связке ключей для чтения зашифрованной истории."
+          }
+        }
+      }
+    },
+    "help.how_to_use_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How to use VaultClip"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Как пользоваться VaultClip"
+          }
+        }
+      }
+    },
+    "help.instructions_body" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip is a menu-bar clipboard manager. History is stored locally on your Mac and encrypted on disk.\n\nOpen the panel with ⌘⇧V (default; change in Preferences → Hot Key). The interface language follows your system locale.\n\nThree tabs:\n• History — timeline of copies (favorites and saved passwords are hidden here).\n• Favorites — pinned items; kept when you clear ordinary history.\n• Passwords — saved credentials: comment, login, and a masked secret (••••••••).\n\nSelect a row with the mouse or ↑/↓. Return copies the item and pastes into the app that was active before the panel opened (Accessibility required). ⌘0…⌘9 paste by position. Esc closes the panel. Ctrl+[ / Ctrl+] switch tabs. Ctrl+Delete deletes the selection.\n\n⌘\\ focuses search (fuzzy match). For saved passwords, search uses comment and login only. Ctrl+Space toggles preview; passwords stay masked outside the Passwords tab.\n\nRight-click a row: add to Favorites, save to Passwords (comment + login), on the Passwords tab — Copy Login, Copy Password, Edit…, remove from Passwords, or Delete.\n\nDrag rows to reorder; moving to the top updates the system clipboard. Panel position: Position menu or Ctrl+Alt+⌘ + arrows. Clear history from the menu — optionally keep favorites and passwords.\n\nPreferences: history size, rich-text display and paste, custom hot key, Launch at Login."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip — менеджер буфера обмена в строке меню. История хранится только на вашем Mac и шифруется на диске.\n\nОткройте панель: ⌘⇧V (по умолчанию; меняется в Настройки → Горячая клавиша). Язык интерфейса следует системной локали.\n\nТри вкладки:\n• История — хронология копий (избранное и сохранённые пароли здесь скрыты).\n• Избранное — закреплённые элементы; остаются при обычной очистке истории.\n• Пароли — сохранённые учётные данные: комментарий, логин и маскированный секрет (••••••••).\n\nВыбор строки — мышью или ↑/↓. Return копирует элемент и вставляет в приложение, активное до открытия панели (нужен Универсальный доступ). ⌘0…⌘9 — вставка по позиции. Esc закрывает панель. Ctrl+[ / Ctrl+] — переключение вкладок. Ctrl+Delete — удалить выбранное.\n\n⌘\\ — фокус в поиск (нечёткое совпадение). Для паролей поиск по комментарию и логину, не по секрету. Ctrl+Space — предпросмотр; вне вкладки «Пароли» секрет маскируется.\n\nПКМ по строке: в избранное, сохранить в пароли (комментарий + логин), на вкладке «Пароли» — копировать логин/пароль, изменить, убрать из паролей или удалить.\n\nПеретаскивание меняет порядок; перенос наверх обновляет системный буфер. Положение панели — меню «Положение» или Ctrl+Alt+⌘ + стрелки. Очистка истории из меню — можно оставить избранное и пароли.\n\nНастройки: размер истории, показ и вставка форматированного текста, горячая клавиша, запуск при входе."
+          }
+        }
+      }
+    },
+    "help.waiting_body" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip cannot be used until it is given full control."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip нельзя использовать, пока не выдан полный контроль."
+          }
+        }
+      }
+    },
+    "help.waiting_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waiting for control..."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ожидание разрешения..."
+          }
+        }
+      }
+    },
+    "help.window_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip Help"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Справка VaultClip"
+          }
+        }
+      }
+    },
+    "hotkey.unknown_key" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown key"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неизвестная клавиша"
+          }
+        }
+      }
+    },
+    "install.transient_body" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are running VaultClip from a disk image or temporary folder. macOS resets Accessibility permission when the app path changes.\n\nDrag VaultClip to Applications and launch it from there for stable permissions and login at startup."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip запущен с образа диска или из временной папки. macOS сбрасывает разрешение Универсального доступа при смене пути.\n\nПеретащите VaultClip в Applications и запускайте оттуда — так разрешения и автозапуск будут стабильнее."
+          }
+        }
+      }
+    },
+    "install.transient_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Install VaultClip to Applications"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Установите VaultClip в Applications"
+          }
+        }
+      }
+    },
+    "menu.about" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About VaultClip"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "О VaultClip"
+          }
+        }
+      }
+    },
+    "menu.clear_all" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear all"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очистить всё"
+          }
+        }
+      }
+    },
+    "menu.clear_history" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear history"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очистить историю"
+          }
+        }
+      }
+    },
+    "menu.delete_selected" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Selected"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить выбранное"
+          }
+        }
+      }
+    },
+    "menu.help" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VaultClip Help"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Справка VaultClip"
+          }
+        }
+      }
+    },
+    "menu.launch_at_login" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Launch at Login"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запускать при входе"
+          }
+        }
+      }
+    },
+    "menu.position" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Position"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Положение"
+          }
+        }
+      }
+    },
+    "menu.preferences" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preferences..."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Настройки…"
+          }
+        }
+      }
+    },
+    "menu.quit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quit"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выход"
+          }
+        }
+      }
+    },
+    "menu.toggle_window" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toggle Window"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показать/скрыть окно"
+          }
+        }
+      }
+    },
+    "password.edit_message" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update the comment and login for this saved password."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Измените комментарий и логин для этого пароля."
+          }
+        }
+      }
+    },
+    "password.edit_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Password Entry"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Изменить запись пароля"
+          }
+        }
+      }
+    },
+    "password.field_comment" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comment"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Комментарий"
+          }
+        }
+      }
+    },
+    "password.field_login" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Login"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Логин"
+          }
+        }
+      }
+    },
+    "password.save_message" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a comment and login for this saved password."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавьте комментарий и логин для этого пароля."
+          }
+        }
+      }
+    },
+    "password.save_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save to Passwords"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохранить в пароли"
+          }
+        }
+      }
+    },
+    "position.bottom" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bottom"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Снизу"
+          }
+        }
+      }
+    },
+    "position.center_extra_small" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Center (Extra Small)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "По центру (очень маленькое)"
+          }
+        }
+      }
+    },
+    "position.center_large" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Center (Large)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "По центру (большое)"
+          }
+        }
+      }
+    },
+    "position.center_medium" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Center (Medium)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "По центру (среднее)"
+          }
+        }
+      }
+    },
+    "position.center_small" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Center (Small)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "По центру (маленькое)"
+          }
+        }
+      }
+    },
+    "position.full_screen" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full Screen"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "На весь экран"
+          }
+        }
+      }
+    },
+    "position.left" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Left"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Слева"
+          }
+        }
+      }
+    },
+    "position.right" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Right"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Справа"
+          }
+        }
+      }
+    },
+    "position.top" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Top"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сверху"
+          }
+        }
+      }
+    },
+    "preview.click_to_reveal" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Click to reveal"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нажмите, чтобы показать"
+          }
+        }
+      }
+    },
+    "search.placeholder" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search For Something (⌘F)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поиск (⌘F)"
+          }
+        }
+      }
+    },
+    "settings.general" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "General"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Основные"
+          }
+        }
+      }
+    },
+    "settings.hot_key" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hot Key"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Горячая клавиша"
+          }
+        }
+      }
+    },
+    "settings.hotkey_hint" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hold down the keys you would like to use for the hot key."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удерживайте клавиши для новой горячей клавиши."
+          }
+        }
+      }
+    },
+    "settings.max_items_label" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maximum number of items saved:"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Максимум сохраняемых элементов:"
+          }
+        }
+      }
+    },
+    "settings.pastes_rich_text" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pastes rich text"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вставлять форматирование"
+          }
+        }
+      }
+    },
+    "settings.rich_text_label" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rich text:"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Форматированный текст:"
+          }
+        }
+      }
+    },
+    "settings.shows_rich_text" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shows rich text"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показывать форматирование"
+          }
+        }
+      }
+    },
+    "storyboard.corrupted_body" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to load %@ from storyboard \"%@\".\nPlease reinstall the application."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось загрузить %@ из storyboard «%@».\nПереустановите приложение."
+          }
+        }
+      }
+    },
+    "storyboard.corrupted_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ is corrupted"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ повреждён"
+          }
+        }
+      }
+    },
+    "tab.favorites" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favorites"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Избранное"
+          }
+        }
+      }
+    },
+    "tab.history" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "History"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "История"
+          }
+        }
+      }
+    },
+    "tab.passwords" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwords"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пароли"
+          }
+        }
+      }
+    },
+    "welcome.allow_access" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow Access"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разрешить доступ"
+          }
+        }
+      }
+    },
+    "welcome.body" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For VaultClip to be able to paste into your applications it requires you to provide it with full control to your computer."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Чтобы VaultClip мог вставлять текст в ваши приложения, ему нужен полный контроль компьютера (Универсальный доступ)."
+          }
+        }
+      }
+    },
+    "welcome.title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thank you for downloading VaultClip!"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Спасибо, что скачали VaultClip!"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

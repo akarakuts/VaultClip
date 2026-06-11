@@ -10,11 +10,14 @@
 import ApplicationServices
 import AppKit
 import Foundation
+import Security
 
 class AccessControlHelper {
 
     private static var hasShownSystemPromptThisSession = false
+    private static var hasShownAccessibilityNoticeThisSession = false
     private static var hasShownPasteBlockedAlertThisSession = false
+    private static var hasShownWelcomeThisSession = false
 
     func isControlGranted() -> Bool {
         AXIsProcessTrusted()
@@ -24,10 +27,65 @@ class AccessControlHelper {
     func isControlGranted(showPopup: Bool) -> Bool {
         if AXIsProcessTrusted() { return true }
         guard showPopup else { return false }
-        guard !Self.hasShownSystemPromptThisSession else { return false }
-        Self.hasShownSystemPromptThisSession = true
+        return Self.requestSystemPromptIfNeeded()
+    }
+
+    /// Single entry point for the macOS Accessibility permission sheet.
+    @discardableResult
+    static func requestSystemPromptIfNeeded() -> Bool {
+        if AXIsProcessTrusted() { return true }
+        guard !hasShownSystemPromptThisSession else { return false }
+        hasShownSystemPromptThisSession = true
         let prompt = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as NSString
         return AXIsProcessTrustedWithOptions([prompt: true] as CFDictionary)
+    }
+
+    static func hasShownSystemPrompt() -> Bool {
+        hasShownSystemPromptThisSession
+    }
+
+    /// Welcome / help onboarding — at most once per launch when permission is still missing.
+    static func presentWelcomeIfNeeded() {
+        guard !AXIsProcessTrusted() else { return }
+        guard !hasShownWelcomeThisSession else { return }
+        hasShownWelcomeThisSession = true
+        Controller.main.welcomeWindowController.showWindow(nil)
+        NSApp.activate(ignoringOtherApps: true)
+    }
+
+    /// Opens Accessibility settings and explains that a signed /Applications copy is required.
+    static func notifyAccessibilityRequired(reason: AccessibilityNoticeReason = .general) {
+        guard !hasShownAccessibilityNoticeThisSession else { return }
+        hasShownAccessibilityNoticeThisSession = true
+        DispatchQueue.main.async {
+            let alert = NSAlert()
+            alert.alertStyle = .warning
+            alert.messageText = L10n.accessibilityRequiredTitle
+            var body = L10n.accessibilityRequiredBody
+            if reason == .unsignedBuild {
+                body += L10n.accessibilityRequiredUnsignedSuffix
+            }
+            alert.informativeText = body
+            alert.addButton(withTitle: L10n.commonOpenSettings)
+            alert.addButton(withTitle: L10n.commonOK)
+            if alert.runModal() == .alertFirstButtonReturn {
+                openAccessibilitySettings()
+            }
+        }
+    }
+
+    enum AccessibilityNoticeReason {
+        case general
+        case promptDeclined
+        case unsignedBuild
+    }
+
+    /// True when the bundle fails code-signature validation (unsigned CI build before codesign-app.sh).
+    static func isLikelyUnsignedBuild() -> Bool {
+        var staticCode: SecStaticCode?
+        guard SecStaticCodeCreateWithPath(Bundle.main.bundleURL as CFURL, [], &staticCode) == errSecSuccess,
+              let staticCode else { return true }
+        return SecStaticCodeCheckValidity(staticCode, SecCSFlags(rawValue: 0), nil) != errSecSuccess
     }
 
     static func openAccessibilitySettings() {
@@ -44,15 +102,10 @@ class AccessControlHelper {
         DispatchQueue.main.async {
             let alert = NSAlert()
             alert.alertStyle = .warning
-            alert.messageText = "Accessibility permission required"
-            alert.informativeText = """
-            VaultClip needs Accessibility to paste into other apps with ⌘V.
-
-            Open System Settings → Privacy & Security → Accessibility, enable VaultClip, then try again. \
-            Install the app to /Applications and keep a single copy to avoid macOS resetting the permission.
-            """
-            alert.addButton(withTitle: "Open Settings")
-            alert.addButton(withTitle: "OK")
+            alert.messageText = L10n.accessibilityPasteBlockedTitle
+            alert.informativeText = L10n.accessibilityPasteBlockedBody
+            alert.addButton(withTitle: L10n.commonOpenSettings)
+            alert.addButton(withTitle: L10n.commonOK)
             if alert.runModal() == .alertFirstButtonReturn {
                 openAccessibilitySettings()
             }

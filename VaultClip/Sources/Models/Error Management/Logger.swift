@@ -17,6 +17,20 @@ class Logger {
     init(url: URL) {
         self.url = url
     }
+
+    func logLine(_ message: String) {
+        let timestamp = Timestamp()
+        do {
+            try "[\(timestamp)] \(message)".appendLine(toURL: url)
+        } catch {
+            #if DEBUG
+            print("Failed to log:", message)
+            #endif
+        }
+        #if DEBUG
+        print("[\(timestamp)]", message)
+        #endif
+    }
     
     func log(_ loggable: Loggable) {
         let timestamp = Timestamp()

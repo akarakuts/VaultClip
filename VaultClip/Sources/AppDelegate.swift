@@ -22,6 +22,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         checkBuildFlags()
         checkLaunchArgs()
         AppDataMigrator.migrateIfNeeded()
+        EncryptionKeyBootstrap.prepareAtLaunch()
         Controller.main = Controller(state: State.main, settings: Settings.main)
         LaunchAtLoginHelper.reconcile(wantsLaunchAtLogin: Controller.main.state.launchAtLogin.value)
         LaunchAtLoginHelper.warnIfRunningFromTransientLocation()
@@ -53,16 +54,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func showWelcomeIfNeeded() {
-        // If the user has enabled access we don't need to do anything
-        if Helper.isControlGranted(showPopup: false) {
-            return
-        }
-        
-        // Otherwise we should show a popup detailing why access is required.
-        Controller.main.welcomeWindowController.showWindow(nil)
-        
-        // Bring the window to front
-        NSApp.activate(ignoringOtherApps: true)
+        // One onboarding surface per launch; system prompt only after the user taps Allow Access.
+        AccessControlHelper.presentWelcomeIfNeeded()
     }
     
     func setupHotKey() {

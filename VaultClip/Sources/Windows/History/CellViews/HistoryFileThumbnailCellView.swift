@@ -17,11 +17,11 @@ class HistoryFileThumbnailCellView: HistoryItemBaseCellView, HistoryListItem {
         NSUserInterfaceItemIdentifier(Accessibility.identifiers.historyFileThumbnailCellView)
     }
     
-    static let fileNamePadding = NSEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
+    static let fileNamePadding = HistoryListTheme.metrics.thumbnailFileNamePadding
     
-    static let imageSize = NSSize(width: 300, height: 200)
+    static let imageSize = HistoryListTheme.metrics.thumbnailPreviewSize
     
-    static let imageTopPadding: CGFloat = 5
+    static let imageTopPadding = HistoryListTheme.metrics.thumbnailTopPadding
     
     var previewView: NSImageView!
     
@@ -40,10 +40,13 @@ class HistoryFileThumbnailCellView: HistoryItemBaseCellView, HistoryListItem {
         previewView.imageAlignment = .alignTopLeft
         previewView.imageScaling = .scaleProportionallyUpOrDown
         contentView.addConstraint(NSLayoutConstraint(item: previewView!, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1, constant: Self.imageTopPadding))
-        contentView.addConstraint(NSLayoutConstraint(item: previewView!, attribute: .leading, relatedBy: .equal, toItem: contentView, attribute: .leading, multiplier: 1, constant: Self.fileNamePadding.left))
+        contentView.addConstraint(NSLayoutConstraint(item: previewView!, attribute: .leading, relatedBy: .equal, toItem: sourceAppIconView, attribute: .trailing, multiplier: 1, constant: HistoryItemBaseCellView.sourceAppIconSpacing))
         previewView.widthAnchor.constraint(equalToConstant: Self.imageSize.width).isActive = true
         previewView.heightAnchor.constraint(equalToConstant: Self.imageSize.height).isActive = true
-        previewView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -Self.fileNamePadding.right).isActive = true
+        previewView.trailingAnchor.constraint(
+            lessThanOrEqualTo: contentView.trailingAnchor,
+            constant: -Self.fileNamePadding.right
+        ).isActive = true
     }
     
     func setupItemTextView() {
@@ -52,7 +55,7 @@ class HistoryFileThumbnailCellView: HistoryItemBaseCellView, HistoryListItem {
         itemTextView.textContainer?.lineFragmentPadding = 0
         itemTextView.textContainerInset = .zero
         contentView.addConstraint(NSLayoutConstraint(item: itemTextView!, attribute: .top, relatedBy: .equal, toItem: previewView, attribute: .bottom, multiplier: 1, constant: Self.fileNamePadding.top))
-        contentView.addConstraint(NSLayoutConstraint(item: itemTextView!, attribute: .leading, relatedBy: .equal, toItem: contentView, attribute: .leading, multiplier: 1, constant: Self.fileNamePadding.left))
+        contentView.addConstraint(NSLayoutConstraint(item: itemTextView!, attribute: .leading, relatedBy: .equal, toItem: sourceAppIconView, attribute: .trailing, multiplier: 1, constant: HistoryItemBaseCellView.sourceAppIconSpacing))
         contentView.addConstraint(NSLayoutConstraint(item: contentView!, attribute: .trailing, relatedBy: .equal, toItem: itemTextView, attribute: .trailing, multiplier: 1, constant: Self.fileNamePadding.right))
         contentView.addConstraint(NSLayoutConstraint(item: contentView!, attribute: .bottom, relatedBy: .equal, toItem: itemTextView, attribute: .bottom, multiplier: 1, constant: Self.fileNamePadding.bottom))
     }
@@ -86,7 +89,12 @@ class HistoryFileThumbnailCellView: HistoryItemBaseCellView, HistoryListItem {
     static func getItemHeight(withHistoryTableView historyTableView: HistoryTableView, forHistoryItem historyItem: HistoryItem) -> CGFloat {
         let cellWidth = floor(historyTableView.cellWidth)
         
-        let textContainerWidth = cellWidth - contentViewInsets.xTotal - fileNamePadding.xTotal
+        let textContainerWidth = cellWidth
+            - contentViewInsets.xTotal
+            - fileNamePadding.xTotal
+            - sourceAppIconSize
+            - sourceAppIconSpacing
+            - sourceAppIconTrailingInset
         
         let str = HistoryItemText.appendPasswordCommentIfNeeded(
             to: formatFileUrl(historyItem.getFileUrl()!),

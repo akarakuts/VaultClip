@@ -162,13 +162,14 @@ class HistoryItemBaseCellView: NSTableCellView {
         sourceAppIconView.layer?.cornerRadius = HistoryListTheme.metrics.sourceAppIconCornerRadius
         sourceAppIconView.layer?.backgroundColor = HistoryListTheme.colors.sourceIconBackdrop.cgColor
         sourceAppIconView.layer?.masksToBounds = true
-        addSubview(sourceAppIconView)
+        sourceAppIconView.layer?.zPosition = 2
+        contentView.addSubview(sourceAppIconView)
         
-        sourceAppIconView.trailingAnchor.constraint(
-            equalTo: trailingAnchor,
-            constant: -Self.sourceAppIconTrailingInset
+        sourceAppIconView.leadingAnchor.constraint(
+            equalTo: contentView.leadingAnchor,
+            constant: Self.sourceAppIconTrailingInset
         ).isActive = true
-        sourceAppIconView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        sourceAppIconView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         sourceAppIconView.widthAnchor.constraint(equalToConstant: Self.sourceAppIconSize).isActive = true
         sourceAppIconView.heightAnchor.constraint(equalToConstant: Self.sourceAppIconSize).isActive = true
     }
@@ -180,7 +181,7 @@ class HistoryItemBaseCellView: NSTableCellView {
         
         addConstraint(NSLayoutConstraint(item: contentView!, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: Self.contentViewInsets.left))
         addConstraint(NSLayoutConstraint(item: contentView!, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: Self.contentViewInsets.top))
-        addConstraint(NSLayoutConstraint(item: sourceAppIconView!, attribute: .leading, relatedBy: .equal, toItem: contentView, attribute: .trailing, multiplier: 1, constant: Self.sourceAppIconSpacing))
+        addConstraint(NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: contentView, attribute: .trailing, multiplier: 1, constant: Self.contentViewInsets.right))
         addConstraint(NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1, constant: Self.contentViewInsets.bottom))
     }
     
@@ -234,6 +235,7 @@ class HistoryItemBaseCellView: NSTableCellView {
     
     func configureSourceAppIcon(for historyItem: HistoryItem) {
         sourceAppIconView.image = SourceAppIconProvider.icon(forBundleId: historyItem.sourceBundleId)
+        sourceAppIconView.isHidden = false
         sourceAppIconView.toolTip = historyItem.sourceBundleId
     }
     
@@ -244,10 +246,10 @@ class HistoryItemBaseCellView: NSTableCellView {
         guard row >= 0, row < table.historyListItems.count else { return }
         displayedRow = row
         let item = table.historyListItems[row]
-        let favoriteTitle = item.isFavorite ? "Remove from Favorites" : "Add to Favorites"
+        let favoriteTitle = item.isFavorite ? L10n.contextRemoveFromFavorites : L10n.contextAddToFavorites
         let favoriteItem = NSMenuItem(title: favoriteTitle, action: #selector(contextToggleFavorite(_:)), keyEquivalent: "")
         let deleteItem = NSMenuItem(
-            title: "Delete",
+            title: L10n.contextDelete,
             action: #selector(contextDeleteItem(_:)),
             keyEquivalent: Constants.statusItemMenu.deleteKeyEquivalent
         )
@@ -255,10 +257,19 @@ class HistoryItemBaseCellView: NSTableCellView {
         
         var menuItems: [NSMenuItem] = [favoriteItem]
         if item.isPassword {
-            menuItems.append(NSMenuItem(title: "Edit Comment…", action: #selector(contextEditPasswordComment(_:)), keyEquivalent: ""))
-            menuItems.append(NSMenuItem(title: "Remove from Passwords", action: #selector(contextRemoveFromPasswords(_:)), keyEquivalent: ""))
+            if table.listMode == .passwords {
+                let copyLogin = NSMenuItem(title: L10n.contextCopyLogin, action: #selector(contextCopyPasswordLogin(_:)), keyEquivalent: "")
+                copyLogin.isEnabled = !item.passwordLogin.isEmpty
+                menuItems.append(copyLogin)
+                let copyPassword = NSMenuItem(title: L10n.contextCopyPassword, action: #selector(contextCopyPasswordValue(_:)), keyEquivalent: "")
+                copyPassword.isEnabled = item.getPasswordValue() != nil
+                menuItems.append(copyPassword)
+                menuItems.append(NSMenuItem.separator())
+            }
+            menuItems.append(NSMenuItem(title: L10n.contextEdit, action: #selector(contextEditPasswordEntry(_:)), keyEquivalent: ""))
+            menuItems.append(NSMenuItem(title: L10n.contextRemoveFromPasswords, action: #selector(contextRemoveFromPasswords(_:)), keyEquivalent: ""))
         } else {
-            menuItems.append(NSMenuItem(title: "Save to Passwords…", action: #selector(contextSaveToPasswords(_:)), keyEquivalent: ""))
+            menuItems.append(NSMenuItem(title: L10n.contextSaveToPasswords, action: #selector(contextSaveToPasswords(_:)), keyEquivalent: ""))
         }
         menuItems.append(NSMenuItem.separator())
         menuItems.append(deleteItem)
@@ -284,9 +295,19 @@ class HistoryItemBaseCellView: NSTableCellView {
         table.historyDelegate?.historyTableView(table, removeFromPasswordsAt: displayedRow)
     }
     
-    @objc private func contextEditPasswordComment(_ sender: NSMenuItem) {
+    @objc private func contextEditPasswordEntry(_ sender: NSMenuItem) {
         guard let table = hostTableView, displayedRow >= 0 else { return }
-        table.historyDelegate?.historyTableView(table, editPasswordCommentAt: displayedRow)
+        table.historyDelegate?.historyTableView(table, editPasswordEntryAt: displayedRow)
+    }
+    
+    @objc private func contextCopyPasswordLogin(_ sender: NSMenuItem) {
+        guard let table = hostTableView, displayedRow >= 0 else { return }
+        table.historyDelegate?.historyTableView(table, copyPasswordLoginAt: displayedRow)
+    }
+    
+    @objc private func contextCopyPasswordValue(_ sender: NSMenuItem) {
+        guard let table = hostTableView, displayedRow >= 0 else { return }
+        table.historyDelegate?.historyTableView(table, copyPasswordValueAt: displayedRow)
     }
     
     @objc private func contextDeleteItem(_ sender: NSMenuItem) {

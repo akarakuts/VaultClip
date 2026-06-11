@@ -23,7 +23,8 @@ class AboutViewController: NSViewController {
         let version = info["CFBundleShortVersionString"] as? String ?? ""
         let build = info["CFBundleVersion"] as? String ?? ""
 
-        versionLabel.stringValue = "Version \(version) (\(build))"
+        versionLabel.stringValue = L10n.aboutVersion(version: version, build: build)
+        infoTextView.string = L10n.aboutInfoBody
         
         infoTextView.isAutomaticLinkDetectionEnabled = true
         // https://stackoverflow.com/a/25762502

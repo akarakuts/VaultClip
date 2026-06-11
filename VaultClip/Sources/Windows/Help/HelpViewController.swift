@@ -41,11 +41,25 @@ class HelpViewController: NSViewController {
     override func viewWillAppear() {
         super.viewWillAppear()
         
+        view.window?.title = L10n.helpWindowTitle
         updateSize()
     }
     
     func updateSize() {
-        self.view.window?.setContentSize(self.hasControl ? instructionsView.fittingSize : waitingView.fittingSize)
-        self.view.window?.center()
+        guard let window = view.window else { return }
+        let size: NSSize
+        if hasControl,
+           let instructions = children.compactMap({ $0 as? HelpInstructionsViewController }).first {
+            instructions.refreshContent()
+            instructions.view.layoutSubtreeIfNeeded()
+            let fitted = instructions.view.fittingSize
+            size = NSSize(width: max(520, fitted.width), height: max(420, fitted.height))
+        } else if hasControl {
+            size = instructionsView.fittingSize
+        } else {
+            size = waitingView.fittingSize
+        }
+        window.setContentSize(size)
+        window.center()
     }
 }

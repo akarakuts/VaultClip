@@ -57,9 +57,6 @@ class State {
         self.currentScreen = BehaviorRelay<NSScreen>(value: Self.getCurrentScreen(forMouseLocation: NSEvent.mouseLocation))
         self.disposeBag = disposeBag
         
-        // Encryption key must exist before reading/writing encrypted history files.
-        EncryptionKeyBootstrap.prepareAtLaunch()
-        
         // Setup history
         self.historyCache = HistoryCache()
         self.history = History.load(cache: historyCache)
@@ -71,6 +68,7 @@ class State {
         
         // Setup pasteboard monitor
         self.pasteboardMonitor = PasteboardMonitor(pasteboard: NSPasteboard.general, changeCount: settings.pasteboardChangeCount, delegate: self.history)
+        self.history.syncWithPasteboardOnLaunch(NSPasteboard.general)
         
         Self.monitorPastesRichText(state: self)
         Self.monitorMousePosition(state: self)

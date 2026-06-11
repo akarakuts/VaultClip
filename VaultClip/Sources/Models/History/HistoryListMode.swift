@@ -18,19 +18,19 @@ enum HistoryListMode: Int, CaseIterable {
         [
             HistoryTabDefinition(
                 mode: .history,
-                title: Constants.branding.historyTabTitle,
+                title: L10n.tabHistory,
                 iconName: "clock.arrow.circlepath",
                 fallbackGlyph: "⏱"
             ),
             HistoryTabDefinition(
                 mode: .favorites,
-                title: Constants.branding.favoritesTabTitle,
+                title: L10n.tabFavorites,
                 iconName: "star.fill",
                 fallbackGlyph: "★"
             ),
             HistoryTabDefinition(
                 mode: .passwords,
-                title: Constants.branding.passwordsTabTitle,
+                title: L10n.tabPasswords,
                 iconName: "key.fill",
                 fallbackGlyph: "🔑"
             ),

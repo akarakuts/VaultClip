@@ -24,6 +24,15 @@ jobs:
       - name: Install CocoaPods dependencies
         run: pod install
 
+      - name: Import signing certificate
+        if: ${{ secrets.MACOS_CERTIFICATE_P12 != '' }}
+        env:
+          MACOS_CERTIFICATE_P12: ${{ secrets.MACOS_CERTIFICATE_P12 }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+        run: |
+          chmod +x ./scripts/import-macos-certificate.sh
+          ./scripts/import-macos-certificate.sh
+
       - name: Build Release
         run: |
           xcodebuild \
@@ -38,9 +47,31 @@ jobs:
             build
 
       - name: Create DMG
+        env:
+          MACOS_CERTIFICATE_P12: ${{ secrets.MACOS_CERTIFICATE_P12 }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
-          cp -R DerivedData/Build/Products/Release/VaultClip.app .
-          ./create-installer.sh VaultClip
+          SIGNED=$(mktemp -d)
+          COPYFILE_DISABLE=1 ditto --norsrc DerivedData/Build/Products/Release/VaultClip.app "$SIGNED/VaultClip.app"
+          chmod +x ./codesign-app.sh
+          if [ -n "$MACOS_CERTIFICATE_P12" ]; then
+            export VAULTCLIP_SIGN_RELEASE=1
+          fi
+          ./codesign-app.sh "$SIGNED/VaultClip.app"
+          rm -rf dmg-staging VaultClip.dmg
+          mkdir dmg-staging
+          COPYFILE_DISABLE=1 ditto --norsrc "$SIGNED/VaultClip.app" dmg-staging/VaultClip.app
+          ( cd dmg-staging && ../create-installer.sh VaultClip && mv VaultClip.dmg .. )
+          if [ -n "${APPLE_ID:-}" ] && [ -n "${APPLE_APP_SPECIFIC_PASSWORD:-}" ] && [ -n "${APPLE_TEAM_ID:-}" ]; then
+            chmod +x ./notarize-dmg.sh
+            ./notarize-dmg.sh VaultClip.dmg
+          elif [ "${VAULTCLIP_SIGN_RELEASE:-}" = "1" ]; then
+            echo "Signed with Developer ID; notarization skipped (set APPLE_ID secrets to enable)."
+          else
+            echo "Warning: ad-hoc DMG — Accessibility will not work reliably. Add MACOS_CERTIFICATE_P12 secret."
+          fi
           ls -lh VaultClip.dmg
 
       - name: Upload build artifact

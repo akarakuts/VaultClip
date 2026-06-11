@@ -15,6 +15,7 @@ class HelpWindowController: NSWindowController {
     override func windowDidLoad() {
         super.windowDidLoad()
         
+        window?.title = L10n.helpWindowTitle
         window?.setAccessibilityIdentifier(Accessibility.identifiers.helpWindow)
     }
     

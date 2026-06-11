@@ -14,7 +14,7 @@ class PasteboardMonitor {
     
     let intervalInSeconds: TimeInterval = 0.05
     
-    private var timer: Timer!
+    private var pollTimer: DispatchSourceTimer?
     private var lastChangeCount: Int!
     
     var pasteboard: NSPasteboard!
@@ -31,11 +31,18 @@ class PasteboardMonitor {
         // https://stackoverflow.com/a/49402868
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(activeApp(sender:)), name: NSWorkspace.didActivateApplicationNotification, object: nil)
         
-        // TODO: Is it best to do a check straight away?
         self.checkIfPasteboardChanged()
-        self.timer = Timer.scheduledTimer(withTimeInterval: intervalInSeconds, repeats: true) { (t) in
-            self.checkIfPasteboardChanged()
+        startPolling()
+    }
+
+    private func startPolling() {
+        let timer = DispatchSource.makeTimerSource(queue: .main)
+        timer.schedule(deadline: .now() + intervalInSeconds, repeating: intervalInSeconds)
+        timer.setEventHandler { [weak self] in
+            self?.checkIfPasteboardChanged()
         }
+        timer.resume()
+        pollTimer = timer
     }
     
     // Called by NSWorkspace when any application becomes active or comes frontmost.
@@ -46,18 +53,34 @@ class PasteboardMonitor {
         {
             frontmostApp = bundle
         }
+        checkIfPasteboardChanged()
     }
     
     private func checkIfPasteboardChanged() {
         if lastChangeCount != pasteboard.changeCount  {
+            let previous = lastChangeCount
             lastChangeCount = self.pasteboard.changeCount
-            let originBundleId = NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? frontmostApp
+            let originBundleId = Self.clipboardOriginBundleId(trackedApp: frontmostApp)
+            PasteboardDiagnostics.log(
+                "changeCount \(previous ?? -1) -> \(pasteboard.changeCount), origin=\(originBundleId ?? "nil")"
+            )
             delegate.pasteboardDidChange(pasteboard, originBundleId: originBundleId)
         }
     }
+
+    /// When the history panel is key, frontmost is VaultClip — use the last non-VaultClip app as copy source.
+    private static func clipboardOriginBundleId(trackedApp: String?) -> String? {
+        let ownBundleId = Bundle.main.bundleIdentifier
+        let frontmost = NSWorkspace.shared.frontmostApplication?.bundleIdentifier
+        if frontmost == ownBundleId {
+            return trackedApp
+        }
+        return frontmost ?? trackedApp
+    }
     
     deinit {
-        timer?.invalidate()
+        pollTimer?.cancel()
+        pollTimer = nil
         NSWorkspace.shared.notificationCenter.removeObserver(self)
     }
 }

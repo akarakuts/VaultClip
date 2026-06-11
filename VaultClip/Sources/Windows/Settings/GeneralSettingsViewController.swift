@@ -23,12 +23,38 @@ class GeneralSettingsViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        localizeUI()
         setupMaxHistoryItemsPopUpButton()
         setupShowsRichTextButton()
         setupPastesRichTextButton()
     }
     
     // MARK: Setup view
+
+    private func localizeUI() {
+        for subview in view.subviews {
+            if let field = subview as? NSTextField {
+                switch field.stringValue {
+                case "Maximum number of items saved:":
+                    field.stringValue = L10n.settingsMaxItemsLabel
+                case "Rich text:":
+                    field.stringValue = L10n.settingsRichTextLabel
+                default:
+                    break
+                }
+            }
+            if let button = subview as? NSButton {
+                switch button.title {
+                case "Shows rich text":
+                    button.title = L10n.settingsShowsRichText
+                case "Pastes rich text":
+                    button.title = L10n.settingsPastesRichText
+                default:
+                    break
+                }
+            }
+        }
+    }
     
     private func setupMaxHistoryItemsPopUpButton() {
         maxHistoryItemsPopUpButton.removeAllItems()

@@ -15,9 +15,9 @@ class HistoryFileIconCellView: HistoryItemBaseCellView, HistoryListItem {
     override class var identifier: NSUserInterfaceItemIdentifier {
         NSUserInterfaceItemIdentifier(Accessibility.identifiers.historyFileIconCellView)
     }
-    static let textContainerInset = NSEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-    static let iconViewPadding = NSEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-    static let iconSize = NSSize(width: 32, height: 32)
+    static let textContainerInset = HistoryListTheme.metrics.fileTypeTextInset
+    static let iconViewPadding = HistoryListTheme.metrics.fileTypeIconPadding
+    static let iconSize = HistoryListTheme.metrics.fileTypeIconSize
     
     var iconView: NSImageView!
     
@@ -36,7 +36,7 @@ class HistoryFileIconCellView: HistoryItemBaseCellView, HistoryListItem {
         iconView.widthAnchor.constraint(equalToConstant: Self.iconSize.width).isActive = true
         iconView.heightAnchor.constraint(equalToConstant: Self.iconSize.height).isActive = true
         iconView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        contentView.addConstraint(NSLayoutConstraint(item: iconView!, attribute: .leading, relatedBy: .equal, toItem: contentView, attribute: .leading, multiplier: 1, constant: Self.iconViewPadding.left))
+        contentView.addConstraint(NSLayoutConstraint(item: iconView!, attribute: .leading, relatedBy: .equal, toItem: sourceAppIconView, attribute: .trailing, multiplier: 1, constant: HistoryItemBaseCellView.sourceAppIconSpacing))
     }
     
     func setupItemTextView() {
@@ -48,7 +48,7 @@ class HistoryFileIconCellView: HistoryItemBaseCellView, HistoryListItem {
         itemTextView.isHorizontallyResizable = false
         itemTextView.alignment = .left
         contentView.addConstraint(NSLayoutConstraint(item: itemTextView!, attribute: .leading, relatedBy: .equal, toItem: iconView, attribute: .trailing, multiplier: 1, constant: Self.iconViewPadding.right))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView!, attribute: .trailing, relatedBy: .equal, toItem: itemTextView, attribute: .trailing, multiplier: 1, constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: contentView!, attribute: .trailing, relatedBy: .equal, toItem: itemTextView, attribute: .trailing, multiplier: 1, constant: Self.iconViewPadding.right))
         itemTextView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         itemTextView.heightAnchor.constraint(equalToConstant: 0, withIdentifier: "height")?.isActive = true
     }
@@ -87,7 +87,14 @@ class HistoryFileIconCellView: HistoryItemBaseCellView, HistoryListItem {
     }
     
     static func getFileNameTextViewHeight(withCellWidth cellWidth: CGFloat, forHistoryItem historyItem: HistoryItem, listMode: HistoryListMode) -> CGFloat {
-        let width = cellWidth - contentViewInsets.xTotal - iconSize.width - textContainerInset.xTotal - iconViewPadding.xTotal
+        let width = cellWidth
+            - contentViewInsets.xTotal
+            - iconSize.width
+            - textContainerInset.xTotal
+            - iconViewPadding.xTotal
+            - sourceAppIconSize
+            - sourceAppIconSpacing
+            - sourceAppIconTrailingInset
         
         let attrStr = HistoryItemText.appendPasswordCommentIfNeeded(
             to: formatFileUrl(historyItem.getFileUrl()!),

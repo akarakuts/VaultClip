@@ -29,6 +29,9 @@ class ArrayFileManager {
            let list = try? PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? NSArray {
             return list
         }
+        if HistoryEncryptionProbe.isEncryptedFile(at: url) {
+            return nil
+        }
         // Legacy unencrypted order file.
         return NSArray(contentsOf: url)
     }

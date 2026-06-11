@@ -23,6 +23,7 @@ class HotKeySettingsViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        localizeUI()
         showSavedToggleHotKey()
         
         keyPressMonitor.isPaused = true
@@ -40,6 +41,16 @@ class HotKeySettingsViewController: NSViewController {
         }
     }
     
+    private func localizeUI() {
+        saveHotKeyButton.title = L10n.commonSave
+        for subview in view.subviews {
+            if let field = subview as? NSTextField, field !== hotkeyLabel,
+               field.stringValue.contains("Hold down the keys") {
+                field.stringValue = L10n.settingsHotkeyHint
+            }
+        }
+    }
+
     override func viewDidAppear() {
         super.viewDidAppear()
         
@@ -188,7 +199,7 @@ func filterKeys(_ keys: [Key]) -> [Key] {
 }
 
 func stringifyKeys(_ keys: [Key]) -> [String] {
-    return keys.map { $0.title ?? "Unknown key" }
+    return keys.map { $0.title ?? L10n.hotkeyUnknownKey }
 }
 
 extension Key {

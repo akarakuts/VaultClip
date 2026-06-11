@@ -56,8 +56,9 @@ class Controller {
         self.statusItem = ClipStatusItem.create()
         self.statusItem.menu = Self.createMenu(settings: settings, state: state, target: self)
         
-        // Create history window controller
+        // Create history window controller (load window so list UI subscribes before first copy).
         self.historyWindowController = Self.createHistoryWindowController(state: state, disposeBag: state.disposeBag)
+        self.historyWindowController.loadWindow()
        
         // Create preview window controllers
         self.previewWindowController = Self.createPreviewWindowController(previewItem: state.previewHistoryItem, disposeBag: state.disposeBag)
@@ -68,33 +69,43 @@ class Controller {
     
     static func createMenu(settings: Settings, state: State, target: AnyObject?) -> NSMenu {
         let menu = NSMenu()
-            .with(menuItem: NSMenuItem(title: "About VaultClip", action: #selector(showAboutWindow), keyEquivalent: "")
+            .with(menuItem: NSMenuItem(title: L10n.menuAbout, action: #selector(showAboutWindow), keyEquivalent: "")
+                .with(tag: StatusMenuTag.about.rawValue)
                 .with(accessibilityIdentifier: Accessibility.identifiers.aboutButton)
             )
-            .with(menuItem: NSMenuItem(title: "VaultClip Help", action: #selector(showHelpWindow), keyEquivalent: "")
+            .with(menuItem: NSMenuItem(title: L10n.menuHelp, action: #selector(showHelpWindow), keyEquivalent: "")
+                .with(tag: StatusMenuTag.help.rawValue)
                 .with(accessibilityIdentifier: Accessibility.identifiers.helpButton)
             )
             .with(menuItem: NSMenuItem.separator())
-            .with(menuItem: NSMenuItem(title: "Preferences...", action: #selector(showSettings), keyEquivalent: "")
+            .with(menuItem: NSMenuItem(title: L10n.menuPreferences, action: #selector(showSettings), keyEquivalent: "")
+                .with(tag: StatusMenuTag.preferences.rawValue)
                 .with(accessibilityIdentifier: "")
             )
             .with(menuItem: NSMenuItem.separator())
-            .with(menuItem: NSMenuItem(title: "Toggle Window", action: #selector(togglePopover), keyEquivalent: "V")
+            .with(menuItem: NSMenuItem(title: L10n.menuToggleWindow, action: #selector(togglePopover), keyEquivalent: "V")
+                .with(tag: StatusMenuTag.toggleWindow.rawValue)
                 .with(accessibilityIdentifier: Accessibility.identifiers.toggleHistoryWindowButton)
             )
-            .with(menuItem: NSMenuItem(title: "Launch at Login", action: #selector(launchAtLogin), keyEquivalent: "")
+            .with(menuItem: NSMenuItem(title: L10n.menuLaunchAtLogin, action: #selector(launchAtLogin), keyEquivalent: "")
+                .with(tag: StatusMenuTag.launchAtLogin.rawValue)
                 .with(accessibilityIdentifier: Accessibility.identifiers.launchAtLoginButton)
             )
-            .with(menuItem: NSMenuItem(title: "Delete Selected", action: #selector(deleteSelectedClicked), keyEquivalent: Constants.statusItemMenu.deleteKeyEquivalent)
+            .with(menuItem: NSMenuItem(title: L10n.menuDeleteSelected, action: #selector(deleteSelectedClicked), keyEquivalent: Constants.statusItemMenu.deleteKeyEquivalent)
+                .with(tag: StatusMenuTag.deleteSelected.rawValue)
                 .with(state: .off)
             )
-            .with(menuItem: NSMenuItem(title: "Clear history", action: #selector(clearHistoryClicked), keyEquivalent: ""))
-            .with(menuItem: NSMenuItem(title: "Position", action: nil, keyEquivalent: "")
+            .with(menuItem: NSMenuItem(title: L10n.menuClearHistory, action: #selector(clearHistoryClicked), keyEquivalent: "")
+                .with(tag: StatusMenuTag.clearHistory.rawValue)
+            )
+            .with(menuItem: NSMenuItem(title: L10n.menuPosition, action: nil, keyEquivalent: "")
+                .with(tag: StatusMenuTag.position.rawValue)
                 .with(accessibilityIdentifier: Accessibility.identifiers.positionButton)
                 .with(submenu: createWindowPositionSubmenu(settings: settings))
             )
             .with(menuItem: NSMenuItem.separator())
-            .with(menuItem: NSMenuItem(title: "Quit", action: #selector(quit), keyEquivalent: "")
+            .with(menuItem: NSMenuItem(title: L10n.menuQuit, action: #selector(quit), keyEquivalent: "")
+                .with(tag: StatusMenuTag.quit.rawValue)
                 .with(accessibilityIdentifier: Accessibility.identifiers.quitButton)
         )
         menu.autoenablesItems = false
@@ -103,14 +114,14 @@ class Controller {
         
         state.launchAtLogin
             .subscribe (onNext: {
-                menu.item(withTitle: "Launch at Login")?.state = $0 ? .on : .off
+                menu.item(withTag: StatusMenuTag.launchAtLogin.rawValue)?.state = $0 ? .on : .off
             })
             .disposed(by: state.disposeBag)
         
         state.panelPosition
             .subscribe(onNext: { next in
                 PanelPosition.allCases.forEach { pos in
-                    menu.item(withTitle: "Position")?.submenu?.item(withTag: pos.rawValue)?.state = next == pos ? .on : .off
+                    menu.item(withTag: StatusMenuTag.position.rawValue)?.submenu?.item(withTag: pos.rawValue)?.state = next == pos ? .on : .off
                 }
             })
             .disposed(by: state.disposeBag)
@@ -118,20 +129,21 @@ class Controller {
         
         state.isHistoryPanelShown
             .subscribe(onNext: {
-                menu.item(withTitle: "Position")?.submenu?.item(withTag: PanelPosition.left.rawValue)?.keyEquivalent = $0 ? Constants.statusItemMenu.leftArrowKeyEquivalent : ""
-                menu.item(withTitle: "Position")?.submenu?.item(withTag: PanelPosition.left.rawValue)?.keyEquivalentModifierMask = NSEvent.ModifierFlags(arrayLiteral: .control, .option, .command)
+                let positionMenu = menu.item(withTag: StatusMenuTag.position.rawValue)?.submenu
+                positionMenu?.item(withTag: PanelPosition.left.rawValue)?.keyEquivalent = $0 ? Constants.statusItemMenu.leftArrowKeyEquivalent : ""
+                positionMenu?.item(withTag: PanelPosition.left.rawValue)?.keyEquivalentModifierMask = NSEvent.ModifierFlags(arrayLiteral: .control, .option, .command)
                 
-                menu.item(withTitle: "Position")?.submenu?.item(withTag: PanelPosition.right.rawValue)?.keyEquivalent = $0 ? Constants.statusItemMenu.rightArrowKeyEquivalent : ""
-                menu.item(withTitle: "Position")?.submenu?.item(withTag: PanelPosition.right.rawValue)?.keyEquivalentModifierMask = NSEvent.ModifierFlags(arrayLiteral: .control, .option, .command)
+                positionMenu?.item(withTag: PanelPosition.right.rawValue)?.keyEquivalent = $0 ? Constants.statusItemMenu.rightArrowKeyEquivalent : ""
+                positionMenu?.item(withTag: PanelPosition.right.rawValue)?.keyEquivalentModifierMask = NSEvent.ModifierFlags(arrayLiteral: .control, .option, .command)
                 
-                menu.item(withTitle: "Position")?.submenu?.item(withTag: PanelPosition.top.rawValue)?.keyEquivalent = $0 ? Constants.statusItemMenu.upArrowKeyEquivalent : ""
-                menu.item(withTitle: "Position")?.submenu?.item(withTag: PanelPosition.top.rawValue)?.keyEquivalentModifierMask = NSEvent.ModifierFlags(arrayLiteral: .control, .option, .command)
+                positionMenu?.item(withTag: PanelPosition.top.rawValue)?.keyEquivalent = $0 ? Constants.statusItemMenu.upArrowKeyEquivalent : ""
+                positionMenu?.item(withTag: PanelPosition.top.rawValue)?.keyEquivalentModifierMask = NSEvent.ModifierFlags(arrayLiteral: .control, .option, .command)
                 
-                menu.item(withTitle: "Position")?.submenu?.item(withTag: PanelPosition.bottom.rawValue)?.keyEquivalent = $0 ? Constants.statusItemMenu.downArrowKeyEquivalent : ""
-                menu.item(withTitle: "Position")?.submenu?.item(withTag: PanelPosition.bottom.rawValue)?.keyEquivalentModifierMask = NSEvent.ModifierFlags(arrayLiteral: .control, .option, .command)
+                positionMenu?.item(withTag: PanelPosition.bottom.rawValue)?.keyEquivalent = $0 ? Constants.statusItemMenu.downArrowKeyEquivalent : ""
+                positionMenu?.item(withTag: PanelPosition.bottom.rawValue)?.keyEquivalentModifierMask = NSEvent.ModifierFlags(arrayLiteral: .control, .option, .command)
                 
-                menu.item(withTitle: "Delete Selected")?.isEnabled = $0
-                menu.item(withTitle: "Delete Selected")?.keyEquivalentModifierMask = .control
+                menu.item(withTag: StatusMenuTag.deleteSelected.rawValue)?.isEnabled = $0
+                menu.item(withTag: StatusMenuTag.deleteSelected.rawValue)?.keyEquivalentModifierMask = .control
             })
             .disposed(by: state.disposeBag)
         
@@ -198,12 +210,12 @@ class Controller {
     
     @objc func clearHistoryClicked() {
         let alert = NSAlert()
-        alert.messageText = "Clear history?"
-        alert.informativeText = "Favorites and saved passwords can be kept or removed together with all items."
+        alert.messageText = L10n.alertClearHistoryTitle
+        alert.informativeText = L10n.alertClearHistoryMessage
         alert.alertStyle = .warning
-        alert.addButton(withTitle: "Clear history")
-        alert.addButton(withTitle: "Clear all")
-        alert.addButton(withTitle: "Cancel")
+        alert.addButton(withTitle: L10n.menuClearHistory)
+        alert.addButton(withTitle: L10n.menuClearAll)
+        alert.addButton(withTitle: L10n.commonCancel)
         
         switch alert.runModal() {
         case .alertFirstButtonReturn:

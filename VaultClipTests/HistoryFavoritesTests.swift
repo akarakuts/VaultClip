@@ -54,18 +54,20 @@ final class HistoryFavoritesTests: XCTestCase {
         let history = History(historyFM: HistoryFileManagerMock(), cache: cache, items: [item], maxItems: 100)
         
         XCTAssertFalse(item.isPassword)
-        history.setPassword(true, for: item, comment: "Work account")
+        history.setPassword(true, for: item, comment: "Work account", login: "user@example.com")
         XCTAssertTrue(item.isPassword)
         XCTAssertEqual(item.passwordComment, "Work account")
+        XCTAssertEqual(item.passwordLogin, "user@example.com")
         XCTAssertEqual(history.passwordItems.count, 1)
     }
     
-    func testPasswordCommentClearsWhenRemoved() {
+    func testPasswordMetadataClearsWhenRemoved() {
         let item = HistoryItem(
             unsavedData: [.string: "secret".data(using: .utf8)!],
             cache: cache,
             isPassword: true,
-            passwordComment: "Note"
+            passwordComment: "Note",
+            passwordLogin: "alice"
         )
         let history = History(historyFM: HistoryFileManagerMock(), cache: cache, items: [item], maxItems: 100)
         
@@ -73,6 +75,23 @@ final class HistoryFavoritesTests: XCTestCase {
         
         XCTAssertFalse(item.isPassword)
         XCTAssertEqual(item.passwordComment, "")
+        XCTAssertEqual(item.passwordLogin, "")
+    }
+    
+    func testPasswordMetadataUpdate() {
+        let item = HistoryItem(
+            unsavedData: [.string: "secret".data(using: .utf8)!],
+            cache: cache,
+            isPassword: true,
+            passwordComment: "Old",
+            passwordLogin: "old-login"
+        )
+        let history = History(historyFM: HistoryFileManagerMock(), cache: cache, items: [item], maxItems: 100)
+        
+        history.setPasswordMetadata(comment: "New", login: "new-login", for: item)
+        
+        XCTAssertEqual(item.passwordComment, "New")
+        XCTAssertEqual(item.passwordLogin, "new-login")
     }
     
     func testClearNonFavoritesOnlyKeepsPasswordItems() {

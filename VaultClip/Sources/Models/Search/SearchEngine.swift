@@ -68,8 +68,12 @@ public class SearchEngine {
         var indices: [Int] = []
         for (index, item) in historyItems.enumerated() {
             if item.isPassword {
-                guard !item.passwordComment.isEmpty else { continue }
-                strings.append(item.passwordComment)
+                let searchable = [item.passwordComment, item.passwordLogin]
+                    .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                    .filter { !$0.isEmpty }
+                    .joined(separator: "\n")
+                guard !searchable.isEmpty else { continue }
+                strings.append(searchable)
             } else {
                 strings.append(HistoryItemText.getString(forItem: item, listMode: .history))
             }

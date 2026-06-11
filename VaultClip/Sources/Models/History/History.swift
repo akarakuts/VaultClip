@@ -193,27 +193,44 @@ class History {
         return newValue
     }
     
-    func setPassword(_ isPassword: Bool, for item: HistoryItem, comment: String? = nil) {
+    func setPassword(
+        _ isPassword: Bool,
+        for item: HistoryItem,
+        comment: String? = nil,
+        login: String? = nil
+    ) {
         guard let index = index(of: item) else { return }
-        let resolvedComment = comment ?? (isPassword ? _items[index].passwordComment : "")
+        let resolvedComment = (comment ?? (isPassword ? _items[index].passwordComment : ""))
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let resolvedLogin = (login ?? (isPassword ? _items[index].passwordLogin : ""))
+            .trimmingCharacters(in: .whitespacesAndNewlines)
         let passwordChanged = _items[index].isPassword != isPassword
         let commentChanged = _items[index].passwordComment != resolvedComment
-        guard passwordChanged || commentChanged else { return }
+        let loginChanged = _items[index].passwordLogin != resolvedLogin
+        guard passwordChanged || commentChanged || loginChanged else { return }
         _items[index].isPassword = isPassword
         _items[index].passwordComment = isPassword ? resolvedComment : ""
+        _items[index].passwordLogin = isPassword ? resolvedLogin : ""
         if isPassword {
             item.stopCaching()
         }
-        historyFM.setPassword(isPassword, comment: _items[index].passwordComment, for: item)
+        historyFM.setPassword(
+            isPassword,
+            comment: _items[index].passwordComment,
+            login: _items[index].passwordLogin,
+            for: item
+        )
         notify(Change.passwordChanged(item: item, isPassword: isPassword))
     }
     
-    func setPasswordComment(_ comment: String, for item: HistoryItem) {
+    func setPasswordMetadata(comment: String, login: String, for item: HistoryItem) {
         guard let index = index(of: item), _items[index].isPassword else { return }
-        let trimmed = comment.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard _items[index].passwordComment != trimmed else { return }
-        _items[index].passwordComment = trimmed
-        historyFM.setPasswordComment(trimmed, for: item)
+        let trimmedComment = comment.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedLogin = login.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard _items[index].passwordComment != trimmedComment || _items[index].passwordLogin != trimmedLogin else { return }
+        _items[index].passwordComment = trimmedComment
+        _items[index].passwordLogin = trimmedLogin
+        historyFM.setPasswordMetadata(comment: trimmedComment, login: trimmedLogin, for: item)
         notify(Change.passwordChanged(item: item, isPassword: true))
     }
     
@@ -316,44 +333,126 @@ class History {
 }
 
 extension History: PasteboardMonitorDelegate {
-    
+
+    /// Re-reads the live pasteboard on launch even when `changeCount` matches persisted settings.
+    func syncWithPasteboardOnLaunch(_ pasteboard: NSPasteboard) {
+        processPasteboardChange(
+            pasteboard,
+            originBundleId: NSWorkspace.shared.frontmostApplication?.bundleIdentifier,
+            ignoreChangeCount: true
+        )
+    }
+
     func pasteboardDidChange(_ pasteboard: NSPasteboard, originBundleId: String?) {
-        if pasteboard.changeCount == lastRecordedChangeCount {
+        processPasteboardChange(pasteboard, originBundleId: originBundleId, ignoreChangeCount: false)
+    }
+
+    private func processPasteboardChange(
+        _ pasteboard: NSPasteboard,
+        originBundleId: String?,
+        ignoreChangeCount: Bool
+    ) {
+        if !ignoreChangeCount, pasteboard.changeCount == lastRecordedChangeCount {
             return
         }
-        
-        let liveBundleId = NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? originBundleId
+
+        let liveBundleId = Self.clipboardSourceBundleId(originBundleId: originBundleId)
         if let bundleId = liveBundleId, bundleIdDenylist.contains(bundleId) {
+            PasteboardDiagnostics.log("skipped bundle denylist: \(bundleId)")
             recordPasteboardChange(withCount: pasteboard.changeCount)
             return
         }
-        
-        guard let pasteboardItems = pasteboard.pasteboardItems else {
+
+        let pasteboardItems = Self.pasteboardItems(from: pasteboard)
+        guard !pasteboardItems.isEmpty else {
+            PasteboardDiagnostics.log("no pasteboard items (changeCount=\(pasteboard.changeCount))")
             recordPasteboardChange(withCount: pasteboard.changeCount)
             return
         }
-        
+
+        var inserted = 0
         for item in pasteboardItems.reversed() {
-            let filteredTypes = Set(item.types).subtracting(self.pasteboardTypeIgnoreList)
-            let hasTypes = !filteredTypes.isEmpty
-            let hasNoDeniedTypes = Set(filteredTypes.map({ $0.rawValue })).isDisjoint(with: pasteboardTypeDenylist)
-            
-            if hasTypes && hasNoDeniedTypes {
-                var data = Self.extractPasteboardPayload(
-                    from: item,
-                    filteredTypes: filteredTypes,
-                    comparedTo: self._items
-                )
-                if data.isEmpty, let raster = HistoryItem.extractRasterData(from: item) {
-                    data = raster
-                }
-                if !data.isEmpty, !isDuplicatePayload(data, comparedTo: _items) {
-                    let historyItem = HistoryItem(unsavedData: data, cache: cache, sourceBundleId: liveBundleId)
-                    insertItem(historyItem, at: 0)
-                }
+            let filteredTypes = Self.usablePasteboardTypes(
+                from: Set(item.types),
+                ignoreList: pasteboardTypeIgnoreList,
+                denylist: pasteboardTypeDenylist
+            )
+            guard !filteredTypes.isEmpty else { continue }
+
+            var data = Self.extractPasteboardPayload(
+                from: item,
+                filteredTypes: filteredTypes,
+                comparedTo: self._items
+            )
+            if data.isEmpty, let raster = HistoryItem.extractRasterData(from: item) {
+                data = raster
+            }
+            guard !data.isEmpty else {
+                PasteboardDiagnostics.log("empty payload for types: \(filteredTypes.map(\.rawValue))")
+                continue
+            }
+            if isDuplicatePayload(data, comparedTo: _items) {
+                PasteboardDiagnostics.log("duplicate payload (\(data.count) types)")
+                continue
+            }
+            let historyItem = HistoryItem(unsavedData: data, cache: cache, sourceBundleId: liveBundleId)
+            insertItem(historyItem, at: 0)
+            inserted += 1
+        }
+
+        PasteboardDiagnostics.log(
+            "processed changeCount=\(pasteboard.changeCount) inserted=\(inserted) historyCount=\(_items.count) launchSync=\(ignoreChangeCount)"
+        )
+        recordPasteboardChange(withCount: pasteboard.changeCount)
+    }
+
+    private static func clipboardSourceBundleId(originBundleId: String?) -> String? {
+        let ownBundleId = Constants.branding.bundleIdentifier
+        let frontmost = NSWorkspace.shared.frontmostApplication?.bundleIdentifier
+        if frontmost == ownBundleId {
+            return originBundleId
+        }
+        return frontmost ?? originBundleId
+    }
+
+    /// Drops ignored metadata types and password-manager markers; keeps safe payload types.
+    private static func usablePasteboardTypes(
+        from types: Set<NSPasteboard.PasteboardType>,
+        ignoreList: Set<NSPasteboard.PasteboardType>,
+        denylist: Set<String>
+    ) -> Set<NSPasteboard.PasteboardType> {
+        let raw = Set(types.map(\.rawValue))
+        let securityMarkers: Set<String> = [
+            "org.nspasteboard.ConcealedType",
+            "org.nspasteboard.TransientType",
+            "org.nspasteboard.AutoGeneratedType",
+        ]
+        if !raw.isDisjoint(with: securityMarkers) {
+            return []
+        }
+        return types
+            .subtracting(ignoreList)
+            .filter { !denylist.contains($0.rawValue) }
+    }
+
+    /// `pasteboardItems` can be nil while legacy `data(forType:)` still works on some macOS builds.
+    private static func pasteboardItems(from pasteboard: NSPasteboard) -> [NSPasteboardItem] {
+        if let items = pasteboard.pasteboardItems, !items.isEmpty {
+            return items
+        }
+        guard let types = pasteboard.types, !types.isEmpty else { return [] }
+        let item = NSPasteboardItem()
+        var wroteAny = false
+        for type in types {
+            if let data = pasteboard.data(forType: type) {
+                item.setData(data, forType: type)
+                wroteAny = true
+            } else if let string = pasteboard.string(forType: type),
+                      let data = string.data(using: .utf8) {
+                item.setData(data, forType: type)
+                wroteAny = true
             }
         }
-        
-        recordPasteboardChange(withCount: pasteboard.changeCount)
+        return wroteAny ? [item] : []
     }
 }

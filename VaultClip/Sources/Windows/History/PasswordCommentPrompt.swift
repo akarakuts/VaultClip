@@ -9,23 +9,47 @@
 //
 import Cocoa
 
-enum PasswordCommentPrompt {
+struct PasswordEntryFields {
+    let comment: String
+    let login: String
+}
+
+enum PasswordEntryPrompt {
     
-    /// Returns trimmed comment on Save, nil on Cancel.
-    static func run(title: String, message: String, initialValue: String = "") -> String? {
+    /// Returns trimmed fields on Save, nil on Cancel.
+    static func run(
+        title: String,
+        message: String,
+        initialComment: String = "",
+        initialLogin: String = ""
+    ) -> PasswordEntryFields? {
         let alert = NSAlert()
         alert.messageText = title
         alert.informativeText = message
         alert.alertStyle = .informational
-        alert.addButton(withTitle: "Save")
-        alert.addButton(withTitle: "Cancel")
+        alert.addButton(withTitle: L10n.commonSave)
+        alert.addButton(withTitle: L10n.commonCancel)
         
-        let field = NSTextField(frame: NSRect(x: 0, y: 0, width: 280, height: 24))
-        field.stringValue = initialValue
-        field.placeholderString = "Comment (optional)"
-        alert.accessoryView = field
+        let commentField = NSTextField(frame: NSRect(x: 0, y: 28, width: 280, height: 24))
+        commentField.stringValue = initialComment
+        commentField.placeholderString = L10n.passwordFieldComment
+        
+        let loginField = NSTextField(frame: NSRect(x: 0, y: 0, width: 280, height: 24))
+        loginField.stringValue = initialLogin
+        loginField.placeholderString = L10n.passwordFieldLogin
+        
+        let stack = NSStackView(frame: NSRect(x: 0, y: 0, width: 280, height: 56))
+        stack.orientation = .vertical
+        stack.alignment = .leading
+        stack.spacing = 8
+        stack.addArrangedSubview(commentField)
+        stack.addArrangedSubview(loginField)
+        alert.accessoryView = stack
         
         guard alert.runModal() == .alertFirstButtonReturn else { return nil }
-        return field.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
+        return PasswordEntryFields(
+            comment: commentField.stringValue.trimmingCharacters(in: .whitespacesAndNewlines),
+            login: loginField.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
+        )
     }
 }

@@ -52,8 +52,11 @@ class HistoryItem: NSObject {
     /// Saved in the Passwords tab; exempt from automatic history pruning.
     var isPassword: Bool
     
-    /// Optional note shown under the password value in the Passwords tab.
+    /// Comment shown on line 1 in the Passwords tab.
     var passwordComment: String
+    
+    /// Login shown on line 2 in the Passwords tab.
+    var passwordLogin: String
     
     /// Items kept when clearing history or trimming the list.
     var isPinnedFromPruning: Bool {
@@ -91,7 +94,8 @@ class HistoryItem: NSObject {
         copiedAt: Date = Date(),
         isFavorite: Bool = false,
         isPassword: Bool = false,
-        passwordComment: String = ""
+        passwordComment: String = "",
+        passwordLogin: String = ""
     ) {
         self._unsavedData = unsavedData
         self.types = unsavedData.keys.map({$0})
@@ -102,6 +106,7 @@ class HistoryItem: NSObject {
         self.isFavorite = isFavorite
         self.isPassword = isPassword
         self.passwordComment = passwordComment
+        self.passwordLogin = passwordLogin
     }
     
     /// Creates a `HistoryItem` for an item that is saved to disk.
@@ -117,7 +122,8 @@ class HistoryItem: NSObject {
         copiedAt: Date = Date(),
         isFavorite: Bool = false,
         isPassword: Bool = false,
-        passwordComment: String = ""
+        passwordComment: String = "",
+        passwordLogin: String = ""
     ) {
         self.fsId = fsId
         self._unsavedData = nil
@@ -128,7 +134,13 @@ class HistoryItem: NSObject {
         self.isFavorite = isFavorite
         self.isPassword = isPassword
         self.passwordComment = passwordComment
+        self.passwordLogin = passwordLogin
         self.cache.registerItem(withId: fsId)
+    }
+    
+    /// Plain-text password payload stored with this history item.
+    func getPasswordValue() -> String? {
+        getPlainString()
     }
     
     
@@ -181,10 +193,51 @@ class HistoryItem: NSObject {
         cache.unregisterItem(withId: fsId)
     }
     
-    func getPlainString() -> String? {
-        guard let data = data(forType: .string) else { return nil }
-        return String(data: data, encoding: .utf8)
+    /// True when at least one payload can be read (decrypts with the current key).
+    func hasReadableStoredData() -> Bool {
+        types.contains { data(forType: $0) != nil }
     }
+
+    func getPlainString() -> String? {
+        for type in Self.plainTextPasteboardTypes where types.contains(type) {
+            if let string = decodedText(for: type) {
+                return string
+            }
+        }
+        for type in types {
+            let raw = type.rawValue.lowercased()
+            guard raw.contains("plain-text") || raw == "public.text" || raw.hasSuffix(".text") else {
+                continue
+            }
+            if let string = decodedText(for: type) {
+                return string
+            }
+        }
+        return nil
+    }
+
+    private func decodedText(for type: NSPasteboard.PasteboardType) -> String? {
+        guard let data = data(forType: type), !data.isEmpty else { return nil }
+        let raw = type.rawValue.lowercased()
+        if raw.contains("utf16") {
+            if let text = String(data: data, encoding: .utf16) { return text.isEmpty ? nil : text }
+            if let text = String(data: data, encoding: .utf16LittleEndian) { return text.isEmpty ? nil : text }
+        }
+        if let text = String(data: data, encoding: .utf8), !text.isEmpty {
+            return text
+        }
+        return nil
+    }
+
+    private static let plainTextPasteboardTypes: [NSPasteboard.PasteboardType] = [
+        .string,
+        NSPasteboard.PasteboardType(rawValue: "NSStringPboardType"),
+        NSPasteboard.PasteboardType(rawValue: "public.text"),
+        NSPasteboard.PasteboardType(rawValue: "public.utf8-plain-text"),
+        NSPasteboard.PasteboardType(rawValue: "public.utf16-plain-text"),
+        NSPasteboard.PasteboardType(rawValue: "com.apple.traditional-mac-plain-text"),
+        NSPasteboard.PasteboardType(rawValue: "com.trolltech.anymime.text--plain"),
+    ]
     
     func getRtfAttributedString() -> NSAttributedString? {
         guard let data = data(forType: .rtf) else { return nil }
@@ -192,13 +245,34 @@ class HistoryItem: NSObject {
     }
     
     func getHtmlRawString() -> String? {
-        guard let data = data(forType: .html) else { return nil }
-        return String(data: data, encoding: .utf8)
+        for type in Self.htmlPasteboardTypes where types.contains(type) {
+            if let data = data(forType: type),
+               let string = String(data: data, encoding: .utf8),
+               !string.isEmpty {
+                return string
+            }
+        }
+        return nil
     }
+
+    private static let htmlPasteboardTypes: [NSPasteboard.PasteboardType] = [
+        .html,
+        NSPasteboard.PasteboardType(rawValue: "public.html"),
+        NSPasteboard.PasteboardType(rawValue: "Apple HTML pasteboard type"),
+    ]
     
     func getHtmlAttributedString() -> NSAttributedString? {
-        guard let data = data(forType: .html) else { return nil }
-        return NSAttributedString(html: data, options: [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
+        for type in Self.htmlPasteboardTypes where types.contains(type) {
+            guard let data = data(forType: type) else { continue }
+            if let attr = NSAttributedString(
+                html: data,
+                options: [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html],
+                documentAttributes: nil
+            ), attr.length > 0 {
+                return attr
+            }
+        }
+        return nil
     }
     
     /// Web/link URL from the pasteboard (not a `file://` path).

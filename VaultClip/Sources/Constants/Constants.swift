@@ -17,15 +17,12 @@ struct Constants {
         static let displayName = "VaultClip"
         static let bundleIdentifier = "com.karakuts.VaultClip"
         static let legacyBundleIdentifier = "MatthewDavidson.Yippy"
-        static let historyTabTitle = "History"
-        static let favoritesTabTitle = "Favorites"
-        static let passwordsTabTitle = "Passwords"
     }
     
     struct panel {
         static let menuWidth: CGFloat = 430
         static let menuHeight: CGFloat = 300
-        static let maxCellHeight: CGFloat = 200
+        static let maxCellHeight: CGFloat = HistoryListTheme.metrics.maxCellHeight
     }
     
     struct statusItemMenu {
@@ -39,13 +36,7 @@ struct Constants {
     struct fonts {
         
         static var listPlainText: NSFont {
-            if #available(OSX 10.15, *) {
-                return NSFont(name: "SF Mono Regular", size: 12) ?? NSFont.monospacedSystemFont(ofSize: 12, weight: .regular)
-//                return NSFont(name: "Roboto Mono Light for Powerline", size: 12) ?? NSFont.monospacedSystemFont(ofSize: 12, weight: .regular)
-            }
-            else {
-                return NSFont(name: "Roboto Mono Light for Powerline", size: 12) ?? NSFont.systemFont(ofSize: 12)
-            }
+            HistoryListTheme.typography.body
         }
         
         static var listFileNameText: NSFont {
@@ -80,6 +71,10 @@ struct Constants {
         
         static var warningLog: URL {
             return appSupport.appendingPathComponent("warning.log", isDirectory: false)
+        }
+
+        static var pasteboardDebugLog: URL {
+            return appSupport.appendingPathComponent("pasteboard-debug.log", isDirectory: false)
         }
     }
     

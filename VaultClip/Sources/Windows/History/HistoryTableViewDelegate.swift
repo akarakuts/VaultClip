@@ -21,7 +21,11 @@ protocol HistoryTableViewDelegate {
     
     func historyTableView(_ historyTableView: HistoryTableView, removeFromPasswordsAt row: Int)
     
-    func historyTableView(_ historyTableView: HistoryTableView, editPasswordCommentAt row: Int)
+    func historyTableView(_ historyTableView: HistoryTableView, editPasswordEntryAt row: Int)
+    
+    func historyTableView(_ historyTableView: HistoryTableView, copyPasswordLoginAt row: Int)
+    
+    func historyTableView(_ historyTableView: HistoryTableView, copyPasswordValueAt row: Int)
     
     func historyTableView(_ historyTableView: HistoryTableView, deleteItemAt row: Int)
 }

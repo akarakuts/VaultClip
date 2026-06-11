@@ -29,30 +29,84 @@ class HistoryTableView: NSTableView {
     
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
-        
         commonInit()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
         commonInit()
     }
     
     private func commonInit() {
         selectionHighlightStyle = .none
         allowsMultipleSelection = false
-        
-        intercellSpacing = NSSize(
-            width: HistoryListTheme.metrics.rowHorizontalInset,
-            height: HistoryListTheme.metrics.rowVerticalSpacing
-        )
+        columnAutoresizingStyle = .noColumnAutoresizing
+        applyPlainListAppearance()
         setAccessibilityIdentifier(Accessibility.identifiers.historyTableView)
         
         delegate = self
         dataSource = self
         
         registerForDraggedTypes([HistoryItem.historyItemIdType])
+    }
+    
+    /// `.automatic` resolves to `.inset` in borderless scroll views (~10pt side padding on Big Sur+).
+    func applyPlainListAppearance() {
+        if #available(macOS 11.0, *) {
+            style = .plain
+        }
+        rowSizeStyle = .custom
+        intercellSpacing = NSSize(
+            width: 0,
+            height: HistoryListTheme.metrics.rowVerticalSpacing
+        )
+        guard let scrollView = enclosingScrollView else { return }
+        scrollView.automaticallyAdjustsContentInsets = false
+        scrollView.drawsBackground = false
+        scrollView.hasHorizontalScroller = false
+        scrollView.horizontalScrollElasticity = .none
+        scrollView.hasVerticalScroller = true
+        scrollView.autohidesScrollers = true
+        if #available(macOS 11.0, *) {
+            scrollView.scrollerStyle = .overlay
+            scrollView.contentInsets = .init(top: 0, left: 0, bottom: 0, right: 0)
+        }
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        applyPlainListAppearance()
+    }
+    
+    /// Delegates width enforcement to the clip view, the single owner of the visible viewport width.
+    func syncColumnWidthToScrollView() {
+        guard let scrollView = enclosingScrollView,
+              let column = tableColumns.first else { return }
+        let clipView = scrollView.contentView
+        
+        applyPlainListAppearance()
+        
+        let width = floor(clipView.bounds.width)
+        guard width > 0 else { return }
+        
+        if let listClipView = clipView as? HistoryListClipView {
+            listClipView.enforceDocumentWidth()
+        } else {
+            if abs(column.width - width) > 0.5 {
+                column.width = width
+            }
+            if abs(clipView.bounds.origin.x) > 0.5 {
+                clipView.setBoundsOrigin(NSPoint(x: 0, y: clipView.bounds.origin.y))
+            }
+        }
+    }
+    
+    func remeasureVisibleRows() {
+        syncColumnWidthToScrollView()
+        let rows = numberOfRows
+        guard rows > 0 else { return }
+        noteHeightOfRows(withIndexesChanged: IndexSet(integersIn: 0..<rows))
+        redisplayVisible(historyListItems: historyListItems)
     }
     
     var selected: Int? {
@@ -72,6 +126,7 @@ class HistoryTableView: NSTableView {
     
     func reloadItem(_ i: Int) {
         reloadData(forRowIndexes: IndexSet(arrayLiteral: i), columnIndexes: IndexSet(arrayLiteral: 0))
+        syncColumnWidthToScrollView()
     }
     
     func redisplayVisible(historyListItems: [HistoryItem]) {
@@ -88,7 +143,10 @@ class HistoryTableView: NSTableView {
         historyListItems = data
         self.isRichText = isRichText
         self.listMode = listMode
-        reloadData()
+        applyPlainListAppearance()
+        super.reloadData()
+        syncColumnWidthToScrollView()
+        remeasureVisibleRows()
     }
 }
 
@@ -218,4 +276,5 @@ extension HistoryTableView: NSTableViewDelegate {
         
         return height
     }
+    
 }

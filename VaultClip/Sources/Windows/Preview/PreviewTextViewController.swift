@@ -61,7 +61,7 @@ class PreviewTextViewController: NSViewController, PreviewViewController {
     private func updatePreviewText() {
         guard let item = previewItem else { return }
         if item.isPassword && !passwordRevealed {
-            textView.string = HistoryItemText.passwordMask + "\n\nClick to reveal"
+            textView.string = HistoryItemText.passwordMask + "\n\n" + L10n.previewClickToReveal
             textView.isSelectable = false
             return
         }

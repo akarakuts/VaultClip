@@ -32,8 +32,14 @@ struct HistoryItemText {
         .paragraphStyle: HistoryListTheme.typography.bodyParagraphStyle,
     ]
     
+    static let passwordLoginAttributes: [NSAttributedString.Key: Any] = [
+        .font: HistoryListTheme.typography.body,
+        .foregroundColor: HistoryListTheme.colors.passwordLoginLabel,
+        .paragraphStyle: HistoryListTheme.typography.bodyParagraphStyle,
+    ]
+    
     static func displayCacheSignature(for item: HistoryItem, listMode: HistoryListMode) -> String {
-        "\(listMode.rawValue)|\(item.isFavorite)|\(item.isPassword)|\(item.passwordComment)"
+        "\(listMode.rawValue)|\(item.isFavorite)|\(item.isPassword)|\(item.passwordComment)|\(item.passwordLogin)"
     }
     
     static func shouldMaskPassword(for item: HistoryItem, listMode: HistoryListMode, revealPassword: Bool) -> Bool {
@@ -41,6 +47,9 @@ struct HistoryItemText {
     }
     
     static func getString(forItem item: HistoryItem, listMode: HistoryListMode = .history, revealPassword: Bool = false) -> String {
+        if listMode == .passwords, item.isPassword {
+            return passwordTabPlainString(for: item)
+        }
         if shouldMaskPassword(for: item, listMode: listMode, revealPassword: revealPassword) {
             return passwordMask
         }
@@ -76,9 +85,11 @@ struct HistoryItemText {
         listMode: HistoryListMode = .history,
         revealPassword: Bool = false
     ) -> NSAttributedString {
+        if listMode == .passwords, item.isPassword {
+            return passwordTabAttributedString(for: item)
+        }
         if shouldMaskPassword(for: item, listMode: listMode, revealPassword: revealPassword) {
-            let masked = NSAttributedString(string: passwordMask, attributes: itemStringAttributes)
-            return appendPasswordCommentIfNeeded(to: masked, for: item, listMode: listMode)
+            return NSAttributedString(string: passwordMask, attributes: itemStringAttributes)
         }
         let base: NSAttributedString
         if usingItemRtf, let attrStr = item.getRtfAttributedString() {
@@ -99,7 +110,11 @@ struct HistoryItemText {
                 base = NSAttributedString(string: label, attributes: itemStringAttributes)
             }
         }
-        return appendPasswordCommentIfNeeded(to: base, for: item, listMode: listMode)
+        return withLeftAlignedParagraphs(base)
+    }
+    
+    static func passwordTabPlainString(for item: HistoryItem) -> String {
+        [item.passwordComment, item.passwordLogin, passwordMask].joined(separator: "\n")
     }
     
     static func appendPasswordCommentIfNeeded(
@@ -107,12 +122,26 @@ struct HistoryItemText {
         for item: HistoryItem,
         listMode: HistoryListMode = .passwords
     ) -> NSAttributedString {
-        guard listMode == .passwords, item.isPassword, !item.passwordComment.isEmpty else {
-            return withLeftAlignedParagraphs(base)
+        if listMode == .passwords, item.isPassword {
+            return passwordTabAttributedString(for: item)
         }
-        let combined = NSMutableAttributedString(attributedString: withLeftAlignedParagraphs(base))
-        combined.append(NSAttributedString(string: "\n" + item.passwordComment, attributes: passwordCommentAttributes))
-        return combined
+        return withLeftAlignedParagraphs(base)
+    }
+    
+    static func passwordTabAttributedString(for item: HistoryItem) -> NSAttributedString {
+        let lines: [(String, [NSAttributedString.Key: Any])] = [
+            (item.passwordComment, passwordCommentAttributes),
+            (item.passwordLogin, passwordLoginAttributes),
+            (passwordMask, itemStringAttributes),
+        ]
+        let combined = NSMutableAttributedString()
+        for (index, line) in lines.enumerated() {
+            if index > 0 {
+                combined.append(NSAttributedString(string: "\n", attributes: itemStringAttributes))
+            }
+            combined.append(NSAttributedString(string: line.0, attributes: line.1))
+        }
+        return withLeftAlignedParagraphs(combined)
     }
     
     /// Normalizes pasted RTF/HTML styles so list rows stay left-aligned.

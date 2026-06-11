@@ -22,29 +22,51 @@ enum PanelPosition: Int, Codable, CaseIterable {
     case fullScreen = 7
     
     public func getFrame(forScreen screen: NSScreen) -> NSRect {
+        // visibleFrame excludes the menu bar and Dock so panel chrome stays on screen.
+        let visible = screen.visibleFrame
         switch self {
         case .right:
-            return NSRect(x: screen.frame.maxX - Constants.panel.menuWidth, y: screen.frame.minY, width: Constants.panel.menuWidth, height: screen.frame.height)
+            return NSRect(
+                x: screen.frame.maxX - Constants.panel.menuWidth,
+                y: visible.minY,
+                width: Constants.panel.menuWidth,
+                height: visible.height
+            )
         case .left:
-            return NSRect(x: screen.frame.minX, y: screen.frame.minY, width: Constants.panel.menuWidth, height: screen.frame.height)
+            return NSRect(
+                x: screen.frame.minX,
+                y: visible.minY,
+                width: Constants.panel.menuWidth,
+                height: visible.height
+            )
         case .top:
-            return NSRect(x: screen.frame.minX, y: screen.frame.maxY - Constants.panel.menuHeight, width: screen.frame.width, height: Constants.panel.menuHeight)
+            return NSRect(
+                x: visible.minX,
+                y: visible.maxY - Constants.panel.menuHeight,
+                width: visible.width,
+                height: Constants.panel.menuHeight
+            )
         case .bottom:
-            return NSRect(x: screen.frame.minX, y: screen.frame.minY, width: screen.frame.width, height: Constants.panel.menuHeight)
+            return NSRect(
+                x: visible.minX,
+                y: visible.minY,
+                width: visible.width,
+                height: Constants.panel.menuHeight
+            )
         case .centerExtraSmall:
-            let size = NSSize(width: screen.frame.width / 3, height: screen.frame.height / 3)
-            return Self.centerRect(ofSize: size, inRect: screen.frame)
+            let size = NSSize(width: visible.width / 3, height: visible.height / 3)
+            return Self.centerRect(ofSize: size, inRect: visible)
         case .centerSmall:
-            let size = NSSize(width: screen.frame.width / 2, height: screen.frame.height / 2)
-            return Self.centerRect(ofSize: size, inRect: screen.frame)
+            let size = NSSize(width: visible.width / 2, height: visible.height / 2)
+            return Self.centerRect(ofSize: size, inRect: visible)
         case .centerMedium:
-            let size = NSSize(width: screen.frame.width * 0.7, height: screen.frame.height * 0.7)
-            return Self.centerRect(ofSize: size, inRect: screen.frame)
+            let size = NSSize(width: visible.width * 0.7, height: visible.height * 0.7)
+            return Self.centerRect(ofSize: size, inRect: visible)
         case .centerLarge:
-            let size = NSSize(width: screen.frame.width * 0.85, height: screen.frame.height * 0.85)
-            return Self.centerRect(ofSize: size, inRect: screen.frame)
+            let size = NSSize(width: visible.width * 0.85, height: visible.height * 0.85)
+            return Self.centerRect(ofSize: size, inRect: visible)
         case .fullScreen:
-            return screen.frame
+            return visible
         }
     }
     
@@ -55,23 +77,23 @@ enum PanelPosition: Int, Codable, CaseIterable {
     var title: String {
         switch self {
         case .right:
-            return "Right"
+            return L10n.positionRight
         case .left:
-            return "Left"
+            return L10n.positionLeft
         case .top:
-            return "Top"
+            return L10n.positionTop
         case .bottom:
-            return "Bottom"
+            return L10n.positionBottom
         case .centerExtraSmall:
-            return "Center (Extra Small)"
+            return L10n.positionCenterExtraSmall
         case .centerSmall:
-            return "Center (Small)"
+            return L10n.positionCenterSmall
         case .centerMedium:
-            return "Center (Medium)"
+            return L10n.positionCenterMedium
         case .centerLarge:
-            return "Center (Large)"
+            return L10n.positionCenterLarge
         case .fullScreen:
-            return "Full Screen"
+            return L10n.positionFullScreen
         }
     }
     

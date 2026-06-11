@@ -100,7 +100,18 @@ class HistoryFileManager {
     }
     
     func loadHistoryOrder() -> [UUID]? {
+        let orderURL = Constants.urls.historyOrder
+        guard fileManager.fileExists(atPath: orderURL.path) else {
+            return []
+        }
+
         guard let order = orderManager.read() as? [String] else {
+            if HistoryEncryptionProbe.isEncryptedFile(at: orderURL, fileManager: fileManager) {
+                let historyError = ClipError(localizedDescription: "Failed to decrypt the history order file.")
+                historyError.log(with: errorLogger)
+                historyError.show(with: alerter)
+                return nil
+            }
             ClipWarning(localizedDescription: "Failed to load the history order.").log(with: warningLogger)
             return nil
         }
@@ -128,8 +139,16 @@ class HistoryFileManager {
     
     func loadHistory(cache: HistoryCache) -> History {
         guard let order = loadHistoryOrder() else {
+            if HistoryEncryptionProbe.hasEncryptedPayloads(fileManager: fileManager) {
+                ClipWarning(localizedDescription: "Encrypted history is present but could not be loaded.").log(with: warningLogger)
+                return History(cache: cache, items: [])
+            }
             ClipWarning(localizedDescription: "Failed to retrieve order. Creating new order...").log(with: warningLogger)
             saveHistoryOrder(history: [])
+            return History(cache: cache, items: [])
+        }
+
+        if order.isEmpty, !HistoryEncryptionProbe.hasEncryptedPayloads(fileManager: fileManager) {
             return History(cache: cache, items: [])
         }
         var items = [UUID: HistoryItem]()
@@ -163,6 +182,7 @@ class HistoryFileManager {
                     let isFavorite = self.loadFavorite(from: content)
                     let isPassword = self.loadPassword(from: content)
                     let passwordComment = self.loadPasswordComment(from: content)
+                    let passwordLogin = self.loadPasswordLogin(from: content)
                     let types = dataUrls
                         .map(\.lastPathComponent)
                         .filter { !HistoryItem.isMetadataFileName($0) }
@@ -175,7 +195,8 @@ class HistoryFileManager {
                         copiedAt: copiedAt,
                         isFavorite: isFavorite,
                         isPassword: isPassword,
-                        passwordComment: passwordComment
+                        passwordComment: passwordComment,
+                        passwordLogin: passwordLogin
                     )
                 }
                 catch {
@@ -224,6 +245,18 @@ class HistoryFileManager {
             historyError.log(with: self.errorLogger)
             historyError.show(with: self.alerter)
             orderedItems = orphans + orderedItems
+            saveHistoryOrder(history: orderedItems)
+        }
+
+        let unreadable = orderedItems.filter { !$0.hasReadableStoredData() }
+        if !unreadable.isEmpty {
+            let ids = unreadable.map { "'\($0.fsId.uuidString)'" }.joined(separator: ", ")
+            ClipWarning(localizedDescription: "Removing \(unreadable.count) clipboard item(s) that could not be decrypted: \(ids).")
+                .log(with: warningLogger)
+            for item in unreadable {
+                try? fileManager.removeItem(at: getUrl(forItemWithId: item.fsId))
+            }
+            orderedItems.removeAll { item in unreadable.contains(where: { $0.fsId == item.fsId }) }
             saveHistoryOrder(history: orderedItems)
         }
         
@@ -423,27 +456,26 @@ class HistoryFileManager {
         return raw.trimmingCharacters(in: .whitespacesAndNewlines) == HistoryItem.favoriteMarker
     }
     
-    func setPassword(_ isPassword: Bool, comment: String, for item: HistoryItem, completionHandler handler: ((Bool) -> Void)? = nil) {
+    func setPassword(
+        _ isPassword: Bool,
+        comment: String,
+        login: String,
+        for item: HistoryItem,
+        completionHandler handler: ((Bool) -> Void)? = nil
+    ) {
         dispatchQueue.async {
             let directoryUrl = self.getUrl(forItemWithId: item.fsId)
             let passwordUrl = directoryUrl.appendingPathComponent(HistoryItem.passwordMetadataFileName)
             let commentUrl = directoryUrl.appendingPathComponent(HistoryItem.passwordCommentMetadataFileName)
+            let loginUrl = directoryUrl.appendingPathComponent(HistoryItem.passwordLoginMetadataFileName)
             do {
                 if isPassword {
                     try self.writeMetadata(HistoryItem.passwordMarker, to: passwordUrl)
-                    if comment.isEmpty {
-                        if self.fileManager.fileExists(atPath: commentUrl.path) {
-                            try self.fileManager.removeItem(at: commentUrl)
-                        }
-                    } else {
-                        try self.writeMetadata(comment, to: commentUrl)
-                    }
+                    try self.writeOptionalMetadata(comment, to: commentUrl)
+                    try self.writeOptionalMetadata(login, to: loginUrl)
                 } else {
-                    if self.fileManager.fileExists(atPath: passwordUrl.path) {
-                        try self.fileManager.removeItem(at: passwordUrl)
-                    }
-                    if self.fileManager.fileExists(atPath: commentUrl.path) {
-                        try self.fileManager.removeItem(at: commentUrl)
+                    for url in [passwordUrl, commentUrl, loginUrl] where self.fileManager.fileExists(atPath: url.path) {
+                        try self.fileManager.removeItem(at: url)
                     }
                 }
                 self.callHander(handler, withVal: true)
@@ -455,24 +487,35 @@ class HistoryFileManager {
         }
     }
     
-    func setPasswordComment(_ comment: String, for item: HistoryItem, completionHandler handler: ((Bool) -> Void)? = nil) {
+    func setPasswordMetadata(
+        comment: String,
+        login: String,
+        for item: HistoryItem,
+        completionHandler handler: ((Bool) -> Void)? = nil
+    ) {
         dispatchQueue.async {
             let directoryUrl = self.getUrl(forItemWithId: item.fsId)
             let commentUrl = directoryUrl.appendingPathComponent(HistoryItem.passwordCommentMetadataFileName)
+            let loginUrl = directoryUrl.appendingPathComponent(HistoryItem.passwordLoginMetadataFileName)
             do {
-                if comment.isEmpty {
-                    if self.fileManager.fileExists(atPath: commentUrl.path) {
-                        try self.fileManager.removeItem(at: commentUrl)
-                    }
-                } else {
-                    try self.writeMetadata(comment, to: commentUrl)
-                }
+                try self.writeOptionalMetadata(comment, to: commentUrl)
+                try self.writeOptionalMetadata(login, to: loginUrl)
                 self.callHander(handler, withVal: true)
             } catch {
-                ClipWarning(localizedDescription: "Failed to save password comment for item '\(item.fsId.uuidString)': \(error.localizedDescription)")
+                ClipWarning(localizedDescription: "Failed to save password metadata for item '\(item.fsId.uuidString)': \(error.localizedDescription)")
                     .log(with: self.warningLogger)
                 self.callHander(handler, withVal: false)
             }
+        }
+    }
+    
+    private func writeOptionalMetadata(_ value: String, to url: URL) throws {
+        if value.isEmpty {
+            if fileManager.fileExists(atPath: url.path) {
+                try fileManager.removeItem(at: url)
+            }
+        } else {
+            try writeMetadata(value, to: url)
         }
     }
     
@@ -483,8 +526,16 @@ class HistoryFileManager {
     }
     
     private func loadPasswordComment(from itemDirectory: URL) -> String {
-        let commentUrl = itemDirectory.appendingPathComponent(HistoryItem.passwordCommentMetadataFileName)
-        guard let raw = readMetadata(from: commentUrl) ?? (try? String(contentsOf: commentUrl, encoding: .utf8)) else { return "" }
+        loadPasswordMetadataString(from: itemDirectory, fileName: HistoryItem.passwordCommentMetadataFileName)
+    }
+    
+    private func loadPasswordLogin(from itemDirectory: URL) -> String {
+        loadPasswordMetadataString(from: itemDirectory, fileName: HistoryItem.passwordLoginMetadataFileName)
+    }
+    
+    private func loadPasswordMetadataString(from itemDirectory: URL, fileName: String) -> String {
+        let url = itemDirectory.appendingPathComponent(fileName)
+        guard let raw = readMetadata(from: url) ?? (try? String(contentsOf: url, encoding: .utf8)) else { return "" }
         return raw.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     

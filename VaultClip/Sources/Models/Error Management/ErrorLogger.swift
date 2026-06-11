@@ -14,4 +14,13 @@ class ErrorLogger: Logger {
     static let general = ErrorLogger(url: Constants.urls.errorLog)
 }
 
+/// Pasteboard capture and history UI trace (`~/Library/Application Support/.../pasteboard-debug.log`).
+enum PasteboardDiagnostics {
+    private static let logger = Logger(url: Constants.urls.pasteboardDebugLog)
+
+    static func log(_ message: String) {
+        logger.logLine(message)
+    }
+}
+
 

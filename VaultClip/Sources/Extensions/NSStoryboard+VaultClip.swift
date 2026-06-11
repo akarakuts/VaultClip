@@ -28,13 +28,10 @@ extension NSStoryboard {
         }
 
         let alert = NSAlert()
-        alert.messageText = "\(Constants.branding.displayName) is corrupted"
-        alert.informativeText = """
-        Failed to load \(identifier) from storyboard "\(name)".
-        Please reinstall the application.
-        """
+        alert.messageText = L10n.storyboardCorruptedTitle(appName: Constants.branding.displayName)
+        alert.informativeText = L10n.storyboardCorruptedBody(identifier: identifier, storyboardName: name)
         alert.alertStyle = .critical
-        alert.addButton(withTitle: "Quit")
+        alert.addButton(withTitle: L10n.commonQuit)
         alert.runModal()
 
         NSApp.terminate(nil)

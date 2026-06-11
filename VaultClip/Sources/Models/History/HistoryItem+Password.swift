@@ -13,6 +13,7 @@ extension HistoryItem {
     
     static let passwordMetadataFileName = "password"
     static let passwordCommentMetadataFileName = "passwordComment"
+    static let passwordLoginMetadataFileName = "passwordLogin"
     
     static let passwordMarker = "1"
 }

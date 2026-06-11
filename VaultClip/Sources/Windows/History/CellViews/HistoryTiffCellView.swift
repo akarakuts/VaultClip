@@ -16,7 +16,7 @@ class HistoryTiffCellView: HistoryItemBaseCellView, HistoryListItem {
         NSUserInterfaceItemIdentifier(Accessibility.identifiers.historyTiffCellView)
     }
     
-    static let imagePadding = NSEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+    static let imagePadding = HistoryListTheme.metrics.imageCellPadding
     
     var tiffView: NSImageView!
     
@@ -36,7 +36,7 @@ class HistoryTiffCellView: HistoryItemBaseCellView, HistoryListItem {
         tiffView.imageAlignment = .alignTopLeft
         tiffView.imageScaling = .scaleProportionallyUpOrDown
         contentView.addConstraint(NSLayoutConstraint(item: tiffView!, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1, constant: Self.imagePadding.top))
-        contentView.addConstraint(NSLayoutConstraint(item: tiffView!, attribute: .leading, relatedBy: .equal, toItem: contentView, attribute: .leading, multiplier: 1, constant: Self.imagePadding.left))
+        contentView.addConstraint(NSLayoutConstraint(item: tiffView!, attribute: .leading, relatedBy: .equal, toItem: sourceAppIconView, attribute: .trailing, multiplier: 1, constant: HistoryItemBaseCellView.sourceAppIconSpacing))
         contentView.addConstraint(NSLayoutConstraint(item: contentView!, attribute: .trailing, relatedBy: .equal, toItem: tiffView, attribute: .trailing, multiplier: 1, constant: Self.imagePadding.right))
         contentView.addConstraint(NSLayoutConstraint(item: contentView!, attribute: .bottom, relatedBy: .equal, toItem: tiffView, attribute: .bottom, multiplier: 1, constant: Self.imagePadding.bottom))
     }
@@ -51,10 +51,18 @@ class HistoryTiffCellView: HistoryItemBaseCellView, HistoryListItem {
         let cellWidth = floor(historyTableView.cellWidth)
         
         guard let image = historyItem.getImage() else {
-            return 50 + imagePadding.yTotal + contentViewInsets.yTotal
+            return HistoryListTheme.metrics.imageCellMinHeight + imagePadding.yTotal + contentViewInsets.yTotal
         }
         
-        let imageWidth = max(1, cellWidth - imagePadding.xTotal - contentViewInsets.xTotal)
+        let imageWidth = max(
+            1,
+            cellWidth
+                - imagePadding.xTotal
+                - contentViewInsets.xTotal
+                - sourceAppIconSize
+                - sourceAppIconSpacing
+                - sourceAppIconTrailingInset
+        )
         let pixelSize = HistoryItem.displayPixelSize(of: image)
         let aspectHeight = pixelSize.height * imageWidth / max(pixelSize.width, 1)
         let maxHeight = max(historyTableView.visibleRect.height, Constants.panel.maxCellHeight)

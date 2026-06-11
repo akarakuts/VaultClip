@@ -25,15 +25,6 @@ class HistoryPanel {
     
     func paste(item: HistoryItem) {
         guard let index = history.index(of: item) else { return }
-        if item.isPassword {
-            let alert = NSAlert()
-            alert.messageText = "Paste saved password?"
-            alert.informativeText = "The password will be placed on the system clipboard where other applications can read it."
-            alert.alertStyle = .warning
-            alert.addButton(withTitle: "Paste")
-            alert.addButton(withTitle: "Cancel")
-            guard alert.runModal() == .alertFirstButtonReturn else { return }
-        }
         history.moveItem(at: index, to: 0)
         
         let newChangeCount = pasteboard.clearContents()
@@ -129,15 +120,32 @@ class HistoryPanel {
         history.toggleFavorite(for: item)
     }
     
-    func saveToPasswords(item: HistoryItem, comment: String) {
-        history.setPassword(true, for: item, comment: comment)
+    func saveToPasswords(item: HistoryItem, comment: String, login: String) {
+        history.setPassword(true, for: item, comment: comment, login: login)
     }
     
     func removeFromPasswords(item: HistoryItem) {
         history.setPassword(false, for: item)
     }
     
-    func editPasswordComment(item: HistoryItem, comment: String) {
-        history.setPasswordComment(comment, for: item)
+    func editPasswordEntry(item: HistoryItem, comment: String, login: String) {
+        history.setPasswordMetadata(comment: comment, login: login, for: item)
+    }
+    
+    func copyLogin(item: HistoryItem) {
+        guard !item.passwordLogin.isEmpty else { return }
+        copyStringToClipboard(item.passwordLogin)
+    }
+    
+    func copyPassword(item: HistoryItem) {
+        guard let password = item.getPasswordValue(), !password.isEmpty else { return }
+        copyStringToClipboard(password)
+    }
+    
+    private func copyStringToClipboard(_ string: String) {
+        let newChangeCount = pasteboard.clearContents()
+        history.recordPasteboardChange(withCount: newChangeCount)
+        pasteboard.setString(string, forType: .string)
+        history.recordPasteboardChange(withCount: pasteboard.changeCount)
     }
 }

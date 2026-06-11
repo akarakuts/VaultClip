@@ -39,8 +39,15 @@ class HistoryWindowController: NSWindowController {
                 else {
                     self.oldApp = NSWorkspace.shared.frontmostApplication
                     self.showWindow(nil)
+                    self.window?.layoutIfNeeded()
                     self.window?.makeKey()
                     NSApp.activate(ignoringOtherApps: true)
+                    (self.contentViewController as? HistoryViewController)?
+                        .alignHistoryListAfterWindowFrameChange()
+                    DispatchQueue.main.async {
+                        (self.contentViewController as? HistoryViewController)?
+                            .alignHistoryListAfterWindowFrameChange()
+                    }
                 }
             })
     }
@@ -49,6 +56,10 @@ class HistoryWindowController: NSWindowController {
         Observable.combineLatest(position, screen).subscribe(onNext: {
             (position, screen) in
             self.window?.setFrame(position.getFrame(forScreen: screen), display: true)
+            DispatchQueue.main.async {
+                (self.contentViewController as? HistoryViewController)?
+                    .alignHistoryListAfterWindowFrameChange()
+            }
         })
     }
 }

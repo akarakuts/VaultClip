@@ -15,6 +15,8 @@ class SettingsTabViewController: NSTabViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tabViewItems[0].label = L10n.settingsGeneral
+        tabViewItems[1].label = L10n.settingsHotKey
         tabViewItems[0].image = NSImage(imageLiteralResourceName: "gear")
         tabViewItems[1].image = NSImage(imageLiteralResourceName: "command")
     }

@@ -65,13 +65,9 @@ enum LaunchAtLoginHelper {
         DispatchQueue.main.async {
             let alert = NSAlert()
             alert.alertStyle = .warning
-            alert.messageText = "Install VaultClip to Applications"
-            alert.informativeText = """
-            You are running VaultClip from a disk image or temporary folder. macOS resets Accessibility permission when the app path changes.
-
-            Drag VaultClip to Applications and launch it from there for stable permissions and login at startup.
-            """
-            alert.addButton(withTitle: "OK")
+            alert.messageText = L10n.installTransientTitle
+            alert.informativeText = L10n.installTransientBody
+            alert.addButton(withTitle: L10n.commonOK)
             alert.runModal()
         }
     }
