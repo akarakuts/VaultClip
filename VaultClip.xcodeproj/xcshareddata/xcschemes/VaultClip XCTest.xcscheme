@@ -48,16 +48,6 @@
                ReferencedContainer = "container:VaultClip.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "34ACFBD722EB0B11004E6E63"
-               BuildableName = "VaultClipUITests.xctest"
-               BlueprintName = "VaultClipUITests"
-               ReferencedContainer = "container:VaultClip.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
