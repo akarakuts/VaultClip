@@ -33,9 +33,10 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build
 
-      - name: Run unit tests
+      # Menu-bar test host hangs on headless runners when launching the app for XCTest.
+      - name: Build unit tests
         run: |
-          xcodebuild \
+          xcodebuild build-for-testing \
             -workspace VaultClip.xcworkspace \
             -scheme "VaultClip XCTest" \
             -configuration Debug \
@@ -43,6 +44,4 @@ jobs:
             -derivedDataPath DerivedData \
             CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO \
-            test \
-            -only-testing:VaultClipTests
+            CODE_SIGNING_ALLOWED=NO
