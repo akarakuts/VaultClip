@@ -22,6 +22,13 @@ class HistoryCache {
     private var usage = [Usage]()
     private var _currentCacheSize = 0
     
+    /// Bytes currently held in the in-memory cache (for tests and diagnostics).
+    var currentCacheSize: Int {
+        var size = 0
+        accessQueue.sync { size = self._currentCacheSize }
+        return size
+    }
+    
     let maxCacheSize: Int
     var historyFM: HistoryFileManager
     var errorLogger: ErrorLogger
