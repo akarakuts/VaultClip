@@ -38,7 +38,7 @@ jobs:
           xcodebuild \
             -workspace VaultClip.xcworkspace \
             -scheme "VaultClip XCTest" \
-            -configuration Release \
+            -configuration Debug \
             -destination 'platform=macOS' \
             -derivedDataPath DerivedData \
             CODE_SIGN_IDENTITY="-" \

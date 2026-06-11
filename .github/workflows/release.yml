@@ -25,11 +25,14 @@ jobs:
         run: pod install
 
       - name: Import signing certificate
-        if: ${{ secrets.MACOS_CERTIFICATE_P12 != '' }}
         env:
           MACOS_CERTIFICATE_P12: ${{ secrets.MACOS_CERTIFICATE_P12 }}
           MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
         run: |
+          if [ -z "${MACOS_CERTIFICATE_P12:-}" ]; then
+            echo "No MACOS_CERTIFICATE_P12 secret — skipping certificate import (ad-hoc DMG)."
+            exit 0
+          fi
           chmod +x ./scripts/import-macos-certificate.sh
           ./scripts/import-macos-certificate.sh
 
