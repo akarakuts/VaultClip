@@ -1,0 +1,44 @@
+# CI — build and test on pushes to master and pull requests.
+
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-and-test:
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Release
+        run: |
+          xcodebuild \
+            -project VaultClip.xcodeproj \
+            -scheme VaultClip \
+            -configuration Release \
+            -destination 'platform=macOS' \
+            -derivedDataPath DerivedData \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      # Menu-bar test host hangs on headless runners when launching the app for XCTest.
+      - name: Build unit tests
+        run: |
+          xcodebuild build-for-testing \
+            -project VaultClip.xcodeproj \
+            -scheme "VaultClip XCTest" \
+            -configuration Debug \
+            -destination 'platform=macOS' \
+            -derivedDataPath DerivedData \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO

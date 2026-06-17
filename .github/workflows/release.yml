@@ -1,0 +1,89 @@
+# Release — build VaultClip.dmg and publish a GitHub Release when a version tag is pushed.
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install create-dmg
+        run: brew install create-dmg
+
+      - name: Import signing certificate
+        env:
+          MACOS_CERTIFICATE_P12: ${{ secrets.MACOS_CERTIFICATE_P12 }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+        run: |
+          if [ -z "${MACOS_CERTIFICATE_P12:-}" ]; then
+            echo "No MACOS_CERTIFICATE_P12 secret — skipping certificate import (ad-hoc DMG)."
+            exit 0
+          fi
+          chmod +x ./scripts/import-macos-certificate.sh
+          ./scripts/import-macos-certificate.sh
+
+      - name: Build Release
+        run: |
+          xcodebuild \
+            -project VaultClip.xcodeproj \
+            -scheme VaultClip \
+            -configuration Release \
+            -destination 'platform=macOS' \
+            -derivedDataPath DerivedData \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Create DMG
+        env:
+          MACOS_CERTIFICATE_P12: ${{ secrets.MACOS_CERTIFICATE_P12 }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          SIGNED=$(mktemp -d)
+          COPYFILE_DISABLE=1 ditto --norsrc DerivedData/Build/Products/Release/VaultClip.app "$SIGNED/VaultClip.app"
+          chmod +x ./codesign-app.sh
+          if [ -n "$MACOS_CERTIFICATE_P12" ]; then
+            export VAULTCLIP_SIGN_RELEASE=1
+          fi
+          ./codesign-app.sh "$SIGNED/VaultClip.app"
+          rm -rf dmg-staging VaultClip.dmg
+          mkdir dmg-staging
+          COPYFILE_DISABLE=1 ditto --norsrc "$SIGNED/VaultClip.app" dmg-staging/VaultClip.app
+          ( cd dmg-staging && ../create-installer.sh VaultClip && mv VaultClip.dmg .. )
+          if [ -n "${APPLE_ID:-}" ] && [ -n "${APPLE_APP_SPECIFIC_PASSWORD:-}" ] && [ -n "${APPLE_TEAM_ID:-}" ]; then
+            chmod +x ./notarize-dmg.sh
+            ./notarize-dmg.sh VaultClip.dmg
+          elif [ "${VAULTCLIP_SIGN_RELEASE:-}" = "1" ]; then
+            echo "Signed with Developer ID; notarization skipped (set APPLE_ID secrets to enable)."
+          else
+            echo "Warning: ad-hoc DMG — Accessibility will not work reliably. Add MACOS_CERTIFICATE_P12 secret."
+          fi
+          ls -lh VaultClip.dmg
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: VaultClip-${{ github.ref_name }}
+          path: VaultClip.dmg
+          retention-days: 90
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: VaultClip ${{ github.ref_name }}
+          generate_release_notes: true
+          files: VaultClip.dmg

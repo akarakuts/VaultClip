@@ -1,0 +1,33 @@
+{
+  "originHash" : "a7dfec03ac965862acc531caae84faa8a19c9ec1211fc476c4d08503414cc5b8",
+  "pins" : [
+    {
+      "identity" : "fuse-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/krisk/fuse-swift",
+      "state" : {
+        "revision" : "26ba868691b2d8b7bf2b1322951eb591be70ccca",
+        "version" : "1.4.0"
+      }
+    },
+    {
+      "identity" : "hotkey",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mattDavo/HotKey",
+      "state" : {
+        "revision" : "fd5493d0e30e1f8ae4bce708a2446746c11e7a15",
+        "version" : "0.1.5"
+      }
+    },
+    {
+      "identity" : "rxswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveX/RxSwift",
+      "state" : {
+        "revision" : "c6c0c540109678b96639c25e9c0ebe4a6d7a69a9",
+        "version" : "5.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}

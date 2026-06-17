@@ -1,0 +1,102 @@
+# ── macOS ─────────────────────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+Thumbs.db
+
+# ── Xcode / Swift ─────────────────────────────────────────────────────────────
+build/
+DerivedData/
+DerivedData-*/
+*.xcarchive
+*.xcresult
+*.xcresult/
+*.ipa
+*.dSYM
+*.dSYM.zip
+*.hmap
+*.profraw
+*.profdata
+timeline.xctimeline
+playground.xcworkspace
+.swiftpm/
+.build/
+
+## User-specific Xcode state
+xcuserdata/
+*.xccheckout
+*.xcscmblueprint
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+*.moved-aside
+
+# ── Dependencies (Swift Package Manager; resolved at build time) ───────────────
+
+Carthage/Build/
+Carthage/Checkouts/
+
+# ── App packaging & signing ───────────────────────────────────────────────────
+*.app
+*.dmg
+dmg-staging/
+*.p12
+*.pem
+*.cer
+*.mobileprovision
+*.provisionprofile
+
+# ── Secrets & local env ───────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── IDE / editor / agent (never publish) ──────────────────────────────────────
+.cursor/
+.idea/
+.vscode/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+
+# ── fastlane ──────────────────────────────────────────────────────────────────
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output/
+
+# ── Marketing / screenshot tooling (generated locally) ────────────────────────
+images/
+images-en/
+scripts/demo-assets/desktop-wallpaper.png
+
+# Finder duplicate copies ("file 2.png") from manual export
+*\ 2.png
+*\ 2.jpg
+*\ 2.jpeg
+*\ 2.PNG
+*\ 2.JPG
+*\ 2.JPEG
+
+# ── Logs & temp ───────────────────────────────────────────────────────────────
+*.log
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+*.swp
+*~
+
+# ── Localization tooling (generated locally) ──────────────────────────────────
+scripts/.localization-venv/
+scripts/.localization-cache.json

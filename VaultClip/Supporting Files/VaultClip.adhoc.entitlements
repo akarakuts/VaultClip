@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	  keychain-access-groups is omitted for ad-hoc DMG builds: macOS AMFI rejects
+	  ad-hoc signatures with that restricted entitlement (launch error 163).
+	  Keychain is used when the app is signed with a development / Developer ID profile.
+	-->
+	<key>com.apple.security.cs.disable-library-validation</key>
+	<true/>
+</dict>
+</plist>
