@@ -10,7 +10,7 @@
 
 Форк open source проекта [Yippy](https://github.com/mattDavo/Yippy) (Matthew Davidson): сохранены лаконичный UX и идея «панель всегда рядом», а в VaultClip добавлены **AES-GCM**, фильтрация копий из менеджеров паролей, вкладки «Избранное» и «Пароли», актуальные тулчейны и открытая дорожная карта.
 
-**Репозиторий:** [github.com/akarakuts/VaultClip](https://github.com/akarakuts/VaultClip) · **English:** [README.md](README.md)
+**Репозиторий:** [github.com/akarakuts/VaultClip](https://github.com/akarakuts/VaultClip) · **История изменений:** [CHANGELOG.md](CHANGELOG.md) · **English:** [README.md](README.md)
 
 *История, избранное и пароли — одна панель, три режима. Интерфейс на всех языках macOS.*
 

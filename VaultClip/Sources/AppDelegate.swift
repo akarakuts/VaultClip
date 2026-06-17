@@ -18,7 +18,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     let disposeBag = DisposeBag()
 
+    func applicationWillFinishLaunching(_ notification: Notification) {
+        _ = SingleInstanceGuard.terminateIfDuplicate()
+    }
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        guard !SingleInstanceGuard.isDuplicateTermination else { return }
+
         checkBuildFlags()
         checkLaunchArgs()
         AppDataMigrator.migrateIfNeeded()

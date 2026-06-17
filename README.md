@@ -10,7 +10,7 @@ It lives in the menu bar, opens with **⌘⇧V**, and stays out of your way. Cop
 
 Open-source fork of [Yippy](https://github.com/mattDavo/Yippy) by Matthew Davidson: the lean UX and “panel always nearby” idea are preserved; VaultClip adds **AES-GCM**, filtering of copies from password managers, **Favorites** and **Passwords** tabs, up-to-date toolchains, and an open roadmap.
 
-**Repository:** [github.com/akarakuts/VaultClip](https://github.com/akarakuts/VaultClip) · **Русский:** [README.ru.md](README.ru.md)
+**Repository:** [github.com/akarakuts/VaultClip](https://github.com/akarakuts/VaultClip) · **Changelog:** [CHANGELOG.md](CHANGELOG.md) · **Русский:** [README.ru.md](README.ru.md)
 
 *History, Favorites, and Passwords — one panel, three modes. UI in all macOS app languages.*
 

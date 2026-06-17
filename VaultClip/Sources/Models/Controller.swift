@@ -264,12 +264,9 @@ class Controller {
     }
     
     @objc func launchAtLogin() {
-        let launchAtLogin = !state.launchAtLogin.value
-        state.launchAtLogin.accept(launchAtLogin)
-        if launchAtLogin {
-            LaunchAtLoginHelper.enable()
-        } else {
-            LaunchAtLoginHelper.disable()
-        }
+        let wantsLaunchAtLogin = !state.launchAtLogin.value
+        let succeeded = wantsLaunchAtLogin ? LaunchAtLoginHelper.enable() : LaunchAtLoginHelper.disable()
+        guard succeeded else { return }
+        state.launchAtLogin.accept(wantsLaunchAtLogin)
     }
 }

@@ -23,7 +23,20 @@ public extension LoginServiceKit {
         guard let sharedFileList = LSSharedFileListCreate(nil, kLSSharedFileListSessionLoginItems.takeRetainedValue(), nil) else { return false }
         let loginItemList = sharedFileList.takeRetainedValue()
         let url = URL(fileURLWithPath: path)
-        LSSharedFileListInsertItemURL(loginItemList, kLSSharedFileListItemBeforeFirst.takeRetainedValue(), nil, nil, url as CFURL, nil, nil)
+        let hiddenKey = kLSSharedFileListLoginItemHidden.takeUnretainedValue() as String
+        let properties = [hiddenKey: kCFBooleanTrue as Any] as CFDictionary
+        guard let item = LSSharedFileListInsertItemURL(
+            loginItemList,
+            kLSSharedFileListItemBeforeFirst.takeRetainedValue(),
+            nil,
+            nil,
+            url as CFURL,
+            properties,
+            nil
+        ) else {
+            return false
+        }
+        LSSharedFileListItemSetProperty(item, kLSSharedFileListLoginItemHidden.takeUnretainedValue(), kCFBooleanTrue)
         return true
     }
 

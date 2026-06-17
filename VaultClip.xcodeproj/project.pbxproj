@@ -109,6 +109,7 @@
 		34AAA101000000000000000C /* SecureStorageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA101000000000000000B /* SecureStorageHelper.swift */; };
 		34AAA101000000000000000E /* AppDataMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA101000000000000000D /* AppDataMigrator.swift */; };
 		34AAA1010000000000000010 /* LaunchAtLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA101000000000000000F /* LaunchAtLoginHelper.swift */; };
+		VCINST0022EB0D10004E6E63 /* SingleInstanceGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCINST0012EB0D10004E6E63 /* SingleInstanceGuard.swift */; };
 		34AAA1010000000000000012 /* SymmetricKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA1010000000000000011 /* SymmetricKeyStore.swift */; };
 		34ACFBBF22EB0B0F004E6E63 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ACFBBE22EB0B0F004E6E63 /* AppDelegate.swift */; };
 		34ACFBC622EB0B11004E6E63 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34ACFBC422EB0B11004E6E63 /* Main.storyboard */; };
@@ -295,6 +296,7 @@
 		34AAA101000000000000000B /* SecureStorageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorageHelper.swift; sourceTree = "<group>"; };
 		34AAA101000000000000000D /* AppDataMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataMigrator.swift; sourceTree = "<group>"; };
 		34AAA101000000000000000F /* LaunchAtLoginHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginHelper.swift; sourceTree = "<group>"; };
+		VCINST0012EB0D10004E6E63 /* SingleInstanceGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleInstanceGuard.swift; sourceTree = "<group>"; };
 		34AAA1010000000000000011 /* SymmetricKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetricKeyStore.swift; sourceTree = "<group>"; };
 		34ACFBBB22EB0B0F004E6E63 /* VaultClip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VaultClip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34ACFBBE22EB0B0F004E6E63 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -512,6 +514,7 @@
 				VCLOG00012EB0C10004E6E63 /* LoginServiceKit.swift */,
 				341D9D3F233AE8A1008A2BE6 /* Helper.swift */,
 				34AAA101000000000000000F /* LaunchAtLoginHelper.swift */,
+				VCINST0012EB0D10004E6E63 /* SingleInstanceGuard.swift */,
 				34268123233EE82200BA226A /* AccessControlHelper.swift */,
 				D4E5F6A60123456789001 /* SourceAppIconProvider.swift */,
 				34268125233EE83700BA226A /* AccessControlHelperMock.swift */,
@@ -1165,6 +1168,7 @@
 				34AAA1010000000000000012 /* SymmetricKeyStore.swift in Sources */,
 				34AAA101000000000000000C /* SecureStorageHelper.swift in Sources */,
 				34AAA1010000000000000010 /* LaunchAtLoginHelper.swift in Sources */,
+				VCINST0022EB0D10004E6E63 /* SingleInstanceGuard.swift in Sources */,
 				34AAA101000000000000000E /* AppDataMigrator.swift in Sources */,
 				34AAA1010000000000000008 /* NSStoryboard+VaultClip.swift in Sources */,
 				34B5C42E23580CD9005247EB /* ClipError.swift in Sources */,
@@ -1393,7 +1397,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 211;
+				CURRENT_PROJECT_VERSION = 212;
 				DEVELOPMENT_TEAM = PDQFD8QZA3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
@@ -1402,7 +1406,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.1;
+				MARKETING_VERSION = 2.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = VaultClip;
@@ -1419,7 +1423,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 211;
+				CURRENT_PROJECT_VERSION = 212;
 				DEVELOPMENT_TEAM = PDQFD8QZA3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
@@ -1428,7 +1432,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.1;
+				MARKETING_VERSION = 2.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = VaultClip;
@@ -1589,7 +1593,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 211;
+				CURRENT_PROJECT_VERSION = 212;
 				DEVELOPMENT_TEAM = PDQFD8QZA3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
@@ -1598,7 +1602,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.1;
+				MARKETING_VERSION = 2.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip.Beta;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "VaultClip Beta";
@@ -1712,7 +1716,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 211;
+				CURRENT_PROJECT_VERSION = 212;
 				DEVELOPMENT_TEAM = PDQFD8QZA3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
@@ -1721,7 +1725,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.1;
+				MARKETING_VERSION = 2.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip.Beta;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "VaultClip Beta";
@@ -1842,7 +1846,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 211;
+				CURRENT_PROJECT_VERSION = 212;
 				DEVELOPMENT_TEAM = PDQFD8QZA3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
@@ -1851,7 +1855,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.1;
+				MARKETING_VERSION = 2.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClipXCTest;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -8,6 +8,7 @@
 //  SPDX-License-Identifier: GPL-3.0-or-later
 //
 import Cocoa
+import ServiceManagement
 
 enum LaunchAtLoginHelper {
 
@@ -27,31 +28,50 @@ enum LaunchAtLoginHelper {
     }
 
     static func isEnabled() -> Bool {
-        LoginServiceKit.isExistLoginItems(at: canonicalAppPath())
+        if #available(macOS 13.0, *) {
+            if SMAppService.mainApp.status == .enabled {
+                return true
+            }
+        }
+        return LoginServiceKit.isExistLoginItems(at: canonicalAppPath())
     }
 
     @discardableResult
     static func enable() -> Bool {
+        if isEnabled() { return true }
+        if #available(macOS 13.0, *) {
+            return enableWithSMAppService()
+        }
         pruneStaleLoginItems(keeping: canonicalAppPath())
         return LoginServiceKit.addLoginItems(at: canonicalAppPath())
     }
 
     @discardableResult
     static func disable() -> Bool {
+        if !isEnabled() { return true }
+        var success = true
+        if #available(macOS 13.0, *) {
+            if SMAppService.mainApp.status == .enabled {
+                do {
+                    try SMAppService.mainApp.unregister()
+                } catch {
+                    success = false
+                }
+            }
+        }
         pruneStaleLoginItems(keeping: "")
-        return LoginServiceKit.removeLoginItems(at: canonicalAppPath())
+        if !LoginServiceKit.removeLoginItems(at: canonicalAppPath()) {
+            success = false
+        }
+        return success
     }
 
     /// Drops login entries that point at old DMG paths or duplicate VaultClip.app copies.
     static func reconcile(wantsLaunchAtLogin: Bool) {
-        let canonical = canonicalAppPath()
-        pruneStaleLoginItems(keeping: wantsLaunchAtLogin ? canonical : "")
-
-        let exists = LoginServiceKit.isExistLoginItems(at: canonical)
-        if wantsLaunchAtLogin, !exists {
-            LoginServiceKit.addLoginItems(at: canonical)
-        } else if !wantsLaunchAtLogin, exists {
-            LoginServiceKit.removeLoginItems(at: canonical)
+        if wantsLaunchAtLogin {
+            _ = enable()
+        } else {
+            _ = disable()
         }
     }
 
@@ -69,6 +89,28 @@ enum LaunchAtLoginHelper {
             alert.addButton(withTitle: L10n.commonOK)
             alert.runModal()
         }
+    }
+
+  // MARK: - SMAppService (macOS 13+)
+
+    @available(macOS 13.0, *)
+    private static func enableWithSMAppService() -> Bool {
+        removeAllLegacyLoginItems()
+        guard SMAppService.mainApp.status != .enabled else { return true }
+        do {
+            try SMAppService.mainApp.register()
+            return SMAppService.mainApp.status == .enabled
+        } catch {
+            pruneStaleLoginItems(keeping: canonicalAppPath())
+            return LoginServiceKit.addLoginItems(at: canonicalAppPath())
+        }
+    }
+
+    @available(macOS 13.0, *)
+    private static func removeAllLegacyLoginItems() {
+        pruneStaleLoginItems(keeping: "")
+        _ = LoginServiceKit.removeLoginItems(at: canonicalAppPath())
+        _ = LoginServiceKit.removeLoginItems(at: Bundle.main.bundlePath)
     }
 
     private static func isTransientInstallPath(_ path: String) -> Bool {
