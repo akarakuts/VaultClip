@@ -50,6 +50,13 @@ class HistoryFileManagerTests: XCTestCase {
         errorLogger = ErrorLoggerMock()
         warningLogger = WarningLoggerMock()
         alerter = AlerterMock()
+
+        // CI runners have no local history files — mocks must not fall through to FileManager.default.
+        fileManager.directoryContents[Constants.urls.appSupport] = [Constants.urls.history]
+        fileManager.directoryContents[Constants.urls.history] = []
+        fileManager.fileExists[Constants.urls.historyOrder.path] = true
+        fileManager.createDirectory[Constants.urls.appSupport] = true
+        fileManager.createDirectory[Constants.urls.history] = true
         
         historyFM = HistoryFileManager(
             fileManager: fileManager,

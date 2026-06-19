@@ -32,6 +32,10 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 - **README.md** / **README.ru.md** — CI test scripts, developer docs, `instance.lock` in data paths.
 - Unit test count: **99** (stable full-suite runs).
 
+### Fixed
+
+- **HistoryFileManagerTests** — mock filesystem no longer falls through to real paths on clean CI runners.
+
 ---
 
 ## [2.2.0] — 2026-06-19

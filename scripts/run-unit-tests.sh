@@ -10,6 +10,7 @@ xcodebuild test \
   -destination 'platform=macOS' \
   -derivedDataPath DerivedData \
   -only-testing:VaultClipTests \
+  -parallel-testing-enabled NO \
   -enableCodeCoverage YES \
   CODE_SIGN_IDENTITY="-" \
   CODE_SIGNING_REQUIRED=NO \
