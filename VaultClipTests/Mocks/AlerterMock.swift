@@ -12,9 +12,15 @@ import XCTest
 
 class AlerterMock: Alerter {
     
-    var expectation: XCTestExpectation!
+    var expectation: XCTestExpectation?
+    private(set) var shownAlerts = 0
     
     override func show(_ alertable: Alertable) {
+        shownAlerts += 1
+        guard let expectation else { return }
         expectation.fulfill()
+        if expectation.expectedFulfillmentCount == 1 {
+            self.expectation = nil
+        }
     }
 }

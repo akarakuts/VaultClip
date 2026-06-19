@@ -12,13 +12,19 @@ import XCTest
 
 class WarningLoggerMock: WarningLogger {
     
-    var expectation: XCTestExpectation!
+    var expectation: XCTestExpectation?
+    private(set) var loggedWarnings = 0
     
     init() {
         super.init(url: URL(fileURLWithPath: "test"))
     }
     
     override func log(_ loggable: Loggable) {
+        loggedWarnings += 1
+        guard let expectation else { return }
         expectation.fulfill()
+        if expectation.expectedFulfillmentCount == 1 {
+            self.expectation = nil
+        }
     }
 }

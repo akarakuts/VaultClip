@@ -56,7 +56,7 @@ extension String {
     }
 
     func append(toURL url: URL) throws {
-        let data = self.data(using: String.Encoding.utf8)!
+        guard let data = self.data(using: String.Encoding.utf8) else { return }
         try data.append(fileURL: url)
     }
 }

@@ -47,10 +47,12 @@ class HistoryTextCellView: HistoryItemBaseCellView, HistoryListItem {
         itemTextView.isVerticallyResizable = false
         
         // Add constraints for the item text view
-        contentView.addConstraint(NSLayoutConstraint(item: itemTextView!, attribute: .leading, relatedBy: .equal, toItem: sourceAppIconView, attribute: .trailing, multiplier: 1, constant: HistoryItemBaseCellView.sourceAppIconSpacing))
-        contentView.addConstraint(NSLayoutConstraint(item: itemTextView!, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1, constant: Self.padding.top))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView!, attribute: .trailing, relatedBy: .equal, toItem: itemTextView, attribute: .trailing, multiplier: 1, constant: Self.padding.right))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView!, attribute: .bottom, relatedBy: .equal, toItem: itemTextView, attribute: .bottom, multiplier: 1, constant: Self.padding.bottom))
+        NSLayoutConstraint.activate([
+            itemTextView.leadingAnchor.constraint(equalTo: sourceAppIconView.trailingAnchor, constant: HistoryItemBaseCellView.sourceAppIconSpacing),
+            itemTextView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Self.padding.top),
+            contentView.trailingAnchor.constraint(equalTo: itemTextView.trailingAnchor, constant: Self.padding.right),
+            contentView.bottomAnchor.constraint(equalTo: itemTextView.bottomAnchor, constant: Self.padding.bottom),
+        ])
     }
     
     func setupCell(withHistoryTableView historyTableView: HistoryTableView, forHistoryItem historyItem: HistoryItem, at i: Int) {

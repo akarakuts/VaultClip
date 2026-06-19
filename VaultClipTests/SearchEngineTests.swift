@@ -56,4 +56,28 @@ class SearchEngineTests: XCTestCase {
         }
         wait(for: [match], timeout: 5)
     }
+
+    func testDuplicateSearchesInFlightShareResultInstance() {
+        let itemCount = 1_000
+        let engine = SearchEngine(
+            data: Array(repeating: "alpha beta", count: itemCount),
+            historyIndices: Array(0..<itemCount)
+        )
+        var firstResult: SearchResult?
+        var secondResult: SearchResult?
+        let first = expectation(description: "first search")
+        let second = expectation(description: "second search")
+
+        engine.search(query: "alpha") { result in
+            firstResult = result
+            first.fulfill()
+        }
+        engine.search(query: "alpha") { result in
+            secondResult = result
+            second.fulfill()
+        }
+
+        wait(for: [first, second], timeout: 5)
+        XCTAssertTrue(firstResult === secondResult)
+    }
 }

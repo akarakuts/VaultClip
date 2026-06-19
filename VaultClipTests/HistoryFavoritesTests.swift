@@ -37,6 +37,18 @@ final class HistoryFavoritesTests: XCTestCase {
         
         XCTAssertEqual(history.favoriteItems.map(\.fsId), [first.fsId, third.fsId])
     }
+
+    func testInvalidIndexOperationsAreIgnored() {
+        let first = HistoryItem(unsavedData: [.string: "a".data(using: .utf8)!], cache: cache)
+        let second = HistoryItem(unsavedData: [.string: "b".data(using: .utf8)!], cache: cache)
+        let history = History(historyFM: HistoryFileManagerMock(), cache: cache, items: [first, second], maxItems: 100)
+
+        history.deleteItem(at: 10)
+        history.moveItem(at: -1, to: 0)
+        history.moveItem(at: 0, to: 2)
+
+        XCTAssertEqual(history.items.map(\.fsId), [first.fsId, second.fsId])
+    }
     
     func testClearNonFavoritesOnlyKeepsPinnedItems() {
         let keep = HistoryItem(unsavedData: [.string: "keep".data(using: .utf8)!], cache: cache, isFavorite: true)

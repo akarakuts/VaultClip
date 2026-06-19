@@ -33,6 +33,11 @@ jobs:
           chmod +x ./scripts/import-macos-certificate.sh
           ./scripts/import-macos-certificate.sh
 
+      - name: Run unit tests
+        run: |
+          chmod +x scripts/run-unit-tests.sh
+          ./scripts/run-unit-tests.sh
+
       - name: Build Release
         run: |
           xcodebuild \

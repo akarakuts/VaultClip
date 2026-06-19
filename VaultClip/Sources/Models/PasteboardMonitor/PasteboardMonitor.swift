@@ -15,10 +15,10 @@ class PasteboardMonitor {
     let intervalInSeconds: TimeInterval = 0.05
     
     private var pollTimer: DispatchSourceTimer?
-    private var lastChangeCount: Int!
+    private var lastChangeCount: Int
     
-    var pasteboard: NSPasteboard!
-    var delegate: PasteboardMonitorDelegate!
+    let pasteboard: NSPasteboard
+    let delegate: PasteboardMonitorDelegate
     
     private var frontmostApp: String? = nil
     
@@ -62,7 +62,7 @@ class PasteboardMonitor {
             lastChangeCount = self.pasteboard.changeCount
             let originBundleId = Self.clipboardOriginBundleId(trackedApp: frontmostApp)
             PasteboardDiagnostics.log(
-                "changeCount \(previous ?? -1) -> \(pasteboard.changeCount), origin=\(originBundleId ?? "nil")"
+                "changeCount \(previous) -> \(pasteboard.changeCount), origin=\(originBundleId ?? "nil")"
             )
             delegate.pasteboardDidChange(pasteboard, originBundleId: originBundleId)
         }

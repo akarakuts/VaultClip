@@ -14,12 +14,11 @@ class PreviewImageViewController: NSViewController, PreviewViewController {
     
     static let sceneIdentifier = NSStoryboard.SceneIdentifier(stringLiteral: "PreviewImageViewController")
     
-    var imageView: NSImageView!
+    private let imageView = NSImageView(frame: .zero)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imageView = NSImageView(frame: .zero)
         view.addSubview(imageView)
         
         view.wantsLayer = true
@@ -29,10 +28,12 @@ class PreviewImageViewController: NSViewController, PreviewViewController {
         // See: https://stackoverflow.com/a/24323553
         imageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        view.addConstraint(NSLayoutConstraint(item: imageView!, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: imageView!, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: view, attribute: .trailing, relatedBy: .equal, toItem: imageView, attribute: .trailing, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: imageView, attribute: .bottom, multiplier: 1, constant: 0))
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: view.topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
     }
     
     func configureView(forItem item: HistoryItem) -> NSRect {
@@ -43,8 +44,10 @@ class PreviewImageViewController: NSViewController, PreviewViewController {
     }
     
     func calculateWindowFrame(forImage image: NSImage) -> NSRect {
-        let maxWindowWidth = NSScreen.main!.frame.width * 0.8
-        let maxWindowHeight = NSScreen.main!.frame.height * 0.8
+        let screen = NSScreen.main ?? NSScreen.screens.first
+        let screenFrame = screen?.frame ?? NSRect(x: 0, y: 0, width: 1024, height: 768)
+        let maxWindowWidth = screenFrame.width * 0.8
+        let maxWindowHeight = screenFrame.height * 0.8
         
         var windowWidth: CGFloat = 0
         var windowHeight: CGFloat = 0
@@ -58,7 +61,7 @@ class PreviewImageViewController: NSViewController, PreviewViewController {
             windowWidth = windowHeight * image.size.width/image.size.height
         }
         
-        let center = NSPoint(x: NSScreen.main!.frame.midX - windowWidth / 2, y: NSScreen.main!.frame.midY - windowHeight / 2)
+        let center = NSPoint(x: screenFrame.midX - windowWidth / 2, y: screenFrame.midY - windowHeight / 2)
         
         return NSRect(origin: center, size: NSSize(width: windowWidth, height: windowHeight))
     }

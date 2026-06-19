@@ -69,7 +69,7 @@ class HotKeySettingsViewController: NSViewController {
         }
         
         ClipHotKeys.toggle.changeHotKey(keyCombo: hotKey)
-        Settings.main.toggleHotKey = hotKey
+        SettingsPersistence.apply { $0.toggleHotKey = hotKey }
         showSavedToggleHotKey()
     }
     
@@ -91,7 +91,7 @@ class HotKeySettingsViewController: NSViewController {
     }
     
     func showSavedToggleHotKey() {
-        hotkeyLabel.stringValue = formatToggleHotKey(Settings.main.toggleHotKey)
+        hotkeyLabel.stringValue = formatToggleHotKey(SettingsPersistence.current().toggleHotKey)
         hotkeyLabel.textColor = NSColor.secondaryLabelColor
     }
     

@@ -46,7 +46,10 @@ struct Constants {
     
     struct urls {
         static var applicationSupport: URL {
-            return FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+            FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+                ?? FileManager.default.homeDirectoryForCurrentUser
+                    .appendingPathComponent("Library", isDirectory: true)
+                    .appendingPathComponent("Application Support", isDirectory: true)
         }
         
         static var appSupport: URL {

@@ -16,6 +16,23 @@ struct Settings: Codable, DefaultStorable {
     
     // MARK: - Singleton
     
+    // MARK: - Shared instance (via AppEnvironment)
+
+    static var bootstrapOverride: Settings?
+
+    static func installShared(_ settings: Settings) {
+        bootstrapOverride = settings
+    }
+
+    static func loadPersisted() -> Settings {
+        read(forKey: "settings") ?? .default
+    }
+
+    static var main: Settings {
+        get { SettingsPersistence.current() }
+        set { SettingsPersistence.apply { $0 = newValue } }
+    }
+
     private init(
         panelPosition: PanelPosition,
         pasteboardChangeCount: Int,
@@ -31,21 +48,6 @@ struct Settings: Codable, DefaultStorable {
         self.showsRichText = showsRichText
         self.pastesRichText = pastesRichText
     }
-    
-    static var main: Settings! {
-        get {
-            let settings = Settings.read(forKey: "settings")
-            if settings != nil {
-                return settings
-            }
-            return Settings.default
-        }
-        set (main) {
-            main.write(withKey: "settings")
-        }
-    }
-    
-    // MARK: - Default
     
     static let `default` = Settings(
         panelPosition: .right,
@@ -74,33 +76,40 @@ struct Settings: Codable, DefaultStorable {
     // MARK: - State Binding Methods
     
     func bindPanelPositionTo(state: BehaviorRelay<PanelPosition>) -> Disposable {
-        return state.bind { (x) in
-            Settings.main.panelPosition = x
+        return state.bind { x in
+            SettingsPersistence.apply { $0.panelPosition = x }
         }
     }
-    
+
     func bindPasteboardChangeCountTo(state: Observable<Int>) -> Disposable {
-        return state.bind { (x) in
-            Settings.main.pasteboardChangeCount = x
+        return state.bind { x in
+            SettingsPersistence.apply { $0.pasteboardChangeCount = x }
         }
     }
-    
+
     func bindMaxHistoryTo(state: Observable<Int>) -> Disposable {
-        return state.bind { (x) in
-            Settings.main.maxHistory = x
+        return state.bind { x in
+            SettingsPersistence.apply { $0.maxHistory = x }
         }
     }
-    
+
     func bindShowsRichTextTo(state: Observable<Bool>) -> Disposable {
-        return state.bind { (x) in
-            Settings.main.showsRichText = x
+        return state.bind { x in
+            SettingsPersistence.apply { $0.showsRichText = x }
         }
     }
-    
+
     func bindPastesRichTextTo(state: Observable<Bool>) -> Disposable {
-        return state.bind { (x) in
-            Settings.main.pastesRichText = x
+        return state.bind { x in
+            SettingsPersistence.apply { $0.pastesRichText = x }
         }
+    }
+}
+
+extension Settings {
+
+    func persist() {
+        write(withKey: "settings")
     }
 }
 

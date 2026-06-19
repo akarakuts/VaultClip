@@ -113,6 +113,20 @@ VaultClip проектируется как **локальное хранили�
 
 Удаление записи `history-data-key` в Keychain **необратимо ломает** расшифровку существующей истории.
 
+### Расположение данных
+
+```
+~/Library/Application Support/com.karakuts.VaultClip/
+├── history/          # зашифрованные элементы (по UUID)
+├── instance.lock     # защита от второго экземпляра (flock)
+├── error.log
+└── warning.log
+```
+
+Настройки: `~/Library/Preferences/com.karakuts.VaultClip.plist` (UserDefaults).
+
+**Миграция с Yippy / VaultClip 1.1.2:** при первом запуске данные переносятся из каталогов `MatthewDavidson.Yippy` и `VaultClip`; настройки и ключи шифрования копируются автоматически.
+
 ---
 
 ## Горячие клавиши
@@ -228,11 +242,14 @@ VAULTCLIP_SIGN_RELEASE=1 ./codesign-app.sh VaultClip.app
 6. **Тесты:**
 
 ```bash
-xcodebuild -project VaultClip.xcodeproj -scheme VaultClip XCTest \
-  -destination 'platform=macOS' -derivedDataPath DerivedData test
+chmod +x scripts/run-unit-tests.sh scripts/check-coverage.sh
+./scripts/run-unit-tests.sh    # 99 unit-тестов + покрытие
+./scripts/check-coverage.sh    # порог Security/History (≥55%)
 ```
 
-Для UI-тестов включите Универсальный доступ для процесса тестов в системных настройках.
+Прямой `xcodebuild test` (схема **VaultClip XCTest**) тоже работает; скрипты совпадают с CI.
+
+UI-тесты требуют Универсальный доступ для процесса тестов (только локально — в CI не гоняются).
 
 ### Публичные релизы (Developer ID, по желанию)
 
@@ -263,7 +280,7 @@ Workflow **Release** (тег `v*`) импортирует сертификат, 
 
 VaultClip — **активный форк с открытым кодом** (GPLv3). База Yippy дала проверенный UX «панель у края экрана»; дальше — развитие как **безопасного локального слоя** между macOS и вашими данными в буфере.
 
-**Уже сделано:** шифрование AES-GCM, вкладки «Избранное» и «Пароли», фильтрация менеджеров паролей, локализация на все языки macOS, миграции с Yippy, Hardened Runtime, CI с подписью Developer ID.
+**Уже сделано:** шифрование AES-GCM, вкладки «Избранное» и «Пароли», фильтрация менеджеров паролей, локализация на все языки macOS, миграции с Yippy, Hardened Runtime, CI (сборка, SwiftLint baseline, unit-тесты, coverage gate), composition root **AppEnvironment** (v2.3.1).
 
 **В перспективе** (по приоритету сообщества и issues):
 
@@ -276,10 +293,14 @@ VaultClip — **активный форк с открытым кодом** (GPLv
 
 ### Для разработчиков
 
-- `VaultClip/Sources/` — код приложения;
+- [`docs/architecture.md`](docs/architecture.md) — слои, `AppEnvironment`, on-disk layout, тестирование;
+- [`docs/linux-port-plan.md`](docs/linux-port-plan.md) — дорожная карта portable Rust core;
+- `VaultClip/Sources/` — код приложения; `AppEnvironment` — composition root после запуска;
 - `VaultClip/Sources/Models/Security/` — Keychain, AES-GCM, миграции;
 - `VaultClip/Resources/Localizable.xcstrings` — строки интерфейса (все языки macOS);
-- `VaultClipTests/` — unit-тесты; `VaultClipUITests/` — UI-тесты.
+- `VaultClipTests/` — unit-тесты (99); `VaultClipUITests/` — UI-тесты (локально);
+- `scripts/run-unit-tests.sh`, `scripts/check-coverage.sh` — те же команды, что в CI;
+- `graphify-out/graph.html` — граф кода (`graphify update .`).
 
 ---
 

@@ -172,8 +172,14 @@ struct HistoryItemText {
         var hasParagraphStyle = false
         mutable.enumerateAttribute(.paragraphStyle, in: fullRange) { value, range, _ in
             hasParagraphStyle = true
-            let style = ((value as? NSParagraphStyle)?.mutableCopy() as? NSMutableParagraphStyle)
-                ?? (HistoryListTheme.typography.bodyParagraphStyle.mutableCopy() as! NSMutableParagraphStyle)
+            let style: NSMutableParagraphStyle
+            if let existing = (value as? NSParagraphStyle)?.mutableCopy() as? NSMutableParagraphStyle {
+                style = existing
+            } else {
+                let fallback = NSMutableParagraphStyle()
+                fallback.setParagraphStyle(HistoryListTheme.typography.bodyParagraphStyle)
+                style = fallback
+            }
             style.alignment = .left
             mutable.addAttribute(.paragraphStyle, value: style, range: range)
         }

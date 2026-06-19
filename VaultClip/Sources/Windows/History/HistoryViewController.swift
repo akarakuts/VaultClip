@@ -21,6 +21,18 @@ struct Results {
 class HistoryViewController: NSViewController {
     
     private var historyUnsubscribe: (() -> Void)?
+
+    private var injectedState: State?
+    private var injectedSettings: Settings?
+
+    private var appState: State { injectedState ?? AppEnvironment.shared.state }
+    private var appSettings: Settings { injectedSettings ?? AppEnvironment.shared.settings }
+
+    /// Called from `Controller.createHistoryWindowController` before the window loads.
+    func configure(state: State, settings: Settings) {
+        injectedState = state
+        injectedSettings = settings
+    }
     
     @IBOutlet var historyListView: HistoryTableView!
     
@@ -29,7 +41,7 @@ class HistoryViewController: NSViewController {
     
     @IBOutlet var searchBar: NSTextField!
     
-    var historyPanel = HistoryPanel(history: State.main.history, items: [])
+    lazy var historyPanel = HistoryPanel(history: appState.history, items: [])
     
     var searchEngine = SearchEngine(historyItems: [])
     
@@ -39,7 +51,7 @@ class HistoryViewController: NSViewController {
     
     let listMode = BehaviorRelay<HistoryListMode>(value: .history)
     
-    var isRichText = Settings.main.showsRichText
+    var isRichText = true
     
     let results = BehaviorRelay(value: Results(items: [], isSearchResult: false))
     let selected = BehaviorRelay<Int?>(value: nil)
@@ -48,6 +60,8 @@ class HistoryViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        isRichText = appSettings.showsRichText
         
         configurePanelLayout()
         applyPanelChromeMetrics()
@@ -55,7 +69,7 @@ class HistoryViewController: NSViewController {
         searchBar.placeholderString = L10n.searchPlaceholder
         historyListView.historyDelegate = self
         
-        State.main.showsRichText.distinctUntilChanged().subscribe(onNext: onShowsRichText).disposed(by: disposeBag)
+        appState.showsRichText.distinctUntilChanged().subscribe(onNext: onShowsRichText).disposed(by: disposeBag)
         
         itemGroupScrollView.delegate = self
         itemGroupScrollView.configure(with: HistoryListMode.tabDefinitions)
@@ -91,13 +105,13 @@ class HistoryViewController: NSViewController {
             .subscribe(onNext: onAllChange)
             .disposed(by: disposeBag)
 
-        historyUnsubscribe = State.main.history.subscribe(onNext: { [weak self] history, change in
+        historyUnsubscribe = appState.history.subscribe(onNext: { [weak self] history, change in
             DispatchQueue.main.async {
                 self?.onHistoryChange(history, change: change)
             }
         })
 
-        State.main.isHistoryPanelShown
+        appState.isHistoryPanelShown
             .distinctUntilChanged()
             .filter { $0 }
             .subscribe(onNext: { [weak self] _ in
@@ -119,10 +133,10 @@ class HistoryViewController: NSViewController {
         ClipHotKeys.pageUp.onLong(goToPreviousItem)
         ClipHotKeys.escape.onDown(close)
         ClipHotKeys.return.onDown(pasteSelected)
-        ClipHotKeys.ctrlAltCmdLeftArrow.onDown { State.main.panelPosition.accept(.left) }
-        ClipHotKeys.ctrlAltCmdRightArrow.onDown { State.main.panelPosition.accept(.right) }
-        ClipHotKeys.ctrlAltCmdDownArrow.onDown { State.main.panelPosition.accept(.bottom) }
-        ClipHotKeys.ctrlAltCmdUpArrow.onDown { State.main.panelPosition.accept(.top) }
+        ClipHotKeys.ctrlAltCmdLeftArrow.onDown { self.appState.panelPosition.accept(.left) }
+        ClipHotKeys.ctrlAltCmdRightArrow.onDown { self.appState.panelPosition.accept(.right) }
+        ClipHotKeys.ctrlAltCmdDownArrow.onDown { self.appState.panelPosition.accept(.bottom) }
+        ClipHotKeys.ctrlAltCmdUpArrow.onDown { self.appState.panelPosition.accept(.top) }
         ClipHotKeys.ctrlDelete.onDown(deleteSelected)
         ClipHotKeys.ctrlSpace.onDown(togglePreview)
         ClipHotKeys.cmdBackslash.onDown(focusSearchBar)
@@ -190,13 +204,13 @@ class HistoryViewController: NSViewController {
     
     override func viewDidLayout() {
         super.viewDidLayout()
-        guard State.main.isHistoryPanelShown.value else { return }
+        guard appState.isHistoryPanelShown.value else { return }
         historyListView.syncColumnWidthToScrollView()
     }
 
     /// Clears stale search / height cache and reloads when the panel becomes visible.
     private func refreshHistoryListOnPanelOpen() {
-        let baseItems = itemsForActiveListMode(from: State.main.history.items)
+        let baseItems = itemsForActiveListMode(from: appState.history.items)
         if !searchBar.stringValue.isEmpty, baseItems.count > 0, results.value.items.isEmpty {
             searchBar.stringValue = ""
         }
@@ -212,7 +226,7 @@ class HistoryViewController: NSViewController {
     }
     
     private func alignHistoryListToScrollView() {
-        guard isViewLoaded, State.main.isHistoryPanelShown.value else { return }
+        guard isViewLoaded, appState.isHistoryPanelShown.value else { return }
         view.window?.layoutIfNeeded()
         view.layoutSubtreeIfNeeded()
         historyListView.enclosingScrollView?.layoutSubtreeIfNeeded()
@@ -249,7 +263,7 @@ class HistoryViewController: NSViewController {
             historyListView.cellHeightsCache.removeCellHeight(forId: item.fsId)
             applyListFilter()
             syncHistoryTableToResults()
-            let visible = itemsForActiveListMode(from: State.main.history.items)
+            let visible = itemsForActiveListMode(from: appState.history.items)
             if !visible.contains(where: { $0.fsId == item.fsId }) {
                 resetSelected()
             } else {
@@ -276,7 +290,7 @@ class HistoryViewController: NSViewController {
     }
     
     func applyListFilter() {
-        let baseItems = itemsForActiveListMode(from: State.main.history.items)
+        let baseItems = itemsForActiveListMode(from: appState.history.items)
         updateSearchEngine(items: baseItems)
         results.accept(Results(items: baseItems, isSearchResult: false))
         updateEmptyListLabel(for: listMode.value, visible: baseItems.isEmpty)
@@ -288,13 +302,13 @@ class HistoryViewController: NSViewController {
         guard isViewLoaded else { return }
         let current = results.value
         itemCountLabel.stringValue = countLabelText(for: current)
-        historyPanel = HistoryPanel(history: State.main.history, items: current.items)
+        historyPanel = HistoryPanel(history: appState.history, items: current.items)
         updateEmptyListLabel(
             for: listMode.value,
             visible: !current.isSearchResult && current.items.isEmpty
         )
         
-        guard State.main.isHistoryPanelShown.value else { return }
+        guard appState.isHistoryPanelShown.value else { return }
         
         historyListView.cellHeightsCache.clearCache()
         historyListView.reloadData(historyPanel.items, isRichText: isRichText, listMode: listMode.value)
@@ -314,7 +328,7 @@ class HistoryViewController: NSViewController {
     /// Reloads a row when favorite/password metadata changes without altering the item list.
     private func refreshHistoryItemDisplay(_ item: HistoryItem) {
         historyListView.cellHeightsCache.removeCellHeight(forId: item.fsId)
-        let visibleItems = itemsForActiveListMode(from: State.main.history.items)
+        let visibleItems = itemsForActiveListMode(from: appState.history.items)
         guard let row = visibleItems.firstIndex(where: { $0.fsId == item.fsId }) else { return }
         historyListView.noteHeightOfRows(withIndexesChanged: IndexSet(integer: row))
         historyListView.reloadItem(row)
@@ -337,7 +351,7 @@ class HistoryViewController: NSViewController {
             self.historyListView.reloadItem(selected)
             
             if self.isPreviewShowing {
-                State.main.previewHistoryItem.accept(self.historyPanel.items[selected])
+                appState.previewHistoryItem.accept(self.historyPanel.items[selected])
             }
         }
         historyListView.syncColumnWidthToScrollView()
@@ -349,7 +363,7 @@ class HistoryViewController: NSViewController {
     }
     
     func bindHotKeyToHistoryWindow(_ hotKey: ClipHotKey, disposeBag: DisposeBag) {
-        State.main.isHistoryPanelShown
+        appState.isHistoryPanelShown
             .distinctUntilChanged()
             .subscribe(onNext: { [] in
                 hotKey.isPaused = !$0
@@ -387,8 +401,8 @@ class HistoryViewController: NSViewController {
     
     func close() {
         isPreviewShowing = false
-        State.main.isHistoryPanelShown.accept(false)
-        State.main.previewHistoryItem.accept(nil)
+        appState.isHistoryPanelShown.accept(false)
+        appState.previewHistoryItem.accept(nil)
         resetSelected()
     }
     
@@ -400,9 +414,9 @@ class HistoryViewController: NSViewController {
         if let row = historyListView.selected, row >= 0, row < historyPanel.items.count {
             isPreviewShowing = !isPreviewShowing
             if isPreviewShowing {
-                State.main.previewHistoryItem.accept(historyPanel.items[row])
+                appState.previewHistoryItem.accept(historyPanel.items[row])
             } else {
-                State.main.previewHistoryItem.accept(nil)
+                appState.previewHistoryItem.accept(nil)
             }
         }
     }
@@ -414,7 +428,7 @@ class HistoryViewController: NSViewController {
     
     func runSearch() {
         let query = searchBar.stringValue
-        let baseItems = itemsForActiveListMode(from: State.main.history.items)
+        let baseItems = itemsForActiveListMode(from: appState.history.items)
         if query.isEmpty {
             applyListFilter()
             return
@@ -524,209 +538,25 @@ class HistoryViewController: NSViewController {
         emptyListLabel?.isHidden = !visible
     }
     
-    /// Replaces the storyboard placeholder table with a clean programmatic table.
-    /// The storyboard instance carries stale design-time widths; AppKit can reuse them after tab reloads.
     private func configurePanelLayout() {
-        view.autoresizingMask = [.width, .height]
-        
-        guard let scrollView = historyListView.enclosingScrollView else {
-            historyListView.applyPlainListAppearance()
-            return
-        }
-        
-        let tableView = HistoryTableView(frame: scrollView.contentView.bounds)
-        tableView.autoresizingMask = [.width]
-        tableView.headerView = nil
-        tableView.backgroundColor = .clear
-        tableView.usesAlternatingRowBackgroundColors = false
-        
-        let column = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("HistoryListColumn"))
-        column.width = max(1, floor(scrollView.contentView.bounds.width))
-        column.minWidth = 1
-        column.maxWidth = 10000
-        tableView.addTableColumn(column)
-        
-        scrollView.documentView = tableView
-        historyListView = tableView
-        historyListView.applyPlainListAppearance()
-        (scrollView.contentView as? HistoryListClipView)?.enforceDocumentWidth()
+        HistoryPanelChromeConfigurator.configurePanelLayout(in: view, historyListView: &historyListView)
     }
-    
-    /// Applies scaled chrome metrics for the history panel header and list chrome.
+
     private func applyPanelChromeMetrics() {
-        guard let scrollView = historyListView.enclosingScrollView else { return }
-        
-        func visit(_ view: NSView) {
-            for constraint in view.constraints {
-                applyChromeMetric(to: constraint, scrollView: scrollView)
-            }
-            view.subviews.forEach(visit)
-        }
-        visit(view)
-        
-        for constraint in searchBar.constraints where constraint.firstAttribute == .height {
-            constraint.constant = HistoryListTheme.metrics.searchBarHeight
-        }
-        for constraint in itemGroupScrollView.constraints where constraint.firstAttribute == .height {
-            constraint.constant = HistoryListTheme.metrics.tabBarHeight
-        }
-        
-        stylePanelTitleLabel(in: view)
-    }
-    
-    private func applyChromeMetric(
-        to constraint: NSLayoutConstraint,
-        scrollView: NSScrollView
-    ) {
-        let leadingItems: [NSObject] = [searchBar, scrollView, itemGroupScrollView]
-        let trailingItems: [NSObject] = [searchBar, scrollView, itemGroupScrollView, itemCountLabel]
-        
-        if constraint.firstAttribute == .leading,
-           let first = constraint.firstItem as? NSObject,
-           leadingItems.contains(where: { $0 === first }) {
-            constraint.constant = HistoryListTheme.metrics.panelContentInset
-        }
-        if constraint.firstAttribute == .trailing,
-           let second = constraint.secondItem as? NSObject,
-           trailingItems.contains(where: { $0 === second }) {
-            constraint.constant = HistoryListTheme.metrics.panelContentInset
-        }
-        if constraint.firstItem as? NSObject === searchBar,
-           constraint.firstAttribute == .top,
-           constraint.secondItem is NSTextField {
-            constraint.constant = HistoryListTheme.metrics.titleToSearchSpacing
-        }
-        if constraint.firstItem as? NSObject === itemGroupScrollView,
-           constraint.firstAttribute == .top,
-           constraint.secondItem as? NSObject === searchBar {
-            constraint.constant = HistoryListTheme.metrics.searchToTabsSpacing
-        }
-        if constraint.firstItem as? NSObject === scrollView,
-           constraint.firstAttribute == .top,
-           constraint.secondItem as? NSObject === itemGroupScrollView {
-            constraint.constant = HistoryListTheme.metrics.tabsToListSpacing
-        }
-        if constraint.firstAttribute == .top,
-           constraint.secondItem == nil,
-           let first = constraint.firstItem as? NSTextField,
-           first !== searchBar,
-           first !== itemCountLabel {
-            constraint.constant = HistoryListTheme.metrics.headerTopInset
-        }
-    }
-    
-    private func stylePanelTitleLabel(in root: NSView) {
-        let size = HistoryListTheme.metrics.titleFontSize
-        let titleFont = NSFont(name: "RobotoMonoForPowerline-Medium", size: size)
-            ?? NSFont.systemFont(ofSize: size, weight: .medium)
-        
-        for subview in root.subviews {
-            if let field = subview as? NSTextField,
-               field !== searchBar,
-               field !== itemCountLabel,
-               field !== emptyListLabel,
-               !field.isEditable {
-                field.font = titleFont
-            }
-            stylePanelTitleLabel(in: subview)
-        }
-    }
-    
-    /// Aligns search and count labels with the history list typography.
-    private func styleHistoryChrome() {
-        itemCountLabel.font = NSFont.monospacedDigitSystemFont(
-            ofSize: HistoryListTheme.typography.countSize,
-            weight: .regular
+        HistoryPanelChromeConfigurator.applyChromeMetrics(
+            root: view,
+            historyListView: historyListView,
+            searchBar: searchBar,
+            itemGroupScrollView: itemGroupScrollView,
+            itemCountLabel: itemCountLabel,
+            emptyListLabel: emptyListLabel
         )
-        itemCountLabel.textColor = .secondaryLabelColor
-        itemCountLabel.lineBreakMode = .byTruncatingTail
-        itemCountLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        
-        if let fieldCell = searchBar.cell as? NSTextFieldCell {
-            fieldCell.font = NSFont.monospacedSystemFont(
-                ofSize: HistoryListTheme.typography.chromeSize,
-                weight: .regular
-            )
-        }
     }
-}
 
-extension HistoryViewController: NSTextFieldDelegate {
-    func controlTextDidChange(_ obj: Notification) {
-        runSearch()
-    }
-}
-
-extension HistoryViewController: HistoryTableViewDelegate {
-    func historyTableView(_ historyTableView: HistoryTableView, selectedDidChange selected: Int?) {
-        self.selected.accept(selected)
-    }
-    
-    func historyTableView(_ historyTableView: HistoryTableView, didMoveItem from: Int, to: Int) {
-        historyPanel.move(displayedFrom: from, to: to)
-        selected.accept(to)
-    }
-    
-    func historyTableView(_ historyTableView: HistoryTableView, toggleFavoriteAt row: Int) {
-        guard row >= 0, row < historyPanel.items.count else { return }
-        historyPanel.toggleFavorite(item: historyPanel.items[row])
-    }
-    
-    func historyTableView(_ historyTableView: HistoryTableView, saveToPasswordsAt row: Int) {
-        guard row >= 0, row < historyPanel.items.count else { return }
-        let item = historyPanel.items[row]
-        guard let fields = PasswordEntryPrompt.run(
-            title: L10n.passwordSaveTitle,
-            message: L10n.passwordSaveMessage
-        ) else { return }
-        historyPanel.saveToPasswords(item: item, comment: fields.comment, login: fields.login, url: fields.url)
-    }
-    
-    func historyTableView(_ historyTableView: HistoryTableView, removeFromPasswordsAt row: Int) {
-        guard row >= 0, row < historyPanel.items.count else { return }
-        historyPanel.removeFromPasswords(item: historyPanel.items[row])
-    }
-    
-    func historyTableView(_ historyTableView: HistoryTableView, editPasswordEntryAt row: Int) {
-        guard row >= 0, row < historyPanel.items.count else { return }
-        let item = historyPanel.items[row]
-        guard let fields = PasswordEntryPrompt.run(
-            title: L10n.passwordEditTitle,
-            message: L10n.passwordEditMessage,
-            initialComment: item.passwordComment,
-            initialLogin: item.passwordLogin,
-            initialURL: item.passwordURL
-        ) else { return }
-        historyPanel.editPasswordEntry(item: item, comment: fields.comment, login: fields.login, url: fields.url)
-    }
-    
-    func historyTableView(_ historyTableView: HistoryTableView, copyPasswordLoginAt row: Int) {
-        guard row >= 0, row < historyPanel.items.count else { return }
-        historyPanel.copyLogin(item: historyPanel.items[row])
-    }
-    
-    func historyTableView(_ historyTableView: HistoryTableView, copyPasswordValueAt row: Int) {
-        guard row >= 0, row < historyPanel.items.count else { return }
-        historyPanel.copyPassword(item: historyPanel.items[row])
-    }
-    
-    func historyTableView(_ historyTableView: HistoryTableView, copyPasswordURLAt row: Int) {
-        guard row >= 0, row < historyPanel.items.count else { return }
-        historyPanel.copyPasswordURL(item: historyPanel.items[row])
-    }
-    
-    func historyTableView(_ historyTableView: HistoryTableView, openPasswordURLAt row: Int) {
-        guard row >= 0, row < historyPanel.items.count else { return }
-        historyPanel.openPasswordURL(item: historyPanel.items[row])
-    }
-    
-    func historyTableView(_ historyTableView: HistoryTableView, deleteItemAt row: Int) {
-        selected.accept(historyPanel.delete(displayedIndex: row))
-    }
-}
-
-extension HistoryViewController: HistoryTabBarViewDelegate {
-    func historyTabBarView(_ tabBar: HistoryTabBarView, didSelect mode: HistoryListMode) {
-        listMode.accept(mode)
+    private func styleHistoryChrome() {
+        HistoryPanelChromeConfigurator.styleHistoryChrome(
+            searchBar: searchBar,
+            itemCountLabel: itemCountLabel
+        )
     }
 }

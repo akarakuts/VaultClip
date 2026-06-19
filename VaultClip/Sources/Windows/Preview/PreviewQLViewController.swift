@@ -34,7 +34,7 @@ class PreviewQLViewController: NSViewController, PreviewViewController {
             panel.reloadData()
         }
         else {
-            let error = ClipError(localizedDescription: "Failed to show preview for item '\(item.fsId)' because shared QLPreviewPanel is nil.")
+            let error = ClipError(.previewPanelNil, localizedDescription: "Failed to show preview for item '\(item.fsId)' because shared QLPreviewPanel is nil.")
             error.log(with: ErrorLogger.general)
             error.show(with: Alerter.general)
         }
@@ -46,7 +46,7 @@ class PreviewQLViewController: NSViewController, PreviewViewController {
         super.viewWillDisappear()
         
         guard let panel = QLPreviewPanel.shared() else {
-            let error = ClipError(localizedDescription: "Failed to close preview because shared QLPreviewPanel is nil.")
+            let error = ClipError(.previewPanelNil, localizedDescription: "Failed to close preview because shared QLPreviewPanel is nil.")
             error.log(with: ErrorLogger.general)
             error.show(with: Alerter.general)
             return

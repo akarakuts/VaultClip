@@ -1,0 +1,19 @@
+# Docs and marketing — need LLM for semantic extraction; exclude for AST-only graph.
+*.md
+*.yml
+*.yaml
+docs/
+scripts/
+images/
+images-en/
+.github/
+
+# Test fixtures
+TestData/
+
+DerivedData-*/
+*.app
+dmg-staging/
+
+# App bundle resources (images, localized strings)
+VaultClip/Resources/

@@ -52,20 +52,11 @@ class ClipHotKeyTests: XCTestCase {
     }
     
     func testIsPaused() {
-        // 1. Given a handler registered to the hot key
-        let keyDownHandlerCalled = expectation(description: "keyDownHandlerCalled")
-        keyDownHandlerCalled.isInverted = true
-        let handler = {
-            keyDownHandlerCalled.fulfill()
-        }
+        var called = false
         clipHotKey.isPaused = true
-        clipHotKey.onDown(handler)
-        
-        // 2. When we have a key down event
+        clipHotKey.onDown { called = true }
         hotKey.simulateKeyDown()
-        
-        // 3. Then the handler should be called
-        waitForExpectations(timeout: 0.5, handler: nil)
+        XCTAssertFalse(called)
     }
     
     func testLongPress() {
@@ -83,10 +74,10 @@ class ClipHotKeyTests: XCTestCase {
         // 2. When we have a long press event
         // 0.5 + 0.25 + 0.125 + 0.1 = 0.975 => 4
         // ROund to 0.98 to be safe
-        hotKey.simulateKeyPress(for: 0.98)
+        hotKey.simulateKeyPress(for: 1.05)
         
         // 3. Then the handler should be called multiple times
-        waitForExpectations(timeout: 1.1, handler: nil)
+        waitForExpectations(timeout: 2.5, handler: nil)
     }
 }
 

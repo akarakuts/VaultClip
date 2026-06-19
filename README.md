@@ -118,6 +118,7 @@ Deleting the Keychain entry `history-data-key` **permanently breaks** decryption
 ```
 ~/Library/Application Support/com.karakuts.VaultClip/
 ├── history/          # encrypted items (per UUID)
+├── instance.lock     # single-instance guard (flock)
 ├── error.log
 └── warning.log
 ```
@@ -241,11 +242,14 @@ VAULTCLIP_SIGN_RELEASE=1 ./codesign-app.sh VaultClip.app
 6. **Run tests:**
 
 ```bash
-xcodebuild -project VaultClip.xcodeproj -scheme VaultClip XCTest \
-  -destination 'platform=macOS' -derivedDataPath DerivedData test
+chmod +x scripts/run-unit-tests.sh scripts/check-coverage.sh
+./scripts/run-unit-tests.sh    # 99 unit tests + code coverage
+./scripts/check-coverage.sh    # Security/History module gate (≥55%)
 ```
 
-UI tests need Accessibility enabled for the test runner in System Settings.
+Raw `xcodebuild test` (scheme **VaultClip XCTest**) works too; the scripts match CI flags.
+
+UI tests need Accessibility enabled for the test runner in System Settings (local only — not run in CI).
 
 ### Public releases (Developer ID, optional)
 
@@ -276,7 +280,7 @@ Re-enable VaultClip in **System Settings → Privacy & Security → Accessibilit
 
 VaultClip is an **active open-source fork** (GPLv3). Yippy provided a proven edge-of-screen UX; the next step is a **secure local layer** between macOS and your clipboard data.
 
-**Already shipped:** AES-GCM encryption, Favorites and Passwords tabs, password-manager filtering, RU/EN localization, Yippy migration, Hardened Runtime, CI with Developer ID signing.
+**Already shipped:** AES-GCM encryption, Favorites and Passwords tabs, password-manager filtering, RU/EN localization, Yippy migration, Hardened Runtime, CI (build, SwiftLint baseline, unit tests, coverage gate), **AppEnvironment** composition root (v2.3.1).
 
 **On the horizon** (driven by community priorities and issues):
 
@@ -289,10 +293,14 @@ Ideas, bugs, and pull requests are welcome: [issues](https://github.com/akarakut
 
 ### For developers
 
-- `VaultClip/Sources/` — application code;
+- [`docs/architecture.md`](docs/architecture.md) — layers, `AppEnvironment`, on-disk layout, testing;
+- [`docs/linux-port-plan.md`](docs/linux-port-plan.md) — portable Rust core roadmap;
+- `VaultClip/Sources/` — application code; `AppEnvironment` is the composition root after launch;
 - `VaultClip/Sources/Models/Security/` — Keychain, AES-GCM, migrations;
 - `VaultClip/Resources/Localizable.xcstrings` — localized UI strings (all macOS app languages);
-- `VaultClipTests/` — unit tests; `VaultClipUITests/` — UI tests.
+- `VaultClipTests/` — unit tests (99); `VaultClipUITests/` — UI tests (local);
+- `scripts/run-unit-tests.sh`, `scripts/check-coverage.sh` — same as CI;
+- `graphify-out/graph.html` — code graph (`graphify update .`).
 
 ---
 

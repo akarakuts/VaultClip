@@ -53,13 +53,12 @@ public class SearchResult {
 
 public class SearchEngine {
     
-    var results = [SearchQuery: SearchResult]()
+    private var results = [SearchQuery: SearchResult]()
+    private var pendingCompletions = [SearchQuery: [(SearchResult) -> Void]]()
+    private let stateQueue = DispatchQueue(label: "SearchEngineStateQueue")
+    private let searchQueue = DispatchQueue(label: "SearchEngineWorkerQueue", qos: .userInitiated)
     
-    var inProgress = [SearchQuery]()
-    
-    var sem = DispatchSemaphore(value: 1)
-    
-    var data: [String]
+    private let data: [String]
     /// Maps each searchable string index to its index in the full history array.
     private let historyIndices: [Int]
     
@@ -92,56 +91,43 @@ public class SearchEngine {
     
     public func search(query: String, completion: @escaping (SearchResult) -> Void) {
         let searchQuery = SearchQuery.fromRawText(query)
-        
-        if let result = findResult(forQuery: searchQuery) {
-            return completion(result)
-        }
-        
-        DispatchQueue.global().async {
-            self.sem.wait()
-            self.inProgress.append(searchQuery)
-            self.sem.signal()
-            
-            // Do something
-            let resSem = DispatchSemaphore(value: 1)
-            let searchResult = SearchResult(query: searchQuery, items: self.data.count)
-            for (i, d) in self.data.enumerated() {
-                DispatchQueue.global().async {
-                    if performSearch(needle: searchQuery.query, haystack: d) {
-                        resSem.wait()
-                        searchResult.addResult(self.historyIndices[i])
-                        resSem.signal()
-                    }
-                    else {
-                        resSem.wait()
-                        searchResult.recordFailure()
-                        resSem.signal()
-                    }
-                }
+
+        var cachedResult: SearchResult?
+        let shouldStartSearch = stateQueue.sync { () -> Bool in
+            if let result = results[searchQuery] {
+                cachedResult = result
+                return false
             }
-            
-            self.finishSearch(searchResult: searchResult, update: completion) {
-                self.sem.wait()
-                self.inProgress.removeAll(where: {$0 == searchQuery})
-                self.results[searchQuery] = searchResult
-                self.sem.signal()
+            cachedResult = nil
+            if pendingCompletions[searchQuery] != nil {
+                pendingCompletions[searchQuery]?.append(completion)
+                return false
             }
+            pendingCompletions[searchQuery] = [completion]
+            return true
         }
-    }
-    
-    private func finishSearch(searchResult: SearchResult, update: @escaping (SearchResult) -> (), completion: @escaping () -> ()) {
-        if searchResult.isFinished {
-            update(searchResult)
-            completion()
+        if let cachedResult {
+            completion(cachedResult)
             return
         }
-        
-        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 0.1, execute: {
-            self.finishSearch(searchResult: searchResult, update: update, completion: completion)
-        })
-    }
-    
-    private func findResult(forQuery query: SearchQuery) -> SearchResult? {
-        return results[query]
+        guard shouldStartSearch else { return }
+
+        searchQueue.async {
+            let searchResult = SearchResult(query: searchQuery, items: self.data.count)
+            for (i, d) in self.data.enumerated() {
+                if performSearch(needle: searchQuery.query, haystack: d) {
+                    searchResult.addResult(self.historyIndices[i])
+                }
+                else {
+                    searchResult.recordFailure()
+                }
+            }
+
+            let completions = self.stateQueue.sync { () -> [(SearchResult) -> Void] in
+                self.results[searchQuery] = searchResult
+                return self.pendingCompletions.removeValue(forKey: searchQuery) ?? []
+            }
+            completions.forEach { $0(searchResult) }
+        }
     }
 }

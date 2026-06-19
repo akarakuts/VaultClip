@@ -12,6 +12,50 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 
 ---
 
+## [2.3.1] — 2026-06-19
+
+### Added
+
+- **SettingsPersistence** — single write path for settings (via `AppEnvironment` or test override).
+- **AppRouting** — navigation protocol (`togglePopover`, welcome/help windows) decoupled from `Controller.main`.
+- **PasteboardChangeTracking** — minimal pasteboard protocol for monitors and mocks.
+- **VaultClipTestSupport** — restores production `AppEnvironment` after tests that replace singletons.
+- **SettingsPersistenceTests** — unit tests for settings I/O without test-host crashes.
+- **SwiftLint baseline** (`.swiftlint-baseline.yml`) — CI blocks new lint violations.
+
+### Changed
+
+- **AppEnvironment.routing** — production code uses composition root instead of `State.main` / `Controller.main` / `Settings.main`.
+- **HistoryViewController** — `configure(state:settings:)` injection from `Controller`; `appState` accessor.
+- **Settings** / **State** Rx binds write through `SettingsPersistence.apply`.
+- **check-coverage.sh** — fixed xccov parsing (Security/History peak thresholds).
+- **README.md** / **README.ru.md** — CI test scripts, developer docs, `instance.lock` in data paths.
+- Unit test count: **99** (stable full-suite runs).
+
+---
+
+## [2.2.0] — 2026-06-19
+
+### Added
+
+- **ClipErrorCode** — stable NSError codes for history, UI, and cache errors.
+- **HistoryPasteboardPolicy** — centralized password-manager denylist and pasteboard type filtering.
+- **HistoryPanelChromeConfigurator** — extracted history panel layout and typography.
+- **docs/architecture.md** — macOS architecture overview.
+- **SwiftLint** configuration and CI lint step.
+- **CI unit tests** — `scripts/run-unit-tests.sh` runs the full `VaultClipTests` suite on every push.
+- Unit tests for error codes, pasteboard policy, and single-instance lock path.
+
+### Changed
+
+- **AppEnvironment** composition root replaces implicit singleton construction; `State`/`Controller`/`Settings` forward through bootstrap.
+- **HistoryFileManaging** protocol abstracts persistence for `History`.
+- CI **coverage gate** (`scripts/check-coverage.sh`, threshold 55%) for Security + History modules.
+- **HistoryViewController** split: table/tab delegates moved to `HistoryViewController+Delegates.swift`.
+- **HistoryFileManager** and related call sites use typed `ClipErrorCode` instead of `code: 0`.
+
+---
+
 ## [2.1.2] — 2026-06-17
 
 ### Fixed

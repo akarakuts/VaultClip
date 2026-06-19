@@ -49,7 +49,7 @@ class HistoryPanel {
     private func performSimulatedPaste(startedAt: Date) {
         let elapsed = Date().timeIntervalSince(startedAt)
 
-        if State.main.isHistoryPanelShown.value {
+        if AppEnvironment.shared.state.isHistoryPanelShown.value {
             if elapsed < 2 {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                     self.performSimulatedPaste(startedAt: startedAt)

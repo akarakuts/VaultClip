@@ -49,7 +49,7 @@ class AccessControlHelper {
         guard !AXIsProcessTrusted() else { return }
         guard !hasShownWelcomeThisSession else { return }
         hasShownWelcomeThisSession = true
-        Controller.main.welcomeWindowController.showWindow(nil)
+        AppEnvironment.shared.routing.welcomeWindowController.showWindow(nil)
         NSApp.activate(ignoringOtherApps: true)
     }
 

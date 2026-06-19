@@ -12,7 +12,7 @@ import Cocoa
 
 class HelpViewController: NSViewController {
     
-    var timer: Timer!
+    private var timer: Timer?
     
     @IBOutlet var waitingView: NSView!
     @IBOutlet var instructionsView: NSView!
@@ -26,18 +26,26 @@ class HelpViewController: NSViewController {
         waitingView.isHidden = hasControl
         instructionsView.isHidden = !hasControl
         
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (t) in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] t in
+            guard let self else {
+                t.invalidate()
+                return
+            }
             let new = Helper.isControlGranted(showPopup: false)
-            if new != self.hasControl {
-                self.hasControl = new
-                self.waitingView.isHidden = self.hasControl
-                self.instructionsView.isHidden = !self.hasControl
+            if new != hasControl {
+                hasControl = new
+                waitingView.isHidden = hasControl
+                instructionsView.isHidden = !hasControl
                 
-                self.updateSize()
+                updateSize()
             }
         }
     }
     
+    deinit {
+        timer?.invalidate()
+    }
+
     override func viewWillAppear() {
         super.viewWillAppear()
         

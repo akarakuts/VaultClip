@@ -1,0 +1,35 @@
+# SwiftLint — VaultClip (baseline tuned for legacy Yippy fork + AppKit UI).
+
+baseline:
+  path: .swiftlint-baseline.yml
+
+disabled_rules:
+  - trailing_whitespace
+  - line_length
+  - file_length
+  - type_body_length
+  - function_body_length
+  - cyclomatic_complexity
+  - identifier_name
+  - force_cast
+  - force_try
+  - todo
+  - nesting
+  - large_tuple
+  - blanket_disable_command
+
+opt_in_rules:
+  - fatal_error_message
+  - implicit_return
+  - redundant_nil_coalescing
+
+excluded:
+  - DerivedData
+  - DerivedData-*
+  - dmg-staging
+  - VaultClip.app
+  - graphify-out
+  - scripts
+  - TestData
+
+reporter: github-actions-logging

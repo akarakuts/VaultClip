@@ -41,6 +41,7 @@ class ClipHotKey {
                 }
                 
                 // Handle long press observers
+                self.stopLongPressTimer()
                 self.setLongPressTimer(withInterval: self.longPressStartingInterval)
             }
             
@@ -84,6 +85,7 @@ class ClipHotKey {
             }
             
             // Handle long press observers
+            self.stopLongPressTimer()
             self.setLongPressTimer(withInterval: self.longPressStartingInterval)
         }
         

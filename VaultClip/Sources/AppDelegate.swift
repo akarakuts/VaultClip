@@ -29,8 +29,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         checkLaunchArgs()
         AppDataMigrator.migrateIfNeeded()
         EncryptionKeyBootstrap.prepareAtLaunch()
-        Controller.main = Controller(state: State.main, settings: Settings.main)
-        LaunchAtLoginHelper.reconcile(wantsLaunchAtLogin: Controller.main.state.launchAtLogin.value)
+        let environment = AppEnvironment.bootstrap()
+        let controller = Controller(state: environment.state, settings: environment.settings)
+        environment.attachController(controller)
+        LaunchAtLoginHelper.reconcile(wantsLaunchAtLogin: environment.state.launchAtLogin.value)
         LaunchAtLoginHelper.warnIfRunningFromTransientLocation()
 
         showWelcomeIfNeeded()
@@ -65,9 +67,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func setupHotKey() {
-        ClipHotKeys.toggle.changeHotKey(keyCombo: Settings.main.toggleHotKey)
+        ClipHotKeys.toggle.changeHotKey(keyCombo: AppEnvironment.shared.settings.toggleHotKey)
         ClipHotKeys.toggle.onDown {
-            Controller.main.togglePopover()
+            AppEnvironment.shared.routing.togglePopover()
         }
     }
 }

@@ -22,10 +22,10 @@ class HistoryItemBaseCellView: NSTableCellView {
         NSUserInterfaceItemIdentifier("HistoryItemBaseCellView")
     }
     
-    var contentView: HistoryItemContentView!
-    var shortcutTextView: HistoryItemCellTextView!
-    var itemTextView: HistoryItemCellTextView!
-    var sourceAppIconView: NSImageView!
+    let contentView = HistoryItemContentView(frame: .zero)
+    let shortcutTextView = HistoryItemCellTextView(frame: .zero)
+    let itemTextView = HistoryItemCellTextView(frame: .zero)
+    let sourceAppIconView = NSImageView(frame: .zero)
     
     weak var hostTableView: HistoryTableView?
     var displayedRow: Int = -1
@@ -56,7 +56,7 @@ class HistoryItemBaseCellView: NSTableCellView {
             isHovered: isRowHovered
         ).cgColor
         
-        contentView?.isRowSelected = isRowSelected
+        contentView.isRowSelected = isRowSelected
         updateShortcutAppearance()
     }
     
@@ -98,11 +98,8 @@ class HistoryItemBaseCellView: NSTableCellView {
     }
     
     func commonInit() {
-        contentView = HistoryItemContentView(frame: .zero)
         addSubview(contentView)
-        itemTextView = HistoryItemCellTextView(frame: .zero)
         contentView.addSubview(itemTextView)
-        shortcutTextView = HistoryItemCellTextView(frame: .zero)
         contentView.addSubview(shortcutTextView)
         
         wantsLayer = true
@@ -155,7 +152,6 @@ class HistoryItemBaseCellView: NSTableCellView {
     }
     
     func setupSourceAppIconView() {
-        sourceAppIconView = NSImageView(frame: .zero)
         sourceAppIconView.translatesAutoresizingMaskIntoConstraints = false
         sourceAppIconView.imageScaling = .scaleProportionallyDown
         sourceAppIconView.wantsLayer = true
@@ -179,10 +175,12 @@ class HistoryItemBaseCellView: NSTableCellView {
         contentView.wantsLayer = true
         contentView.layer?.cornerRadius = HistoryListTheme.metrics.cardRadius
         
-        addConstraint(NSLayoutConstraint(item: contentView!, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: Self.contentViewInsets.left))
-        addConstraint(NSLayoutConstraint(item: contentView!, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: Self.contentViewInsets.top))
-        addConstraint(NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: contentView, attribute: .trailing, multiplier: 1, constant: Self.contentViewInsets.right))
-        addConstraint(NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1, constant: Self.contentViewInsets.bottom))
+        NSLayoutConstraint.activate([
+            contentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Self.contentViewInsets.left),
+            contentView.topAnchor.constraint(equalTo: topAnchor, constant: Self.contentViewInsets.top),
+            trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: Self.contentViewInsets.right),
+            bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: Self.contentViewInsets.bottom),
+        ])
     }
     
     func setupShortcutTextView() {
@@ -199,8 +197,10 @@ class HistoryItemBaseCellView: NSTableCellView {
         shortcutTextView.backgroundColor = HistoryListTheme.colors.accent
         shortcutTextView.layer?.zPosition = 1
         
-        contentView.addConstraint(NSLayoutConstraint(item: shortcutTextView!, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1, constant: 0))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView!, attribute: .trailing, relatedBy: .equal, toItem: shortcutTextView, attribute: .trailing, multiplier: 1, constant: 0))
+        NSLayoutConstraint.activate([
+            shortcutTextView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            contentView.trailingAnchor.constraint(equalTo: shortcutTextView.trailingAnchor),
+        ])
         shortcutTextView.widthAnchor.constraint(equalToConstant: 0, withIdentifier: "width")?.isActive = true
         shortcutTextView.heightAnchor.constraint(equalToConstant: 0, withIdentifier: "height")?.isActive = true
     }
@@ -208,8 +208,9 @@ class HistoryItemBaseCellView: NSTableCellView {
     func getShortcutTextViewSize() -> NSSize {
         let bRect = shortcutTextView.attributedString().getSingleLineSize()
         let inset = shortcutTextView.textContainerInset
+        let lineFragmentPadding = shortcutTextView.textContainer?.lineFragmentPadding ?? 0
         return NSSize(
-            width: bRect.width + shortcutTextView.textContainer!.lineFragmentPadding + inset.width * 2,
+            width: bRect.width + lineFragmentPadding + inset.width * 2,
             height: bRect.height + inset.height * 2
         )
     }

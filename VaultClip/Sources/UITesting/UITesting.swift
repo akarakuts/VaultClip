@@ -19,8 +19,9 @@ struct UITesting {
         // Remove the settings
         _ = UserDefaults.standard.blank()
         
-        if let test = CommandLine.arguments.filter({$0.contains("--Settings.testData=")}).first {
-            Settings.main = Settings.testData.from(test)
+        if let test = CommandLine.arguments.filter({$0.contains("--Settings.testData=")}).first,
+           let settings = Settings.testData.from(test) {
+            Settings.main = settings
         }
         
         try loadTestAppSupport(launchArgs: launchArgs, environment: environment)
@@ -31,7 +32,7 @@ struct UITesting {
             return
         }
         let pattern = "--test-dir=(.*)"
-        let regex = try! NSRegularExpression(pattern: pattern)
+        let regex = try NSRegularExpression(pattern: pattern)
         guard let firstMatch = regex.firstMatch(in: testData, range: NSRange(location: 0, length: testData.count)) else {
             return
         }

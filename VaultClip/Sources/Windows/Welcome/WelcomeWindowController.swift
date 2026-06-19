@@ -12,7 +12,7 @@ import Cocoa
 
 class WelcomeWindowController: NSWindowController, NSWindowDelegate {
     
-    var closeButton: NSButton!
+    private var closeButton: NSButton?
     
     override func windowDidLoad() {
         super.windowDidLoad()
@@ -20,8 +20,8 @@ class WelcomeWindowController: NSWindowController, NSWindowDelegate {
         window?.delegate = self
         window?.setAccessibilityIdentifier(Accessibility.identifiers.welcomeWindow)
         closeButton = window?.standardWindowButton(.closeButton)
-        closeButton.target = self
-        closeButton.action = #selector(closeButtonClicked)
+        closeButton?.target = self
+        closeButton?.action = #selector(closeButtonClicked)
     }
     
     static func createWelcomeWindowController() -> WelcomeWindowController {

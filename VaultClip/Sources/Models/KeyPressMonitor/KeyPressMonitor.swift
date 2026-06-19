@@ -13,9 +13,9 @@ import HotKey
 
 class KeyPressMonitor {
     
-    var keyUpMonitor: EventMonitor!
-    var keyDownMonitor: EventMonitor!
-    var specialKeyMonitor: SpecialKeyChangedEventMonitor!
+    lazy var keyUpMonitor: EventMonitor = KeyUpEventMonitor(handler: onKeyUp)
+    lazy var keyDownMonitor: EventMonitor = KeyDownEventMonitor(handler: onKeyDown)
+    lazy var specialKeyMonitor: SpecialKeyChangedEventMonitor = SpecialKeyChangedEventMonitor(handler: onSpecialKeyChange)
     
     var allowedModifierFlags: NSEvent.ModifierFlags
     
@@ -38,9 +38,6 @@ class KeyPressMonitor {
     
     init(allowedModifierFlags: NSEvent.ModifierFlags = NSEvent.ModifierFlags.recommended) {
         self.allowedModifierFlags = allowedModifierFlags
-        self.keyUpMonitor = KeyUpEventMonitor(handler: onKeyUp)
-        self.keyDownMonitor = KeyDownEventMonitor(handler: onKeyDown)
-        self.specialKeyMonitor = SpecialKeyChangedEventMonitor(handler: onSpecialKeyChange)
     }
     
     func handleAction(_ action: KeyAction, forKey key: Key, withModifiers modifiers: NSEvent.ModifierFlags, isExclusive: Bool = false, handler: @escaping () -> Void) {

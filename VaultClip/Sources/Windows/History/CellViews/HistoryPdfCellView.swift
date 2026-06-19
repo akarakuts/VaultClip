@@ -19,12 +19,11 @@ class HistoryPdfCellView: HistoryItemBaseCellView, HistoryListItem {
     static let iconViewPadding = HistoryListTheme.metrics.fileTypeIconPadding
     static let iconSize = HistoryListTheme.metrics.fileTypeIconSize
     
-    var iconView: NSImageView!
+    let iconView = NSImageView(frame: .zero)
     
     override func commonInit() {
         super.commonInit()
         
-        iconView = NSImageView(frame: .zero)
         contentView.addSubview(iconView)
         
         setupIconView()
@@ -36,7 +35,10 @@ class HistoryPdfCellView: HistoryItemBaseCellView, HistoryListItem {
         iconView.widthAnchor.constraint(equalToConstant: Self.iconSize.width).isActive = true
         iconView.heightAnchor.constraint(equalToConstant: Self.iconSize.height).isActive = true
         iconView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        contentView.addConstraint(NSLayoutConstraint(item: iconView!, attribute: .leading, relatedBy: .equal, toItem: sourceAppIconView, attribute: .trailing, multiplier: 1, constant: HistoryItemBaseCellView.sourceAppIconSpacing))
+        iconView.leadingAnchor.constraint(
+            equalTo: sourceAppIconView.trailingAnchor,
+            constant: HistoryItemBaseCellView.sourceAppIconSpacing
+        ).isActive = true
     }
     
     func setupItemTextView() {
@@ -47,8 +49,8 @@ class HistoryPdfCellView: HistoryItemBaseCellView, HistoryListItem {
         itemTextView.isVerticallyResizable = false
         itemTextView.isHorizontallyResizable = false
         itemTextView.alignment = .left
-        contentView.addConstraint(NSLayoutConstraint(item: itemTextView!, attribute: .leading, relatedBy: .equal, toItem: iconView, attribute: .trailing, multiplier: 1, constant: Self.iconViewPadding.right))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView!, attribute: .trailing, relatedBy: .equal, toItem: itemTextView, attribute: .trailing, multiplier: 1, constant: Self.iconViewPadding.right))
+        itemTextView.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: Self.iconViewPadding.right).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: itemTextView.trailingAnchor, constant: Self.iconViewPadding.right).isActive = true
         itemTextView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         itemTextView.heightAnchor.constraint(equalToConstant: 0, withIdentifier: "height")?.isActive = true
     }

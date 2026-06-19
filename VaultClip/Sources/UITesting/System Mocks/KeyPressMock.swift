@@ -34,10 +34,11 @@ struct KeyPressMock {
             if vals.count != 2 {
                 return nil
             }
-            let k = Int(vals[0])!
-            let f = Int(vals[1])!
+            guard let k = Int(vals[0]), let f = UInt64(vals[1]) else {
+                return nil
+            }
             let keyCode = CGKeyCode(k)
-            let flags = CGEventFlags(rawValue: UInt64(f))
+            let flags = CGEventFlags(rawValue: f)
             
             return (keyCode, flags)
         }

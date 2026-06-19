@@ -102,6 +102,8 @@
 		34A1942123553DD60076A717 /* FormatFileUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A1942023553DD60076A717 /* FormatFileUrl.swift */; };
 		34A30CC42356B93900D4C2D6 /* HistoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A30CC32356B93900D4C2D6 /* HistoryCache.swift */; };
 		34A30CC62356B94E00D4C2D6 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A30CC52356B94E00D4C2D6 /* History.swift */; };
+		VCHPP00212EB0B10004E6E63 /* HistoryPasteboardPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCHPP00112EB0B10004E6E63 /* HistoryPasteboardPolicy.swift */; };
+		VCHFM00212EB0B10004E6E63 /* HistoryFileManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCHFM00112EB0B10004E6E63 /* HistoryFileManaging.swift */; };
 		34AAA1010000000000000002 /* DataEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA1010000000000000001 /* DataEncryptor.swift */; };
 		34AAA1010000000000000004 /* AESGCMDataEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA1010000000000000003 /* AESGCMDataEncryptor.swift */; };
 		34AAA1010000000000000006 /* KeychainSymmetricKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA1010000000000000005 /* KeychainSymmetricKeyStore.swift */; };
@@ -119,8 +121,16 @@
 		VCLOC00082EB0B10004E6E63 /* NSView+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCLOC00072EB0B10004E6E63 /* NSView+Localization.swift */; };
 		VCLOC000A2EB0B10004E6E63 /* HelpInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCLOC00092EB0B10004E6E63 /* HelpInstructionsViewController.swift */; };
 		34ACFBD222EB0B11004E6E63 /* VaultClipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ACFBD122EB0B11004E6E63 /* VaultClipTests.swift */; };
+		VCTST01212EB0B10004E6E63 /* ClipErrorCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCTST01112EB0B10004E6E63 /* ClipErrorCodeTests.swift */; };
+		VCTST02212EB0B10004E6E63 /* HistoryPasteboardPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCTST02112EB0B10004E6E63 /* HistoryPasteboardPolicyTests.swift */; };
+		VCTST03212EB0B10004E6E63 /* SingleInstanceGuardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCTST03112EB0B10004E6E63 /* SingleInstanceGuardTests.swift */; };
+		VCTST04212EB0B10004E6E63 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCTST04112EB0B10004E6E63 /* AppEnvironmentTests.swift */; };
+		VCTST05212EB0B10004E6E63 /* VaultClipTestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */; };
+		VCSET02212EB0B10004E6E63 /* SettingsPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */; };
 		34ACFBDD22EB0B11004E6E63 /* VaultClipUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ACFBDC22EB0B11004E6E63 /* VaultClipUITests.swift */; };
 		34ACFBEB22EB0D6A004E6E63 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ACFBEA22EB0D6A004E6E63 /* HistoryViewController.swift */; };
+		VCHVD00212EB0B10004E6E63 /* HistoryViewController+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCHVD00112EB0B10004E6E63 /* HistoryViewController+Delegates.swift */; };
+		VCHPC00212EB0B10004E6E63 /* HistoryPanelChromeConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCHPC00112EB0B10004E6E63 /* HistoryPanelChromeConfigurator.swift */; };
 		34AF6CE62358079100E8F6CC /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AF6CE52358079100E8F6CC /* Logger.swift */; };
 		34B13758235BF942004AB5ED /* HistoryCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B13757235BF942004AB5ED /* HistoryCacheTests.swift */; };
 		34B1375A235BFB87004AB5ED /* HistoryFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B13759235BFB87004AB5ED /* HistoryFileManager.swift */; };
@@ -132,6 +142,11 @@
 		34B5C42A23580CB0005247EB /* ErrorLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B5C42923580CB0005247EB /* ErrorLogger.swift */; };
 		34B5C42C23580CC6005247EB /* WarningLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B5C42B23580CC6005247EB /* WarningLogger.swift */; };
 		34B5C42E23580CD9005247EB /* ClipError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B5C42D23580CD9005247EB /* ClipError.swift */; };
+		VCERR00212EB0B10004E6E63 /* ClipErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCERR00112EB0B10004E6E63 /* ClipErrorCode.swift */; };
+		VCENV00212EB0B10004E6E63 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCENV00112EB0B10004E6E63 /* AppEnvironment.swift */; };
+		VCARC00212EB0B10004E6E63 /* AppRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCARC00112EB0B10004E6E63 /* AppRouting.swift */; };
+		VCSP00212EB0B10004E6E63 /* SettingsPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSP00112EB0B10004E6E63 /* SettingsPersistence.swift */; };
+		VCPCT00212EB0B10004E6E63 /* PasteboardChangeTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPCT00112EB0B10004E6E63 /* PasteboardChangeTracking.swift */; };
 		34B5C43023580CF0005247EB /* ClipWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B5C42F23580CF0005247EB /* ClipWarning.swift */; };
 		34B5C43223580CFF005247EB /* Loggable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B5C43123580CFF005247EB /* Loggable.swift */; };
 		34B5C43423581B7B005247EB /* Alertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B5C43323581B7B005247EB /* Alertable.swift */; };
@@ -289,6 +304,8 @@
 		34A1942023553DD60076A717 /* FormatFileUrl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatFileUrl.swift; sourceTree = "<group>"; };
 		34A30CC32356B93900D4C2D6 /* HistoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCache.swift; sourceTree = "<group>"; };
 		34A30CC52356B94E00D4C2D6 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
+		VCHPP00112EB0B10004E6E63 /* HistoryPasteboardPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryPasteboardPolicy.swift; sourceTree = "<group>"; };
+		VCHFM00112EB0B10004E6E63 /* HistoryFileManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFileManaging.swift; sourceTree = "<group>"; };
 		34AAA1010000000000000001 /* DataEncryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataEncryptor.swift; sourceTree = "<group>"; };
 		34AAA1010000000000000003 /* AESGCMDataEncryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESGCMDataEncryptor.swift; sourceTree = "<group>"; };
 		34AAA1010000000000000005 /* KeychainSymmetricKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainSymmetricKeyStore.swift; sourceTree = "<group>"; };
@@ -305,11 +322,19 @@
 		34ACFBC822EB0B11004E6E63 /* VaultClip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VaultClip.entitlements; sourceTree = "<group>"; };
 		34ACFBCD22EB0B11004E6E63 /* VaultClipTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VaultClipTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		34ACFBD122EB0B11004E6E63 /* VaultClipTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultClipTests.swift; sourceTree = "<group>"; };
+		VCTST01112EB0B10004E6E63 /* ClipErrorCodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipErrorCodeTests.swift; sourceTree = "<group>"; };
+		VCTST02112EB0B10004E6E63 /* HistoryPasteboardPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryPasteboardPolicyTests.swift; sourceTree = "<group>"; };
+		VCTST03112EB0B10004E6E63 /* SingleInstanceGuardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleInstanceGuardTests.swift; sourceTree = "<group>"; };
+		VCTST04112EB0B10004E6E63 /* AppEnvironmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironmentTests.swift; sourceTree = "<group>"; };
+		VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultClipTestSupport.swift; sourceTree = "<group>"; };
+		VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPersistenceTests.swift; sourceTree = "<group>"; };
 		34ACFBD322EB0B11004E6E63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34ACFBD822EB0B11004E6E63 /* VaultClipUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VaultClipUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		34ACFBDC22EB0B11004E6E63 /* VaultClipUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultClipUITests.swift; sourceTree = "<group>"; };
 		34ACFBDE22EB0B11004E6E63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34ACFBEA22EB0D6A004E6E63 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
+		VCHVD00112EB0B10004E6E63 /* HistoryViewController+Delegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryViewController+Delegates.swift"; sourceTree = "<group>"; };
+		VCHPC00112EB0B10004E6E63 /* HistoryPanelChromeConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryPanelChromeConfigurator.swift; sourceTree = "<group>"; };
 		34AF6CE52358079100E8F6CC /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		34B13757235BF942004AB5ED /* HistoryCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCacheTests.swift; sourceTree = "<group>"; };
 		34B13759235BFB87004AB5ED /* HistoryFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFileManager.swift; sourceTree = "<group>"; };
@@ -321,6 +346,11 @@
 		34B5C42923580CB0005247EB /* ErrorLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorLogger.swift; sourceTree = "<group>"; };
 		34B5C42B23580CC6005247EB /* WarningLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningLogger.swift; sourceTree = "<group>"; };
 		34B5C42D23580CD9005247EB /* ClipError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipError.swift; sourceTree = "<group>"; };
+		VCERR00112EB0B10004E6E63 /* ClipErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipErrorCode.swift; sourceTree = "<group>"; };
+		VCENV00112EB0B10004E6E63 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		VCARC00112EB0B10004E6E63 /* AppRouting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouting.swift; sourceTree = "<group>"; };
+		VCSP00112EB0B10004E6E63 /* SettingsPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPersistence.swift; sourceTree = "<group>"; };
+		VCPCT00112EB0B10004E6E63 /* PasteboardChangeTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardChangeTracking.swift; sourceTree = "<group>"; };
 		34B5C42F23580CF0005247EB /* ClipWarning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipWarning.swift; sourceTree = "<group>"; };
 		34B5C43123580CFF005247EB /* Loggable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loggable.swift; sourceTree = "<group>"; };
 		34B5C43323581B7B005247EB /* Alertable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alertable.swift; sourceTree = "<group>"; };
@@ -453,6 +483,8 @@
 				D4F1A2B212345678901AB /* HistoryListClipView.swift */,
 				340FB43C236550390053D82C /* HistoryTableViewDelegate.swift */,
 				34ACFBEA22EB0D6A004E6E63 /* HistoryViewController.swift */,
+				VCHVD00112EB0B10004E6E63 /* HistoryViewController+Delegates.swift */,
+				VCHPC00112EB0B10004E6E63 /* HistoryPanelChromeConfigurator.swift */,
 				34A11C9723693CFD00DA1B14 /* HorizontalButtonsView.swift */,
 				A1B2C3D31123456789001 /* HistoryTabBarView.swift */,
 				B2C3D4E61123456789001 /* PasswordCommentPrompt.swift */,
@@ -490,6 +522,7 @@
 				349F7945235C4D2B000CA5B9 /* Alerter.swift */,
 				34B5C42923580CB0005247EB /* ErrorLogger.swift */,
 				34B5C42D23580CD9005247EB /* ClipError.swift */,
+				VCERR00112EB0B10004E6E63 /* ClipErrorCode.swift */,
 				34B5C42F23580CF0005247EB /* ClipWarning.swift */,
 				34B5C43123580CFF005247EB /* Loggable.swift */,
 				34AF6CE52358079100E8F6CC /* Logger.swift */,
@@ -528,6 +561,7 @@
 			isa = PBXGroup;
 			children = (
 				34B2FD9222F988980068D50A /* Settings.swift */,
+				VCSP00112EB0B10004E6E63 /* SettingsPersistence.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -582,6 +616,7 @@
 			children = (
 				34734C7E2330CB6A0056F855 /* PasteboardMonitor.swift */,
 				34734C7F2330CB6A0056F855 /* PasteboardMonitorDelegate.swift */,
+				VCPCT00112EB0B10004E6E63 /* PasteboardChangeTracking.swift */,
 			);
 			path = PasteboardMonitor;
 			sourceTree = "<group>";
@@ -704,6 +739,8 @@
 				34734C7D2330CB6A0056F855 /* PasteboardMonitor */,
 				343F4116233C5A6F004DA324 /* Settings */,
 				3488B14122FAE9FA0019E7DA /* State.swift */,
+				VCENV00112EB0B10004E6E63 /* AppEnvironment.swift */,
+				VCARC00112EB0B10004E6E63 /* AppRouting.swift */,
 				348D525E2387667D0024A5C7 /* ClipHotKey */,
 				341FFEE82442EDA500C47E6D /* HistoryItemText.swift */,
 				34AAA1010000000000000007 /* Security */,
@@ -749,6 +786,8 @@
 			children = (
 				349F7941235C2055000CA5B9 /* ArrayFileManager.swift */,
 				34A30CC52356B94E00D4C2D6 /* History.swift */,
+				VCHPP00112EB0B10004E6E63 /* HistoryPasteboardPolicy.swift */,
+				VCHFM00112EB0B10004E6E63 /* HistoryFileManaging.swift */,
 				34A30CC32356B93900D4C2D6 /* HistoryCache.swift */,
 				34B13759235BFB87004AB5ED /* HistoryFileManager.swift */,
 				3423B1C0234D8AFF00B40715 /* HistoryItem.swift */,
@@ -824,6 +863,12 @@
 				343F4119233C8C14004DA324 /* SettingsTests.swift */,
 				34268117233DE4EB00BA226A /* ClipHotKeyTests.swift */,
 				34ACFBD122EB0B11004E6E63 /* VaultClipTests.swift */,
+				VCTST01112EB0B10004E6E63 /* ClipErrorCodeTests.swift */,
+				VCTST02112EB0B10004E6E63 /* HistoryPasteboardPolicyTests.swift */,
+				VCTST03112EB0B10004E6E63 /* SingleInstanceGuardTests.swift */,
+				VCTST04112EB0B10004E6E63 /* AppEnvironmentTests.swift */,
+				VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */,
+				VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */,
 			);
 			path = VaultClipTests;
 			sourceTree = "<group>";
@@ -1093,6 +1138,10 @@
 				345131EF23836725002D9D03 /* PreviewViewController.swift in Sources */,
 				341D9D27233724FE008A2BE6 /* NSEventModifierFlags+KeyPressMonitor.swift in Sources */,
 				3488B14222FAE9FA0019E7DA /* State.swift in Sources */,
+				VCENV00212EB0B10004E6E63 /* AppEnvironment.swift in Sources */,
+				VCARC00212EB0B10004E6E63 /* AppRouting.swift in Sources */,
+				VCSP00212EB0B10004E6E63 /* SettingsPersistence.swift in Sources */,
+				VCPCT00212EB0B10004E6E63 /* PasteboardChangeTracking.swift in Sources */,
 				34B2FD9722F98C4E0068D50A /* NSMenu+Functional.swift in Sources */,
 				345B14B12341AF1900C2D0DA /* KeyPressHelperMock.swift in Sources */,
 				340FB43D236550390053D82C /* HistoryTableViewDelegate.swift in Sources */,
@@ -1104,6 +1153,8 @@
 				VCLOC000A2EB0B10004E6E63 /* HelpInstructionsViewController.swift in Sources */,
 				340FB43B236407D70053D82C /* Controller.swift in Sources */,
 				34ACFBEB22EB0D6A004E6E63 /* HistoryViewController.swift in Sources */,
+				VCHVD00212EB0B10004E6E63 /* HistoryViewController+Delegates.swift in Sources */,
+				VCHPC00212EB0B10004E6E63 /* HistoryPanelChromeConfigurator.swift in Sources */,
 				34E56483235E777E00E362CF /* NSTextCheckingResult+Groups.swift in Sources */,
 				3474C1402346E82900232620 /* HistoryPanel.swift in Sources */,
 				3496BAD92442A90000D110AE /* GeneralSettingsViewController.swift in Sources */,
@@ -1152,6 +1203,8 @@
 				341D9D25233724A2008A2BE6 /* KeyPressMonitor.swift in Sources */,
 				3474C13E2346E70F00232620 /* NSAttributedString+BoundingRect.swift in Sources */,
 				34A30CC62356B94E00D4C2D6 /* History.swift in Sources */,
+				VCHPP00212EB0B10004E6E63 /* HistoryPasteboardPolicy.swift in Sources */,
+				VCHFM00212EB0B10004E6E63 /* HistoryFileManaging.swift in Sources */,
 				34268124233EE82200BA226A /* AccessControlHelper.swift in Sources */,
 				D4E5F6A71123456789001 /* SourceAppIconProvider.swift in Sources */,
 				34B1375A235BFB87004AB5ED /* HistoryFileManager.swift in Sources */,
@@ -1172,6 +1225,7 @@
 				34AAA101000000000000000E /* AppDataMigrator.swift in Sources */,
 				34AAA1010000000000000008 /* NSStoryboard+VaultClip.swift in Sources */,
 				34B5C42E23580CD9005247EB /* ClipError.swift in Sources */,
+				VCERR00212EB0B10004E6E63 /* ClipErrorCode.swift in Sources */,
 				34D018ED232B5139006259E1 /* AboutWindowController.swift in Sources */,
 				343F411C233C97A4004DA324 /* UserDefaults+Blank.swift in Sources */,
 				34268126233EE83700BA226A /* AccessControlHelperMock.swift in Sources */,
@@ -1213,6 +1267,12 @@
 				349F794A235C5722000CA5B9 /* WarningLoggerMock.swift in Sources */,
 				349F794C235C573D000CA5B9 /* AlerterMock.swift in Sources */,
 				34ACFBD222EB0B11004E6E63 /* VaultClipTests.swift in Sources */,
+				VCTST01212EB0B10004E6E63 /* ClipErrorCodeTests.swift in Sources */,
+				VCTST02212EB0B10004E6E63 /* HistoryPasteboardPolicyTests.swift in Sources */,
+				VCTST03212EB0B10004E6E63 /* SingleInstanceGuardTests.swift in Sources */,
+				VCTST04212EB0B10004E6E63 /* AppEnvironmentTests.swift in Sources */,
+				VCTST05212EB0B10004E6E63 /* VaultClipTestSupport.swift in Sources */,
+				VCSET02212EB0B10004E6E63 /* SettingsPersistenceTests.swift in Sources */,
 				34268113233D9EC500BA226A /* NSMenuItemFunctionalTests.swift in Sources */,
 				34CA0202235D742000EB067C /* HistoryFileManagerMock.swift in Sources */,
 				343C0BF1235C57F600129D23 /* ArrayFileManagerMock.swift in Sources */,
@@ -1397,7 +1457,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 212;
+				CURRENT_PROJECT_VERSION = 231;
 				DEVELOPMENT_TEAM = PDQFD8QZA3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
@@ -1406,7 +1466,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.2;
+				MARKETING_VERSION = 2.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = VaultClip;
@@ -1423,7 +1483,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 212;
+				CURRENT_PROJECT_VERSION = 231;
 				DEVELOPMENT_TEAM = PDQFD8QZA3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
@@ -1432,7 +1492,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.2;
+				MARKETING_VERSION = 2.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = VaultClip;
@@ -1593,7 +1653,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 212;
+				CURRENT_PROJECT_VERSION = 231;
 				DEVELOPMENT_TEAM = PDQFD8QZA3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
@@ -1602,7 +1662,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.2;
+				MARKETING_VERSION = 2.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip.Beta;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "VaultClip Beta";
@@ -1716,7 +1776,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 212;
+				CURRENT_PROJECT_VERSION = 231;
 				DEVELOPMENT_TEAM = PDQFD8QZA3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
@@ -1725,7 +1785,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.2;
+				MARKETING_VERSION = 2.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip.Beta;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "VaultClip Beta";
@@ -1846,7 +1906,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 212;
+				CURRENT_PROJECT_VERSION = 231;
 				DEVELOPMENT_TEAM = PDQFD8QZA3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
@@ -1855,7 +1915,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.2;
+				MARKETING_VERSION = 2.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClipXCTest;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -164,14 +164,17 @@ private final class HistoryTabItemView: NSControl {
         titleLabel.lineBreakMode = .byTruncatingTail
         addSubview(titleLabel)
         
-        NSLayoutConstraint.activate([
+        let horizontalConstraints = [
             iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: HistoryListTheme.metrics.tabContentInset),
-            iconView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 1),
             iconView.widthAnchor.constraint(equalToConstant: HistoryListTheme.metrics.tabIconSize),
-            iconView.heightAnchor.constraint(equalToConstant: HistoryListTheme.metrics.tabIconSize),
             titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: HistoryListTheme.metrics.tabIconSpacing),
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 1),
             titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -HistoryListTheme.metrics.tabContentInset),
+        ]
+        horizontalConstraints.forEach { $0.priority = .defaultHigh }
+        NSLayoutConstraint.activate(horizontalConstraints + [
+            iconView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 1),
+            iconView.heightAnchor.constraint(equalToConstant: HistoryListTheme.metrics.tabIconSize),
+            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 1),
         ])
         
         updateIcon()
@@ -227,7 +230,8 @@ private final class HistoryTabItemView: NSControl {
     }
     
     var preferredMinWidth: CGFloat {
-        let titleWidth = (titleLabel.stringValue as NSString).size(withAttributes: [.font: titleLabel.font!]).width
+        let font = titleLabel.font ?? NSFont.systemFont(ofSize: HistoryListTheme.typography.tabSize, weight: .medium)
+        let titleWidth = (titleLabel.stringValue as NSString).size(withAttributes: [.font: font]).width
         let chrome = HistoryListTheme.metrics.tabContentInset * 2
             + HistoryListTheme.metrics.tabIconSize
             + HistoryListTheme.metrics.tabIconSpacing

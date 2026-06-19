@@ -57,7 +57,7 @@ class HistoryFileManager {
             return true
         }
         catch {
-            let historyError = ClipError(localizedDescription: "Failed to write history order due to error: \(error.localizedDescription)")
+            let historyError = ClipError(.historyOrderWriteFailed, localizedDescription: "Failed to write history order due to error: \(error.localizedDescription)")
             historyError.log(with: self.errorLogger)
             historyError.show(with: self.alerter)
             return false
@@ -107,7 +107,7 @@ class HistoryFileManager {
 
         guard let order = orderManager.read() as? [String] else {
             if HistoryEncryptionProbe.isEncryptedFile(at: orderURL, fileManager: fileManager) {
-                let historyError = ClipError(localizedDescription: "Failed to decrypt the history order file.")
+                let historyError = ClipError(.historyOrderDecryptFailed, localizedDescription: "Failed to decrypt the history order file.")
                 historyError.log(with: errorLogger)
                 historyError.show(with: alerter)
                 return nil
@@ -132,7 +132,7 @@ class HistoryFileManager {
             return try dataFileManager.loadData(contentsOf: getUrl(forItemWithId: id, andPasteboardType: type))
         }
         catch {
-            ClipError(localizedDescription: "Error: Failed to retrieve data with type \(type.rawValue) for item with id \(id.uuidString) due to error: \(error.localizedDescription)").log(with: self.errorLogger)
+            ClipError(.historyItemDataLoadFailed, localizedDescription: "Error: Failed to retrieve data with type \(type.rawValue) for item with id \(id.uuidString) due to error: \(error.localizedDescription)").log(with: self.errorLogger)
             return nil
         }
     }
@@ -162,9 +162,7 @@ class HistoryFileManager {
             contents.removeAll(where: {$0.lastPathComponent == ".DS_Store"})
         }
         catch {
-            let historyError = ClipError(code: 0, userInfo: [
-                NSLocalizedDescriptionKey: "Creating an empty history because we failed to load history due to error: \(error.localizedDescription)"
-            ])
+            let historyError = ClipError(.historyDirectoryListFailed, localizedDescription: "Creating an empty history because we failed to load history due to error: \(error.localizedDescription)")
             historyError.log(with: self.errorLogger)
             historyError.show(with: self.alerter)
             saveHistoryOrder(history: [])
@@ -202,9 +200,7 @@ class HistoryFileManager {
                     )
                 }
                 catch {
-                    let historyError = ClipError(code: 0, userInfo: [
-                        NSLocalizedDescriptionKey: "Failed to load clipboard data for history item with id '\(id.uuidString)' due to error: \(error.localizedDescription). Will continue anyway."
-                    ])
+                    let historyError = ClipError(.historyItemLoadFailed, localizedDescription: "Failed to load clipboard data for history item with id '\(id.uuidString)' due to error: \(error.localizedDescription). Will continue anyway.")
                     historyError.log(with: self.errorLogger)
                     historyError.show(with: self.alerter)
                 }
@@ -227,9 +223,7 @@ class HistoryFileManager {
         }
         if !unfoundItems.isEmpty {
             let unfound = unfoundItems.map({"'\($0)'"}).joined(separator: ", ")
-            let historyError = ClipError(code: 0, userInfo: [
-                NSLocalizedDescriptionKey: "We cannot find the saved clipboard items with ids: \(unfound). You may notice them missing from the history."
-            ])
+            let historyError = ClipError(.historyOrderLoadFailed, localizedDescription: "We cannot find the saved clipboard items with ids: \(unfound). You may notice them missing from the history.")
             historyError.log(with: self.errorLogger)
             historyError.show(with: self.alerter)
             for unfoundItem in unfoundItems {
@@ -241,9 +235,7 @@ class HistoryFileManager {
         if !items.isEmpty {
             let orphans = items.values.sorted { $0.copiedAt > $1.copiedAt }
             let unfound = orphans.map({ $0.fsId.uuidString }).joined(separator: ", ")
-            let historyError = ClipError(code: 0, userInfo: [
-                NSLocalizedDescriptionKey: "We could not find the order for the saved clipboard items with ids: \(unfound). So they will be added to the most recent history."
-            ])
+            let historyError = ClipError(.historyOrderLoadFailed, localizedDescription: "We could not find the order for the saved clipboard items with ids: \(unfound). So they will be added to the most recent history.")
             historyError.log(with: self.errorLogger)
             historyError.show(with: self.alerter)
             orderedItems = orphans + orderedItems
@@ -268,9 +260,7 @@ class HistoryFileManager {
     func insertItem(_ item: HistoryItem, historyOrder: [HistoryItem], completionHandler handler: ((Bool) -> Void)? = nil) {
         dispatchQueue.async {
             guard let unsavedData = item.unsavedData else {
-                let historyError = ClipError(code: 0, userInfo: [
-                    NSLocalizedDescriptionKey: "Failed to save new item due to error: unsavedError is nil"
-                ])
+                let historyError = ClipError(.historyItemSaveFailed, localizedDescription: "Failed to save new item due to error: unsavedError is nil")
                 historyError.log(with: self.errorLogger)
                 historyError.show(with: self.alerter)
                 self.callHander(handler, withVal: false)
@@ -281,9 +271,7 @@ class HistoryFileManager {
             do {
                 directoryUrl = try self.ensureItemDirectory(for: item)
             } catch {
-                let historyError = ClipError(code: 0, userInfo: [
-                    NSLocalizedDescriptionKey: "Failed to save new item due to error: \(error.localizedDescription)"
-                ])
+                let historyError = ClipError(.historyItemSaveFailed, localizedDescription: "Failed to save new item due to error: \(error.localizedDescription)")
                 historyError.log(with: self.errorLogger)
                 historyError.show(with: self.alerter)
                 self.callHander(handler, withVal: false)
@@ -314,9 +302,7 @@ class HistoryFileManager {
                     try self.dataFileManager.writeData(data, to: itemUrl, options: [])
                 } catch {
                     try? self.fileManager.removeItem(at: directoryUrl)
-                    let historyError = ClipError(code: 0, userInfo: [
-                        NSLocalizedDescriptionKey: "Failed to save new pasteboard item due to error: \(error.localizedDescription) Attempted to save pasteboard item at '\(itemUrl)'."
-                    ])
+                    let historyError = ClipError(.historyItemSaveFailed, localizedDescription: "Failed to save new pasteboard item due to error: \(error.localizedDescription) Attempted to save pasteboard item at '\(itemUrl)'.")
                     historyError.log(with: self.errorLogger)
                     historyError.show(with: self.alerter)
                     self.callHander(handler, withVal: false)
@@ -324,10 +310,8 @@ class HistoryFileManager {
                 }
             }
             
-            DispatchQueue.main.async {
-                item.startCaching()
-            }
-            self.saveHistoryOrder(history: historyOrder, completionHandler: handler)
+            item.startCaching()
+            self.callHander(handler, withVal: self.writeHistoryOrder(history: historyOrder))
         }
     }
     
@@ -341,9 +325,7 @@ class HistoryFileManager {
                 do {
                     try self.fileManager.removeItem(at: self.getUrl(forItemWithId: deleted.fsId))
                 } catch {
-                    let historyError = ClipError(code: 0, userInfo: [
-                        NSLocalizedDescriptionKey: "Failed to delete item due to error: \(error.localizedDescription)"
-                    ])
+                    let historyError = ClipError(.historyItemDeleteFailed, localizedDescription: "Failed to delete item due to error: \(error.localizedDescription)")
                     historyError.log(with: self.errorLogger)
                     historyError.show(with: self.alerter)
                     self.callHander(handler, withVal: false)
@@ -352,7 +334,7 @@ class HistoryFileManager {
                 HistoryItem.removeQuickLookCache(for: deleted.fsId)
                 deleted.stopCaching()
             }
-            self.saveHistoryOrder(history: historyOrder, completionHandler: handler)
+            self.callHander(handler, withVal: self.writeHistoryOrder(history: historyOrder))
         }
     }
     
@@ -371,19 +353,18 @@ class HistoryFileManager {
                     try self.fileManager.removeItem(at: self.getUrl(forItemWithId: item.fsId))
                 }
                 catch {
-                    let historyError = ClipError(code: 0, userInfo: [
-                        NSLocalizedDescriptionKey: "Failed to delete item due to error: \(error.localizedDescription)"
-                    ])
+                    let historyError = ClipError(.historyItemDeleteFailed, localizedDescription: "Failed to delete item due to error: \(error.localizedDescription)")
                     historyError.log(with: self.errorLogger)
                     historyError.show(with: self.alerter)
                     self.callHander(handler, withVal: false)
+                    return
                 }
                 
                 item.stopCaching()
             }
             
             // Update order
-            self.saveHistoryOrder(history: newHistory, completionHandler: handler)
+            self.callHander(handler, withVal: self.writeHistoryOrder(history: newHistory))
         }
     }
     
@@ -398,9 +379,7 @@ class HistoryFileManager {
                 try self.fileManager.removeItem(at: Constants.urls.history)
             }
             catch {
-                let historyError = ClipError(code: 0, userInfo: [
-                    NSLocalizedDescriptionKey: "Failed to delete old history due to error: \(error.localizedDescription)"
-                ])
+                let historyError = ClipError(.historyClearFailed, localizedDescription: "Failed to delete old history due to error: \(error.localizedDescription)")
                 historyError.log(with: self.errorLogger)
                 historyError.show(with: self.alerter)
                 self.callHander(handler, withVal: false)
@@ -412,9 +391,7 @@ class HistoryFileManager {
                 try self.fileManager.createDirectory(at: Constants.urls.history, withIntermediateDirectories: true)
             }
             catch {
-                let historyError = ClipError(code: 0, userInfo: [
-                    NSLocalizedDescriptionKey: "Failed to create directory for new history due to error: \(error.localizedDescription)"
-                ])
+                let historyError = ClipError(.historyClearFailed, localizedDescription: "Failed to create directory for new history due to error: \(error.localizedDescription)")
                 historyError.log(with: self.errorLogger)
                 historyError.show(with: self.alerter)
                 self.callHander(handler, withVal: false)
@@ -422,7 +399,7 @@ class HistoryFileManager {
             }
             
             // Save the new order
-            self.saveHistoryOrder(history: [], completionHandler: handler)
+            self.callHander(handler, withVal: self.writeHistoryOrder(history: []))
         }
     }
     
@@ -559,7 +536,7 @@ class HistoryFileManager {
                 return date
             }
         }
-        if let attrs = try? FileManager.default.attributesOfItem(atPath: itemDirectory.path),
+        if let attrs = try? fileManager.attributesOfItem(atPath: itemDirectory.path),
            let created = attrs[.creationDate] as? Date {
             return created
         }

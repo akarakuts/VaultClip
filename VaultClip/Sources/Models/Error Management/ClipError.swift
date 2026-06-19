@@ -21,9 +21,13 @@ struct ClipError: Loggable, Alertable, Error {
     var domain: String {
         return (error as NSError).domain
     }
+
+    var code: ClipErrorCode {
+        ClipErrorCode(rawValue: (error as NSError).code) ?? .unknown
+    }
     
     var consoleDescription: String {
-        return "[\(domain)] \(localizedDescription)"
+        return "[\(domain):\(code.rawValue)] \(localizedDescription)"
     }
     
     var logFileDescription: String {
@@ -37,12 +41,17 @@ struct ClipError: Loggable, Alertable, Error {
     init(domain: String = Constants.logging.historyErrorDomain, code: Int, userInfo: [String: Any]? = nil) {
         self.error = NSError(domain: domain, code: code, userInfo: userInfo)
     }
+
+    init(_ code: ClipErrorCode, localizedDescription: String) {
+        self.error = NSError(
+            domain: Constants.logging.historyErrorDomain,
+            code: code.rawValue,
+            userInfo: [NSLocalizedDescriptionKey: localizedDescription]
+        )
+    }
     
     init(domain: String = Constants.logging.historyErrorDomain, localizedDescription: String) {
-        // TODO: Refactor error code
-        self.error = NSError(domain: domain, code: 0, userInfo: [
-            NSLocalizedDescriptionKey: localizedDescription
-        ])
+        self.init(.unknown, localizedDescription: localizedDescription)
     }
     
     func createAlert() -> NSAlert {

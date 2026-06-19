@@ -317,4 +317,4 @@ Flatpak: `org.karakuts.VaultClip.Gtk` и `org.karakuts.VaultClip.Qt`.
 1. `vaultclip-core` + VC1 round-trip test.
 2. `docs/history-format.md` + `docs/ui-parity-checklist.md`.
 3. PoC **vaultclip-gtk** и **vaultclip-qt** (минимальный tray + список).
-4. Версии `vaultclip-gtk` / `vaultclip-qt` синхронны с `vaultclip-core` (например `2.2.0+linux`).
+4. Версии `vaultclip-gtk` / `vaultclip-qt` синхронны с `vaultclip-core` (например `2.3.1+linux`).

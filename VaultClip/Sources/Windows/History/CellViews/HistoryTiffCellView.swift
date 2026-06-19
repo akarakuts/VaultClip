@@ -18,14 +18,13 @@ class HistoryTiffCellView: HistoryItemBaseCellView, HistoryListItem {
     
     static let imagePadding = HistoryListTheme.metrics.imageCellPadding
     
-    var tiffView: NSImageView!
+    let tiffView = NSImageView(frame: .zero)
     
     override func commonInit() {
         super.commonInit()
         
         itemTextView.isHidden = true
         
-        tiffView = NSImageView(frame: .zero)
         contentView.addSubview(tiffView)
         
         setupTiffView()
@@ -35,10 +34,12 @@ class HistoryTiffCellView: HistoryItemBaseCellView, HistoryListItem {
         tiffView.translatesAutoresizingMaskIntoConstraints = false
         tiffView.imageAlignment = .alignTopLeft
         tiffView.imageScaling = .scaleProportionallyUpOrDown
-        contentView.addConstraint(NSLayoutConstraint(item: tiffView!, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1, constant: Self.imagePadding.top))
-        contentView.addConstraint(NSLayoutConstraint(item: tiffView!, attribute: .leading, relatedBy: .equal, toItem: sourceAppIconView, attribute: .trailing, multiplier: 1, constant: HistoryItemBaseCellView.sourceAppIconSpacing))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView!, attribute: .trailing, relatedBy: .equal, toItem: tiffView, attribute: .trailing, multiplier: 1, constant: Self.imagePadding.right))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView!, attribute: .bottom, relatedBy: .equal, toItem: tiffView, attribute: .bottom, multiplier: 1, constant: Self.imagePadding.bottom))
+        NSLayoutConstraint.activate([
+            tiffView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Self.imagePadding.top),
+            tiffView.leadingAnchor.constraint(equalTo: sourceAppIconView.trailingAnchor, constant: HistoryItemBaseCellView.sourceAppIconSpacing),
+            contentView.trailingAnchor.constraint(equalTo: tiffView.trailingAnchor, constant: Self.imagePadding.right),
+            contentView.bottomAnchor.constraint(equalTo: tiffView.bottomAnchor, constant: Self.imagePadding.bottom),
+        ])
     }
     
     func setupCell(withHistoryTableView historyTableView: HistoryTableView, forHistoryItem historyItem: HistoryItem, at i: Int) {

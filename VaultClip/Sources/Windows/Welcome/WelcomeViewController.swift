@@ -39,6 +39,6 @@ class WelcomeViewController: NSViewController {
     @IBAction func allowAccessTapped(_ sender: Any) {
         view.window?.close()
         _ = AccessControlHelper.requestSystemPromptIfNeeded()
-        Controller.main.helpWindowController.showWindow(sender)
+        AppEnvironment.shared.routing.helpWindowController.showWindow(sender)
     }
 }

@@ -14,8 +14,19 @@ import RxSwift
 
 class State {
     
-    // MARK: - Singleton
-    static var main = State()
+    // MARK: - Shared instance (legacy — prefer AppEnvironment.shared.state)
+
+    private static weak var _shared: State?
+    
+    static var main: State {
+        if let shared = _shared { return shared }
+        if let env = AppEnvironment.shared { return env.state }
+        preconditionFailure("State accessed before AppEnvironment.bootstrap()")
+    }
+    
+    static func installShared(_ state: State?) {
+        _shared = state
+    }
     
     
     // MARK: - Attributes
@@ -37,15 +48,15 @@ class State {
     var disposeBag: DisposeBag
     
     // History
-    var historyCache: HistoryCache!
-    var history: History!
+    var historyCache: HistoryCache
+    var history: History
     
     /// Monitors the pasteboard, here it can be controlled in the future if needed.
-    var pasteboardMonitor: PasteboardMonitor!
+    var pasteboardMonitor: PasteboardMonitor
     
     
     // MARK: - Constructor
-    init(settings: Settings = Settings.main, disposeBag: DisposeBag = DisposeBag()) {
+    init(settings: Settings, disposeBag: DisposeBag = DisposeBag()) {
         // Setup RxSwift attributes
         self.isHistoryPanelShown = BehaviorRelay<Bool>(value: false)
         self.panelPosition = BehaviorRelay<PanelPosition>(value: settings.panelPosition)
@@ -57,17 +68,20 @@ class State {
         self.disposeBag = disposeBag
         
         // Setup history
-        self.historyCache = HistoryCache()
-        self.history = History.load(cache: historyCache)
-        self.history.recordPasteboardChange(withCount: settings.pasteboardChangeCount)
-        self.history.setMaxItems(settings.maxHistory)
+        let historyCache = HistoryCache()
+        let history = History.load(cache: historyCache)
+        self.historyCache = historyCache
+        self.history = history
+        history.recordPasteboardChange(withCount: settings.pasteboardChangeCount)
+        history.setMaxItems(settings.maxHistory)
+
+        // Setup pasteboard monitor
+        self.pasteboardMonitor = PasteboardMonitor(pasteboard: NSPasteboard.general, changeCount: settings.pasteboardChangeCount, delegate: history)
         
         // Bind settings to state
         Self.bind(settings: settings, toState: self, disposeBag: disposeBag)
         
-        // Setup pasteboard monitor
-        self.pasteboardMonitor = PasteboardMonitor(pasteboard: NSPasteboard.general, changeCount: settings.pasteboardChangeCount, delegate: self.history)
-        self.history.syncWithPasteboardOnLaunch(NSPasteboard.general)
+        history.syncWithPasteboardOnLaunch(NSPasteboard.general)
         
         Self.monitorPastesRichText(state: self)
         Self.monitorMousePosition(state: self)
@@ -76,11 +90,11 @@ class State {
     // MARK: - Constructor Helpers
     
     static func bind(settings: Settings, toState state: State, disposeBag: DisposeBag) {
-        state.history!.observableLastRecordedChangeCount
+        state.history.observableLastRecordedChangeCount
             .distinctUntilChanged()
             .debounce(.milliseconds(250), scheduler: MainScheduler.instance)
             .subscribe(onNext: { count in
-                Settings.main.pasteboardChangeCount = count
+                SettingsPersistence.apply { $0.pasteboardChangeCount = count }
             })
             .disposed(by: disposeBag)
         settings.bindPanelPositionTo(state: state.panelPosition).disposed(by: disposeBag)
@@ -110,6 +124,9 @@ class State {
                 return screen
             }
         }
-        return NSScreen.screens.first ?? NSScreen.main!
+        guard let fallback = NSScreen.screens.first ?? NSScreen.main else {
+            return NSScreen.screens.first ?? NSScreen.main!
+        }
+        return fallback
     }
 }

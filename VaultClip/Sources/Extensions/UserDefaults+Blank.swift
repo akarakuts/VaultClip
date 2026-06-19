@@ -10,6 +10,10 @@
 import Foundation
 
 extension UserDefaults {
+
+    private static var defaultPersistentDomainName: String {
+        Bundle.main.bundleIdentifier ?? "VaultClip.UserDefaults.Blank"
+    }
     
     /**
      Allows execution of the handler with a fresh user defaults. Designed for testing.
@@ -19,9 +23,7 @@ extension UserDefaults {
      - Parameter handler: Code to execute under a clean user defaults.
      */
     func blankWhile(handler: @escaping () -> Void) {
-        guard let name = Bundle.main.bundleIdentifier else {
-            fatalError("Couldn't find bundle ID.")
-        }
+        let name = Self.defaultPersistentDomainName
         let old = self.persistentDomain(forName: name)
         defer {
             self.setPersistentDomain(old ?? [:], forName: name)
@@ -37,9 +39,7 @@ extension UserDefaults {
      - Returns: A dictionary of the original content of the user defaults. This should be passed to `restore(:)` to restore the user defaults back to normal.
      */
     func blank() -> [String: Any] {
-        guard let name = Bundle.main.bundleIdentifier else {
-            fatalError("Couldn't find bundle ID.")
-        }
+        let name = Self.defaultPersistentDomainName
         let old = self.persistentDomain(forName: name)
         self.removePersistentDomain(forName: name)
         return old ?? [:]
@@ -51,11 +51,7 @@ extension UserDefaults {
      - Parameter old: A dictionary of the original content of the user defaults. This should be the dictionary returned from `blank()` to restore the user defaults back to normal.
      */
     func restore(from old: [String: Any]) {
-        guard let name = Bundle.main.bundleIdentifier else {
-            fatalError("Couldn't find bundle ID.")
-        }
-        
-        self.setPersistentDomain(old, forName: name)
+        self.setPersistentDomain(old, forName: Self.defaultPersistentDomainName)
     }
     
     /**

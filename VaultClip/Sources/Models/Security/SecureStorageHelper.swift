@@ -18,7 +18,10 @@ enum SecureStorageHelper {
     static func validateStorageURL(_ url: URL, mustResideUnder root: URL, fileManager: FileManager = .default) throws {
         let resolved = url.resolvingSymlinksInPath().standardizedFileURL
         let rootResolved = root.resolvingSymlinksInPath().standardizedFileURL
-        guard resolved.path.hasPrefix(rootResolved.path) else {
+        let resolvedComponents = resolved.pathComponents
+        let rootComponents = rootResolved.pathComponents
+        guard resolvedComponents.count >= rootComponents.count,
+              Array(resolvedComponents.prefix(rootComponents.count)) == rootComponents else {
             throw SecureStorageError.untrustedPath(resolved.path)
         }
         // New item directories do not exist yet — symlink check applies only to existing paths.
@@ -52,16 +55,32 @@ enum SecureStorageHelper {
     
     static func pasteboardType(fromStoredFileName fileName: String) -> NSPasteboard.PasteboardType {
         var decoded = ""
-        var iterator = fileName.makeIterator()
-        while let char = iterator.next() {
+        var index = fileName.startIndex
+        while index < fileName.endIndex {
+            let char = fileName[index]
             if char == "%" {
-                let hex = String(iterator.next()!) + String(iterator.next()!)
+                let firstIndex = fileName.index(after: index)
+                guard firstIndex < fileName.endIndex else {
+                    decoded.append("%")
+                    index = firstIndex
+                    continue
+                }
+                let secondIndex = fileName.index(after: firstIndex)
+                guard secondIndex < fileName.endIndex else {
+                    decoded.append("%")
+                    decoded.append(fileName[firstIndex])
+                    index = secondIndex
+                    continue
+                }
+                let hex = String(fileName[firstIndex]) + String(fileName[secondIndex])
                 if hex == "25" { decoded.append("%") }
                 else if hex == "2F" { decoded.append("/") }
                 else if hex == "3A" { decoded.append(":") }
                 else { decoded.append("%"); decoded.append(contentsOf: hex) }
+                index = fileName.index(after: secondIndex)
             } else {
                 decoded.append(char)
+                index = fileName.index(after: index)
             }
         }
         return NSPasteboard.PasteboardType(decoded.isEmpty ? fileName : decoded)

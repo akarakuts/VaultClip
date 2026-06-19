@@ -9,24 +9,26 @@
 //
 import XCTest
 @testable import VaultClip
-@testable import RxRelay
-@testable import RxTest
-@testable import RxSwift
+import RxRelay
+import RxSwift
 
 class SettingsTests: XCTestCase {
     
     var old: [String: Any]!
+    private var productionEnvironment: AppEnvironment!
     
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-        
         old = UserDefaults.standard.blank()
+        productionEnvironment = AppEnvironment.shared
+        let isolated = Settings.loadPersisted()
+        Settings.installShared(isolated)
+        AppEnvironment.shared?.settings = isolated
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        
         UserDefaults.standard.restore(from: old)
+        VaultClipTestSupport.reinstallSharedPointers(from: productionEnvironment)
+        productionEnvironment = nil
     }
     
     func testDefaultSettings() {
@@ -36,10 +38,9 @@ class SettingsTests: XCTestCase {
         let settings = Settings.main
         
         // 3. Assert they are default values
-        XCTAssertNotNil(settings)
 //        XCTAssertEqual(settings!.panelPosition, Settings.default.panelPosition)
 //        XCTAssertEqual(settings!.pasteboardChangeCount, Settings.default.pasteboardChangeCount)
-        XCTAssertEqual(settings!, Settings.default)
+        XCTAssertEqual(settings, Settings.default)
     }
 
     func testPersistentStorage() {
@@ -47,15 +48,15 @@ class SettingsTests: XCTestCase {
         var settings = Settings.main
         
         // 2. Set some things
-        settings?.panelPosition = .bottom
-        settings?.pasteboardChangeCount = 42
+        settings.panelPosition = .bottom
+        settings.pasteboardChangeCount = 42
         Settings.main = settings
         // Retrieve the settings again
         settings = Settings.main
         
         // 3. Check they have been saved
-        XCTAssertEqual(settings?.panelPosition, .bottom)
-        XCTAssertEqual(settings?.pasteboardChangeCount, 42)
+        XCTAssertEqual(settings.panelPosition, .bottom)
+        XCTAssertEqual(settings.pasteboardChangeCount, 42)
     }
     
     func testObserving() {

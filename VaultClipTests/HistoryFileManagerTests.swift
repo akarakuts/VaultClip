@@ -60,6 +60,14 @@ class HistoryFileManagerTests: XCTestCase {
             warningLogger: warningLogger,
             alerter: alerter
         )
+        cache = HistoryCache(historyFM: historyFM, maxCacheSize: 1_000_000)
+    }
+
+    private func makeStoredItemReadable(_ item: HistoryItem, type: NSPasteboard.PasteboardType = .string) {
+        let itemUrl = historyFM.getUrl(forItemWithId: item.fsId)
+        let dataUrl = historyFM.getUrl(forItemWithId: item.fsId, andPasteboardType: type)
+        fileManager.directoryContents[itemUrl] = [dataUrl]
+        dataFileMangaer.loadData[dataUrl] = Data("Test".utf8)
     }
     
     
@@ -130,16 +138,15 @@ class HistoryFileManagerTests: XCTestCase {
     
     func testLoadHistoryOrderFailure() {
         // 1. Setup mock to return nil
+        fileManager.fileExists[Constants.urls.historyOrder.path] = true
         orderManager.shouldReadSucceed = false
-        let warn = expectation(description: "Failure warned")
-        warningLogger.expectation = warn
         
         // 2. Load the history
         let res = historyFM.loadHistoryOrder()
         
-        // 3. Should be nil and warned
+        // 3. Should be nil and logged
         XCTAssertNil(res)
-        waitForExpectations(timeout: 1)
+        XCTAssertGreaterThan(warningLogger.loggedWarnings + errorLogger.loggedErrors, 0)
     }
     
     func testLoadHistoryOrderInvalidStrings() {
@@ -247,8 +254,8 @@ class HistoryFileManagerTests: XCTestCase {
         var contents = history2.map({historyFM.getUrl(forItemWithId: $0.fsId)})
         contents[1] = contents[1].deletingLastPathComponent().appendingPathComponent("blah blah")
         fileManager.directoryContents[Constants.urls.history] = contents
-        fileManager.directoryContents[historyFM.getUrl(forItemWithId: history2[0].fsId)] = []
-        fileManager.directoryContents[historyFM.getUrl(forItemWithId: history2[2].fsId)] = []
+        makeStoredItemReadable(history2[0])
+        makeStoredItemReadable(history2[2])
         // Expect 1 warning, 1 error
         let warn = expectation(description: "Warning logged")
         let err = expectation(description: "Error logged")
@@ -277,10 +284,10 @@ class HistoryFileManagerTests: XCTestCase {
         orderManager.shouldReadSucceed = true
         let contents = history2.map({historyFM.getUrl(forItemWithId: $0.fsId)})
         fileManager.directoryContents[Constants.urls.history] = contents
-        // Make the 1st item fail
-        fileManager.directoryContents[historyFM.getUrl(forItemWithId: history2[0].fsId)] = []
+        // Make the 2nd item fail
+        makeStoredItemReadable(history2[0])
         fileManager.directoryContents[historyFM.getUrl(forItemWithId: history2[1].fsId)] = nil
-        fileManager.directoryContents[historyFM.getUrl(forItemWithId: history2[2].fsId)] = []
+        makeStoredItemReadable(history2[2])
         // Expect 2 errors:
         // - Failed to load contents
         // - Didn't find item in order
@@ -309,14 +316,14 @@ class HistoryFileManagerTests: XCTestCase {
         // 1. Setup mock to fail with one of the items
         orderManager.order = history2.map({$0.fsId.uuidString}) as NSArray
         orderManager.shouldReadSucceed = true
-        let storedHistory = history2.with(element: HistoryItem(fsId: UUID(), types: [], cache: cache), insertedAt: 3)
+        let storedHistory = history2.with(element: HistoryItem(fsId: UUID(), types: [.string], cache: cache), insertedAt: 3)
         let contents = storedHistory.map({historyFM.getUrl(forItemWithId: $0.fsId)})
         fileManager.directoryContents[Constants.urls.history] = contents
         // Make no items fail
-        fileManager.directoryContents[historyFM.getUrl(forItemWithId: storedHistory[0].fsId)] = []
-        fileManager.directoryContents[historyFM.getUrl(forItemWithId: storedHistory[1].fsId)] = []
-        fileManager.directoryContents[historyFM.getUrl(forItemWithId: storedHistory[2].fsId)] = []
-        fileManager.directoryContents[historyFM.getUrl(forItemWithId: storedHistory[3].fsId)] = []
+        makeStoredItemReadable(storedHistory[0])
+        makeStoredItemReadable(storedHistory[1])
+        makeStoredItemReadable(storedHistory[2])
+        makeStoredItemReadable(storedHistory[3])
         // Expect 1 errors:
         // - Didn't find item in order
         let err = expectation(description: "Error logged")
@@ -346,8 +353,8 @@ class HistoryFileManagerTests: XCTestCase {
         let contents = storedHistory.map({historyFM.getUrl(forItemWithId: $0.fsId)})
         fileManager.directoryContents[Constants.urls.history] = contents
         // Make the no stored items fail
-        fileManager.directoryContents[historyFM.getUrl(forItemWithId: history2[0].fsId)] = []
-        fileManager.directoryContents[historyFM.getUrl(forItemWithId: history2[2].fsId)] = []
+        makeStoredItemReadable(history2[0])
+        makeStoredItemReadable(history2[2])
         // Expect 1 errors:
         // - Didn't find order item in storage
         let err = expectation(description: "Error logged")

@@ -72,6 +72,20 @@ class HistoryItemTests: XCTestCase {
         XCTAssertEqual(item.getPlainString(), "Довольно вам")
     }
 
+    func testStoredPasteboardTypeDecodeHandlesMalformedPercentEscapes() {
+        XCTAssertEqual(SecureStorageHelper.pasteboardType(fromStoredFileName: "%").rawValue, "%")
+        XCTAssertEqual(SecureStorageHelper.pasteboardType(fromStoredFileName: "%A").rawValue, "%A")
+        XCTAssertEqual(SecureStorageHelper.pasteboardType(fromStoredFileName: "public%2Futf8%").rawValue, "public/utf8%")
+    }
+
+    func testValidateStorageURLRejectsSiblingWithSharedPrefix() {
+        let root = URL(fileURLWithPath: "/tmp/VaultClip")
+        let sibling = URL(fileURLWithPath: "/tmp/VaultClip-Evil/history")
+
+        XCTAssertThrowsError(try SecureStorageHelper.validateStorageURL(sibling, mustResideUnder: root))
+        XCTAssertNoThrow(try SecureStorageHelper.validateStorageURL(root.appendingPathComponent("history"), mustResideUnder: root))
+    }
+
     func testDataForTypeInUnsavedData() {
         // 1. For an item with a type
         XCTAssertTrue(savedItem.types.contains(.string))

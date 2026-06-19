@@ -62,7 +62,7 @@ class GeneralSettingsViewController: NSViewController {
             maxHistoryItemsPopUpButton.addItem(withTitle: "\(val)")
         }
         
-        State.main.history.maxItems.subscribe(onNext: onMaxHistoryItems).disposed(by: disposeBag)
+        AppEnvironment.shared.state.history.maxItems.subscribe(onNext: onMaxHistoryItems).disposed(by: disposeBag)
         
         maxHistoryItemsPopUpButton.target = self
         maxHistoryItemsPopUpButton.action = #selector(onMaxItemsSelected)
@@ -71,14 +71,14 @@ class GeneralSettingsViewController: NSViewController {
     }
     
     private func setupShowsRichTextButton() {
-        State.main.showsRichText.subscribe(onNext: onShowsRichText).disposed(by: disposeBag)
+        AppEnvironment.shared.state.showsRichText.subscribe(onNext: onShowsRichText).disposed(by: disposeBag)
         
         showsRichTextButton.target = self
         showsRichTextButton.action = #selector(onShowsRichTextButtonClicked)
     }
     
     private func setupPastesRichTextButton() {
-        State.main.pastesRichText.subscribe(onNext: onPastesRichText).disposed(by: disposeBag)
+        AppEnvironment.shared.state.pastesRichText.subscribe(onNext: onPastesRichText).disposed(by: disposeBag)
         
         pastesRichTextButton.target = self
         pastesRichTextButton.action = #selector(onPastesRichTextButtonClicked)
@@ -104,14 +104,14 @@ class GeneralSettingsViewController: NSViewController {
     // MARK: Handle Actions
     
     @objc private func onMaxItemsSelected() {
-        State.main.history.setMaxItems(Constants.settings.maxHistoryItemsOptions[maxHistoryItemsPopUpButton.indexOfSelectedItem])
+        AppEnvironment.shared.state.history.setMaxItems(Constants.settings.maxHistoryItemsOptions[maxHistoryItemsPopUpButton.indexOfSelectedItem])
     }
     
     @objc private func onShowsRichTextButtonClicked() {
-        State.main.showsRichText.accept(showsRichTextButton.state == .on)
+        AppEnvironment.shared.state.showsRichText.accept(showsRichTextButton.state == .on)
     }
     
     @objc private func onPastesRichTextButtonClicked() {
-        State.main.pastesRichText.accept(pastesRichTextButton.state == .on)
+        AppEnvironment.shared.state.pastesRichText.accept(pastesRichTextButton.state == .on)
     }
 }

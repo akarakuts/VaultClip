@@ -14,9 +14,19 @@ import RxRelay
 
 class Controller {
     
-    // MARK: - Singleton
-    
-    static var main: Controller!
+    // MARK: - Shared instance (legacy — prefer AppEnvironment.shared.routing)
+
+    private static weak var _shared: Controller?
+
+    static var main: Controller {
+        if let controller = _shared { return controller }
+        if let controller = AppEnvironment.shared?.controller { return controller }
+        preconditionFailure("Controller accessed before AppEnvironment.bootstrap()")
+    }
+
+    static func installShared(_ controller: Controller?) {
+        _shared = controller
+    }
     
     
     // MARK: - Attributes
@@ -24,11 +34,11 @@ class Controller {
     var state: State
     
     /// Must exist for the duration of the application so that the status bar does not disappear.
-    var statusItem: NSStatusItem!
+    let statusItem: NSStatusItem
     
     // Window Controllers
-    var historyWindowController: HistoryWindowController!
-    var previewWindowController: PreviewWindowController!
+    let historyWindowController: HistoryWindowController
+    let previewWindowController: PreviewWindowController
     
     lazy var welcomeWindowController: WelcomeWindowController = {
         return WelcomeWindowController.createWelcomeWindowController()
@@ -53,14 +63,15 @@ class Controller {
         self.state = state
         // Setup status item
         self.statusItem = ClipStatusItem.create()
-        self.statusItem.menu = Self.createMenu(settings: settings, state: state, target: self)
-        
+
         // Create history window controller (load window so list UI subscribes before first copy).
-        self.historyWindowController = Self.createHistoryWindowController(state: state, disposeBag: state.disposeBag)
-        self.historyWindowController.loadWindow()
-       
+        self.historyWindowController = Self.createHistoryWindowController(state: state, settings: settings, disposeBag: state.disposeBag)
+
         // Create preview window controllers
         self.previewWindowController = Self.createPreviewWindowController(previewItem: state.previewHistoryItem, disposeBag: state.disposeBag)
+
+        self.statusItem.menu = Self.createMenu(settings: settings, state: state, target: self)
+        self.historyWindowController.loadWindow()
     }
     
     
@@ -169,8 +180,10 @@ class Controller {
         }
     }
     
-    static func createHistoryWindowController(state: State, disposeBag: DisposeBag) -> HistoryWindowController {
+    static func createHistoryWindowController(state: State, settings: Settings, disposeBag: DisposeBag) -> HistoryWindowController {
         let controller = HistoryWindowController.createHistoryWindowController()
+        (controller.contentViewController as? HistoryViewController)?
+            .configure(state: state, settings: settings)
         controller
             .subscribeTo(toggle: state.isHistoryPanelShown)
             .disposed(by: disposeBag)
@@ -195,7 +208,7 @@ class Controller {
             state.panelPosition.accept(position)
         }
         else {
-            ClipError(localizedDescription: "Received invalid panel position from \(sender)").log(with: ErrorLogger.general)
+            ClipError(.invalidPanelPosition, localizedDescription: "Received invalid panel position from \(sender)").log(with: ErrorLogger.general)
         }
     }
 
@@ -227,35 +240,22 @@ class Controller {
     }
     
     @objc func showHelpWindow() {
-        // If the window isn't visible, show it
-        if !self.helpWindowController.window!.isVisible {
-            self.helpWindowController.showWindow(nil)
-            self.helpWindowController.window?.center()
-        }
-        
-        // Bring the window to front
-        NSApp.activate(ignoringOtherApps: true)
+        showWindowIfNeeded(helpWindowController)
     }
     
     @objc func showAboutWindow() {
-        // If the window isn't visible, show it
-        if !self.aboutWindowController.window!.isVisible {
-            self.aboutWindowController.showWindow(nil)
-            self.aboutWindowController.window?.center()
-        }
-        
-        // Bring the window to front
-        NSApp.activate(ignoringOtherApps: true)
+        showWindowIfNeeded(aboutWindowController)
     }
     
     @objc func showSettings() {
-        // If the window isn't visible, show it
-        if !self.settingsWindowController.window!.isVisible {
-            self.settingsWindowController.showWindow(nil)
-            self.settingsWindowController.window?.center()
+        showWindowIfNeeded(settingsWindowController)
+    }
+
+    private func showWindowIfNeeded(_ windowController: NSWindowController) {
+        if windowController.window?.isVisible != true {
+            windowController.showWindow(nil)
+            windowController.window?.center()
         }
-        
-        // Bring the window to front
         NSApp.activate(ignoringOtherApps: true)
     }
     

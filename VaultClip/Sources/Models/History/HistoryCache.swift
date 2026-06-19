@@ -82,7 +82,7 @@ class HistoryCache {
     }
     
     func registerItem(withId id: UUID) {
-        accessQueue.async(flags: .barrier) {
+        accessQueue.sync(flags: .barrier) {
             if self.cachedData[id] == nil {
                 self.cachedData[id] = [:]
             }
@@ -90,7 +90,7 @@ class HistoryCache {
     }
     
     func unregisterItem(withId id: UUID) {
-        accessQueue.async(flags: .barrier) {
+        accessQueue.sync(flags: .barrier) {
             if let data = self.cachedData.removeValue(forKey: id) {
                 for (_, bytes) in data {
                     var mutable = bytes
@@ -123,7 +123,7 @@ class HistoryCache {
         let removed = usage.removeFirst()
         guard var bucket = cachedData[removed.id],
               var bytes = bucket.removeValue(forKey: removed.type) else {
-            ClipError(localizedDescription: "Error: Didn't find data with type \(removed.type.rawValue) for item with id \(removed.id.uuidString) to remove from the cache.")
+            ClipError(.cacheDataNotFound, localizedDescription: "Error: Didn't find data with type \(removed.type.rawValue) for item with id \(removed.id.uuidString) to remove from the cache.")
                 .log(with: errorLogger)
             return
         }

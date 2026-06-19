@@ -14,9 +14,9 @@ import RxRelay
 
 class PreviewWindowController: NSWindowController {
     
-    var previewTextViewController: PreviewTextViewController!
-    var previewImageViewController: PreviewImageViewController!
-    var previewQLViewController: PreviewQLViewController!
+    private lazy var previewTextViewController = Self.createPreviewViewController(PreviewTextViewController.self)
+    private lazy var previewImageViewController = Self.createPreviewViewController(PreviewImageViewController.self)
+    private lazy var previewQLViewController = Self.createPreviewViewController(PreviewQLViewController.self)
     
     var disposeBag = DisposeBag()
     
@@ -33,12 +33,8 @@ class PreviewWindowController: NSWindowController {
         window.isOpaque = false
         window.backgroundColor = .clear
         let previewWC = PreviewWindowController(window: window)
-
-        previewWC.previewTextViewController = createPreviewViewController(PreviewTextViewController.self)
-        previewWC.previewImageViewController = createPreviewViewController(PreviewImageViewController.self)
-        previewWC.previewQLViewController = createPreviewViewController(PreviewQLViewController.self)
         
-        State.main.showsRichText.distinctUntilChanged().subscribe(onNext: previewWC.onShowsRichText).disposed(by: previewWC.disposeBag)
+        AppEnvironment.shared.state.showsRichText.distinctUntilChanged().subscribe(onNext: previewWC.onShowsRichText).disposed(by: previewWC.disposeBag)
         
         return previewWC
     }

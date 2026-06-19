@@ -23,12 +23,11 @@ class HistoryFileThumbnailCellView: HistoryItemBaseCellView, HistoryListItem {
     
     static let imageTopPadding = HistoryListTheme.metrics.thumbnailTopPadding
     
-    var previewView: NSImageView!
+    let previewView = NSImageView(frame: .zero)
     
     override func commonInit() {
         super.commonInit()
         
-        previewView = NSImageView(frame: .zero)
         contentView.addSubview(previewView)
         
         setupPreviewView()
@@ -39,8 +38,11 @@ class HistoryFileThumbnailCellView: HistoryItemBaseCellView, HistoryListItem {
         previewView.translatesAutoresizingMaskIntoConstraints = false
         previewView.imageAlignment = .alignTopLeft
         previewView.imageScaling = .scaleProportionallyUpOrDown
-        contentView.addConstraint(NSLayoutConstraint(item: previewView!, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1, constant: Self.imageTopPadding))
-        contentView.addConstraint(NSLayoutConstraint(item: previewView!, attribute: .leading, relatedBy: .equal, toItem: sourceAppIconView, attribute: .trailing, multiplier: 1, constant: HistoryItemBaseCellView.sourceAppIconSpacing))
+        previewView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Self.imageTopPadding).isActive = true
+        previewView.leadingAnchor.constraint(
+            equalTo: sourceAppIconView.trailingAnchor,
+            constant: HistoryItemBaseCellView.sourceAppIconSpacing
+        ).isActive = true
         previewView.widthAnchor.constraint(equalToConstant: Self.imageSize.width).isActive = true
         previewView.heightAnchor.constraint(equalToConstant: Self.imageSize.height).isActive = true
         previewView.trailingAnchor.constraint(
@@ -54,10 +56,12 @@ class HistoryFileThumbnailCellView: HistoryItemBaseCellView, HistoryListItem {
         itemTextView.alignment = .left
         itemTextView.textContainer?.lineFragmentPadding = 0
         itemTextView.textContainerInset = .zero
-        contentView.addConstraint(NSLayoutConstraint(item: itemTextView!, attribute: .top, relatedBy: .equal, toItem: previewView, attribute: .bottom, multiplier: 1, constant: Self.fileNamePadding.top))
-        contentView.addConstraint(NSLayoutConstraint(item: itemTextView!, attribute: .leading, relatedBy: .equal, toItem: sourceAppIconView, attribute: .trailing, multiplier: 1, constant: HistoryItemBaseCellView.sourceAppIconSpacing))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView!, attribute: .trailing, relatedBy: .equal, toItem: itemTextView, attribute: .trailing, multiplier: 1, constant: Self.fileNamePadding.right))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView!, attribute: .bottom, relatedBy: .equal, toItem: itemTextView, attribute: .bottom, multiplier: 1, constant: Self.fileNamePadding.bottom))
+        NSLayoutConstraint.activate([
+            itemTextView.topAnchor.constraint(equalTo: previewView.bottomAnchor, constant: Self.fileNamePadding.top),
+            itemTextView.leadingAnchor.constraint(equalTo: sourceAppIconView.trailingAnchor, constant: HistoryItemBaseCellView.sourceAppIconSpacing),
+            contentView.trailingAnchor.constraint(equalTo: itemTextView.trailingAnchor, constant: Self.fileNamePadding.right),
+            contentView.bottomAnchor.constraint(equalTo: itemTextView.bottomAnchor, constant: Self.fileNamePadding.bottom),
+        ])
     }
     
     func setupCell(withHistoryTableView historyTableView: HistoryTableView, forHistoryItem historyItem: HistoryItem, at i: Int) {
@@ -79,7 +83,7 @@ class HistoryFileThumbnailCellView: HistoryItemBaseCellView, HistoryListItem {
                     self.previewView.image = image
                 }
                 else {
-                    ErrorLogger.general.log(ClipError(localizedDescription: "Failed to create thumbnail for file with url '\(url.path)'"))
+                    ErrorLogger.general.log(ClipError(.thumbnailCreationFailed, localizedDescription: "Failed to create thumbnail for file with url '\(url.path)'"))
                     self.previewView.image = nil
                 }
             }
@@ -87,6 +91,9 @@ class HistoryFileThumbnailCellView: HistoryItemBaseCellView, HistoryListItem {
     }
     
     static func getItemHeight(withHistoryTableView historyTableView: HistoryTableView, forHistoryItem historyItem: HistoryItem) -> CGFloat {
+        guard let fileUrl = historyItem.getFileUrl() else {
+            return ceil(contentViewInsets.yTotal)
+        }
         let cellWidth = floor(historyTableView.cellWidth)
         
         let textContainerWidth = cellWidth
@@ -97,7 +104,7 @@ class HistoryFileThumbnailCellView: HistoryItemBaseCellView, HistoryListItem {
             - sourceAppIconTrailingInset
         
         let str = HistoryItemText.appendPasswordCommentIfNeeded(
-            to: formatFileUrl(historyItem.getFileUrl()!),
+            to: formatFileUrl(fileUrl),
             for: historyItem,
             listMode: historyTableView.listMode
         )

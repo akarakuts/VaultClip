@@ -17,6 +17,30 @@ class FileManagerMock: FileManager {
     var createDirectory = [URL: Bool]()
     
     var removeItem = [URL: Bool]()
+
+    var fileExists = [String: Bool]()
+
+    override func fileExists(atPath path: String) -> Bool {
+        if let exists = fileExists[path] {
+            return exists
+        }
+        if directoryContents.keys.contains(URL(fileURLWithPath: path)) {
+            return true
+        }
+        return super.fileExists(atPath: path)
+    }
+
+    override func fileExists(atPath path: String, isDirectory: UnsafeMutablePointer<ObjCBool>?) -> Bool {
+        if let exists = fileExists[path] {
+            isDirectory?.pointee = ObjCBool(directoryContents.keys.contains(URL(fileURLWithPath: path)))
+            return exists
+        }
+        if directoryContents.keys.contains(URL(fileURLWithPath: path)) {
+            isDirectory?.pointee = true
+            return true
+        }
+        return super.fileExists(atPath: path, isDirectory: isDirectory)
+    }
     
     override func contentsOfDirectory(at url: URL, includingPropertiesForKeys keys: [URLResourceKey]?, options mask: FileManager.DirectoryEnumerationOptions = []) throws -> [URL] {
         if let contents = directoryContents[url] as? [URL] {
