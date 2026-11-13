@@ -76,7 +76,7 @@ Favorites and saving to Passwords are available from the **context menu** (right
 
 **No Dock icon** — menu bar only. Dock the panel left, right, top, bottom, centered, or full screen; the position is remembered. Change it from the **Position** menu or with **Ctrl+Alt+⌘ + arrow keys**.
 
-Menu items: **Toggle Window** (default **⌘⇧V**), launch at login, clear history, preferences, help.
+Menu items: **Toggle Window** (default **⌘⇧V**), launch at login, clear history (keeps favorites and saved passwords), preferences, help.
 
 ### First launch and language
 
@@ -100,8 +100,9 @@ VaultClip is designed as **local storage**, not a sign-in service.
 ### Leak prevention
 
 - History directory: `~/Library/Application Support/com.karakuts.VaultClip/history/` with mode **0700**.
-- Symlink checks on paths; sanitized pasteboard type filenames.
+- Symlink checks on paths; pasteboard-type file names are stored fully percent-encoded (the `%` sign itself included), so name ↔ type round-trips and `.`/`..` can never become path components.
 - **Denylist** of password-manager bundle ids (1Password, LastPass, Bitwarden, Dashlane, Keeper, Apple Passwords, Proton Pass, and others) and sensitive pasteboard types.
+- Error/warning logs are locked to **0600** and rotated above ~2 MB. Pasteboard diagnostics (`--pasteboard-diagnostics` launch argument) are **opt-in**, record change counts and metadata only — never clipboard contents.
 - **Hardened Runtime**; ATS blocks arbitrary HTTP loads. The app does not fetch history over the network.
 
 ### macOS permissions
@@ -243,8 +244,8 @@ VAULTCLIP_SIGN_RELEASE=1 ./codesign-app.sh VaultClip.app
 
 ```bash
 chmod +x scripts/run-unit-tests.sh scripts/check-coverage.sh
-./scripts/run-unit-tests.sh    # 99 unit tests + code coverage
-./scripts/check-coverage.sh    # Security/History module gate (≥55%)
+./scripts/run-unit-tests.sh    # 141 unit tests + code coverage
+./scripts/check-coverage.sh    # per-file gate: min coverage of core Security/History files ≥55%
 ```
 
 Raw `xcodebuild test` (scheme **VaultClip XCTest**) works too; the scripts match CI flags.
@@ -298,7 +299,7 @@ Ideas, bugs, and pull requests are welcome: [issues](https://github.com/akarakut
 - `VaultClip/Sources/` — application code; `AppEnvironment` is the composition root after launch;
 - `VaultClip/Sources/Models/Security/` — Keychain, AES-GCM, migrations;
 - `VaultClip/Resources/Localizable.xcstrings` — localized UI strings (all macOS app languages);
-- `VaultClipTests/` — unit tests (99); `VaultClipUITests/` — UI tests (local);
+- `VaultClipTests/` — unit tests (141); `VaultClipUITests/` — UI tests (local);
 - `scripts/run-unit-tests.sh`, `scripts/check-coverage.sh` — same as CI;
 - `graphify-out/graph.html` — code graph (`graphify update .`).
 

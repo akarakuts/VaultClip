@@ -51,6 +51,18 @@ Legacy `State.main` / `Controller.main` / `Settings.main` remain as thin forward
 - `History.init(historyFM:cache:…)` — `HistoryFileManaging` protocol (tests use mocks)
 - `HistoryPasteboardPolicy` — pure denylist / concealed-type rules (unit-tested)
 
+## Threading and history lifecycle
+
+- **Main-thread invariant:** `History._items` is mutated on the main queue only; file I/O is handed to `HistoryFileManager`'s serial queue. Async work returning to `History` (load completion, prune) hops back via `DispatchQueue.main`.
+- **Async launch load:** `State` starts with an empty `History`; `History.loadAsync` scans on the file-manager queue and publishes on main (`State.isHistoryLoaded` gates the "Loading history…" empty state). The pasteboard monitor keeps its change gate closed until `historyReady(liveChangeCount:)` replays anything copied during the load — the launch sync then feeds the backlog. `UITesting.isRunning` keeps the deterministic synchronous path.
+- **Coalesced order writes:** inserts/moves of `order.xml` are batched inside `HistoryFileManager` (~1 s window, flushed on the next scheduled tick or immediately for deletes/reduce/clear). `applicationWillTerminate` calls `flushHistoryOrderSync(timeout: 1.5)` so a quit never loses the visible order. A crash inside the window leaves a stale order at worst — orphan item directories are recovered on next load, so no data loss.
+- **Self-write marking:** `HistoryPanel.lastSelfWriteChangeCount` lets `History` skip re-recording the app's own `writeObjects` (dedup loop guard).
+
+## Diagnostics and logging
+
+- Error/warning logs (`error.log`, `warning.log`) are chmod **0600** at launch and rotate above ~2 MB (`LogStorage`).
+- Pasteboard diagnostics are **opt-in only**: launch the app with `--pasteboard-diagnostics` to write change counts and metadata (never clipboard contents) to `pasteboard-debug.log`; rotating/pruning applies while enabled.
+
 ## On-disk layout
 
 ```
@@ -72,10 +84,11 @@ Legacy `State.main` / `Controller.main` / `Settings.main` remain as thin forward
 
 ## Testing
 
-- **Unit:** `VaultClipTests` — 99 tests (scheme `VaultClip XCTest`)
+- **Unit:** `VaultClipTests` — 141 tests (scheme `VaultClip XCTest`)
 - **Test host:** `VaultClipTestSupport` restores `AppEnvironment` after tests that replace singletons
 - **UI:** `VaultClipUITests` — manual / local only (menu-bar host hangs on headless CI)
 - **CI:** `./scripts/run-unit-tests.sh`, `./scripts/check-coverage.sh`, SwiftLint with `.swiftlint-baseline.yml`
+- **Coverage gate:** `check-coverage.sh` enforces the **minimum** per-file line coverage across the core `Security`/`History` files (default ≥55%, override with `VAULTCLIP_COVERAGE_THRESHOLD`). Structurally untestable files (migration bootstrap, alert UI, mock-only shims) are excluded with reasons listed in the script header.
 
 ## Code navigation
 

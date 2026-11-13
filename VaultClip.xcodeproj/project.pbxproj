@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F79FA67D9CE4E08BBDD4EE4 /* HistoryAsyncLoadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8153E9FA2474A1EBE3F1374 /* HistoryAsyncLoadTests.swift */; };
+		3B8FE29DC4A94A03B3DA4D86 /* HistoryEncryptionProbeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D43435E6AF48E3A88B3533 /* HistoryEncryptionProbeTests.swift */; };
+		DE0114E7971148B1A74BB063 /* DataFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F686AC89754C358E5300D1 /* DataFileManagerTests.swift */; };
+		46AA14BF101E48338EA77674 /* AESGCMDataEncryptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F582199A85A40CE8CDD979A /* AESGCMDataEncryptorTests.swift */; };
+		4B3D4A0C618148DDAB5C533E /* SecureStorageHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A848306A0A7A4A1B81969B02 /* SecureStorageHelperTests.swift */; };
+		35F61BD4788F403293B02221 /* LogStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C661A498BA1A4094B9CCB1ED /* LogStorageTests.swift */; };
+		67C523D3DB9341FBAB818F3B /* AppActivation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C1725BB2974E979558D5B0 /* AppActivation.swift */; };
+		F41B21F19EA04286AC8DF5F1 /* LogStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4D4FD723D548D8AB3AD8BF /* LogStorage.swift */; };
 		34010D2A234AB3F100C1218D /* HistoryWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34010D29234AB3F100C1218D /* HistoryWindow.swift */; };
 		340D3CA72361957100C2B335 /* ObservableType+WithPrevious.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340D3CA62361957100C2B335 /* ObservableType+WithPrevious.swift */; };
 		340FB43B236407D70053D82C /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340FB43A236407D70053D82C /* Controller.swift */; };
@@ -214,6 +222,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E8153E9FA2474A1EBE3F1374 /* HistoryAsyncLoadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryAsyncLoadTests.swift; sourceTree = "<group>"; };
+		45D43435E6AF48E3A88B3533 /* HistoryEncryptionProbeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryEncryptionProbeTests.swift; sourceTree = "<group>"; };
+		35F686AC89754C358E5300D1 /* DataFileManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataFileManagerTests.swift; sourceTree = "<group>"; };
+		6F582199A85A40CE8CDD979A /* AESGCMDataEncryptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESGCMDataEncryptorTests.swift; sourceTree = "<group>"; };
+		A848306A0A7A4A1B81969B02 /* SecureStorageHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorageHelperTests.swift; sourceTree = "<group>"; };
+		C661A498BA1A4094B9CCB1ED /* LogStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogStorageTests.swift; sourceTree = "<group>"; };
+		52C1725BB2974E979558D5B0 /* AppActivation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppActivation.swift; sourceTree = "<group>"; };
+		8F4D4FD723D548D8AB3AD8BF /* LogStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogStorage.swift; sourceTree = "<group>"; };
 		34010D29234AB3F100C1218D /* HistoryWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryWindow.swift; sourceTree = "<group>"; };
 		340D3CA62361957100C2B335 /* ObservableType+WithPrevious.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableType+WithPrevious.swift"; sourceTree = "<group>"; };
 		340FB43A236407D70053D82C /* Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
@@ -527,6 +543,7 @@
 				34B5C43123580CFF005247EB /* Loggable.swift */,
 				34AF6CE52358079100E8F6CC /* Logger.swift */,
 				34B5C42B23580CC6005247EB /* WarningLogger.swift */,
+				8F4D4FD723D548D8AB3AD8BF /* LogStorage.swift */,
 			);
 			path = "Error Management";
 			sourceTree = "<group>";
@@ -553,7 +570,8 @@
 				34268125233EE83700BA226A /* AccessControlHelperMock.swift */,
 				345B14AE2341AEEA00C2D0DA /* KeyPressHelper.swift */,
 				345B14B02341AF1900C2D0DA /* KeyPressHelperMock.swift */,
-			);
+				52C1725BB2974E979558D5B0 /* AppActivation.swift */,
+		);
 			path = Helper;
 			sourceTree = "<group>";
 		};
@@ -869,7 +887,13 @@
 				VCTST04112EB0B10004E6E63 /* AppEnvironmentTests.swift */,
 				VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */,
 				VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */,
-			);
+				C661A498BA1A4094B9CCB1ED /* LogStorageTests.swift */,
+				A848306A0A7A4A1B81969B02 /* SecureStorageHelperTests.swift */,
+				6F582199A85A40CE8CDD979A /* AESGCMDataEncryptorTests.swift */,
+				35F686AC89754C358E5300D1 /* DataFileManagerTests.swift */,
+				45D43435E6AF48E3A88B3533 /* HistoryEncryptionProbeTests.swift */,
+				E8153E9FA2474A1EBE3F1374 /* HistoryAsyncLoadTests.swift */,
+		);
 			path = VaultClipTests;
 			sourceTree = "<group>";
 		};
@@ -1239,6 +1263,8 @@
 				B2C3D4E53123456789001 /* HistoryPdfCellView.swift in Sources */,
 				34E516CB2352AC50008B4256 /* HistoryColorCellView.swift in Sources */,
 				34AF6CE62358079100E8F6CC /* Logger.swift in Sources */,
+		67C523D3DB9341FBAB818F3B /* AppActivation.swift in Sources */,
+		F41B21F19EA04286AC8DF5F1 /* LogStorage.swift in Sources */,
 				345BAE30235005E7008ACB4C /* HistoryListItem.swift in Sources */,
 				34B5C42C23580CC6005247EB /* WarningLogger.swift in Sources */,
 				3488B14022FAE8F30019E7DA /* Constants.swift in Sources */,
@@ -1267,6 +1293,12 @@
 				349F794A235C5722000CA5B9 /* WarningLoggerMock.swift in Sources */,
 				349F794C235C573D000CA5B9 /* AlerterMock.swift in Sources */,
 				34ACFBD222EB0B11004E6E63 /* VaultClipTests.swift in Sources */,
+		3F79FA67D9CE4E08BBDD4EE4 /* HistoryAsyncLoadTests.swift in Sources */,
+		3B8FE29DC4A94A03B3DA4D86 /* HistoryEncryptionProbeTests.swift in Sources */,
+		DE0114E7971148B1A74BB063 /* DataFileManagerTests.swift in Sources */,
+		46AA14BF101E48338EA77674 /* AESGCMDataEncryptorTests.swift in Sources */,
+		4B3D4A0C618148DDAB5C533E /* SecureStorageHelperTests.swift in Sources */,
+		35F61BD4788F403293B02221 /* LogStorageTests.swift in Sources */,
 				VCTST01212EB0B10004E6E63 /* ClipErrorCodeTests.swift in Sources */,
 				VCTST02212EB0B10004E6E63 /* HistoryPasteboardPolicyTests.swift in Sources */,
 				VCTST03212EB0B10004E6E63 /* SingleInstanceGuardTests.swift in Sources */,
@@ -2033,8 +2065,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krisk/fuse-swift";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.4.0;
+				kind = exactVersion;
+				version = 1.4.0;
 			};
 		};
 		VCSPM00012EB0C10004E6E63 /* XCRemoteSwiftPackageReference "RxSwift" */ = {

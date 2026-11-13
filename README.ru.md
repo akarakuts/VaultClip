@@ -76,7 +76,7 @@ VaultClip не пытается заменить полноценный мене
 
 Приложение **без иконки в Dock** — только в меню. Панель можно закрепить слева, справа, сверху, снизу, по центру или на весь экран; позиция запоминается. Переключение: меню **Position** или **Ctrl+Alt+⌘ + стрелки**.
 
-В меню: **Показать/скрыть окно** (по умолчанию **⌘⇧V**), автозапуск, очистка истории, настройки, справка.
+В меню: **Показать/скрыть окно** (по умолчанию **⌘⇧V**), автозапуск, очистка истории (избранное и сохранённые пароли остаются), настройки, справка.
 
 ### Первый запуск и язык
 
@@ -100,8 +100,9 @@ VaultClip проектируется как **локальное хранили�
 ### Защита от утечек
 
 - Каталог истории: `~/Library/Application Support/com.karakuts.VaultClip/history/` с правами **0700**.
-- Проверка путей на symlink; санитизация имён типов pasteboard.
+- Проверка путей на symlink; имена типов pasteboard хранятся в полном percent-encoding (кодируется и сам `%`), поэтому имя ↔ тип обратимы, а `.`/`..` никогда не становятся компонентом пути.
 - **Denylist** bundle id менеджеров паролей (1Password, LastPass, Bitwarden, Dashlane, Keeper, Apple Passwords, Proton Pass и др.) и служебных типов pasteboard.
+- Логи ошибок/предупреждений защищены правами **0600** и ротируются выше ~2 МБ. Диагностика pasteboard (аргумент запуска `--pasteboard-diagnostics`) включается **только явно**, пишет change count и метаданные — и никогда содержимое буфера.
 - **Hardened Runtime**; ATS без произвольных HTTP-загрузок. Приложение не обращается к сети за историей.
 
 ### Разрешения macOS
@@ -243,8 +244,8 @@ VAULTCLIP_SIGN_RELEASE=1 ./codesign-app.sh VaultClip.app
 
 ```bash
 chmod +x scripts/run-unit-tests.sh scripts/check-coverage.sh
-./scripts/run-unit-tests.sh    # 99 unit-тестов + покрытие
-./scripts/check-coverage.sh    # порог Security/History (≥55%)
+./scripts/run-unit-tests.sh    # 141 unit-тест + покрытие
+./scripts/check-coverage.sh    # гейт пофайловый: минимум core-файлов Security/History ≥55%
 ```
 
 Прямой `xcodebuild test` (схема **VaultClip XCTest**) тоже работает; скрипты совпадают с CI.
@@ -298,7 +299,7 @@ VaultClip — **активный форк с открытым кодом** (GPLv
 - `VaultClip/Sources/` — код приложения; `AppEnvironment` — composition root после запуска;
 - `VaultClip/Sources/Models/Security/` — Keychain, AES-GCM, миграции;
 - `VaultClip/Resources/Localizable.xcstrings` — строки интерфейса (все языки macOS);
-- `VaultClipTests/` — unit-тесты (99); `VaultClipUITests/` — UI-тесты (локально);
+- `VaultClipTests/` — unit-тесты (141); `VaultClipUITests/` — UI-тесты (локально);
 - `scripts/run-unit-tests.sh`, `scripts/check-coverage.sh` — те же команды, что в CI;
 - `graphify-out/graph.html` — граф кода (`graphify update .`).
 

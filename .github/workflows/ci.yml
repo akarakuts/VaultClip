@@ -10,6 +10,10 @@ on:
     branches:
       - master
 
+env:
+  # Pinned so the lint baseline (generated with 0.65.1) stays authoritative.
+  SWIFTLINT_VERSION: "0.65.1"
+
 jobs:
   build-and-test:
     runs-on: macos-15
@@ -18,11 +22,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install SwiftLint
-        run: brew install swiftlint
+      - name: Install SwiftLint (pinned)
+        run: |
+          curl -fsSL -o /tmp/swiftlint.zip \
+            "https://github.com/realm/SwiftLint/releases/download/${SWIFTLINT_VERSION}/portable_swiftlint.zip"
+          mkdir -p "$HOME/bin"
+          unzip -o /tmp/swiftlint.zip -d "$HOME/bin"
+          chmod +x "$HOME/bin/swiftlint"
+          echo "$HOME/bin" >> "$GITHUB_PATH"
+          swiftlint version
 
       - name: SwiftLint
         run: swiftlint lint --lenient --baseline .swiftlint-baseline.yml --reporter github-actions-logging
+
+      - name: Check version consistency
+        run: |
+          versions="$(grep -o 'MARKETING_VERSION = [^;]*;' VaultClip.xcodeproj/project.pbxproj | awk '{print $3}' | tr -d ';' | sort -u | sed '/^$/d')"
+          count="$(printf '%s\n' "$versions" | wc -l | tr -d ' ')"
+          if [ "$count" != "1" ]; then
+            echo "MARKETING_VERSION must resolve to a single value, found:" >&2
+            echo "$versions" >&2
+            exit 1
+          fi
+          echo "MARKETING_VERSION = $versions"
 
       - name: Build Release
         run: |
