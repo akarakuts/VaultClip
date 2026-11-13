@@ -16,10 +16,9 @@ extension HistoryItem {
             return HistoryTiffCellView.self
         }
         if getFileUrl() != nil {
-            if getThumbnailImage() != nil {
-                return HistoryFileThumbnailCellView.self
-            }
-            return HistoryFileIconCellView.self
+            // The thumbnail cell generates previews asynchronously; classifying here must
+            // never block on QuickLook (P8.1: the old sync QLThumbnailCreate froze the main thread).
+            return HistoryFileThumbnailCellView.self
         }
         if getColor() != nil {
             return HistoryColorCellView.self

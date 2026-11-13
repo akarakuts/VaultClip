@@ -217,7 +217,9 @@ class Controller {
     }
     
     @objc func deleteSelectedClicked() {
-        ClipHotKeys.ctrlDelete.simulateOnDown()
+        // Route straight to the view controller; synthesising a global key event made the
+        // delete depend on the panel being key and the CGEvent tap being alive (P9/D2).
+        (historyWindowController.contentViewController as? HistoryViewController)?.deleteSelected()
     }
     
     @objc func clearHistoryClicked() {
@@ -256,7 +258,7 @@ class Controller {
             windowController.showWindow(nil)
             windowController.window?.center()
         }
-        NSApp.activate(ignoringOtherApps: true)
+        AppActivation.activateFrontmostApplication()
     }
     
     @objc func quit() {

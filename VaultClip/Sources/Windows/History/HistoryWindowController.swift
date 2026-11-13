@@ -34,14 +34,14 @@ class HistoryWindowController: NSWindowController {
                 [] in
                 if !$0 {
                     self.close()
-                    self.oldApp?.activate(options: .activateIgnoringOtherApps)
+                    AppActivation.activate(self.oldApp)
                 }
                 else {
                     self.oldApp = NSWorkspace.shared.frontmostApplication
                     self.showWindow(nil)
                     self.window?.layoutIfNeeded()
                     self.window?.makeKey()
-                    NSApp.activate(ignoringOtherApps: true)
+                    AppActivation.activateFrontmostApplication()
                     (self.contentViewController as? HistoryViewController)?
                         .alignHistoryListAfterWindowFrameChange()
                     DispatchQueue.main.async {
@@ -51,10 +51,11 @@ class HistoryWindowController: NSWindowController {
                 }
             })
     }
-    
-    func subscribeFrameTo(position: Observable<PanelPosition>, screen: Observable<NSScreen>) -> Disposable {
+
+    func subscribeFrameTo(position: Observable<PanelPosition>, screen: Observable<NSScreen?>) -> Disposable {
         Observable.combineLatest(position, screen).subscribe(onNext: {
             (position, screen) in
+            guard let screen else { return }
             self.window?.setFrame(position.getFrame(forScreen: screen), display: true)
             DispatchQueue.main.async {
                 (self.contentViewController as? HistoryViewController)?

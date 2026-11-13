@@ -74,12 +74,11 @@ class HistoryItem: NSObject {
         return cache.isItemRegistered(fsId)
     }
     
-    static let historyItemIdType = NSPasteboard.PasteboardType(rawValue: "VaultClip.historyItemId")
+    static let historyItemIdType = NSPasteboard.PasteboardType(rawValue: "com.karakuts.VaultClip.history-item-id")
     
-    /// Static definition of whether the history items should write RTF data to the pasteboard.
-    ///
-    /// This value is used when determining the writable types for an item.
-    static var pastesRichText = true
+    /// Whether this item writes RTF/HTML data to the pasteboard. Set from settings
+    /// by the paste path before the item is written (was a global static before D5).
+    var pastesRichText = true
     
     
     // MARK: - Constructors
@@ -142,7 +141,10 @@ class HistoryItem: NSObject {
         self.passwordComment = passwordComment
         self.passwordLogin = passwordLogin
         self.passwordURL = passwordURL
-        self.cache.registerItem(withId: fsId)
+        // Mirrors `startCaching()`: password payloads must never enter the plaintext RAM cache.
+        if !isPassword {
+            self.cache.registerItem(withId: fsId)
+        }
     }
     
     /// Plain-text password payload stored with this history item.
@@ -379,29 +381,18 @@ class HistoryItem: NSObject {
         FileManager.default.temporaryDirectory.appendingPathComponent("VaultClip-QL", isDirectory: true)
     }
     
-    func getThumbnailImage() -> NSImage? {
-        var image: NSImage?
-        DispatchQueue.global(qos: .userInteractive).sync {
-            guard let url = getFileUrl() else { return }
-            let ref = QLThumbnailCreate(kCFAllocatorDefault, url as CFURL, CGSize(width: 300, height: 300), [kQLThumbnailOptionIconModeKey: true] as CFDictionary)
-            
-            guard let thumbnail = ref?.takeRetainedValue() else { return }
-            let cgImageRef = QLThumbnailCopyImage(thumbnail)
-            guard let cgImage = cgImageRef?.takeRetainedValue() else { return }
-            image = NSImage(cgImage: cgImage, size: CGSize(width: cgImage.width, height: cgImage.height))
-        }
-        return image
-        
-        
-    }
-    
     func getFileIcon() -> NSImage? {
         guard let url = getFileUrl() else { return nil }
         return NSWorkspace.shared.icon(forFile: url.path)
     }
-    
+
     func getColor() -> NSColor? {
         guard let data = data(forType: .color) else { return nil }
+        // Modern items store an NSKeyedArchiver plist — decode it directly. The round-trip
+        // through a named pasteboard was global state and could leak back stale colors (P8.2).
+        if let color = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSColor.self, from: data) {
+            return color
+        }
         let pasteboard = NSPasteboard(name: NSPasteboard.Name(rawValue: "VaultClip.ColorTest"))
         pasteboard.declareTypes([.color], owner: nil)
         pasteboard.setData(data, forType: .color)
@@ -462,7 +453,7 @@ extension HistoryItem {
 extension HistoryItem: NSPasteboardWriting {
     func writableTypes(for pasteboard: NSPasteboard) -> [NSPasteboard.PasteboardType] {
         return types.filter{
-            HistoryItem.pastesRichText || !richTextPasteboardTypes.contains($0.rawValue)
+            pastesRichText || !richTextPasteboardTypes.contains($0.rawValue)
         } + [Self.historyItemIdType]
     }
     

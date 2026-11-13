@@ -50,7 +50,7 @@ class AccessControlHelper {
         guard !hasShownWelcomeThisSession else { return }
         hasShownWelcomeThisSession = true
         AppEnvironment.shared.routing.welcomeWindowController.showWindow(nil)
-        NSApp.activate(ignoringOtherApps: true)
+        AppActivation.activateFrontmostApplication()
     }
 
     /// Opens Accessibility settings and explains that a signed /Applications copy is required.
