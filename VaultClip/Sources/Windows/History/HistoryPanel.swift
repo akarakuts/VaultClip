@@ -11,25 +11,39 @@ import Foundation
 import Cocoa
 
 class HistoryPanel {
-    
+
     let history: History
     var items: [HistoryItem]
-    
+
     let pasteboard: NSPasteboard
-    
+
+    /// Change counts produced by VaultClip's own paste actions (P8.3): the monitor skips
+    /// them even when the source app is unknown/denylisted, instead of re-inserting.
+    /// Internal-set for tests; production only mutates through `markSelfWrite`.
+    static var lastSelfWriteChangeCount: Int?
+
+    private static func markSelfWrite(_ changeCount: Int) {
+        lastSelfWriteChangeCount = changeCount
+    }
+
     init(history: History, items: [HistoryItem]) {
         self.history = history
         self.items = items
         self.pasteboard = NSPasteboard.general
     }
-    
+
     func paste(item: HistoryItem) {
         guard let index = history.index(of: item) else { return }
         history.moveItem(at: index, to: 0)
-        
+
+        // Per-item rich-text decision from current settings (D5).
+        item.pastesRichText = AppEnvironment.shared.settings.pastesRichText
+
         let newChangeCount = pasteboard.clearContents()
+        HistoryPanel.markSelfWrite(newChangeCount)
         history.recordPasteboardChange(withCount: newChangeCount)
         item.write(to: pasteboard)
+        HistoryPanel.markSelfWrite(pasteboard.changeCount)
         history.recordPasteboardChange(withCount: pasteboard.changeCount)
         scheduleSimulatedPaste()
     }
@@ -80,6 +94,7 @@ class HistoryPanel {
         
         if displayedIndex == 0 {
             let newChangeCount = pasteboard.clearContents()
+            HistoryPanel.markSelfWrite(newChangeCount)
             history.recordPasteboardChange(withCount: newChangeCount)
         }
         
@@ -110,8 +125,11 @@ class HistoryPanel {
         
         if to == 0 {
             let newChangeCount = pasteboard.clearContents()
+            HistoryPanel.markSelfWrite(newChangeCount)
             history.recordPasteboardChange(withCount: newChangeCount)
+            fromItem.pastesRichText = AppEnvironment.shared.settings.pastesRichText
             fromItem.write(to: pasteboard)
+            HistoryPanel.markSelfWrite(pasteboard.changeCount)
             history.recordPasteboardChange(withCount: pasteboard.changeCount)
         }
     }
@@ -154,8 +172,10 @@ class HistoryPanel {
     
     private func copyStringToClipboard(_ string: String) {
         let newChangeCount = pasteboard.clearContents()
+        HistoryPanel.markSelfWrite(newChangeCount)
         history.recordPasteboardChange(withCount: newChangeCount)
         pasteboard.setString(string, forType: .string)
+        HistoryPanel.markSelfWrite(pasteboard.changeCount)
         history.recordPasteboardChange(withCount: pasteboard.changeCount)
     }
 }

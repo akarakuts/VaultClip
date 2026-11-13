@@ -67,6 +67,8 @@ class HistoryFileManagerTests: XCTestCase {
             warningLogger: warningLogger,
             alerter: alerter
         )
+        // Order writes normally coalesce over 1 s — flush on the next queue tick in tests.
+        historyFM.orderCoalesceInterval = 0
         cache = HistoryCache(historyFM: historyFM, maxCacheSize: 1_000_000)
     }
 
@@ -596,6 +598,112 @@ class HistoryFileManagerTests: XCTestCase {
     }
     
         
+    // MARK: - Coalesced order writes (P7)
+
+    func testOrderWritesAreCoalescedIntoOneDiskHit() {
+        historyFM.orderCoalesceInterval = 0.4
+        let flushes = expectation(description: "all handlers fire")
+        flushes.expectedFulfillmentCount = 3
+
+        historyFM.scheduleHistoryOrderWrite(history: history1) { _ in flushes.fulfill() }
+        historyFM.scheduleHistoryOrderWrite(history: history2) { _ in flushes.fulfill() }
+        historyFM.scheduleHistoryOrderWrite(history: history1) { _ in flushes.fulfill() }
+
+        wait(for: [flushes], timeout: 3)
+        XCTAssertEqual(orderManager.writeCount, 1, "burst must collapse to a single order write")
+        XCTAssertEqual(orderManager.order as? [String], history1.map { $0.fsId.uuidString }, "last snapshot wins")
+    }
+
+    func testImmediateScheduleFlushesWithoutWaitingForCoalesceWindow() {
+        historyFM.orderCoalesceInterval = 60
+        let done = expectation(description: "immediate flush")
+
+        historyFM.scheduleHistoryOrderWrite(history: history1, immediate: true) { _ in done.fulfill() }
+
+        wait(for: [done], timeout: 2)
+        XCTAssertEqual(orderManager.writeCount, 1)
+    }
+
+    func testSyncFlushDrainsPendingOrderWithinTimeout() {
+        // `flushHistoryOrderSync` blocks the caller until the file-manager queue drains,
+        // so it must never be exercised with a main-queue manager (that would deadlock).
+        let backgroundManager = HistoryFileManager(
+            fileManager: fileManager,
+            orderManager: orderManager,
+            dataFileManager: dataFileMangaer,
+            dispatchQueue: DispatchQueue(label: "SyncFlushTestQueue"),
+            errorLogger: errorLogger,
+            warningLogger: warningLogger,
+            alerter: alerter
+        )
+        backgroundManager.orderCoalesceInterval = 30
+        let order = history2.map { $0.fsId.uuidString }
+        backgroundManager.scheduleHistoryOrderWrite(history: history2, immediate: false, completionHandler: nil)
+
+        backgroundManager.flushHistoryOrderSync(timeout: 2)
+
+        XCTAssertEqual(orderManager.order as? [String], order)
+    }
+
+    func testClearHistoryDiscardsPendingSnapshot() {
+        fileManager.removeItem[Constants.urls.history] = true
+        fileManager.createDirectory[Constants.urls.history] = true
+        let done = expectation(description: "cleared")
+
+        // A pending non-empty order queued just before the clear must not resurrect itself.
+        historyFM.scheduleHistoryOrderWrite(history: history2, immediate: false, completionHandler: nil)
+        historyFM.clearHistory { res in
+            XCTAssertTrue(res)
+            done.fulfill()
+        }
+
+        wait(for: [done], timeout: 2)
+        XCTAssertEqual(orderManager.order as? [String], [])
+    }
+
+    // MARK: - deleteItems() continues past failures (D3)
+
+    func testDeleteItemsKeepsDeletingAndStillRewritesOrderAfterFailure() {
+        let kept = history2[0]
+        let failing = history2[1]
+        let removable = history2[2]
+        fileManager.removeItem[historyFM.getUrl(forItemWithId: failing.fsId)] = false
+        fileManager.removeItem[historyFM.getUrl(forItemWithId: removable.fsId)] = true
+        let err = expectation(description: "Error logged")
+        let alert = expectation(description: "Error shown")
+        err.assertForOverFulfill = false
+        alert.assertForOverFulfill = false
+        errorLogger.expectation = err
+        alerter.expectation = alert
+        let finished = expectation(description: "handler called")
+
+        historyFM.deleteItems([failing, removable], historyOrder: [kept]) { res in
+            XCTAssertFalse(res, "overall result reports the failed removal")
+            finished.fulfill()
+        }
+
+        wait(for: [err, alert, finished], timeout: 2)
+        XCTAssertEqual(orderManager.order as? [String], [kept.fsId.uuidString],
+                       "order must be rewritten even when one directory could not be removed")
+    }
+
+    // MARK: - loadHistoryAsync() (P6)
+
+    func testLoadHistoryAsyncCompletesOnMainQueueWithLoadedHistory() {
+        orderManager.order = [] as NSArray
+        orderManager.shouldReadSucceed = true
+        fileManager.directoryContents[Constants.urls.history] = []
+        let loaded = expectation(description: "async load")
+
+        historyFM.loadHistoryAsync(cache: cache) { history in
+            dispatchPrecondition(condition: .onQueue(.main))
+            XCTAssertEqual(history.items.count, 0)
+            loaded.fulfill()
+        }
+
+        wait(for: [loaded], timeout: 2)
+    }
+
     // MARK: - getUrl() - Item
     func testGetUrlForItemReturnsCorrectUrl() {
         // 1. Create an id

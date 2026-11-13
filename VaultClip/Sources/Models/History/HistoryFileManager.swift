@@ -22,6 +22,17 @@ class HistoryFileManager {
     var alerter: Alerter
     
     static var `default` = HistoryFileManager()
+
+    // MARK: - Coalesced order writes
+
+    /// Latest snapshot awaiting a flush. Confined to `dispatchQueue`; a crash between copies may
+    /// leave the on-disk order one flush behind — orphan recovery (see `makeHistory`) re-adds such
+    /// items by `copiedAt`, so no item data is lost.
+    private var pendingHistoryOrder: [HistoryItem]?
+    private var pendingOrderHandlers: [((Bool) -> Void)?] = []
+    private var orderFlushScheduled = false
+    /// Internal for tests: 1 s collapses copy bursts; 0 flushes on the next queue tick.
+    var orderCoalesceInterval: TimeInterval = 1.0
     
     init(
         fileManager: FileManager = FileManager.default,
@@ -71,6 +82,66 @@ class HistoryFileManager {
         )
         try SecureStorageHelper.ensureSecureDirectory(at: Constants.urls.history, fileManager: fileManager)
     }
+
+    // MARK: - History order persistence
+
+    /// Snapshots the order from the main thread for later coalesced writes.
+    func captureHistoryOrder(_ history: [HistoryItem]) {
+        dispatchQueue.async { self.pendingHistoryOrder = history }
+    }
+
+    /// Queues an order write; coalesced bursts collapse to one disk hit unless `immediate`.
+    func scheduleHistoryOrderWrite(
+        history: [HistoryItem],
+        immediate: Bool = false,
+        completionHandler handler: ((Bool) -> Void)? = nil
+    ) {
+        dispatchQueue.async {
+            self.pendingHistoryOrder = history
+            if let handler { self.pendingOrderHandlers.append(handler) }
+            if immediate {
+                self.flushPendingOrder()
+                return
+            }
+            guard !self.orderFlushScheduled else { return }
+            self.orderFlushScheduled = true
+            self.dispatchQueue.asyncAfter(deadline: .now() + self.orderCoalesceInterval) {
+                self.orderFlushScheduled = false
+                self.flushPendingOrder()
+            }
+        }
+    }
+
+    func flushHistoryOrder(completionHandler handler: ((Bool) -> Void)? = nil) {
+        dispatchQueue.async {
+            if let handler { self.pendingOrderHandlers.append(handler) }
+            self.flushPendingOrder()
+        }
+    }
+
+    /// Blocks (bounded) until queued work drains — for app termination.
+    func flushHistoryOrderSync(timeout: TimeInterval) {
+        let semaphore = DispatchSemaphore(value: 0)
+        dispatchQueue.async {
+            self.flushPendingOrder()
+            semaphore.signal()
+        }
+        _ = semaphore.wait(timeout: .now() + timeout)
+    }
+
+    private func flushPendingOrder() {
+        guard let snapshot = pendingHistoryOrder else {
+            let handlers = pendingOrderHandlers
+            pendingOrderHandlers = []
+            handlers.forEach { callHander($0, withVal: true) }
+            return
+        }
+        pendingHistoryOrder = nil
+        let result = writeHistoryOrder(history: snapshot)
+        let handlers = pendingOrderHandlers
+        pendingOrderHandlers = []
+        handlers.forEach { callHander($0, withVal: result) }
+    }
     
     private func writeMetadata(_ string: String, to url: URL) throws {
         guard let data = string.data(using: .utf8) else { return }
@@ -91,12 +162,7 @@ class HistoryFileManager {
     }
     
     func saveHistoryOrder(history: [HistoryItem], completionHandler: ((Bool) -> Void)? = nil) {
-        dispatchQueue.async {
-            let res = self.writeHistoryOrder(history: history)
-            if let c = completionHandler {
-                c(res)
-            }
-        }
+        scheduleHistoryOrderWrite(history: history, completionHandler: completionHandler)
     }
     
     func loadHistoryOrder() -> [UUID]? {
@@ -138,6 +204,20 @@ class HistoryFileManager {
     }
     
     func loadHistory(cache: HistoryCache) -> History {
+        makeHistory(cache: cache)
+    }
+
+    /// Builds the history off the calling thread (heavy directory scan), then publishes on main.
+    func loadHistoryAsync(cache: HistoryCache, completion: @escaping (History) -> Void) {
+        dispatchQueue.async {
+            let history = self.makeHistory(cache: cache)
+            DispatchQueue.main.async {
+                completion(history)
+            }
+        }
+    }
+
+    private func makeHistory(cache: HistoryCache) -> History {
         guard let order = loadHistoryOrder() else {
             if HistoryEncryptionProbe.hasEncryptedPayloads(fileManager: fileManager) {
                 ClipWarning(localizedDescription: "Encrypted history is present but could not be loaded.").log(with: warningLogger)
@@ -299,7 +379,7 @@ class HistoryFileManager {
             for (type, data) in unsavedData {
                 let itemUrl = self.getUrl(forItemWithId: item.fsId, andPasteboardType: type)
                 do {
-                    try self.dataFileManager.writeData(data, to: itemUrl, options: [])
+                    try self.dataFileManager.writeData(data, to: itemUrl, options: .atomic)
                 } catch {
                     try? self.fileManager.removeItem(at: directoryUrl)
                     let historyError = ClipError(.historyItemSaveFailed, localizedDescription: "Failed to save new pasteboard item due to error: \(error.localizedDescription) Attempted to save pasteboard item at '\(itemUrl)'.")
@@ -311,7 +391,7 @@ class HistoryFileManager {
             }
             
             item.startCaching()
-            self.callHander(handler, withVal: self.writeHistoryOrder(history: historyOrder))
+            self.scheduleHistoryOrderWrite(history: historyOrder, completionHandler: handler)
         }
     }
     
@@ -321,20 +401,24 @@ class HistoryFileManager {
     
     func deleteItems(_ deletedItems: [HistoryItem], historyOrder: [HistoryItem], completionHandler handler: ((Bool) -> Void)? = nil) {
         dispatchQueue.async {
+            var allSucceeded = true
             for deleted in deletedItems {
                 do {
                     try self.fileManager.removeItem(at: self.getUrl(forItemWithId: deleted.fsId))
                 } catch {
+                    // Keep going: a stuck directory must not block the order rewrite,
+                    // otherwise the remaining "deleted" items resurrect as orphans on next load.
+                    allSucceeded = false
                     let historyError = ClipError(.historyItemDeleteFailed, localizedDescription: "Failed to delete item due to error: \(error.localizedDescription)")
                     historyError.log(with: self.errorLogger)
                     historyError.show(with: self.alerter)
-                    self.callHander(handler, withVal: false)
-                    return
                 }
                 HistoryItem.removeQuickLookCache(for: deleted.fsId)
                 deleted.stopCaching()
             }
-            self.callHander(handler, withVal: self.writeHistoryOrder(history: historyOrder))
+            self.scheduleHistoryOrderWrite(history: historyOrder, immediate: true, completionHandler: { wroteOrder in
+                self.callHander(handler, withVal: wroteOrder && allSucceeded)
+            })
         }
     }
     
@@ -346,25 +430,27 @@ class HistoryFileManager {
         
         dispatchQueue.async {
             let newHistory = Array(oldHistory.prefix(size))
-            
+
+            var allSucceeded = true
             for item in oldHistory.suffix(from: size) {
                 HistoryItem.removeQuickLookCache(for: item.fsId)
                 do {
                     try self.fileManager.removeItem(at: self.getUrl(forItemWithId: item.fsId))
                 }
                 catch {
+                    allSucceeded = false
                     let historyError = ClipError(.historyItemDeleteFailed, localizedDescription: "Failed to delete item due to error: \(error.localizedDescription)")
                     historyError.log(with: self.errorLogger)
                     historyError.show(with: self.alerter)
-                    self.callHander(handler, withVal: false)
-                    return
                 }
-                
+
                 item.stopCaching()
             }
-            
+
             // Update order
-            self.callHander(handler, withVal: self.writeHistoryOrder(history: newHistory))
+            self.scheduleHistoryOrderWrite(history: newHistory, immediate: true, completionHandler: { wroteOrder in
+                self.callHander(handler, withVal: wroteOrder && allSucceeded)
+            })
         }
     }
     
@@ -374,6 +460,9 @@ class HistoryFileManager {
     
     func clearHistory(completionHandler handler: ((Bool) -> Void)? = nil) {
         dispatchQueue.async {
+            // A stale pending snapshot would resurrect cleared items into the order file.
+            self.flushPendingOrder()
+
             // Delete the old history
             do {
                 try self.fileManager.removeItem(at: Constants.urls.history)
@@ -385,7 +474,7 @@ class HistoryFileManager {
                 self.callHander(handler, withVal: false)
                 return
             }
-            
+
             // Create a new empty history
             do {
                 try self.fileManager.createDirectory(at: Constants.urls.history, withIntermediateDirectories: true)
@@ -397,9 +486,9 @@ class HistoryFileManager {
                 self.callHander(handler, withVal: false)
                 return
             }
-            
+
             // Save the new order
-            self.callHander(handler, withVal: self.writeHistoryOrder(history: []))
+            self.scheduleHistoryOrderWrite(history: [], immediate: true, completionHandler: handler)
         }
     }
     

@@ -15,19 +15,29 @@ class HistoryFileManagerMock: HistoryFileManager {
     var dataCallCount = 0
     var data = [UUID: [NSPasteboard.PasteboardType: Data]]()
     var savedHistoryOrders = [[UUID]]()
+    var capturedOrders = [[UUID]]()
     var insertedItems = [UUID]()
     var deletedItems = [UUID]()
     var didClearHistory = false
     var favoriteUpdates = [(id: UUID, isFavorite: Bool)]()
     var passwordUpdates = [(id: UUID, isPassword: Bool, comment: String, login: String, url: String)]()
     var passwordMetadataUpdates = [(id: UUID, comment: String, login: String, url: String)]()
-    
+
     override func loadData(forItemWithId id: UUID, andType type: NSPasteboard.PasteboardType) -> Data? {
         dataCallCount += 1
         if let d = data[id]?[type] {
             return d
         }
         return nil
+    }
+
+    override func captureHistoryOrder(_ history: [HistoryItem]) {
+        capturedOrders.append(history.map(\.fsId))
+    }
+
+    // Deterministic: skip the coalescing timer, record straight into the order log.
+    override func scheduleHistoryOrderWrite(history: [HistoryItem], immediate: Bool, completionHandler handler: ((Bool) -> Void)?) {
+        saveHistoryOrder(history: history, completionHandler: handler)
     }
 
     override func saveHistoryOrder(history: [HistoryItem], completionHandler: ((Bool) -> Void)? = nil) {
