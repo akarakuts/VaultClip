@@ -12,7 +12,10 @@ import Cocoa
 import RxSwift
 import RxRelay
 
-/// Representation of all the history
+/// Representation of all the history.
+///
+/// Invariant: mutations of `_items` happen on the main thread; background persistence
+/// receives immutable value snapshots (`[HistoryItem]` copies) only.
 class History {
     
     private var _items = [HistoryItem]()
@@ -27,8 +30,8 @@ class History {
         return _lastRecordedChangeCount.value
     }
     
-    var historyFM: HistoryFileManaging
-    var cache: HistoryCache
+    private(set) var historyFM: HistoryFileManaging
+    private(set) var cache: HistoryCache
     
     private var _maxItems: BehaviorRelay<Int>
     
@@ -84,6 +87,20 @@ class History {
     static func load(historyFM: HistoryFileManaging = HistoryFileManager.default, cache: HistoryCache) -> History {
         return historyFM.loadHistory(cache: cache)
     }
+
+    static func loadAsync(historyFM: HistoryFileManaging = HistoryFileManager.default, cache: HistoryCache, completion: @escaping (History) -> Void) {
+        historyFM.loadHistoryAsync(cache: cache, completion: completion)
+    }
+
+    /// Swaps in the asynchronously loaded list (main thread) and notifies subscribers.
+    /// During startup there are usually no subscribers yet; the notify keeps the contract honest.
+    func replaceLoaded(with loaded: [HistoryItem]) {
+        _items.forEach { $0.stopCaching() }
+        _items = loaded
+        notify(Change.initial)
+        pruneExcessItems()
+        historyFM.captureHistoryOrder(_items)
+    }
     
     @discardableResult
     func subscribe(onNext: @escaping SubscribeHandler) -> () -> Void {
@@ -129,9 +146,10 @@ class History {
     
     func clear(nonFavoritesOnly: Bool = false) {
         if nonFavoritesOnly {
-            let removed = _items.filter { !$0.isPinnedFromPruning }
+            // Ordinary "Clear History" keeps favorites and saved passwords; only "Clear All" removes them.
+            let removed = _items.filter { !$0.isFavorite && !$0.isPassword }
             guard !removed.isEmpty else { return }
-            _items = _items.filter(\.isPinnedFromPruning)
+            _items = _items.filter { $0.isFavorite || $0.isPassword }
             removed.forEach { $0.stopCaching() }
             historyFM.deleteItems(removed, historyOrder: _items)
             notify(Change.clear)
@@ -299,8 +317,7 @@ class History {
     
     private static func extractPasteboardPayload(
         from item: NSPasteboardItem,
-        filteredTypes: Set<NSPasteboard.PasteboardType>,
-        comparedTo recentItems: [HistoryItem]
+        filteredTypes: Set<NSPasteboard.PasteboardType>
     ) -> [NSPasteboard.PasteboardType: Data] {
         var data = [NSPasteboard.PasteboardType: Data]()
         for type in filteredTypes {
@@ -339,6 +356,11 @@ extension History: PasteboardMonitorDelegate {
         if !ignoreChangeCount, pasteboard.changeCount == lastRecordedChangeCount {
             return
         }
+        // Our own paste (panel action) is never re-recorded, whatever app turns out to be frontmost (P8.3).
+        if !ignoreChangeCount, pasteboard.changeCount == HistoryPanel.lastSelfWriteChangeCount {
+            recordPasteboardChange(withCount: pasteboard.changeCount)
+            return
+        }
 
         let liveBundleId = Self.clipboardSourceBundleId(originBundleId: originBundleId)
         if HistoryPasteboardPolicy.shouldIgnoreSource(bundleId: liveBundleId) {
@@ -361,8 +383,7 @@ extension History: PasteboardMonitorDelegate {
 
             var data = Self.extractPasteboardPayload(
                 from: item,
-                filteredTypes: filteredTypes,
-                comparedTo: self._items
+                filteredTypes: filteredTypes
             )
             if data.isEmpty, let raster = HistoryItem.extractRasterData(from: item) {
                 data = raster

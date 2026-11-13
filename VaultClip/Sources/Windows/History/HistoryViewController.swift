@@ -313,16 +313,9 @@ class HistoryViewController: NSViewController {
         historyListView.cellHeightsCache.clearCache()
         historyListView.reloadData(historyPanel.items, isRichText: isRichText, listMode: listMode.value)
         historyListView.layoutSubtreeIfNeeded()
-        if let first = current.items.first {
-            let preview = HistoryItemText.getString(forItem: first, listMode: listMode.value)
-            PasteboardDiagnostics.log(
-                "ui reload rows=\(current.items.count) search=\(current.isSearchResult) mode=\(listMode.value) top=\(preview.prefix(40))"
-            )
-        } else {
-            PasteboardDiagnostics.log(
-                "ui reload rows=0 search=\(current.isSearchResult) mode=\(listMode.value)"
-            )
-        }
+        PasteboardDiagnostics.log(
+            "ui reload rows=\(current.items.count) search=\(current.isSearchResult) mode=\(listMode.value)"
+        )
     }
     
     /// Reloads a row when favorite/password metadata changes without altering the item list.
@@ -530,6 +523,11 @@ class HistoryViewController: NSViewController {
     }
     
     private func updateEmptyListLabel(for mode: HistoryListMode, visible: Bool) {
+        if !appState.isHistoryLoaded {
+            emptyListLabel?.stringValue = L10n.historyLoading
+            emptyListLabel?.isHidden = false
+            return
+        }
         guard mode != .history else {
             emptyListLabel?.isHidden = true
             return

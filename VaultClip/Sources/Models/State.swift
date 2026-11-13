@@ -34,8 +34,8 @@ class State {
     var isHistoryPanelShown: BehaviorRelay<Bool>
     
     var panelPosition: BehaviorRelay<PanelPosition>
-    
-    var currentScreen: BehaviorRelay<NSScreen>
+
+    var currentScreen: BehaviorRelay<NSScreen?>
     
     var previewHistoryItem: BehaviorRelay<HistoryItem?>
     
@@ -46,15 +46,24 @@ class State {
     var pastesRichText: BehaviorRelay<Bool>
     
     var disposeBag: DisposeBag
+
+    /// Retained so the mouse-position poller can be stopped with the state (P9.1).
+    private var mousePositionTimer: Timer?
+
+    deinit {
+        mousePositionTimer?.invalidate()
+    }
     
     // History
     var historyCache: HistoryCache
     var history: History
-    
+
+    /// Async history load finished (sync path in UI tests sets it immediately).
+    private(set) var isHistoryLoaded = false
+
     /// Monitors the pasteboard, here it can be controlled in the future if needed.
     var pasteboardMonitor: PasteboardMonitor
-    
-    
+
     // MARK: - Constructor
     init(settings: Settings, disposeBag: DisposeBag = DisposeBag()) {
         // Setup RxSwift attributes
@@ -64,25 +73,46 @@ class State {
         self.launchAtLogin = BehaviorRelay<Bool>(value: LaunchAtLoginHelper.isEnabled())
         self.showsRichText = BehaviorRelay<Bool>(value: settings.showsRichText)
         self.pastesRichText = BehaviorRelay<Bool>(value: settings.pastesRichText)
-        self.currentScreen = BehaviorRelay<NSScreen>(value: Self.getCurrentScreen(forMouseLocation: NSEvent.mouseLocation))
+        self.currentScreen = BehaviorRelay<NSScreen?>(value: Self.getCurrentScreen(forMouseLocation: NSEvent.mouseLocation))
         self.disposeBag = disposeBag
-        
-        // Setup history
+
+        // Setup history. Disk reads happen off the main thread so the menu-bar item
+        // appears immediately; the panel shows "Loading…" until `isHistoryLoaded`.
         let historyCache = HistoryCache()
-        let history = History.load(cache: historyCache)
         self.historyCache = historyCache
-        self.history = history
-        history.recordPasteboardChange(withCount: settings.pasteboardChangeCount)
-        history.setMaxItems(settings.maxHistory)
+        if UITesting.isRunning {
+            // UI tests need deterministic content without pumping the run loop.
+            let history = History.load(cache: historyCache)
+            self.history = history
+            self.isHistoryLoaded = true
+            history.recordPasteboardChange(withCount: settings.pasteboardChangeCount)
+            history.setMaxItems(settings.maxHistory)
+        } else {
+            let history = History(historyFM: HistoryFileManager.default, cache: historyCache, items: [])
+            self.history = history
+            history.recordPasteboardChange(withCount: settings.pasteboardChangeCount)
+            history.setMaxItems(settings.maxHistory)
+        }
 
         // Setup pasteboard monitor
         self.pasteboardMonitor = PasteboardMonitor(pasteboard: NSPasteboard.general, changeCount: settings.pasteboardChangeCount, delegate: history)
-        
+
         // Bind settings to state
         Self.bind(settings: settings, toState: self, disposeBag: disposeBag)
-        
-        history.syncWithPasteboardOnLaunch(NSPasteboard.general)
-        
+
+        if isHistoryLoaded {
+            history.syncWithPasteboardOnLaunch(NSPasteboard.general)
+            pasteboardMonitor.historyReady(liveChangeCount: NSPasteboard.general.changeCount)
+        } else {
+            History.loadAsync(historyFM: HistoryFileManager.default, cache: historyCache) { [weak self] loaded in
+                guard let self else { return }
+                self.isHistoryLoaded = true
+                self.history.replaceLoaded(with: loaded.items)
+                self.history.syncWithPasteboardOnLaunch(NSPasteboard.general)
+                self.pasteboardMonitor.historyReady(liveChangeCount: NSPasteboard.general.changeCount)
+            }
+        }
+
         Self.monitorPastesRichText(state: self)
         Self.monitorMousePosition(state: self)
     }
@@ -104,29 +134,27 @@ class State {
     }
     
     static func monitorPastesRichText(state: State) {
-        state.pastesRichText.distinctUntilChanged().subscribe(onNext: {
-            HistoryItem.pastesRichText = $0
-        }).disposed(by: state.disposeBag)
+        // Per-item migration (D5): the relay still persists the preference; the paste path
+        // copies it onto each HistoryItem just before writing the pasteboard.
     }
     
     static func monitorMousePosition(state: State) {
-        Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { (_) in
+        // Weak capture + retained handle so the timer stops with the state object.
+        let timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { [weak state] _ in
+            guard let state else { return }
             let currentScreen = getCurrentScreen(forMouseLocation: NSEvent.mouseLocation)
             if currentScreen != state.currentScreen.value {
                 state.currentScreen.accept(currentScreen)
             }
         }
+        timer.tolerance = 0.05
+        state.mousePositionTimer = timer
     }
-    
-    static func getCurrentScreen(forMouseLocation location: NSPoint) -> NSScreen {
-        for screen in NSScreen.screens {
-            if screen.frame.contains(location) {
-                return screen
-            }
-        }
-        guard let fallback = NSScreen.screens.first ?? NSScreen.main else {
-            return NSScreen.screens.first ?? NSScreen.main!
-        }
-        return fallback
+
+    /// Nil only when the system reports no screens at all (rare display teardown races).
+    static func getCurrentScreen(forMouseLocation location: NSPoint) -> NSScreen? {
+        NSScreen.screens.first(where: { $0.frame.contains(location) })
+            ?? NSScreen.main
+            ?? NSScreen.screens.first
     }
 }

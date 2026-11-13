@@ -10,7 +10,10 @@
 import Foundation
 
 struct UITesting {
-    
+
+    /// True when the app was launched for UI testing (`--uitesting`).
+    static let isRunning = CommandLine.arguments.contains("--uitesting")
+
     static func setupUITestEnvironment(launchArgs: [String], environment: [String: String]) throws {
         // Mock the access control and key pressing
         Helper.accessControlHelper = AccessControlHelperMock()

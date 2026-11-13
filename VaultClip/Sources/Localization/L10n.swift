@@ -83,6 +83,9 @@ enum L10n {
     static var emptyFavorites: String { tr( "empty.favorites") }
     static var emptyPasswords: String { tr( "empty.passwords") }
 
+    /// Shown in the history list while the encrypted store loads on launch.
+    static var historyLoading: String { tr( "history.loading") }
+
     // MARK: - Password prompts
 
     static var passwordSaveTitle: String { tr( "password.save_title") }
