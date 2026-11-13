@@ -63,11 +63,13 @@ enum HistoryEncryptionProbe {
 
     static func isEncryptedFile(at url: URL, fileManager: FileManager = .default) -> Bool {
         guard fileManager.fileExists(atPath: url.path),
-              let prefix = try? Data(contentsOf: url, options: [.mappedIfSafe]).prefix(encryptedPrefix.count),
-              prefix == encryptedPrefix else {
+              let handle = FileHandle(forReadingAtPath: url.path) else {
             return false
         }
-        return true
+        // Read only the magic prefix — never the whole (possibly multi-MB) payload file.
+        defer { try? handle.close() }
+        let prefix = handle.readData(ofLength: encryptedPrefix.count)
+        return prefix == encryptedPrefix
     }
 
     static func canDecrypt(with key: SymmetricKey, fileManager: FileManager = .default) -> Bool {
