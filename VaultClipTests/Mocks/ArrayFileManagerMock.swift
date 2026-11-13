@@ -15,7 +15,8 @@ class ArrayFileManagerMock: ArrayFileManager {
     var order: NSArray?
     var shouldReadSucceed = true
     var shouldWriteSucceed = true
-    
+    private(set) var writeCount = 0
+
     override func read() -> NSArray? {
         if shouldReadSucceed {
             return order
@@ -24,8 +25,9 @@ class ArrayFileManagerMock: ArrayFileManager {
             return nil
         }
     }
-    
-    override func write(_ array: NSArray) throws {
+
+    override func write(_ array: NSArray, options: Data.WritingOptions) throws {
+        writeCount += 1
         if shouldWriteSucceed {
             order = array
         }

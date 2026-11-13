@@ -30,11 +30,15 @@ class DataFileManager {
         return try encryptor.decrypt(Data(ciphertext))
     }
 
-    func writeData(_ data: Data, to url: URL, options: Data.WritingOptions = []) throws {
+    func writeData(_ data: Data, to url: URL, options: Data.WritingOptions = .atomic) throws {
         let payload = try encryptor.encrypt(data)
         var wrapped = Self.encryptedPrefix
         wrapped.append(payload)
         try wrapped.write(to: url, options: options)
+        try? FileManager.default.setAttributes(
+            [.posixPermissions: NSNumber(value: Int16(0o600))],
+            ofItemAtPath: url.path
+        )
     }
 
     /// Re-encrypts legacy plaintext files on read when persisting again.

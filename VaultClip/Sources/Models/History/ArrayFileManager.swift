@@ -19,9 +19,9 @@ class ArrayFileManager {
         self.dataFileManager = dataFileManager
     }
     
-    func write(_ array: NSArray) throws {
+    func write(_ array: NSArray, options: Data.WritingOptions = .atomic) throws {
         let plist = try PropertyListSerialization.data(fromPropertyList: array, format: .xml, options: 0)
-        try dataFileManager.writeData(plist, to: url)
+        try dataFileManager.writeData(plist, to: url, options: options)
     }
     
     func read() -> NSArray? {
