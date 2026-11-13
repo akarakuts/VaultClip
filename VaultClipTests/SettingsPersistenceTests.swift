@@ -18,7 +18,7 @@ final class SettingsPersistenceTests: XCTestCase {
         super.setUp()
         productionEnvironment = AppEnvironment.shared
         savedDefaults = UserDefaults.standard.blank()
-        Settings.bootstrapOverride = nil
+        Settings.shared = nil
     }
 
     override func tearDown() {
@@ -28,7 +28,7 @@ final class SettingsPersistenceTests: XCTestCase {
         super.tearDown()
     }
 
-    func testApplyWithoutEnvironmentUsesBootstrapOverride() {
+    func testApplyWithoutEnvironmentUsesInstalledSharedSettings() {
         AppEnvironment.shared = nil
         Settings.installShared(.default)
         SettingsPersistence.apply { $0.maxHistory = 77 }

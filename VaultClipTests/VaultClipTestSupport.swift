@@ -15,7 +15,7 @@ enum VaultClipTestSupport {
         guard let environment else {
             State.installShared(nil)
             Controller.installShared(nil)
-            Settings.bootstrapOverride = nil
+            Settings.shared = nil
             return
         }
         AppEnvironment.shared = environment

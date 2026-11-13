@@ -11,7 +11,7 @@ enum SettingsPersistence {
 
     static func current() -> Settings {
         if let env = AppEnvironment.shared { return env.settings }
-        if let override = Settings.bootstrapOverride { return override }
+        if let override = Settings.shared { return override }
         return Settings.loadPersisted()
     }
 
@@ -20,7 +20,7 @@ enum SettingsPersistence {
             env.updateSettings(mutate)
             return
         }
-        var settings = Settings.bootstrapOverride ?? Settings.loadPersisted()
+        var settings = Settings.shared ?? Settings.loadPersisted()
         mutate(&settings)
         settings.persist()
         Settings.installShared(settings)

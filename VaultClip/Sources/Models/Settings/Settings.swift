@@ -18,10 +18,12 @@ struct Settings: Codable, DefaultStorable {
     
     // MARK: - Shared instance (via AppEnvironment)
 
-    static var bootstrapOverride: Settings?
+    /// The installed shared settings slot; `nil` until bootstrap or a test installs one.
+    /// Prefer `AppEnvironment.shared.settings`; `Settings.main` forwards through this.
+    static var shared: Settings?
 
     static func installShared(_ settings: Settings) {
-        bootstrapOverride = settings
+        shared = settings
     }
 
     static func loadPersisted() -> Settings {

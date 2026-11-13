@@ -34,7 +34,7 @@ final class AppEnvironment {
 
     @discardableResult
     static func bootstrap(settings: Settings? = nil) -> AppEnvironment {
-        let resolved = settings ?? Settings.bootstrapOverride ?? Settings.loadPersisted()
+        let resolved = settings ?? Settings.shared ?? Settings.loadPersisted()
         let environment = AppEnvironment(settings: resolved)
         shared = environment
         State.installShared(environment.state)
