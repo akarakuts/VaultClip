@@ -27,6 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         checkBuildFlags()
         checkLaunchArgs()
+        LogStorage.secureAtLaunch()
         AppDataMigrator.migrateIfNeeded()
         EncryptionKeyBootstrap.prepareAtLaunch()
         let environment = AppEnvironment.bootstrap()
@@ -41,10 +42,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        
+        // Drain coalesced order writes before the process dies (bounded wait).
+        HistoryFileManager.default.flushHistoryOrderSync(timeout: 1.5)
     }
     
     func checkLaunchArgs() {
+        if CommandLine.arguments.contains("--pasteboard-diagnostics") {
+            PasteboardDiagnostics.isEnabled = true
+        }
         if CommandLine.arguments.contains("--uitesting") {
             do {
                 try UITesting.setupUITestEnvironment(launchArgs: CommandLine.arguments, environment: ProcessInfo.processInfo.environment)
