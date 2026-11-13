@@ -14,10 +14,20 @@ enum AppDataMigrator {
     private static let keyFileName = ".history-encryption-key"
 
     static func migrateIfNeeded() {
+        removeLegacyDiagnosticsLogIfNeeded()
         migrateApplicationSupportIfNeeded(from: Constants.branding.legacyBundleIdentifier)
         migrateApplicationSupportIfNeeded(from: "VaultClip")
         migrateUserDefaultsIfNeeded(from: Constants.branding.legacyBundleIdentifier)
         migrateUserDefaultsIfNeeded(from: "VaultClip")
+    }
+
+    /// Builds before 2.3.2 wrote clipboard previews in plaintext; drop the file unless diagnostics are on.
+    private static func removeLegacyDiagnosticsLogIfNeeded() {
+        guard !PasteboardDiagnostics.isEnabled else { return }
+        let url = Constants.urls.pasteboardDebugLog
+        if FileManager.default.fileExists(atPath: url.path) {
+            try? FileManager.default.removeItem(at: url)
+        }
     }
 
     private static func migrateApplicationSupportIfNeeded(from legacyFolder: String) {

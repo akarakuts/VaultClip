@@ -46,13 +46,23 @@ enum SecureStorageHelper {
         )
     }
     
+    /// Characters kept verbatim in stored filenames. Everything else (including `%`, `/`, `:`)
+    /// becomes `%XX` so encode/decode is a lossless round-trip and no raw type can escape the item directory.
+    private static let unreservedFilenameCharacters: CharacterSet = {
+        var set = CharacterSet.alphanumerics
+        set.insert(charactersIn: ".-_")
+        return set
+    }()
+
     static func sanitizedPasteboardFileName(for type: NSPasteboard.PasteboardType) -> String {
-        type.rawValue
-            .replacingOccurrences(of: "%", with: "%25")
-            .replacingOccurrences(of: "/", with: "%2F")
-            .replacingOccurrences(of: ":", with: "%3A")
+        let raw = type.rawValue
+        // "." and ".." must never become a stored path component.
+        if !raw.isEmpty && raw.allSatisfy({ $0 == "." }) {
+            return raw.unicodeScalars.map { String(format: "%%%02X", $0.value) }.joined()
+        }
+        return raw.addingPercentEncoding(withAllowedCharacters: unreservedFilenameCharacters) ?? raw
     }
-    
+
     static func pasteboardType(fromStoredFileName fileName: String) -> NSPasteboard.PasteboardType {
         var decoded = ""
         var index = fileName.startIndex
@@ -60,24 +70,16 @@ enum SecureStorageHelper {
             let char = fileName[index]
             if char == "%" {
                 let firstIndex = fileName.index(after: index)
-                guard firstIndex < fileName.endIndex else {
-                    decoded.append("%")
-                    index = firstIndex
+                let secondIndex = firstIndex < fileName.endIndex ? fileName.index(after: firstIndex) : firstIndex
+                if firstIndex < fileName.endIndex, secondIndex < fileName.endIndex,
+                   let byte = UInt8(String(fileName[firstIndex...secondIndex].uppercased()), radix: 16) {
+                    // A decoded NUL byte can never be part of a pasteboard type — drop it.
+                    if byte > 0 { decoded.append(Character(UnicodeScalar(byte))) }
+                    index = fileName.index(after: secondIndex)
                     continue
                 }
-                let secondIndex = fileName.index(after: firstIndex)
-                guard secondIndex < fileName.endIndex else {
-                    decoded.append("%")
-                    decoded.append(fileName[firstIndex])
-                    index = secondIndex
-                    continue
-                }
-                let hex = String(fileName[firstIndex]) + String(fileName[secondIndex])
-                if hex == "25" { decoded.append("%") }
-                else if hex == "2F" { decoded.append("/") }
-                else if hex == "3A" { decoded.append(":") }
-                else { decoded.append("%"); decoded.append(contentsOf: hex) }
-                index = fileName.index(after: secondIndex)
+                decoded.append("%")
+                index = firstIndex
             } else {
                 decoded.append(char)
                 index = fileName.index(after: index)
