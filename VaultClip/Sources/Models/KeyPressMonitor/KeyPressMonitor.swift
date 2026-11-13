@@ -41,7 +41,6 @@ class KeyPressMonitor {
     }
     
     func handleAction(_ action: KeyAction, forKey key: Key, withModifiers modifiers: NSEvent.ModifierFlags, isExclusive: Bool = false, handler: @escaping () -> Void) {
-        // TODO
         #if DEBUG
         if !modifiers.isSubset(of: allowedModifierFlags) {
             print("Warning: Action handler [action=\(action), key='\(key)'] contains not allowed modifier flags. They will be automatically removed.")
@@ -104,19 +103,8 @@ class KeyPressMonitor {
     }
     
     private func onSpecialKeyChange(_ event: NSEvent) {
-        // TODO
-        /*
-         if let key = Key(carbonKeyCode: UInt32(event.keyCode)) {
-         let modifier = NSEvent.ModifierFlags(carbonFlags: UInt32(event.keyCode))
-         
-         //            NSEvent.ModifierFlags.init(rawValue: 0).
-         if !event.modifierFlags.contains(modifier) {
-         print("\(modifier) up")
-         } else {
-         print("\(modifier) down")
-         }
-         }
-         */
+        // Modifier changes are handled through NSEvent flags in the regular key path;
+        // nothing extra is required here.
     }
     
     private func onKeyUp(_ event: NSEvent) {
