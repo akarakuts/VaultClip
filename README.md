@@ -46,6 +46,9 @@ Saved entries show a comment, login, optional site URL, and masked secret. Searc
 
 ## Features
 
+- Filters, date groups, multi-paste, edit-before-paste, embedded preview, ⌘K palette (macOS 14+). Screenshots: update manually.
+
+
 ### Clipboard history
 
 - **Background monitoring** of the system pasteboard — every new copy (except filtered sources) is saved locally.

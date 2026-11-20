@@ -15,9 +15,9 @@ class HistoryPdfCellView: HistoryItemBaseCellView, HistoryListItem {
         NSUserInterfaceItemIdentifier(Accessibility.identifiers.historyPdfCellView)
     }
     
-    static let textContainerInset = HistoryListTheme.metrics.fileTypeTextInset
-    static let iconViewPadding = HistoryListTheme.metrics.fileTypeIconPadding
-    static let iconSize = HistoryListTheme.metrics.fileTypeIconSize
+    static let textContainerInset = PanelChrome.metrics.fileTypeTextInset
+    static let iconViewPadding = PanelChrome.metrics.fileTypeIconPadding
+    static let iconSize = PanelChrome.metrics.fileTypeIconSize
     
     let iconView = NSImageView(frame: .zero)
     

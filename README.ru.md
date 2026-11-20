@@ -46,6 +46,9 @@ VaultClip не пытается заменить полноценный мене
 
 ## Возможности
 
+- Filters, date groups, multi-paste, edit-before-paste, embedded preview, ⌘K palette (macOS 14+). Screenshots: update manually.
+
+
 ### История буфера обмена
 
 - **Фоновый мониторинг** системного pasteboard — каждая новая копия (кроме отфильтрованных источников) сохраняется локально.

@@ -1,6 +1,6 @@
 //
-//  HistoryListTheme.swift
-//  VaultClip
+// PanelChrome — transitional metrics/colors for cells still on the old chrome (U02 cleanup).
+//
 //
 //  Copyright (C) 2019 Matthew Davidson
 //  Copyright (C) 2026 Aleksey Karakuts <aleksey@karakuts.com>
@@ -9,15 +9,14 @@
 //
 import Cocoa
 
-struct HistoryListTheme {
+enum PanelChrome {
     
     struct metrics {
-        /// Global scale for history / favorites / passwords panel content.
-        /// Cumulative scale: 0.9 × 0.95 (10% + 5% reduction from design baseline).
-        static let contentScale: CGFloat = 0.855
+        /// Density factor for legacy chrome still migrating to PanelTheme tokens.
+        private static let density: CGFloat = 0.855
         
         static func scaled(_ value: CGFloat) -> CGFloat {
-            (value * contentScale).rounded(.toNearestOrAwayFromZero)
+            (value * density).rounded(.toNearestOrAwayFromZero)
         }
         
         static func scaledInsets(_ insets: NSEdgeInsets) -> NSEdgeInsets {
@@ -152,8 +151,7 @@ struct HistoryListTheme {
         static let tabSize: CGFloat = metrics.scaled(12)
         
         static var body: NSFont {
-            NSFont(name: "SF Mono Regular", size: bodySize)
-                ?? NSFont.monospacedSystemFont(ofSize: bodySize, weight: .regular)
+            NSFont.monospacedSystemFont(ofSize: bodySize, weight: .regular)
         }
         
         static var bodyParagraphStyle: NSParagraphStyle {

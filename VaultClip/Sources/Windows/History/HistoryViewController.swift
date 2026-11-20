@@ -637,7 +637,7 @@ class HistoryViewController: NSViewController {
     
     private func setupEmptyListLabel() {
         let label = NSTextField(labelWithString: "")
-        label.font = NSFont.systemFont(ofSize: HistoryListTheme.typography.chromeSize)
+        label.font = NSFont.systemFont(ofSize: PanelChrome.typography.chromeSize)
         label.textColor = .secondaryLabelColor
         label.alignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -649,11 +649,11 @@ class HistoryViewController: NSViewController {
             label.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor),
             label.leadingAnchor.constraint(
                 greaterThanOrEqualTo: scrollView.leadingAnchor,
-                constant: HistoryListTheme.metrics.scaled(20)
+                constant: PanelChrome.metrics.scaled(20)
             ),
             label.trailingAnchor.constraint(
                 lessThanOrEqualTo: scrollView.trailingAnchor,
-                constant: -HistoryListTheme.metrics.scaled(20)
+                constant: -PanelChrome.metrics.scaled(20)
             ),
         ])
         emptyListLabel = label

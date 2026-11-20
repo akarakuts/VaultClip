@@ -111,3 +111,15 @@ Legacy `State.main` / `Controller.main` / `Settings.main` remain as thin forward
 ## Roadmap to portable core
 
 RxSwift + AppKit in `History`/`State` block a true 10/10 platform split. Next step: extract pasteboard + history rules into a Rust/Swift shared core per `linux-port-plan.md`.
+
+
+## Panel presentation (ui-redesign)
+
+Pure models live under `VaultClip/Sources/Models/Panel/`:
+
+- `PanelCommandRegistry` / `KeyChord` / `PanelKeyRouter` / `EscapeResolver` / `PanelLocalKeyMonitor` — local key routing; Carbon only for the global toggle.
+- `ItemKind`, `RowPresentation`, `PanelPresenter`, `DateGrouping`, `FilterState` — list presentation.
+- `PreviewLayout`, `PreviewUpdateDebouncer`, `MultiPasteComposer`, `PendingDeletionQueue`, `SelectionModel` — preview and multi-select.
+- `CommandPaletteModel`, `CheatSheetModel`, `MenuBarModel`, `StatusItemClickMode` — overlays and menu bar.
+- `lastUsedAt` metadata parallels `copiedAt` for retention and grouping.
+- `SettingsStore` (`@Observable`) adapts `SettingsPersistence` for SwiftUI settings forms.

@@ -225,8 +225,8 @@
 		D4E5F6A71123456789001 /* SourceAppIconProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F6A60123456789001 /* SourceAppIconProvider.swift */; };
 		E5F6A7B81123456789001 /* HistoryItem+CopiedAt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F6A7B70123456789001 /* HistoryItem+CopiedAt.swift */; };
 		VCDIG10212EB0B10004E6E63 /* ContentDigest.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCDIG10112EB0B10004E6E63 /* ContentDigest.swift */; };
-		F6A7B8C91123456789001 /* HistoryListTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7B8C80123456789001 /* HistoryListTheme.swift */; };
-		F6A7B8CA11234567890002 /* HistoryListTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7B8C80123456789001 /* HistoryListTheme.swift */; };
+		F6A7B8C91123456789001 /* PanelChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7B8C80123456789001 /* PanelChrome.swift */; };
+		F6A7B8CA11234567890002 /* PanelChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7B8C80123456789001 /* PanelChrome.swift */; };
 		VCPTH10212EB0B10004E6E63 /* PanelTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPTH10112EB0B10004E6E63 /* PanelTheme.swift */; };
 		VCPTH10312EB0B10004E6E63 /* PanelTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPTH10112EB0B10004E6E63 /* PanelTheme.swift */; };
 		VCPTH20212EB0B10004E6E63 /* PanelThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPTH20112EB0B10004E6E63 /* PanelThemeTests.swift */; };
@@ -302,6 +302,7 @@
 		VCFST29212EB0B10004E6E63 /* HotKeyCaptureStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST29112EB0B10004E6E63 /* HotKeyCaptureStateTests.swift */; };
 		VCFST30212EB0B10004E6E63 /* SettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST30112EB0B10004E6E63 /* SettingsStoreTests.swift */; };
 		VCFST31212EB0B10004E6E63 /* PerformanceBudgetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST31112EB0B10004E6E63 /* PerformanceBudgetTests.swift */; };
+		VCFST32212EB0B10004E6E63 /* UIGuidelinesRegistryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST32112EB0B10004E6E63 /* UIGuidelinesRegistryTests.swift */; };
 		VCPNL27212EB0B10004E6E63 /* PanelStatusBarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */; };
 		VCPNL28212EB0B10004E6E63 /* PanelEmptyStateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */; };
 		VCPNL29212EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */; };
@@ -555,7 +556,7 @@
 		D4E5F6A60123456789001 /* SourceAppIconProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceAppIconProvider.swift; sourceTree = "<group>"; };
 		E5F6A7B70123456789001 /* HistoryItem+CopiedAt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryItem+CopiedAt.swift"; sourceTree = "<group>"; };
 		VCDIG10112EB0B10004E6E63 /* ContentDigest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentDigest.swift; sourceTree = "<group>"; };
-		F6A7B8C80123456789001 /* HistoryListTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListTheme.swift; sourceTree = "<group>"; };
+		F6A7B8C80123456789001 /* PanelChrome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelChrome.swift; sourceTree = "<group>"; };
 		VCPTH10112EB0B10004E6E63 /* PanelTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelTheme.swift; sourceTree = "<group>"; };
 		VCPTH20112EB0B10004E6E63 /* PanelThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelThemeTests.swift; sourceTree = "<group>"; };
 		VCPNL10112EB0B10004E6E63 /* FocusZone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusZone.swift; sourceTree = "<group>"; };
@@ -628,6 +629,7 @@
 		VCFST29112EB0B10004E6E63 /* HotKeyCaptureStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKeyCaptureStateTests.swift; sourceTree = "<group>"; };
 		VCFST30112EB0B10004E6E63 /* SettingsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStoreTests.swift; sourceTree = "<group>"; };
 		VCFST31112EB0B10004E6E63 /* PerformanceBudgetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceBudgetTests.swift; sourceTree = "<group>"; };
+		VCFST32112EB0B10004E6E63 /* UIGuidelinesRegistryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIGuidelinesRegistryTests.swift; sourceTree = "<group>"; };
 		VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStatePresenterTests.swift; sourceTree = "<group>"; };
 		VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelStatusBarModel.swift; sourceTree = "<group>"; };
 		VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStateModel.swift; sourceTree = "<group>"; };
@@ -1064,7 +1066,7 @@
 			children = (
 				3426811D233E0A4600BA226A /* Accessibility.swift */,
 				3488B13F22FAE8F30019E7DA /* Constants.swift */,
-				F6A7B8C80123456789001 /* HistoryListTheme.swift */,
+				F6A7B8C80123456789001 /* PanelChrome.swift */,
 				VCPTH10112EB0B10004E6E63 /* PanelTheme.swift */,
 			);
 			path = Constants;
@@ -1220,6 +1222,7 @@
 				VCFST29112EB0B10004E6E63 /* HotKeyCaptureStateTests.swift */,
 				VCFST30112EB0B10004E6E63 /* SettingsStoreTests.swift */,
 				VCFST31112EB0B10004E6E63 /* PerformanceBudgetTests.swift */,
+				VCFST32112EB0B10004E6E63 /* UIGuidelinesRegistryTests.swift */,
 				VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */,
 				VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */,
 				VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */,
@@ -1641,7 +1644,7 @@
 				345BAE30235005E7008ACB4C /* HistoryListItem.swift in Sources */,
 				34B5C42C23580CC6005247EB /* WarningLogger.swift in Sources */,
 				3488B14022FAE8F30019E7DA /* Constants.swift in Sources */,
-				F6A7B8C91123456789001 /* HistoryListTheme.swift in Sources */,
+				F6A7B8C91123456789001 /* PanelChrome.swift in Sources */,
 				VCPTH10212EB0B10004E6E63 /* PanelTheme.swift in Sources */,
 				VCPNL10212EB0B10004E6E63 /* FocusZone.swift in Sources */,
 				VCPNL11212EB0B10004E6E63 /* KeyChord.swift in Sources */,
@@ -1749,6 +1752,7 @@
 				VCFST29212EB0B10004E6E63 /* HotKeyCaptureStateTests.swift in Sources */,
 				VCFST30212EB0B10004E6E63 /* SettingsStoreTests.swift in Sources */,
 				VCFST31212EB0B10004E6E63 /* PerformanceBudgetTests.swift in Sources */,
+				VCFST32212EB0B10004E6E63 /* UIGuidelinesRegistryTests.swift in Sources */,
 				VCPNL30212EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift in Sources */,
 				VCPNL29212EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift in Sources */,
 				VCPNL30212EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift in Sources */,
@@ -1796,7 +1800,7 @@
 				348D526723878E160024A5C7 /* PanelPosition.swift in Sources */,
 				345B14B42341B37A00C2D0DA /* KeyPressMock.swift in Sources */,
 				345B14A823406E0500C2D0DA /* Constants.swift in Sources */,
-				F6A7B8CA11234567890002 /* HistoryListTheme.swift in Sources */,
+				F6A7B8CA11234567890002 /* PanelChrome.swift in Sources */,
 				VCPTH10312EB0B10004E6E63 /* PanelTheme.swift in Sources */,
 				345B14962340493600C2D0DA /* XCUIApplication+Windows.swift in Sources */,
 				345B149423403B8F00C2D0DA /* AccessControlMock.swift in Sources */,

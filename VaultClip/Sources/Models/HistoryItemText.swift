@@ -39,27 +39,27 @@ struct HistoryItemText {
     }
     
     static let itemStringAttributes: [NSAttributedString.Key: Any] = [
-        .font: HistoryListTheme.typography.body,
+        .font: PanelChrome.typography.body,
         .foregroundColor: NSColor.textColor,
-        .paragraphStyle: HistoryListTheme.typography.bodyParagraphStyle,
+        .paragraphStyle: PanelChrome.typography.bodyParagraphStyle,
     ]
     
     static let copiedAtLabelAttributes: [NSAttributedString.Key: Any] = [
-        .font: HistoryListTheme.typography.body,
-        .foregroundColor: HistoryListTheme.colors.copiedAtLabel,
-        .paragraphStyle: HistoryListTheme.typography.bodyParagraphStyle,
+        .font: PanelChrome.typography.body,
+        .foregroundColor: PanelChrome.colors.copiedAtLabel,
+        .paragraphStyle: PanelChrome.typography.bodyParagraphStyle,
     ]
     
     static let passwordCommentAttributes: [NSAttributedString.Key: Any] = [
-        .font: HistoryListTheme.typography.body,
-        .foregroundColor: HistoryListTheme.colors.passwordCommentLabel,
-        .paragraphStyle: HistoryListTheme.typography.bodyParagraphStyle,
+        .font: PanelChrome.typography.body,
+        .foregroundColor: PanelChrome.colors.passwordCommentLabel,
+        .paragraphStyle: PanelChrome.typography.bodyParagraphStyle,
     ]
     
     static let passwordLoginAttributes: [NSAttributedString.Key: Any] = [
-        .font: HistoryListTheme.typography.body,
-        .foregroundColor: HistoryListTheme.colors.passwordLoginLabel,
-        .paragraphStyle: HistoryListTheme.typography.bodyParagraphStyle,
+        .font: PanelChrome.typography.body,
+        .foregroundColor: PanelChrome.colors.passwordLoginLabel,
+        .paragraphStyle: PanelChrome.typography.bodyParagraphStyle,
     ]
     
     static func displayCacheSignature(for item: HistoryItem, listMode: HistoryListMode) -> String {
@@ -201,14 +201,14 @@ struct HistoryItemText {
                 style = existing
             } else {
                 let fallback = NSMutableParagraphStyle()
-                fallback.setParagraphStyle(HistoryListTheme.typography.bodyParagraphStyle)
+                fallback.setParagraphStyle(PanelChrome.typography.bodyParagraphStyle)
                 style = fallback
             }
             style.alignment = .left
             mutable.addAttribute(.paragraphStyle, value: style, range: range)
         }
         if !hasParagraphStyle {
-            mutable.addAttribute(.paragraphStyle, value: HistoryListTheme.typography.bodyParagraphStyle, range: fullRange)
+            mutable.addAttribute(.paragraphStyle, value: PanelChrome.typography.bodyParagraphStyle, range: fullRange)
         }
         return mutable
     }

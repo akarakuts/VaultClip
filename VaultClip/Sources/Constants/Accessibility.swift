@@ -51,5 +51,11 @@ class Accessibility {
         static let historyFileIconCellView = "HistoryFileIconCellView"
         static let historyFileThumbnailCellView = "HistoryFileThumbnailCellView"
         static let historyPdfCellView = "HistoryPdfCellView"
+        static let historyRowView = "HistoryRowView"
+        static let panelHeaderView = "panelHeaderView"
+        static let panelPreviewSplit = "panelPreviewSplit"
+        static let commandPalette = "commandPalette"
+        static let cheatSheet = "cheatSheet"
+        static let statusItemPaused = "statusItemPaused"
     }
 }

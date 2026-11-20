@@ -13,10 +13,10 @@ import Cocoa
 /// Abstract base class for all history collection view items.
 class HistoryItemBaseCellView: NSTableCellView {
     
-    static var contentViewInsets: NSEdgeInsets { HistoryListTheme.metrics.cardInsets }
-    static var sourceAppIconSize: CGFloat { HistoryListTheme.metrics.sourceAppIconSize }
-    static var sourceAppIconTrailingInset: CGFloat { HistoryListTheme.metrics.sourceAppIconTrailingInset }
-    static var sourceAppIconSpacing: CGFloat { HistoryListTheme.metrics.sourceAppIconSpacing }
+    static var contentViewInsets: NSEdgeInsets { PanelChrome.metrics.cardInsets }
+    static var sourceAppIconSize: CGFloat { PanelChrome.metrics.sourceAppIconSize }
+    static var sourceAppIconTrailingInset: CGFloat { PanelChrome.metrics.sourceAppIconTrailingInset }
+    static var sourceAppIconSpacing: CGFloat { PanelChrome.metrics.sourceAppIconSpacing }
     
     class var identifier: NSUserInterfaceItemIdentifier {
         NSUserInterfaceItemIdentifier("HistoryItemBaseCellView")
@@ -51,7 +51,7 @@ class HistoryItemBaseCellView: NSTableCellView {
     }
     
     private func applyRowAppearance() {
-        layer?.backgroundColor = HistoryListTheme.colors.rowOuterFill(
+        layer?.backgroundColor = PanelChrome.colors.rowOuterFill(
             isSelected: isRowSelected,
             isHovered: isRowHovered
         ).cgColor
@@ -64,13 +64,13 @@ class HistoryItemBaseCellView: NSTableCellView {
         guard let index = shortcutRowIndex, index < 10 else { return }
         
         if isRowSelected {
-            shortcutTextView.backgroundColor = HistoryListTheme.colors.shortcutBackgroundSelected
+            shortcutTextView.backgroundColor = PanelChrome.colors.shortcutBackgroundSelected
             shortcutTextView.attributedText = NSAttributedString(
                 string: "⌘ + \(index)",
                 attributes: Self.shortcutAttributes(selected: true)
             )
         } else {
-            shortcutTextView.backgroundColor = HistoryListTheme.colors.accent
+            shortcutTextView.backgroundColor = PanelChrome.colors.accent
             shortcutTextView.attributedText = NSAttributedString(
                 string: "⌘ + \(index)",
                 attributes: Self.shortcutAttributes(selected: false)
@@ -80,10 +80,10 @@ class HistoryItemBaseCellView: NSTableCellView {
     
     private static func shortcutAttributes(selected: Bool) -> [NSAttributedString.Key: Any] {
         [
-            .font: HistoryListTheme.typography.body,
+            .font: PanelChrome.typography.body,
             .foregroundColor: selected
-                ? HistoryListTheme.colors.shortcutForegroundSelected
-                : HistoryListTheme.colors.shortcutForegroundNormal,
+                ? PanelChrome.colors.shortcutForegroundSelected
+                : PanelChrome.colors.shortcutForegroundNormal,
         ]
     }
     
@@ -103,7 +103,7 @@ class HistoryItemBaseCellView: NSTableCellView {
         contentView.addSubview(shortcutTextView)
         
         wantsLayer = true
-        layer?.cornerRadius = HistoryListTheme.metrics.rowOuterRadius
+        layer?.cornerRadius = PanelChrome.metrics.rowOuterRadius
         itemTextView.drawsBackground = false
         itemTextView.setAccessibilityIdentifier(Accessibility.identifiers.historyItemTextView)
         configureListTextView(itemTextView)
@@ -155,8 +155,8 @@ class HistoryItemBaseCellView: NSTableCellView {
         sourceAppIconView.translatesAutoresizingMaskIntoConstraints = false
         sourceAppIconView.imageScaling = .scaleProportionallyDown
         sourceAppIconView.wantsLayer = true
-        sourceAppIconView.layer?.cornerRadius = HistoryListTheme.metrics.sourceAppIconCornerRadius
-        sourceAppIconView.layer?.backgroundColor = HistoryListTheme.colors.sourceIconBackdrop.cgColor
+        sourceAppIconView.layer?.cornerRadius = PanelChrome.metrics.sourceAppIconCornerRadius
+        sourceAppIconView.layer?.backgroundColor = PanelChrome.colors.sourceIconBackdrop.cgColor
         sourceAppIconView.layer?.masksToBounds = true
         sourceAppIconView.layer?.zPosition = 2
         contentView.addSubview(sourceAppIconView)
@@ -173,7 +173,7 @@ class HistoryItemBaseCellView: NSTableCellView {
     func setupContentView() {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.wantsLayer = true
-        contentView.layer?.cornerRadius = HistoryListTheme.metrics.cardRadius
+        contentView.layer?.cornerRadius = PanelChrome.metrics.cardRadius
         
         NSLayoutConstraint.activate([
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Self.contentViewInsets.left),
@@ -189,12 +189,12 @@ class HistoryItemBaseCellView: NSTableCellView {
         shortcutTextView.isSelectable = false
         shortcutTextView.textContainer?.lineFragmentPadding = 0
         shortcutTextView.alignment = .right
-        shortcutTextView.textContainerInset = HistoryListTheme.metrics.shortcutTextInset
-        shortcutTextView.layer?.cornerRadius = HistoryListTheme.metrics.shortcutCornerRadius
+        shortcutTextView.textContainerInset = PanelChrome.metrics.shortcutTextInset
+        shortcutTextView.layer?.cornerRadius = PanelChrome.metrics.shortcutCornerRadius
         shortcutTextView.layer?.maskedCorners = .layerMinXMaxYCorner
         shortcutTextView.isHorizontallyResizable = false
         shortcutTextView.isVerticallyResizable = false
-        shortcutTextView.backgroundColor = HistoryListTheme.colors.accent
+        shortcutTextView.backgroundColor = PanelChrome.colors.accent
         shortcutTextView.layer?.zPosition = 1
         
         NSLayoutConstraint.activate([

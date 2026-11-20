@@ -22,7 +22,7 @@ struct Constants {
     struct panel {
         static let menuWidth: CGFloat = 430
         static let menuHeight: CGFloat = 300
-        static let maxCellHeight: CGFloat = HistoryListTheme.metrics.maxCellHeight
+        static let maxCellHeight: CGFloat = PanelChrome.metrics.maxCellHeight
     }
     
     struct statusItemMenu {
@@ -36,7 +36,7 @@ struct Constants {
     struct fonts {
         
         static var listPlainText: NSFont {
-            HistoryListTheme.typography.body
+            PanelChrome.typography.body
         }
         
         static var listFileNameText: NSFont {

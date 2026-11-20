@@ -16,7 +16,7 @@ class HistoryTiffCellView: HistoryItemBaseCellView, HistoryListItem {
         NSUserInterfaceItemIdentifier(Accessibility.identifiers.historyTiffCellView)
     }
     
-    static let imagePadding = HistoryListTheme.metrics.imageCellPadding
+    static let imagePadding = PanelChrome.metrics.imageCellPadding
     
     let tiffView = NSImageView(frame: .zero)
     
@@ -52,7 +52,7 @@ class HistoryTiffCellView: HistoryItemBaseCellView, HistoryListItem {
         let cellWidth = floor(historyTableView.cellWidth)
         
         guard let image = historyItem.getImage() else {
-            return HistoryListTheme.metrics.imageCellMinHeight + imagePadding.yTotal + contentViewInsets.yTotal
+            return PanelChrome.metrics.imageCellMinHeight + imagePadding.yTotal + contentViewInsets.yTotal
         }
         
         let imageWidth = max(

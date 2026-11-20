@@ -74,3 +74,44 @@ if ! awk -v p="$min" -v t="$THRESHOLD" 'BEGIN { exit (p+0 >= t+0) ? 0 : 1 }'; th
 fi
 
 echo "OK — minimum gated coverage ${min}% ($min_file) >= ${THRESHOLD}%"
+
+STRICT_THRESHOLD="${VAULTCLIP_STRICT_COVERAGE_THRESHOLD:-80}"
+GATED_STRICT="
+PanelCommand.swift
+KeyChordMatcher.swift
+PanelKeyRouter.swift
+EscapeResolver.swift
+ItemKind.swift
+RowPresentation.swift
+PanelPresenter.swift
+DateGrouping.swift
+FilterState.swift
+MultiPasteComposer.swift
+PendingDeletionQueue.swift
+PreviewLayout.swift
+MenuBarModel.swift
+CommandPaletteModel.swift
+"
+
+strict_min=""
+strict_file=""
+for name in $GATED_STRICT; do
+  pct="$(awk -v f="$name" '{ n = split($1, p, "/"); if (p[n] == f) { gsub(/%/, "", $2); print $2; exit } }' "$REPORT")"
+  if [ -z "$pct" ]; then
+    echo "warn: strict file $name missing from coverage report — skip"
+    continue
+  fi
+  echo "  strict ${pct}%  $name"
+  if [ -z "$strict_min" ] || awk -v a="$pct" -v b="$strict_min" 'BEGIN { exit (a+0 < b+0) ? 0 : 1 }'; then
+    strict_min="$pct"
+    strict_file="$name"
+  fi
+done
+
+if [ -n "$strict_min" ]; then
+  if ! awk -v p="$strict_min" -v t="$STRICT_THRESHOLD" 'BEGIN { exit (p+0 >= t+0) ? 0 : 1 }'; then
+    echo "error: lowest strict gated coverage ${strict_min}% ($strict_file) is below ${STRICT_THRESHOLD}%" >&2
+    exit 1
+  fi
+  echo "OK — minimum strict coverage ${strict_min}% ($strict_file) >= ${STRICT_THRESHOLD}%"
+fi

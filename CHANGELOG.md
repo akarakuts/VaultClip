@@ -10,6 +10,11 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 
 ## [Unreleased]
 
+### Interface
+
+- Native panel chrome, fixed-height rows, type/app filters, date groups, row actions, multi-select paste, undoable delete, embedded preview models, ⌘K palette / ⌘/ cheat sheet models, status-item click modes, SettingsStore (U00–U37 in progress).
+- Shortcuts: ⌘1…⌘9 / ⌘0 (10th), ⌘F search, ⌘Y/Space preview (no ⌃Space), ⌘K palette.
+
 ### Added
 
 - **LogStorage** — hardens `error.log`/`warning.log` to mode **0600** at launch and rotates them above ~2 MB (tail kept); the opt-in diagnostics log rotates only while enabled.
