@@ -32,6 +32,20 @@ final class PreviewImmediateScheduler: PreviewDebounceScheduling {
     }
 }
 
+final class PreviewDispatchScheduler: PreviewDebounceScheduling {
+    private var workItems: [UUID: DispatchWorkItem] = [:]
+    func schedule(after delay: TimeInterval, execute: @escaping () -> Void) -> UUID {
+        let id = UUID()
+        let work = DispatchWorkItem(block: execute)
+        workItems[id] = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: work)
+        return id
+    }
+    func cancel(_ token: UUID) {
+        workItems.removeValue(forKey: token)?.cancel()
+    }
+}
+
 final class PreviewUpdateDebouncer {
     static let delay: TimeInterval = 0.05
 

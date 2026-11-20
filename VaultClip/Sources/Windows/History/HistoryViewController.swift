@@ -66,6 +66,8 @@ class HistoryViewController: NSViewController {
 
     private let panelKeyMonitor = PanelLocalKeyMonitor()
     private let commandPaletteOverlay = CommandPaletteOverlayView()
+    private let embeddedPreview = EmbeddedPreviewView()
+    private let previewDebouncer = PreviewUpdateDebouncer(scheduler: PreviewDispatchScheduler())
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,6 +78,7 @@ class HistoryViewController: NSViewController {
         applyPanelChromeMetrics()
         styleHistoryChrome()
         installCommandPaletteOverlay()
+        installEmbeddedPreview()
         searchBar.placeholderString = L10n.searchPlaceholder
         historyListView.historyDelegate = self
         
@@ -417,14 +420,56 @@ class HistoryViewController: NSViewController {
     }
     
     func togglePreview() {
-        if let row = historyListView.selected, row >= 0, row < historyPanel.items.count {
-            isPreviewShowing = !isPreviewShowing
-            if isPreviewShowing {
-                appState.previewHistoryItem.accept(historyPanel.items[row])
-            } else {
-                appState.previewHistoryItem.accept(nil)
+        isPreviewShowing.toggle()
+        SettingsPersistence.apply { $0.previewVisible = self.isPreviewShowing }
+        embeddedPreview.isHidden = !isPreviewShowing
+        if isPreviewShowing {
+            refreshEmbeddedPreview()
+        }
+        // Floating preview window retired (U21); keep relay cleared.
+        appState.previewHistoryItem.accept(nil)
+    }
+
+    private func installEmbeddedPreview() {
+        isPreviewShowing = appSettings.previewVisible
+        embeddedPreview.translatesAutoresizingMaskIntoConstraints = false
+        embeddedPreview.isHidden = !isPreviewShowing
+        view.addSubview(embeddedPreview)
+        NSLayoutConstraint.activate([
+            embeddedPreview.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            embeddedPreview.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 8),
+            embeddedPreview.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            embeddedPreview.widthAnchor.constraint(equalToConstant: 280)
+        ])
+        embeddedPreview.onPaste = { [weak self] in self?.pasteSelected() }
+        embeddedPreview.onCopy = { [weak self] in
+            guard let self, let row = self.historyListView.selected,
+                  row >= 0, row < self.historyPanel.items.count else { return }
+            let item = self.historyPanel.items[row]
+            if let text = item.getPlainString() {
+                _ = PasteboardWriter.writeString(text, to: NSPasteboard.general, concealed: item.isPassword)
             }
         }
+        selected.subscribe(onNext: { [weak self] _ in
+            self?.scheduleEmbeddedPreviewUpdate()
+        }).disposed(by: disposeBag)
+    }
+
+    private func scheduleEmbeddedPreviewUpdate() {
+        guard isPreviewShowing else { return }
+        previewDebouncer.schedule { [weak self] _ in
+            DispatchQueue.main.async { self?.refreshEmbeddedPreview() }
+        }
+    }
+
+    private func refreshEmbeddedPreview() {
+        guard let row = historyListView.selected, row >= 0, row < historyPanel.items.count else {
+            embeddedPreview.showEmpty()
+            return
+        }
+        let item = historyPanel.items[row]
+        let text = item.getPlainString() ?? item.getPdfDisplayString() ?? ""
+        embeddedPreview.showText(text, isPassword: item.isPassword)
     }
     
     func focusSearchBar() {
