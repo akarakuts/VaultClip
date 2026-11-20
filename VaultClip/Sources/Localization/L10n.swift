@@ -254,4 +254,63 @@ enum L10n {
     static var hotkeyErrorSystemShortcut: String { tr("hotkey.error.system_shortcut") }
     static var hotkeyErrorPanelConflict: String { tr("hotkey.error.panel_conflict") }
     static var hotkeyErrorInvalidKey: String { tr("hotkey.error.invalid_key") }
+
+    // MARK: - Panel commands (U03)
+
+    static func commandTitle(for key: String) -> String { tr(key) }
+
+    static var command_togglePanel: String { tr("command.togglePanel") }
+    static var command_paste: String { tr("command.paste") }
+    static var command_pastePlainText: String { tr("command.pastePlainText") }
+    static var command_quickPaste1: String { tr("command.quickPaste1") }
+    static var command_quickPaste2: String { tr("command.quickPaste2") }
+    static var command_quickPaste3: String { tr("command.quickPaste3") }
+    static var command_quickPaste4: String { tr("command.quickPaste4") }
+    static var command_quickPaste5: String { tr("command.quickPaste5") }
+    static var command_quickPaste6: String { tr("command.quickPaste6") }
+    static var command_quickPaste7: String { tr("command.quickPaste7") }
+    static var command_quickPaste8: String { tr("command.quickPaste8") }
+    static var command_quickPaste9: String { tr("command.quickPaste9") }
+    static var command_quickPaste0: String { tr("command.quickPaste0") }
+    static var command_copy: String { tr("command.copy") }
+    static var command_commandPalette: String { tr("command.commandPalette") }
+    static var command_focusSearch: String { tr("command.focusSearch") }
+    static var command_togglePreview: String { tr("command.togglePreview") }
+    static var command_quickLook: String { tr("command.quickLook") }
+    static var command_editBeforePaste: String { tr("command.editBeforePaste") }
+    static var command_pasteEdit: String { tr("command.pasteEdit") }
+    static var command_saveEdit: String { tr("command.saveEdit") }
+    static var command_toggleFavorite: String { tr("command.toggleFavorite") }
+    static var command_delete: String { tr("command.delete") }
+    static var command_undoDelete: String { tr("command.undoDelete") }
+    static var command_openLinkOrFile: String { tr("command.openLinkOrFile") }
+    static var command_revealInFinder: String { tr("command.revealInFinder") }
+    static var command_selectNext: String { tr("command.selectNext") }
+    static var command_selectPrevious: String { tr("command.selectPrevious") }
+    static var command_selectFirst: String { tr("command.selectFirst") }
+    static var command_selectLast: String { tr("command.selectLast") }
+    static var command_pageUp: String { tr("command.pageUp") }
+    static var command_pageDown: String { tr("command.pageDown") }
+    static var command_extendSelectionUp: String { tr("command.extendSelectionUp") }
+    static var command_extendSelectionDown: String { tr("command.extendSelectionDown") }
+    static var command_selectAll: String { tr("command.selectAll") }
+    static var command_nextTab: String { tr("command.nextTab") }
+    static var command_previousTab: String { tr("command.previousTab") }
+    static var command_filterTypeAll: String { tr("command.filterTypeAll") }
+    static var command_filterTypeText: String { tr("command.filterTypeText") }
+    static var command_filterTypeLinks: String { tr("command.filterTypeLinks") }
+    static var command_filterTypeImages: String { tr("command.filterTypeImages") }
+    static var command_filterTypeFiles: String { tr("command.filterTypeFiles") }
+    static var command_filterTypeColors: String { tr("command.filterTypeColors") }
+    static var command_filterApp: String { tr("command.filterApp") }
+    static var command_clearFilters: String { tr("command.clearFilters") }
+    static var command_textSizeIncrease: String { tr("command.textSizeIncrease") }
+    static var command_textSizeDecrease: String { tr("command.textSizeDecrease") }
+    static var command_cheatSheet: String { tr("command.cheatSheet") }
+    static var command_openSettings: String { tr("command.openSettings") }
+    static var command_panelPositionLeft: String { tr("command.panelPositionLeft") }
+    static var command_panelPositionRight: String { tr("command.panelPositionRight") }
+    static var command_panelPositionUp: String { tr("command.panelPositionUp") }
+    static var command_panelPositionDown: String { tr("command.panelPositionDown") }
+    static var command_closePanel: String { tr("command.closePanel") }
 }

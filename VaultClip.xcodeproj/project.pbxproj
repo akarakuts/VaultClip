@@ -230,6 +230,11 @@
 		VCPTH10212EB0B10004E6E63 /* PanelTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPTH10112EB0B10004E6E63 /* PanelTheme.swift */; };
 		VCPTH10312EB0B10004E6E63 /* PanelTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPTH10112EB0B10004E6E63 /* PanelTheme.swift */; };
 		VCPTH20212EB0B10004E6E63 /* PanelThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPTH20112EB0B10004E6E63 /* PanelThemeTests.swift */; };
+		VCPNL10212EB0B10004E6E63 /* FocusZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL10112EB0B10004E6E63 /* FocusZone.swift */; };
+		VCPNL11212EB0B10004E6E63 /* KeyChord.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL11112EB0B10004E6E63 /* KeyChord.swift */; };
+		VCPNL12212EB0B10004E6E63 /* KeyChordMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL12112EB0B10004E6E63 /* KeyChordMatcher.swift */; };
+		VCPNL13212EB0B10004E6E63 /* PanelCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL13112EB0B10004E6E63 /* PanelCommand.swift */; };
+		VCPNL20212EB0B10004E6E63 /* PanelCommandRegistryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL20112EB0B10004E6E63 /* PanelCommandRegistryTests.swift */; };
 		F7A8B9CA1123456789001 /* HistoryItem+Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9C91123456789001 /* HistoryItem+Favorite.swift */; };
 		F7A8B9CC1123456789001 /* HistoryListMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9CB1123456789001 /* HistoryListMode.swift */; };
 		F7A8B9CE1123456789001 /* HistoryFavoritesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9CD1123456789001 /* HistoryFavoritesTests.swift */; };
@@ -482,6 +487,11 @@
 		F6A7B8C80123456789001 /* HistoryListTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListTheme.swift; sourceTree = "<group>"; };
 		VCPTH10112EB0B10004E6E63 /* PanelTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelTheme.swift; sourceTree = "<group>"; };
 		VCPTH20112EB0B10004E6E63 /* PanelThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelThemeTests.swift; sourceTree = "<group>"; };
+		VCPNL10112EB0B10004E6E63 /* FocusZone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusZone.swift; sourceTree = "<group>"; };
+		VCPNL11112EB0B10004E6E63 /* KeyChord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChord.swift; sourceTree = "<group>"; };
+		VCPNL12112EB0B10004E6E63 /* KeyChordMatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChordMatcher.swift; sourceTree = "<group>"; };
+		VCPNL13112EB0B10004E6E63 /* PanelCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelCommand.swift; sourceTree = "<group>"; };
+		VCPNL20112EB0B10004E6E63 /* PanelCommandRegistryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelCommandRegistryTests.swift; sourceTree = "<group>"; };
 		F7A8B9C91123456789001 /* HistoryItem+Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryItem+Favorite.swift"; sourceTree = "<group>"; };
 		F7A8B9CB1123456789001 /* HistoryListMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListMode.swift; sourceTree = "<group>"; };
 		F7A8B9CD1123456789001 /* HistoryFavoritesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFavoritesTests.swift; sourceTree = "<group>"; };
@@ -850,10 +860,22 @@
 				VCIDN00112EB0B10004E6E63 /* AppIdentity.swift */,
 				VCARC00112EB0B10004E6E63 /* AppRouting.swift */,
 				348D525E2387667D0024A5C7 /* ClipHotKey */,
+				VCPNL00112EB0B10004E6E63 /* Panel */,
 				341FFEE82442EDA500C47E6D /* HistoryItemText.swift */,
 				34AAA1010000000000000007 /* Security */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		VCPNL00112EB0B10004E6E63 /* Panel */ = {
+			isa = PBXGroup;
+			children = (
+				VCPNL10112EB0B10004E6E63 /* FocusZone.swift */,
+				VCPNL11112EB0B10004E6E63 /* KeyChord.swift */,
+				VCPNL12112EB0B10004E6E63 /* KeyChordMatcher.swift */,
+				VCPNL13112EB0B10004E6E63 /* PanelCommand.swift */,
+			);
+			path = Panel;
 			sourceTree = "<group>";
 		};
 		348D526223876AAB0024A5C7 /* Constants */ = {
@@ -987,6 +1009,7 @@
 				VCMAX10112EB0B10004E6E63 /* MaxItemSizeTests.swift */,
 				VCCEL10112EB0B10004E6E63 /* CellHeightsCacheTests.swift */,
 				VCPTH20112EB0B10004E6E63 /* PanelThemeTests.swift */,
+				VCPNL20112EB0B10004E6E63 /* PanelCommandRegistryTests.swift */,
 				VCDIG20112EB0B10004E6E63 /* ContentDigestDedupTests.swift */,
 				34ACFBD322EB0B11004E6E63 /* Info.plist */,
 				349F794D235C5759000CA5B9 /* Mocks */,
@@ -1406,6 +1429,10 @@
 				3488B14022FAE8F30019E7DA /* Constants.swift in Sources */,
 				F6A7B8C91123456789001 /* HistoryListTheme.swift in Sources */,
 				VCPTH10212EB0B10004E6E63 /* PanelTheme.swift in Sources */,
+				VCPNL10212EB0B10004E6E63 /* FocusZone.swift in Sources */,
+				VCPNL11212EB0B10004E6E63 /* KeyChord.swift in Sources */,
+				VCPNL12212EB0B10004E6E63 /* KeyChordMatcher.swift in Sources */,
+				VCPNL13212EB0B10004E6E63 /* PanelCommand.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1440,6 +1467,7 @@
 				VCMAX10212EB0B10004E6E63 /* MaxItemSizeTests.swift in Sources */,
 				VCCEL10212EB0B10004E6E63 /* CellHeightsCacheTests.swift in Sources */,
 				VCPTH20212EB0B10004E6E63 /* PanelThemeTests.swift in Sources */,
+				VCPNL20212EB0B10004E6E63 /* PanelCommandRegistryTests.swift in Sources */,
 				VCDIG20212EB0B10004E6E63 /* ContentDigestDedupTests.swift in Sources */,
 				349F7944235C24D4000CA5B9 /* HistoryFileManagerTests.swift in Sources */,
 				349F794A235C5722000CA5B9 /* WarningLoggerMock.swift in Sources */,
