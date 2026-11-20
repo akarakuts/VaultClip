@@ -46,9 +46,10 @@ enum HistoryPasteboardPolicy {
     "org.nspasteboard.source",
   ].map { NSPasteboard.PasteboardType(rawValue: $0) })
 
-  static func shouldIgnoreSource(bundleId: String?) -> Bool {
+  static func shouldIgnoreSource(bundleId: String?, userDenylist: [String] = Settings.main.excludedBundleIds) -> Bool {
     guard let bundleId else { return false }
-    return bundleIdDenylist.contains(bundleId)
+    if bundleIdDenylist.contains(bundleId) { return true }
+    return userDenylist.contains(bundleId)
   }
 
   /// Drops ignored metadata types and password-manager markers; keeps safe payload types.

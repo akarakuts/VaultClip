@@ -175,6 +175,12 @@ enum L10n {
     // MARK: - Settings
 
     static var settingsGeneral: String { tr( "settings.general") }
+    static var settingsPrivacy: String { tr("settings.privacy") }
+    static var settingsPrivacyAdd: String { tr("settings.privacy.add") }
+    static var settingsPrivacyRemove: String { tr("settings.privacy.remove") }
+    static var settingsRetention: String { tr("settings.retention") }
+    static var settingsRetentionNever: String { tr("settings.retention.never") }
+    static func settingsRetentionDays(_ days: Int) -> String { String(format: tr("settings.retention.days"), days) }
     static var settingsHotKey: String { tr( "settings.hot_key") }
     static var settingsMaxItemsLabel: String { tr( "settings.max_items_label") }
     static var settingsRichTextLabel: String { tr( "settings.rich_text_label") }

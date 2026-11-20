@@ -104,6 +104,7 @@
 		3490D3992328EFB300BA8747 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3490D3982328EFB300BA8747 /* HelpViewController.swift */; };
 		3496BAD92442A90000D110AE /* GeneralSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3496BAD82442A90000D110AE /* GeneralSettingsViewController.swift */; };
 		3496BADB2442B28A00D110AE /* SettingsTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3496BADA2442B28A00D110AE /* SettingsTabViewController.swift */; };
+		VCPRV10212EB0B10004E6E63 /* PrivacySettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPRV10112EB0B10004E6E63 /* PrivacySettingsViewController.swift */; };
 		349F7942235C2055000CA5B9 /* ArrayFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349F7941235C2055000CA5B9 /* ArrayFileManager.swift */; };
 		349F7944235C24D4000CA5B9 /* HistoryFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349F7943235C24D4000CA5B9 /* HistoryFileManagerTests.swift */; };
 		349F7946235C4D2B000CA5B9 /* Alerter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349F7945235C4D2B000CA5B9 /* Alerter.swift */; };
@@ -114,6 +115,7 @@
 		34A1942123553DD60076A717 /* FormatFileUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A1942023553DD60076A717 /* FormatFileUrl.swift */; };
 		34A30CC42356B93900D4C2D6 /* HistoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A30CC32356B93900D4C2D6 /* HistoryCache.swift */; };
 		34A30CC62356B94E00D4C2D6 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A30CC52356B94E00D4C2D6 /* History.swift */; };
+		VCRET10212EB0B10004E6E63 /* HistoryRetention.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCRET10112EB0B10004E6E63 /* HistoryRetention.swift */; };
 		VCHPP00212EB0B10004E6E63 /* HistoryPasteboardPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCHPP00112EB0B10004E6E63 /* HistoryPasteboardPolicy.swift */; };
 		VCHFM00212EB0B10004E6E63 /* HistoryFileManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCHFM00112EB0B10004E6E63 /* HistoryFileManaging.swift */; };
 		34AAA1010000000000000002 /* DataEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA1010000000000000001 /* DataEncryptor.swift */; };
@@ -198,6 +200,8 @@
 		VCSIX10212EB0B10004E6E63 /* SearchIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSIX10112EB0B10004E6E63 /* SearchIndex.swift */; };
 		34F1047D23542CCE00B65251 /* HistoryItem+HistoryListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F1047C23542CCE00B65251 /* HistoryItem+HistoryListItem.swift */; };
 		A1B2C3D41123456789001 /* SearchEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40123456789001 /* SearchEngineTests.swift */; };
+		VCHRT10212EB0B10004E6E63 /* HistoryRetentionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCHRT10112EB0B10004E6E63 /* HistoryRetentionTests.swift */; };
+		VCEXT10212EB0B10004E6E63 /* ExcludedAppsPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCEXT10112EB0B10004E6E63 /* ExcludedAppsPolicyTests.swift */; };
 		VCPLT10212EB0B10004E6E63 /* PlainTextPasteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPLT10112EB0B10004E6E63 /* PlainTextPasteTests.swift */; };
 		VCCAP10212EB0B10004E6E63 /* CapturePauseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCCAP10112EB0B10004E6E63 /* CapturePauseTests.swift */; };
 		VCPCT10212EB0B10004E6E63 /* PasswordClipboardClearerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPCT10112EB0B10004E6E63 /* PasswordClipboardClearerTests.swift */; };
@@ -344,6 +348,7 @@
 		3490D3982328EFB300BA8747 /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		3496BAD82442A90000D110AE /* GeneralSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsViewController.swift; sourceTree = "<group>"; };
 		3496BADA2442B28A00D110AE /* SettingsTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTabViewController.swift; sourceTree = "<group>"; };
+		VCPRV10112EB0B10004E6E63 /* PrivacySettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettingsViewController.swift; sourceTree = "<group>"; };
 		349F7941235C2055000CA5B9 /* ArrayFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayFileManager.swift; sourceTree = "<group>"; };
 		349F7943235C24D4000CA5B9 /* HistoryFileManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFileManagerTests.swift; sourceTree = "<group>"; };
 		349F7945235C4D2B000CA5B9 /* Alerter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerter.swift; sourceTree = "<group>"; };
@@ -354,6 +359,7 @@
 		34A1942023553DD60076A717 /* FormatFileUrl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatFileUrl.swift; sourceTree = "<group>"; };
 		34A30CC32356B93900D4C2D6 /* HistoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCache.swift; sourceTree = "<group>"; };
 		34A30CC52356B94E00D4C2D6 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
+		VCRET10112EB0B10004E6E63 /* HistoryRetention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRetention.swift; sourceTree = "<group>"; };
 		VCHPP00112EB0B10004E6E63 /* HistoryPasteboardPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryPasteboardPolicy.swift; sourceTree = "<group>"; };
 		VCHFM00112EB0B10004E6E63 /* HistoryFileManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFileManaging.swift; sourceTree = "<group>"; };
 		34AAA1010000000000000001 /* DataEncryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataEncryptor.swift; sourceTree = "<group>"; };
@@ -441,6 +447,8 @@
 		34F1047C23542CCE00B65251 /* HistoryItem+HistoryListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryItem+HistoryListItem.swift"; sourceTree = "<group>"; };
 		A1B2C3D31123456789001 /* HistoryTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTabBarView.swift; sourceTree = "<group>"; };
 		A1B2C3D40123456789001 /* SearchEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEngineTests.swift; sourceTree = "<group>"; };
+		VCHRT10112EB0B10004E6E63 /* HistoryRetentionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRetentionTests.swift; sourceTree = "<group>"; };
+		VCEXT10112EB0B10004E6E63 /* ExcludedAppsPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExcludedAppsPolicyTests.swift; sourceTree = "<group>"; };
 		VCPLT10112EB0B10004E6E63 /* PlainTextPasteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTextPasteTests.swift; sourceTree = "<group>"; };
 		VCCAP10112EB0B10004E6E63 /* CapturePauseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapturePauseTests.swift; sourceTree = "<group>"; };
 		VCPCT10112EB0B10004E6E63 /* PasswordClipboardClearerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordClipboardClearerTests.swift; sourceTree = "<group>"; };
@@ -652,6 +660,7 @@
 				3496BAD82442A90000D110AE /* GeneralSettingsViewController.swift */,
 				344176782408640D0076BEDA /* HotKeySettingsViewController.swift */,
 				3496BADA2442B28A00D110AE /* SettingsTabViewController.swift */,
+				VCPRV10112EB0B10004E6E63 /* PrivacySettingsViewController.swift */,
 				34417676240863930076BEDA /* SettingsWindowController.swift */,
 			);
 			path = Settings;
@@ -871,6 +880,7 @@
 			children = (
 				349F7941235C2055000CA5B9 /* ArrayFileManager.swift */,
 				34A30CC52356B94E00D4C2D6 /* History.swift */,
+				VCRET10112EB0B10004E6E63 /* HistoryRetention.swift */,
 				VCHPP00112EB0B10004E6E63 /* HistoryPasteboardPolicy.swift */,
 				VCHFM00112EB0B10004E6E63 /* HistoryFileManaging.swift */,
 				34A30CC32356B93900D4C2D6 /* HistoryCache.swift */,
@@ -946,6 +956,8 @@
 				344EC47B235D9288006792FF /* HistoryItemTests.swift */,
 				F7A8B9CD1123456789001 /* HistoryFavoritesTests.swift */,
 				A1B2C3D40123456789001 /* SearchEngineTests.swift */,
+				VCHRT10112EB0B10004E6E63 /* HistoryRetentionTests.swift */,
+				VCEXT10112EB0B10004E6E63 /* ExcludedAppsPolicyTests.swift */,
 				VCPLT10112EB0B10004E6E63 /* PlainTextPasteTests.swift */,
 				VCCAP10112EB0B10004E6E63 /* CapturePauseTests.swift */,
 				VCPCT10112EB0B10004E6E63 /* PasswordClipboardClearerTests.swift */,
@@ -1243,6 +1255,7 @@
 				34B5C43223580CFF005247EB /* Loggable.swift in Sources */,
 				3426811E233E0A4600BA226A /* Accessibility.swift in Sources */,
 				3496BADB2442B28A00D110AE /* SettingsTabViewController.swift in Sources */,
+				VCPRV10212EB0B10004E6E63 /* PrivacySettingsViewController.swift in Sources */,
 				3465A90023EF84A2009EE52B /* Cache.swift in Sources */,
 				34E516CD2352C4AF008B4256 /* HistoryItemBaseCellView.swift in Sources */,
 				3490D3992328EFB300BA8747 /* HelpViewController.swift in Sources */,
@@ -1322,6 +1335,7 @@
 				341D9D25233724A2008A2BE6 /* KeyPressMonitor.swift in Sources */,
 				3474C13E2346E70F00232620 /* NSAttributedString+BoundingRect.swift in Sources */,
 				34A30CC62356B94E00D4C2D6 /* History.swift in Sources */,
+				VCRET10212EB0B10004E6E63 /* HistoryRetention.swift in Sources */,
 				VCHPP00212EB0B10004E6E63 /* HistoryPasteboardPolicy.swift in Sources */,
 				VCHFM00212EB0B10004E6E63 /* HistoryFileManaging.swift in Sources */,
 				34268124233EE82200BA226A /* AccessControlHelper.swift in Sources */,
@@ -1388,6 +1402,8 @@
 				344EC47C235D9288006792FF /* HistoryItemTests.swift in Sources */,
 				F7A8B9CE1123456789001 /* HistoryFavoritesTests.swift in Sources */,
 				A1B2C3D41123456789001 /* SearchEngineTests.swift in Sources */,
+				VCHRT10212EB0B10004E6E63 /* HistoryRetentionTests.swift in Sources */,
+				VCEXT10212EB0B10004E6E63 /* ExcludedAppsPolicyTests.swift in Sources */,
 				VCPLT10212EB0B10004E6E63 /* PlainTextPasteTests.swift in Sources */,
 				VCCAP10212EB0B10004E6E63 /* CapturePauseTests.swift in Sources */,
 				VCPCT10212EB0B10004E6E63 /* PasswordClipboardClearerTests.swift in Sources */,

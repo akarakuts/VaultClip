@@ -59,7 +59,9 @@ struct Settings: Codable, DefaultStorable {
         requiresPasswordAuthentication: Bool,
         passwordAuthGraceMinutes: Int,
         passwordClipboardClearSeconds: Int,
-        isCapturePaused: Bool
+        isCapturePaused: Bool,
+        excludedBundleIds: [String],
+        retentionDays: Int
     ) {
         self.panelPosition = panelPosition
         self.pasteboardChangeCount = pasteboardChangeCount
@@ -72,6 +74,8 @@ struct Settings: Codable, DefaultStorable {
         self.passwordAuthGraceMinutes = passwordAuthGraceMinutes
         self.passwordClipboardClearSeconds = passwordClipboardClearSeconds
         self.isCapturePaused = isCapturePaused
+        self.excludedBundleIds = excludedBundleIds
+        self.retentionDays = retentionDays
     }
     
     static let `default` = Settings(
@@ -85,7 +89,9 @@ struct Settings: Codable, DefaultStorable {
         requiresPasswordAuthentication: true,
         passwordAuthGraceMinutes: 5,
         passwordClipboardClearSeconds: 90,
-        isCapturePaused: false
+        isCapturePaused: false,
+        excludedBundleIds: [],
+        retentionDays: 0
     )
     
     // MARK: - Settings
@@ -117,6 +123,12 @@ struct Settings: Codable, DefaultStorable {
     /// When true, pasteboard changes are ignored (T31).
     var isCapturePaused: Bool
 
+    /// User-managed apps whose clipboard changes are ignored (T33).
+    var excludedBundleIds: [String]
+
+    /// Auto-delete unpinned items older than N days; `0` disables (T34).
+    var retentionDays: Int
+
     enum CodingKeys: String, CodingKey {
         case panelPosition
         case pasteboardChangeCount
@@ -129,6 +141,8 @@ struct Settings: Codable, DefaultStorable {
         case passwordAuthGraceMinutes
         case passwordClipboardClearSeconds
         case isCapturePaused
+        case excludedBundleIds
+        case retentionDays
     }
 
     init(from decoder: Decoder) throws {
@@ -162,6 +176,10 @@ struct Settings: Codable, DefaultStorable {
             ?? defaults.passwordClipboardClearSeconds
         isCapturePaused = try container.decodeIfPresent(Bool.self, forKey: .isCapturePaused)
             ?? defaults.isCapturePaused
+        excludedBundleIds = try container.decodeIfPresent([String].self, forKey: .excludedBundleIds)
+            ?? defaults.excludedBundleIds
+        retentionDays = try container.decodeIfPresent(Int.self, forKey: .retentionDays)
+            ?? defaults.retentionDays
     }
 
     func encode(to encoder: Encoder) throws {
@@ -177,6 +195,8 @@ struct Settings: Codable, DefaultStorable {
         try container.encode(passwordAuthGraceMinutes, forKey: .passwordAuthGraceMinutes)
         try container.encode(passwordClipboardClearSeconds, forKey: .passwordClipboardClearSeconds)
         try container.encode(isCapturePaused, forKey: .isCapturePaused)
+        try container.encode(excludedBundleIds, forKey: .excludedBundleIds)
+        try container.encode(retentionDays, forKey: .retentionDays)
     }
 
     // MARK: - State Binding Methods

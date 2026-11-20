@@ -19,6 +19,12 @@ class SettingsTabViewController: NSTabViewController {
         tabViewItems[1].label = L10n.settingsHotKey
         tabViewItems[0].image = NSImage(imageLiteralResourceName: "gear")
         tabViewItems[1].image = NSImage(imageLiteralResourceName: "command")
+
+        let privacy = PrivacySettingsViewController()
+        let privacyItem = NSTabViewItem(viewController: privacy)
+        privacyItem.label = L10n.settingsPrivacy
+        privacyItem.image = NSImage(systemSymbolName: "hand.raised", accessibilityDescription: nil)
+        addTabViewItem(privacyItem)
     }
     
     override func viewWillAppear() {
