@@ -284,6 +284,24 @@
 		VCFST20212EB0B10004E6E63 /* ColorFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST20112EB0B10004E6E63 /* ColorFormatTests.swift */; };
 		VCFST21212EB0B10004E6E63 /* PreviewMetadataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST21112EB0B10004E6E63 /* PreviewMetadataTests.swift */; };
 		VCFST22212EB0B10004E6E63 /* EditBeforePasteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST22112EB0B10004E6E63 /* EditBeforePasteTests.swift */; };
+		VCPNL46212EB0B10004E6E63 /* PasswordPrivacySurfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL46112EB0B10004E6E63 /* PasswordPrivacySurfaces.swift */; };
+		VCPNL47212EB0B10004E6E63 /* CommandPaletteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL47112EB0B10004E6E63 /* CommandPaletteModel.swift */; };
+		VCPNL48212EB0B10004E6E63 /* CheatSheetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL48112EB0B10004E6E63 /* CheatSheetModel.swift */; };
+		VCPNL49212EB0B10004E6E63 /* StatusItemClickMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL49112EB0B10004E6E63 /* StatusItemClickMode.swift */; };
+		VCPNL50212EB0B10004E6E63 /* MenuBarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL50112EB0B10004E6E63 /* MenuBarModel.swift */; };
+		VCPNL51212EB0B10004E6E63 /* ExcludedAppsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL51112EB0B10004E6E63 /* ExcludedAppsModel.swift */; };
+		VCPNL52212EB0B10004E6E63 /* HotKeyCaptureState.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL52112EB0B10004E6E63 /* HotKeyCaptureState.swift */; };
+		VCPNL53212EB0B10004E6E63 /* PerformanceBudget.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL53112EB0B10004E6E63 /* PerformanceBudget.swift */; };
+		VCPNL54212EB0B10004E6E63 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL54112EB0B10004E6E63 /* SettingsStore.swift */; };
+		VCFST23212EB0B10004E6E63 /* PasswordPrivacySurfacesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST23112EB0B10004E6E63 /* PasswordPrivacySurfacesTests.swift */; };
+		VCFST24212EB0B10004E6E63 /* CommandPaletteModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST24112EB0B10004E6E63 /* CommandPaletteModelTests.swift */; };
+		VCFST25212EB0B10004E6E63 /* CheatSheetModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST25112EB0B10004E6E63 /* CheatSheetModelTests.swift */; };
+		VCFST26212EB0B10004E6E63 /* StatusItemClickModeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST26112EB0B10004E6E63 /* StatusItemClickModeTests.swift */; };
+		VCFST27212EB0B10004E6E63 /* MenuBarModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST27112EB0B10004E6E63 /* MenuBarModelTests.swift */; };
+		VCFST28212EB0B10004E6E63 /* ExcludedAppsModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST28112EB0B10004E6E63 /* ExcludedAppsModelTests.swift */; };
+		VCFST29212EB0B10004E6E63 /* HotKeyCaptureStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST29112EB0B10004E6E63 /* HotKeyCaptureStateTests.swift */; };
+		VCFST30212EB0B10004E6E63 /* SettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST30112EB0B10004E6E63 /* SettingsStoreTests.swift */; };
+		VCFST31212EB0B10004E6E63 /* PerformanceBudgetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST31112EB0B10004E6E63 /* PerformanceBudgetTests.swift */; };
 		VCPNL27212EB0B10004E6E63 /* PanelStatusBarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */; };
 		VCPNL28212EB0B10004E6E63 /* PanelEmptyStateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */; };
 		VCPNL29212EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */; };
@@ -592,6 +610,24 @@
 		VCFST20112EB0B10004E6E63 /* ColorFormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorFormatTests.swift; sourceTree = "<group>"; };
 		VCFST21112EB0B10004E6E63 /* PreviewMetadataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewMetadataTests.swift; sourceTree = "<group>"; };
 		VCFST22112EB0B10004E6E63 /* EditBeforePasteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBeforePasteTests.swift; sourceTree = "<group>"; };
+		VCPNL46112EB0B10004E6E63 /* PasswordPrivacySurfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPrivacySurfaces.swift; sourceTree = "<group>"; };
+		VCPNL47112EB0B10004E6E63 /* CommandPaletteModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPaletteModel.swift; sourceTree = "<group>"; };
+		VCPNL48112EB0B10004E6E63 /* CheatSheetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatSheetModel.swift; sourceTree = "<group>"; };
+		VCPNL49112EB0B10004E6E63 /* StatusItemClickMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemClickMode.swift; sourceTree = "<group>"; };
+		VCPNL50112EB0B10004E6E63 /* MenuBarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarModel.swift; sourceTree = "<group>"; };
+		VCPNL51112EB0B10004E6E63 /* ExcludedAppsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExcludedAppsModel.swift; sourceTree = "<group>"; };
+		VCPNL52112EB0B10004E6E63 /* HotKeyCaptureState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKeyCaptureState.swift; sourceTree = "<group>"; };
+		VCPNL53112EB0B10004E6E63 /* PerformanceBudget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceBudget.swift; sourceTree = "<group>"; };
+		VCPNL54112EB0B10004E6E63 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		VCFST23112EB0B10004E6E63 /* PasswordPrivacySurfacesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPrivacySurfacesTests.swift; sourceTree = "<group>"; };
+		VCFST24112EB0B10004E6E63 /* CommandPaletteModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPaletteModelTests.swift; sourceTree = "<group>"; };
+		VCFST25112EB0B10004E6E63 /* CheatSheetModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatSheetModelTests.swift; sourceTree = "<group>"; };
+		VCFST26112EB0B10004E6E63 /* StatusItemClickModeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemClickModeTests.swift; sourceTree = "<group>"; };
+		VCFST27112EB0B10004E6E63 /* MenuBarModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarModelTests.swift; sourceTree = "<group>"; };
+		VCFST28112EB0B10004E6E63 /* ExcludedAppsModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExcludedAppsModelTests.swift; sourceTree = "<group>"; };
+		VCFST29112EB0B10004E6E63 /* HotKeyCaptureStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKeyCaptureStateTests.swift; sourceTree = "<group>"; };
+		VCFST30112EB0B10004E6E63 /* SettingsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStoreTests.swift; sourceTree = "<group>"; };
+		VCFST31112EB0B10004E6E63 /* PerformanceBudgetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceBudgetTests.swift; sourceTree = "<group>"; };
 		VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStatePresenterTests.swift; sourceTree = "<group>"; };
 		VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelStatusBarModel.swift; sourceTree = "<group>"; };
 		VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStateModel.swift; sourceTree = "<group>"; };
@@ -782,6 +818,7 @@
 			isa = PBXGroup;
 			children = (
 				34B2FD9222F988980068D50A /* Settings.swift */,
+				VCPNL54112EB0B10004E6E63 /* SettingsStore.swift */,
 				VCSP00112EB0B10004E6E63 /* SettingsPersistence.swift */,
 			);
 			path = Settings;
@@ -1008,6 +1045,14 @@
 				VCPNL43112EB0B10004E6E63 /* ColorFormat.swift */,
 				VCPNL44112EB0B10004E6E63 /* PreviewMetadata.swift */,
 				VCPNL45112EB0B10004E6E63 /* EditBeforePaste.swift */,
+				VCPNL46112EB0B10004E6E63 /* PasswordPrivacySurfaces.swift */,
+				VCPNL47112EB0B10004E6E63 /* CommandPaletteModel.swift */,
+				VCPNL48112EB0B10004E6E63 /* CheatSheetModel.swift */,
+				VCPNL49112EB0B10004E6E63 /* StatusItemClickMode.swift */,
+				VCPNL50112EB0B10004E6E63 /* MenuBarModel.swift */,
+				VCPNL51112EB0B10004E6E63 /* ExcludedAppsModel.swift */,
+				VCPNL52112EB0B10004E6E63 /* HotKeyCaptureState.swift */,
+				VCPNL53112EB0B10004E6E63 /* PerformanceBudget.swift */,
 				VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */,
 				VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */,
 			);
@@ -1166,6 +1211,15 @@
 				VCFST20112EB0B10004E6E63 /* ColorFormatTests.swift */,
 				VCFST21112EB0B10004E6E63 /* PreviewMetadataTests.swift */,
 				VCFST22112EB0B10004E6E63 /* EditBeforePasteTests.swift */,
+				VCFST23112EB0B10004E6E63 /* PasswordPrivacySurfacesTests.swift */,
+				VCFST24112EB0B10004E6E63 /* CommandPaletteModelTests.swift */,
+				VCFST25112EB0B10004E6E63 /* CheatSheetModelTests.swift */,
+				VCFST26112EB0B10004E6E63 /* StatusItemClickModeTests.swift */,
+				VCFST27112EB0B10004E6E63 /* MenuBarModelTests.swift */,
+				VCFST28112EB0B10004E6E63 /* ExcludedAppsModelTests.swift */,
+				VCFST29112EB0B10004E6E63 /* HotKeyCaptureStateTests.swift */,
+				VCFST30112EB0B10004E6E63 /* SettingsStoreTests.swift */,
+				VCFST31112EB0B10004E6E63 /* PerformanceBudgetTests.swift */,
 				VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */,
 				VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */,
 				VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */,
@@ -1617,6 +1671,15 @@
 				VCPNL43212EB0B10004E6E63 /* ColorFormat.swift in Sources */,
 				VCPNL44212EB0B10004E6E63 /* PreviewMetadata.swift in Sources */,
 				VCPNL45212EB0B10004E6E63 /* EditBeforePaste.swift in Sources */,
+				VCPNL46212EB0B10004E6E63 /* PasswordPrivacySurfaces.swift in Sources */,
+				VCPNL47212EB0B10004E6E63 /* CommandPaletteModel.swift in Sources */,
+				VCPNL48212EB0B10004E6E63 /* CheatSheetModel.swift in Sources */,
+				VCPNL49212EB0B10004E6E63 /* StatusItemClickMode.swift in Sources */,
+				VCPNL50212EB0B10004E6E63 /* MenuBarModel.swift in Sources */,
+				VCPNL51212EB0B10004E6E63 /* ExcludedAppsModel.swift in Sources */,
+				VCPNL52212EB0B10004E6E63 /* HotKeyCaptureState.swift in Sources */,
+				VCPNL53212EB0B10004E6E63 /* PerformanceBudget.swift in Sources */,
+				VCPNL54212EB0B10004E6E63 /* SettingsStore.swift in Sources */,
 				VCHRV10212EB0B10004E6E63 /* HistoryRowView.swift in Sources */,
 				VCPNL28212EB0B10004E6E63 /* PanelEmptyStateModel.swift in Sources */,
 				VCPNL27212EB0B10004E6E63 /* PanelStatusBarModel.swift in Sources */,
@@ -1677,6 +1740,15 @@
 				VCFST20212EB0B10004E6E63 /* ColorFormatTests.swift in Sources */,
 				VCFST21212EB0B10004E6E63 /* PreviewMetadataTests.swift in Sources */,
 				VCFST22212EB0B10004E6E63 /* EditBeforePasteTests.swift in Sources */,
+				VCFST23212EB0B10004E6E63 /* PasswordPrivacySurfacesTests.swift in Sources */,
+				VCFST24212EB0B10004E6E63 /* CommandPaletteModelTests.swift in Sources */,
+				VCFST25212EB0B10004E6E63 /* CheatSheetModelTests.swift in Sources */,
+				VCFST26212EB0B10004E6E63 /* StatusItemClickModeTests.swift in Sources */,
+				VCFST27212EB0B10004E6E63 /* MenuBarModelTests.swift in Sources */,
+				VCFST28212EB0B10004E6E63 /* ExcludedAppsModelTests.swift in Sources */,
+				VCFST29212EB0B10004E6E63 /* HotKeyCaptureStateTests.swift in Sources */,
+				VCFST30212EB0B10004E6E63 /* SettingsStoreTests.swift in Sources */,
+				VCFST31212EB0B10004E6E63 /* PerformanceBudgetTests.swift in Sources */,
 				VCPNL30212EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift in Sources */,
 				VCPNL29212EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift in Sources */,
 				VCPNL30212EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift in Sources */,
