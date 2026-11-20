@@ -55,6 +55,45 @@ struct KeyChord: Hashable {
     static func optionCmdDigit(_ n: Int) -> KeyChord {
         KeyChord(key: .digit(n), modifiers: [.option, .command])
     }
+
+    var displayString: String {
+        var parts: [String] = []
+        if modifiers.contains(.control) { parts.append("⌃") }
+        if modifiers.contains(.option) { parts.append("⌥") }
+        if modifiers.contains(.shift) { parts.append("⇧") }
+        if modifiers.contains(.command) { parts.append("⌘") }
+        parts.append(key.displayString)
+        return parts.joined()
+    }
+}
+
+extension LogicalKey {
+    var displayString: String {
+        switch self {
+        case .letter(let c): return String(c).uppercased()
+        case .digit(let n): return String(n)
+        case .return: return "⏎"
+        case .space: return "Space"
+        case .escape: return "Esc"
+        case .tab: return "⇥"
+        case .delete: return "⌫"
+        case .forwardDelete: return "⌦"
+        case .upArrow: return "↑"
+        case .downArrow: return "↓"
+        case .leftArrow: return "←"
+        case .rightArrow: return "→"
+        case .pageUp: return "PgUp"
+        case .pageDown: return "PgDn"
+        case .home: return "Home"
+        case .end: return "End"
+        case .equal: return "="
+        case .minus: return "-"
+        case .slash: return "/"
+        case .leftBracket: return "["
+        case .rightBracket: return "]"
+        case .comma: return ","
+        }
+    }
 }
 
 extension KeyModifiers {

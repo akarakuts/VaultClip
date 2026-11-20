@@ -264,6 +264,16 @@
 		VCPNL35212EB0B10004E6E63 /* PendingDeletionQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL35112EB0B10004E6E63 /* PendingDeletionQueue.swift */; };
 		VCFST11212EB0B10004E6E63 /* MultiPasteComposerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST11112EB0B10004E6E63 /* MultiPasteComposerTests.swift */; };
 		VCFST12212EB0B10004E6E63 /* PendingDeletionQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST12112EB0B10004E6E63 /* PendingDeletionQueueTests.swift */; };
+		VCPNL36212EB0B10004E6E63 /* RowActionOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL36112EB0B10004E6E63 /* RowActionOverlay.swift */; };
+		VCPNL37212EB0B10004E6E63 /* SelectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL37112EB0B10004E6E63 /* SelectionModel.swift */; };
+		VCPNL38212EB0B10004E6E63 /* ContextMenuModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL38112EB0B10004E6E63 /* ContextMenuModel.swift */; };
+		VCPNL39212EB0B10004E6E63 /* DragOutPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL39112EB0B10004E6E63 /* DragOutPayload.swift */; };
+		VCPNL40212EB0B10004E6E63 /* PanelNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL40112EB0B10004E6E63 /* PanelNavigation.swift */; };
+		VCFST13212EB0B10004E6E63 /* RowActionOverlayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST13112EB0B10004E6E63 /* RowActionOverlayTests.swift */; };
+		VCFST14212EB0B10004E6E63 /* SelectionModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST14112EB0B10004E6E63 /* SelectionModelTests.swift */; };
+		VCFST15212EB0B10004E6E63 /* ContextMenuModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST15112EB0B10004E6E63 /* ContextMenuModelTests.swift */; };
+		VCFST16212EB0B10004E6E63 /* DragOutPayloadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST16112EB0B10004E6E63 /* DragOutPayloadTests.swift */; };
+		VCFST17212EB0B10004E6E63 /* PanelNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST17112EB0B10004E6E63 /* PanelNavigationTests.swift */; };
 		VCPNL27212EB0B10004E6E63 /* PanelStatusBarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */; };
 		VCPNL28212EB0B10004E6E63 /* PanelEmptyStateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */; };
 		VCPNL29212EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */; };
@@ -552,6 +562,16 @@
 		VCPNL35112EB0B10004E6E63 /* PendingDeletionQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingDeletionQueue.swift; sourceTree = "<group>"; };
 		VCFST11112EB0B10004E6E63 /* MultiPasteComposerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiPasteComposerTests.swift; sourceTree = "<group>"; };
 		VCFST12112EB0B10004E6E63 /* PendingDeletionQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingDeletionQueueTests.swift; sourceTree = "<group>"; };
+		VCPNL36112EB0B10004E6E63 /* RowActionOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowActionOverlay.swift; sourceTree = "<group>"; };
+		VCPNL37112EB0B10004E6E63 /* SelectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionModel.swift; sourceTree = "<group>"; };
+		VCPNL38112EB0B10004E6E63 /* ContextMenuModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuModel.swift; sourceTree = "<group>"; };
+		VCPNL39112EB0B10004E6E63 /* DragOutPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragOutPayload.swift; sourceTree = "<group>"; };
+		VCPNL40112EB0B10004E6E63 /* PanelNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelNavigation.swift; sourceTree = "<group>"; };
+		VCFST13112EB0B10004E6E63 /* RowActionOverlayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowActionOverlayTests.swift; sourceTree = "<group>"; };
+		VCFST14112EB0B10004E6E63 /* SelectionModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionModelTests.swift; sourceTree = "<group>"; };
+		VCFST15112EB0B10004E6E63 /* ContextMenuModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuModelTests.swift; sourceTree = "<group>"; };
+		VCFST16112EB0B10004E6E63 /* DragOutPayloadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragOutPayloadTests.swift; sourceTree = "<group>"; };
+		VCFST17112EB0B10004E6E63 /* PanelNavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelNavigationTests.swift; sourceTree = "<group>"; };
 		VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStatePresenterTests.swift; sourceTree = "<group>"; };
 		VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelStatusBarModel.swift; sourceTree = "<group>"; };
 		VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStateModel.swift; sourceTree = "<group>"; };
@@ -958,6 +978,11 @@
 				VCPNL33112EB0B10004E6E63 /* FilterState.swift */,
 				VCPNL34112EB0B10004E6E63 /* MultiPasteComposer.swift */,
 				VCPNL35112EB0B10004E6E63 /* PendingDeletionQueue.swift */,
+				VCPNL36112EB0B10004E6E63 /* RowActionOverlay.swift */,
+				VCPNL37112EB0B10004E6E63 /* SelectionModel.swift */,
+				VCPNL38112EB0B10004E6E63 /* ContextMenuModel.swift */,
+				VCPNL39112EB0B10004E6E63 /* DragOutPayload.swift */,
+				VCPNL40112EB0B10004E6E63 /* PanelNavigation.swift */,
 				VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */,
 				VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */,
 			);
@@ -1106,6 +1131,11 @@
 				VCFST10112EB0B10004E6E63 /* FilterStateTests.swift */,
 				VCFST11112EB0B10004E6E63 /* MultiPasteComposerTests.swift */,
 				VCFST12112EB0B10004E6E63 /* PendingDeletionQueueTests.swift */,
+				VCFST13112EB0B10004E6E63 /* RowActionOverlayTests.swift */,
+				VCFST14112EB0B10004E6E63 /* SelectionModelTests.swift */,
+				VCFST15112EB0B10004E6E63 /* ContextMenuModelTests.swift */,
+				VCFST16112EB0B10004E6E63 /* DragOutPayloadTests.swift */,
+				VCFST17112EB0B10004E6E63 /* PanelNavigationTests.swift */,
 				VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */,
 				VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */,
 				VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */,
@@ -1547,6 +1577,11 @@
 				VCPNL33212EB0B10004E6E63 /* FilterState.swift in Sources */,
 				VCPNL34212EB0B10004E6E63 /* MultiPasteComposer.swift in Sources */,
 				VCPNL35212EB0B10004E6E63 /* PendingDeletionQueue.swift in Sources */,
+				VCPNL36212EB0B10004E6E63 /* RowActionOverlay.swift in Sources */,
+				VCPNL37212EB0B10004E6E63 /* SelectionModel.swift in Sources */,
+				VCPNL38212EB0B10004E6E63 /* ContextMenuModel.swift in Sources */,
+				VCPNL39212EB0B10004E6E63 /* DragOutPayload.swift in Sources */,
+				VCPNL40212EB0B10004E6E63 /* PanelNavigation.swift in Sources */,
 				VCHRV10212EB0B10004E6E63 /* HistoryRowView.swift in Sources */,
 				VCPNL28212EB0B10004E6E63 /* PanelEmptyStateModel.swift in Sources */,
 				VCPNL27212EB0B10004E6E63 /* PanelStatusBarModel.swift in Sources */,
@@ -1597,6 +1632,11 @@
 				VCFST10212EB0B10004E6E63 /* FilterStateTests.swift in Sources */,
 				VCFST11212EB0B10004E6E63 /* MultiPasteComposerTests.swift in Sources */,
 				VCFST12212EB0B10004E6E63 /* PendingDeletionQueueTests.swift in Sources */,
+				VCFST13212EB0B10004E6E63 /* RowActionOverlayTests.swift in Sources */,
+				VCFST14212EB0B10004E6E63 /* SelectionModelTests.swift in Sources */,
+				VCFST15212EB0B10004E6E63 /* ContextMenuModelTests.swift in Sources */,
+				VCFST16212EB0B10004E6E63 /* DragOutPayloadTests.swift in Sources */,
+				VCFST17212EB0B10004E6E63 /* PanelNavigationTests.swift in Sources */,
 				VCPNL30212EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift in Sources */,
 				VCPNL29212EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift in Sources */,
 				VCPNL30212EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift in Sources */,
