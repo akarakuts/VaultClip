@@ -274,6 +274,16 @@
 		VCFST15212EB0B10004E6E63 /* ContextMenuModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST15112EB0B10004E6E63 /* ContextMenuModelTests.swift */; };
 		VCFST16212EB0B10004E6E63 /* DragOutPayloadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST16112EB0B10004E6E63 /* DragOutPayloadTests.swift */; };
 		VCFST17212EB0B10004E6E63 /* PanelNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST17112EB0B10004E6E63 /* PanelNavigationTests.swift */; };
+		VCPNL41212EB0B10004E6E63 /* PreviewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL41112EB0B10004E6E63 /* PreviewLayout.swift */; };
+		VCPNL42212EB0B10004E6E63 /* PreviewUpdateDebouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL42112EB0B10004E6E63 /* PreviewUpdateDebouncer.swift */; };
+		VCPNL43212EB0B10004E6E63 /* ColorFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL43112EB0B10004E6E63 /* ColorFormat.swift */; };
+		VCPNL44212EB0B10004E6E63 /* PreviewMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL44112EB0B10004E6E63 /* PreviewMetadata.swift */; };
+		VCPNL45212EB0B10004E6E63 /* EditBeforePaste.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL45112EB0B10004E6E63 /* EditBeforePaste.swift */; };
+		VCFST18212EB0B10004E6E63 /* PreviewLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST18112EB0B10004E6E63 /* PreviewLayoutTests.swift */; };
+		VCFST19212EB0B10004E6E63 /* PreviewUpdateDebouncerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST19112EB0B10004E6E63 /* PreviewUpdateDebouncerTests.swift */; };
+		VCFST20212EB0B10004E6E63 /* ColorFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST20112EB0B10004E6E63 /* ColorFormatTests.swift */; };
+		VCFST21212EB0B10004E6E63 /* PreviewMetadataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST21112EB0B10004E6E63 /* PreviewMetadataTests.swift */; };
+		VCFST22212EB0B10004E6E63 /* EditBeforePasteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST22112EB0B10004E6E63 /* EditBeforePasteTests.swift */; };
 		VCPNL27212EB0B10004E6E63 /* PanelStatusBarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */; };
 		VCPNL28212EB0B10004E6E63 /* PanelEmptyStateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */; };
 		VCPNL29212EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */; };
@@ -572,6 +582,16 @@
 		VCFST15112EB0B10004E6E63 /* ContextMenuModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuModelTests.swift; sourceTree = "<group>"; };
 		VCFST16112EB0B10004E6E63 /* DragOutPayloadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragOutPayloadTests.swift; sourceTree = "<group>"; };
 		VCFST17112EB0B10004E6E63 /* PanelNavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelNavigationTests.swift; sourceTree = "<group>"; };
+		VCPNL41112EB0B10004E6E63 /* PreviewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewLayout.swift; sourceTree = "<group>"; };
+		VCPNL42112EB0B10004E6E63 /* PreviewUpdateDebouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewUpdateDebouncer.swift; sourceTree = "<group>"; };
+		VCPNL43112EB0B10004E6E63 /* ColorFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorFormat.swift; sourceTree = "<group>"; };
+		VCPNL44112EB0B10004E6E63 /* PreviewMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewMetadata.swift; sourceTree = "<group>"; };
+		VCPNL45112EB0B10004E6E63 /* EditBeforePaste.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBeforePaste.swift; sourceTree = "<group>"; };
+		VCFST18112EB0B10004E6E63 /* PreviewLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewLayoutTests.swift; sourceTree = "<group>"; };
+		VCFST19112EB0B10004E6E63 /* PreviewUpdateDebouncerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewUpdateDebouncerTests.swift; sourceTree = "<group>"; };
+		VCFST20112EB0B10004E6E63 /* ColorFormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorFormatTests.swift; sourceTree = "<group>"; };
+		VCFST21112EB0B10004E6E63 /* PreviewMetadataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewMetadataTests.swift; sourceTree = "<group>"; };
+		VCFST22112EB0B10004E6E63 /* EditBeforePasteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBeforePasteTests.swift; sourceTree = "<group>"; };
 		VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStatePresenterTests.swift; sourceTree = "<group>"; };
 		VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelStatusBarModel.swift; sourceTree = "<group>"; };
 		VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStateModel.swift; sourceTree = "<group>"; };
@@ -983,6 +1003,11 @@
 				VCPNL38112EB0B10004E6E63 /* ContextMenuModel.swift */,
 				VCPNL39112EB0B10004E6E63 /* DragOutPayload.swift */,
 				VCPNL40112EB0B10004E6E63 /* PanelNavigation.swift */,
+				VCPNL41112EB0B10004E6E63 /* PreviewLayout.swift */,
+				VCPNL42112EB0B10004E6E63 /* PreviewUpdateDebouncer.swift */,
+				VCPNL43112EB0B10004E6E63 /* ColorFormat.swift */,
+				VCPNL44112EB0B10004E6E63 /* PreviewMetadata.swift */,
+				VCPNL45112EB0B10004E6E63 /* EditBeforePaste.swift */,
 				VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */,
 				VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */,
 			);
@@ -1136,6 +1161,11 @@
 				VCFST15112EB0B10004E6E63 /* ContextMenuModelTests.swift */,
 				VCFST16112EB0B10004E6E63 /* DragOutPayloadTests.swift */,
 				VCFST17112EB0B10004E6E63 /* PanelNavigationTests.swift */,
+				VCFST18112EB0B10004E6E63 /* PreviewLayoutTests.swift */,
+				VCFST19112EB0B10004E6E63 /* PreviewUpdateDebouncerTests.swift */,
+				VCFST20112EB0B10004E6E63 /* ColorFormatTests.swift */,
+				VCFST21112EB0B10004E6E63 /* PreviewMetadataTests.swift */,
+				VCFST22112EB0B10004E6E63 /* EditBeforePasteTests.swift */,
 				VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */,
 				VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */,
 				VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */,
@@ -1582,6 +1612,11 @@
 				VCPNL38212EB0B10004E6E63 /* ContextMenuModel.swift in Sources */,
 				VCPNL39212EB0B10004E6E63 /* DragOutPayload.swift in Sources */,
 				VCPNL40212EB0B10004E6E63 /* PanelNavigation.swift in Sources */,
+				VCPNL41212EB0B10004E6E63 /* PreviewLayout.swift in Sources */,
+				VCPNL42212EB0B10004E6E63 /* PreviewUpdateDebouncer.swift in Sources */,
+				VCPNL43212EB0B10004E6E63 /* ColorFormat.swift in Sources */,
+				VCPNL44212EB0B10004E6E63 /* PreviewMetadata.swift in Sources */,
+				VCPNL45212EB0B10004E6E63 /* EditBeforePaste.swift in Sources */,
 				VCHRV10212EB0B10004E6E63 /* HistoryRowView.swift in Sources */,
 				VCPNL28212EB0B10004E6E63 /* PanelEmptyStateModel.swift in Sources */,
 				VCPNL27212EB0B10004E6E63 /* PanelStatusBarModel.swift in Sources */,
@@ -1637,6 +1672,11 @@
 				VCFST15212EB0B10004E6E63 /* ContextMenuModelTests.swift in Sources */,
 				VCFST16212EB0B10004E6E63 /* DragOutPayloadTests.swift in Sources */,
 				VCFST17212EB0B10004E6E63 /* PanelNavigationTests.swift in Sources */,
+				VCFST18212EB0B10004E6E63 /* PreviewLayoutTests.swift in Sources */,
+				VCFST19212EB0B10004E6E63 /* PreviewUpdateDebouncerTests.swift in Sources */,
+				VCFST20212EB0B10004E6E63 /* ColorFormatTests.swift in Sources */,
+				VCFST21212EB0B10004E6E63 /* PreviewMetadataTests.swift in Sources */,
+				VCFST22212EB0B10004E6E63 /* EditBeforePasteTests.swift in Sources */,
 				VCPNL30212EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift in Sources */,
 				VCPNL29212EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift in Sources */,
 				VCPNL30212EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift in Sources */,
