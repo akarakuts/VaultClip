@@ -419,32 +419,31 @@ class HistoryItem: NSObject {
 // MARK: - Pasteboard output
 extension HistoryItem {
     
-    /// Writes all supported representations onto `pasteboard`, including a plain-text
-    /// fallback for link-only items so browsers and editors accept ⌘V.
-    func write(to pasteboard: NSPasteboard) {
-        var types = writableTypes(for: pasteboard)
-        if getUrl() != nil && getPlainString() == nil && !types.contains(.string) {
-            types.append(.string)
+    /// Writes supported representations onto `pasteboard` via `PasteboardWriter`.
+    /// The in-app drag type (`historyItemIdType`) is omitted from the system clipboard.
+    @discardableResult
+    func write(to pasteboard: NSPasteboard) -> Int {
+        var outputTypes = types.filter {
+            pastesRichText || !richTextPasteboardTypes.contains($0.rawValue)
         }
-        if isPassword {
-            types.append(NSPasteboard.PasteboardType("org.nspasteboard.ConcealedType"))
+        if getUrl() != nil && getPlainString() == nil && !outputTypes.contains(.string) {
+            outputTypes.append(.string)
         }
-        guard !types.isEmpty else { return }
-        
-        pasteboard.declareTypes(types, owner: nil)
-        for type in types {
-            if type == Self.historyItemIdType {
-                pasteboard.setString(fsId.uuidString, forType: type)
-            } else if type == .string {
+        guard !outputTypes.isEmpty else { return pasteboard.changeCount }
+
+        let item = NSPasteboardItem()
+        for type in outputTypes {
+            if type == .string {
                 if let plain = getPlainString() {
-                    pasteboard.setString(plain, forType: .string)
+                    item.setString(plain, forType: .string)
                 } else if let url = getUrl() {
-                    pasteboard.setString(url.absoluteString, forType: .string)
+                    item.setString(url.absoluteString, forType: .string)
                 }
             } else if let data = data(forType: type) {
-                pasteboard.setData(data, forType: type)
+                item.setData(data, forType: type)
             }
         }
+        return PasteboardWriter.write(item, to: pasteboard, concealed: isPassword)
     }
 }
 

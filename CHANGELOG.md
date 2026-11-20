@@ -22,6 +22,10 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 - **Per-item `pastesRichText` flag** — paste/move attach RTF/HTML variants according to the setting captured at copy time.
 - Unit tests grew from 99 to **141** — log hardening, storage helper encode/decode, AES-GCM contract, `DataFileManager` encryption, encryption probe, async load semantics, order coalescing, pasteboard gate, settings shared install.
 
+### Security
+
+- **Concealed password clipboard** — copying or pasting a password uses `org.nspasteboard.ConcealedType` and `.currentHostOnly` so other clipboard managers and Universal Clipboard do not capture it (`PasteboardWriter`).
+
 ### Changed
 
 - **Test isolation** — XCTest host and UI-test mode use a temporary `StorageRoot` (never `~/Library/Application Support/com.karakuts.VaultClip`); UI-testing helpers and mocks are DEBUG-only and absent from Release.

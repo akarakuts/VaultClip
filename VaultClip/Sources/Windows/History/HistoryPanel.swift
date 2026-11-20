@@ -16,6 +16,7 @@ class HistoryPanel {
     var items: [HistoryItem]
 
     let pasteboard: NSPasteboard
+    private let settings: () -> Settings
 
     /// Change counts produced by VaultClip's own paste actions (P8.3): the monitor skips
     /// them even when the source app is unknown/denylisted, instead of re-inserting.
@@ -26,10 +27,16 @@ class HistoryPanel {
         lastSelfWriteChangeCount = changeCount
     }
 
-    init(history: History, items: [HistoryItem]) {
+    init(
+        history: History,
+        items: [HistoryItem],
+        pasteboard: NSPasteboard = .general,
+        settings: @escaping () -> Settings = { SettingsPersistence.current() }
+    ) {
         self.history = history
         self.items = items
-        self.pasteboard = NSPasteboard.general
+        self.pasteboard = pasteboard
+        self.settings = settings
     }
 
     func paste(item: HistoryItem) {
@@ -37,14 +44,11 @@ class HistoryPanel {
         history.moveItem(at: index, to: 0)
 
         // Per-item rich-text decision from current settings (D5).
-        item.pastesRichText = AppEnvironment.shared.settings.pastesRichText
+        item.pastesRichText = settings().pastesRichText
 
-        let newChangeCount = pasteboard.clearContents()
-        HistoryPanel.markSelfWrite(newChangeCount)
-        history.recordPasteboardChange(withCount: newChangeCount)
-        item.write(to: pasteboard)
-        HistoryPanel.markSelfWrite(pasteboard.changeCount)
-        history.recordPasteboardChange(withCount: pasteboard.changeCount)
+        let changeCount = item.write(to: pasteboard)
+        HistoryPanel.markSelfWrite(changeCount)
+        history.recordPasteboardChange(withCount: changeCount)
         scheduleSimulatedPaste()
     }
     
@@ -124,13 +128,10 @@ class HistoryPanel {
         history.moveItem(at: from, to: to)
         
         if to == 0 {
-            let newChangeCount = pasteboard.clearContents()
-            HistoryPanel.markSelfWrite(newChangeCount)
-            history.recordPasteboardChange(withCount: newChangeCount)
-            fromItem.pastesRichText = AppEnvironment.shared.settings.pastesRichText
-            fromItem.write(to: pasteboard)
-            HistoryPanel.markSelfWrite(pasteboard.changeCount)
-            history.recordPasteboardChange(withCount: pasteboard.changeCount)
+            fromItem.pastesRichText = settings().pastesRichText
+            let changeCount = fromItem.write(to: pasteboard)
+            HistoryPanel.markSelfWrite(changeCount)
+            history.recordPasteboardChange(withCount: changeCount)
         }
     }
     
@@ -152,12 +153,12 @@ class HistoryPanel {
     
     func copyLogin(item: HistoryItem) {
         guard !item.passwordLogin.isEmpty else { return }
-        copyStringToClipboard(item.passwordLogin)
+        copyStringToClipboard(item.passwordLogin, concealed: false)
     }
     
     func copyPasswordURL(item: HistoryItem) {
         guard !item.passwordURL.isEmpty else { return }
-        copyStringToClipboard(item.passwordURL)
+        copyStringToClipboard(item.passwordURL, concealed: false)
     }
     
     func openPasswordURL(item: HistoryItem) {
@@ -167,15 +168,12 @@ class HistoryPanel {
     
     func copyPassword(item: HistoryItem) {
         guard let password = item.getPasswordValue(), !password.isEmpty else { return }
-        copyStringToClipboard(password)
+        copyStringToClipboard(password, concealed: true)
     }
     
-    private func copyStringToClipboard(_ string: String) {
-        let newChangeCount = pasteboard.clearContents()
-        HistoryPanel.markSelfWrite(newChangeCount)
-        history.recordPasteboardChange(withCount: newChangeCount)
-        pasteboard.setString(string, forType: .string)
-        HistoryPanel.markSelfWrite(pasteboard.changeCount)
-        history.recordPasteboardChange(withCount: pasteboard.changeCount)
+    private func copyStringToClipboard(_ string: String, concealed: Bool) {
+        let changeCount = PasteboardWriter.writeString(string, to: pasteboard, concealed: concealed)
+        HistoryPanel.markSelfWrite(changeCount)
+        history.recordPasteboardChange(withCount: changeCount)
     }
 }

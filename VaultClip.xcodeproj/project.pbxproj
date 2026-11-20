@@ -134,6 +134,7 @@
 		VCTST03212EB0B10004E6E63 /* SingleInstanceGuardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCTST03112EB0B10004E6E63 /* SingleInstanceGuardTests.swift */; };
 		VCTST04212EB0B10004E6E63 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCTST04112EB0B10004E6E63 /* AppEnvironmentTests.swift */; };
 		VCSTR00212EB0B10004E6E63 /* StorageRootTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSTR00112EB0B10004E6E63 /* StorageRootTests.swift */; };
+		VCPBT10212EB0B10004E6E63 /* HistoryPanelPasteboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPBT10112EB0B10004E6E63 /* HistoryPanelPasteboardTests.swift */; };
 		VCTST05212EB0B10004E6E63 /* VaultClipTestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */; };
 		VCSET02212EB0B10004E6E63 /* SettingsPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */; };
 		34ACFBDD22EB0B11004E6E63 /* VaultClipUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ACFBDC22EB0B11004E6E63 /* VaultClipUITests.swift */; };
@@ -157,6 +158,7 @@
 		VCARC00212EB0B10004E6E63 /* AppRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCARC00112EB0B10004E6E63 /* AppRouting.swift */; };
 		VCSP00212EB0B10004E6E63 /* SettingsPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSP00112EB0B10004E6E63 /* SettingsPersistence.swift */; };
 		VCPCT00212EB0B10004E6E63 /* PasteboardChangeTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPCT00112EB0B10004E6E63 /* PasteboardChangeTracking.swift */; };
+		VCPBW10212EB0B10004E6E63 /* PasteboardWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPBW10112EB0B10004E6E63 /* PasteboardWriter.swift */; };
 		34B5C43023580CF0005247EB /* ClipWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B5C42F23580CF0005247EB /* ClipWarning.swift */; };
 		34B5C43223580CFF005247EB /* Loggable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B5C43123580CFF005247EB /* Loggable.swift */; };
 		34B5C43423581B7B005247EB /* Alertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B5C43323581B7B005247EB /* Alertable.swift */; };
@@ -345,6 +347,7 @@
 		VCTST03112EB0B10004E6E63 /* SingleInstanceGuardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleInstanceGuardTests.swift; sourceTree = "<group>"; };
 		VCTST04112EB0B10004E6E63 /* AppEnvironmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironmentTests.swift; sourceTree = "<group>"; };
 		VCSTR00112EB0B10004E6E63 /* StorageRootTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageRootTests.swift; sourceTree = "<group>"; };
+		VCPBT10112EB0B10004E6E63 /* HistoryPanelPasteboardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryPanelPasteboardTests.swift; sourceTree = "<group>"; };
 		VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultClipTestSupport.swift; sourceTree = "<group>"; };
 		VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPersistenceTests.swift; sourceTree = "<group>"; };
 		34ACFBD322EB0B11004E6E63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -371,6 +374,7 @@
 		VCARC00112EB0B10004E6E63 /* AppRouting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouting.swift; sourceTree = "<group>"; };
 		VCSP00112EB0B10004E6E63 /* SettingsPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPersistence.swift; sourceTree = "<group>"; };
 		VCPCT00112EB0B10004E6E63 /* PasteboardChangeTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardChangeTracking.swift; sourceTree = "<group>"; };
+		VCPBW10112EB0B10004E6E63 /* PasteboardWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardWriter.swift; sourceTree = "<group>"; };
 		34B5C42F23580CF0005247EB /* ClipWarning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipWarning.swift; sourceTree = "<group>"; };
 		34B5C43123580CFF005247EB /* Loggable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loggable.swift; sourceTree = "<group>"; };
 		34B5C43323581B7B005247EB /* Alertable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alertable.swift; sourceTree = "<group>"; };
@@ -639,7 +643,8 @@
 				34734C7E2330CB6A0056F855 /* PasteboardMonitor.swift */,
 				34734C7F2330CB6A0056F855 /* PasteboardMonitorDelegate.swift */,
 				VCPCT00112EB0B10004E6E63 /* PasteboardChangeTracking.swift */,
-			);
+			
+				VCPBW10112EB0B10004E6E63 /* PasteboardWriter.swift */,);
 			path = PasteboardMonitor;
 			sourceTree = "<group>";
 		};
@@ -891,6 +896,7 @@
 				VCTST03112EB0B10004E6E63 /* SingleInstanceGuardTests.swift */,
 				VCTST04112EB0B10004E6E63 /* AppEnvironmentTests.swift */,
 				VCSTR00112EB0B10004E6E63 /* StorageRootTests.swift */,
+				VCPBT10112EB0B10004E6E63 /* HistoryPanelPasteboardTests.swift */,
 				VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */,
 				VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */,
 				C661A498BA1A4094B9CCB1ED /* LogStorageTests.swift */,
@@ -1173,6 +1179,7 @@
 				VCARC00212EB0B10004E6E63 /* AppRouting.swift in Sources */,
 				VCSP00212EB0B10004E6E63 /* SettingsPersistence.swift in Sources */,
 				VCPCT00212EB0B10004E6E63 /* PasteboardChangeTracking.swift in Sources */,
+				VCPBW10212EB0B10004E6E63 /* PasteboardWriter.swift in Sources */,
 				34B2FD9722F98C4E0068D50A /* NSMenu+Functional.swift in Sources */,
 				345B14B12341AF1900C2D0DA /* KeyPressHelperMock.swift in Sources */,
 				340FB43D236550390053D82C /* HistoryTableViewDelegate.swift in Sources */,
@@ -1311,6 +1318,7 @@
 				VCTST03212EB0B10004E6E63 /* SingleInstanceGuardTests.swift in Sources */,
 				VCTST04212EB0B10004E6E63 /* AppEnvironmentTests.swift in Sources */,
 				VCSTR00212EB0B10004E6E63 /* StorageRootTests.swift in Sources */,
+				VCPBT10212EB0B10004E6E63 /* HistoryPanelPasteboardTests.swift in Sources */,
 				VCTST05212EB0B10004E6E63 /* VaultClipTestSupport.swift in Sources */,
 				VCSET02212EB0B10004E6E63 /* SettingsPersistenceTests.swift in Sources */,
 				34268113233D9EC500BA226A /* NSMenuItemFunctionalTests.swift in Sources */,

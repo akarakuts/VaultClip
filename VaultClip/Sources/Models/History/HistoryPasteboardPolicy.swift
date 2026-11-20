@@ -42,6 +42,8 @@ enum HistoryPasteboardPolicy {
 
   static let pasteboardTypeIgnoreList: Set<NSPasteboard.PasteboardType> = Set([
     "dyn.ah62d4rv4gu8zg55zsmv0nvperf4g86varvu0635zqfx0nkdsqf00nkduqf31k3pcr7u1e3basv61a3k",
+    HistoryItem.historyItemIdType.rawValue,
+    "org.nspasteboard.source",
   ].map { NSPasteboard.PasteboardType(rawValue: $0) })
 
   static func shouldIgnoreSource(bundleId: String?) -> Bool {
