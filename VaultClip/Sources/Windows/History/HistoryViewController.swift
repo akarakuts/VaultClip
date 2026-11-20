@@ -69,6 +69,7 @@ class HistoryViewController: NSViewController {
     private let cheatSheetOverlay = CheatSheetOverlayView()
     private let embeddedPreview = EmbeddedPreviewView()
     private let filterBar = PanelFilterBarView()
+    private let emptyStateHost = PanelEmptyStateHostView()
     private var filterState = FilterState()
     private var filterBarVisible: Bool { appSettings.showsFilterBarPreference }
     private var selectionModel = SelectionModel()
@@ -88,6 +89,7 @@ class HistoryViewController: NSViewController {
         installCommandPaletteOverlay()
         installCheatSheetOverlay()
         installFilterBar()
+        installEmptyStateHost()
         installEmbeddedPreview()
         pendingDeletion.onCommit = { [weak self] ids in
             guard let self else { return }
@@ -1091,17 +1093,50 @@ class HistoryViewController: NSViewController {
     }
     
     private func updateEmptyListLabel(for mode: HistoryListMode, visible: Bool) {
+        emptyListLabel?.isHidden = true
+        let isSearch = results.value.isSearchResult || filterState.isActive || !searchBar.stringValue.isEmpty
+        let kind: PanelEmptyKind?
         if !appState.isHistoryLoaded {
-            emptyListLabel?.stringValue = L10n.historyLoading
-            emptyListLabel?.isHidden = false
-            return
+            kind = nil
+        } else if visible, isSearch {
+            kind = .noResults(query: searchBar.stringValue)
+        } else if visible {
+            switch mode {
+            case .history: kind = .history
+            case .favorites: kind = .favorites
+            case .passwords: kind = .passwords
+            }
+        } else {
+            kind = nil
         }
-        guard mode != .history else {
-            emptyListLabel?.isHidden = true
-            return
+        let model = PanelEmptyStatePresenter.present(
+            kind: kind,
+            isLoading: !appState.isHistoryLoaded,
+            isCapturePaused: appSettings.isCapturePaused,
+            filtersActive: filterState.isActive,
+            otherTabHitCount: nil,
+            otherTab: nil
+        )
+        emptyStateHost.onPrimary = { [weak self] in
+            guard let self else { return }
+            if self.filterState.isActive || !self.searchBar.stringValue.isEmpty {
+                self.clearFilters(resetSearch: true)
+            } else if self.appSettings.isCapturePaused {
+                SettingsPersistence.apply { $0.isCapturePaused = false }
+            }
         }
-        emptyListLabel?.stringValue = emptyStateMessage(for: mode) ?? ""
-        emptyListLabel?.isHidden = !visible
+        emptyStateHost.apply(model)
+    }
+
+    private func installEmptyStateHost() {
+        view.addSubview(emptyStateHost)
+        guard let scrollView = historyListView.enclosingScrollView else { return }
+        NSLayoutConstraint.activate([
+            emptyStateHost.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            emptyStateHost.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            emptyStateHost.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            emptyStateHost.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+        ])
     }
     
     private func configurePanelLayout() {
