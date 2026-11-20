@@ -218,6 +218,7 @@
 		B2C3D4E71123456789001 /* PasswordCommentPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E61123456789001 /* PasswordCommentPrompt.swift */; };
 		C3D4E5F61123456789001 /* HistoryItem+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D4E5F60123456789001 /* HistoryItem+Image.swift */; };
 		D4E5F6A71123456789001 /* SourceAppIconProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F6A60123456789001 /* SourceAppIconProvider.swift */; };
+		VCPNL59212EB0B10004E6E63 /* SourceAppDisplayName.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL59112EB0B10004E6E63 /* SourceAppDisplayName.swift */; };
 		E5F6A7B81123456789001 /* HistoryItem+CopiedAt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F6A7B70123456789001 /* HistoryItem+CopiedAt.swift */; };
 		VCDIG10212EB0B10004E6E63 /* ContentDigest.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCDIG10112EB0B10004E6E63 /* ContentDigest.swift */; };
 		F6A7B8C91123456789001 /* PanelChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7B8C80123456789001 /* PanelChrome.swift */; };
@@ -291,6 +292,7 @@
 		VCPNL56212EB0B10004E6E63 /* CommandPaletteOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL56112EB0B10004E6E63 /* CommandPaletteOverlayView.swift */; };
 		VCPNL57212EB0B10004E6E63 /* EmbeddedPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL57112EB0B10004E6E63 /* EmbeddedPreviewView.swift */; };
 		VCPNL58212EB0B10004E6E63 /* CheatSheetOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL58112EB0B10004E6E63 /* CheatSheetOverlayView.swift */; };
+		VCPNL59412EB0B10004E6E63 /* PanelFilterBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL59312EB0B10004E6E63 /* PanelFilterBarView.swift */; };
 		VCPNL54212EB0B10004E6E63 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL54112EB0B10004E6E63 /* SettingsStore.swift */; };
 		VCFST23212EB0B10004E6E63 /* PasswordPrivacySurfacesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST23112EB0B10004E6E63 /* PasswordPrivacySurfacesTests.swift */; };
 		VCFST24212EB0B10004E6E63 /* CommandPaletteModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST24112EB0B10004E6E63 /* CommandPaletteModelTests.swift */; };
@@ -552,6 +554,7 @@
 		B2C3D4E61123456789001 /* PasswordCommentPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordCommentPrompt.swift; sourceTree = "<group>"; };
 		C3D4E5F60123456789001 /* HistoryItem+Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryItem+Image.swift"; sourceTree = "<group>"; };
 		D4E5F6A60123456789001 /* SourceAppIconProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceAppIconProvider.swift; sourceTree = "<group>"; };
+		VCPNL59112EB0B10004E6E63 /* SourceAppDisplayName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceAppDisplayName.swift; sourceTree = "<group>"; };
 		E5F6A7B70123456789001 /* HistoryItem+CopiedAt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryItem+CopiedAt.swift"; sourceTree = "<group>"; };
 		VCDIG10112EB0B10004E6E63 /* ContentDigest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentDigest.swift; sourceTree = "<group>"; };
 		F6A7B8C80123456789001 /* PanelChrome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelChrome.swift; sourceTree = "<group>"; };
@@ -621,6 +624,7 @@
 		VCPNL56112EB0B10004E6E63 /* CommandPaletteOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPaletteOverlayView.swift; sourceTree = "<group>"; };
 		VCPNL57112EB0B10004E6E63 /* EmbeddedPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddedPreviewView.swift; sourceTree = "<group>"; };
 		VCPNL58112EB0B10004E6E63 /* CheatSheetOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatSheetOverlayView.swift; sourceTree = "<group>"; };
+		VCPNL59312EB0B10004E6E63 /* PanelFilterBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelFilterBarView.swift; sourceTree = "<group>"; };
 		VCPNL54112EB0B10004E6E63 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		VCFST23112EB0B10004E6E63 /* PasswordPrivacySurfacesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPrivacySurfacesTests.swift; sourceTree = "<group>"; };
 		VCFST24112EB0B10004E6E63 /* CommandPaletteModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPaletteModelTests.swift; sourceTree = "<group>"; };
@@ -746,6 +750,7 @@
 				VCPNL56112EB0B10004E6E63 /* CommandPaletteOverlayView.swift */,
 				VCPNL57112EB0B10004E6E63 /* EmbeddedPreviewView.swift */,
 				VCPNL58112EB0B10004E6E63 /* CheatSheetOverlayView.swift */,
+				VCPNL59312EB0B10004E6E63 /* PanelFilterBarView.swift */,
 				VCHVD00112EB0B10004E6E63 /* HistoryViewController+Delegates.swift */,
 				VCHPC00112EB0B10004E6E63 /* HistoryPanelChromeConfigurator.swift */,
 				VCPCH10112EB0B10004E6E63 /* PanelChromeController.swift */,
@@ -815,6 +820,7 @@
 				VCINST0012EB0D10004E6E63 /* SingleInstanceGuard.swift */,
 				34268123233EE82200BA226A /* AccessControlHelper.swift */,
 				D4E5F6A60123456789001 /* SourceAppIconProvider.swift */,
+				VCPNL59112EB0B10004E6E63 /* SourceAppDisplayName.swift */,
 				34268125233EE83700BA226A /* AccessControlHelperMock.swift */,
 				345B14AE2341AEEA00C2D0DA /* KeyPressHelper.swift */,
 				345B14B02341AF1900C2D0DA /* KeyPressHelperMock.swift */,
@@ -1552,6 +1558,7 @@
 				VCPNL56212EB0B10004E6E63 /* CommandPaletteOverlayView.swift in Sources */,
 				VCPNL57212EB0B10004E6E63 /* EmbeddedPreviewView.swift in Sources */,
 				VCPNL58212EB0B10004E6E63 /* CheatSheetOverlayView.swift in Sources */,
+				VCPNL59412EB0B10004E6E63 /* PanelFilterBarView.swift in Sources */,
 				VCHVD00212EB0B10004E6E63 /* HistoryViewController+Delegates.swift in Sources */,
 				VCHPC00212EB0B10004E6E63 /* HistoryPanelChromeConfigurator.swift in Sources */,
 				34E56483235E777E00E362CF /* NSTextCheckingResult+Groups.swift in Sources */,
@@ -1607,6 +1614,7 @@
 				VCHFM00212EB0B10004E6E63 /* HistoryFileManaging.swift in Sources */,
 				34268124233EE82200BA226A /* AccessControlHelper.swift in Sources */,
 				D4E5F6A71123456789001 /* SourceAppIconProvider.swift in Sources */,
+				VCPNL59212EB0B10004E6E63 /* SourceAppDisplayName.swift in Sources */,
 				34B1375A235BFB87004AB5ED /* HistoryFileManager.swift in Sources */,
 				34A30CC42356B93900D4C2D6 /* HistoryCache.swift in Sources */,
 				3423B1C3234DA3B700B40715 /* ClipStatusItem.swift in Sources */,

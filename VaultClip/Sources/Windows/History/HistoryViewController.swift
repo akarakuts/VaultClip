@@ -68,6 +68,9 @@ class HistoryViewController: NSViewController {
     private let commandPaletteOverlay = CommandPaletteOverlayView()
     private let cheatSheetOverlay = CheatSheetOverlayView()
     private let embeddedPreview = EmbeddedPreviewView()
+    private let filterBar = PanelFilterBarView()
+    private var filterState = FilterState()
+    private var filterBarVisible = true
     private let previewDebouncer = PreviewUpdateDebouncer(scheduler: PreviewDispatchScheduler())
     private lazy var pendingDeletion = PendingDeletionQueue(
         scheduler: PendingDeletionDispatchScheduler()
@@ -83,6 +86,7 @@ class HistoryViewController: NSViewController {
         styleHistoryChrome()
         installCommandPaletteOverlay()
         installCheatSheetOverlay()
+        installFilterBar()
         installEmbeddedPreview()
         pendingDeletion.onCommit = { [weak self] ids in
             guard let self else { return }
@@ -311,10 +315,13 @@ class HistoryViewController: NSViewController {
     
     func applyListFilter(mutation: HistoryTableView.RowMutation = .reload) {
         let baseItems = itemsForActiveListMode(from: appState.history.items)
+        let filtered = applyTypeAndAppFilters(to: baseItems)
         // Do not rebuild a full-text engine here — SearchIndex updates incrementally / on demand (T22).
-        results.accept(Results(items: baseItems, isSearchResult: false))
-        updateEmptyListLabel(for: listMode.value, visible: baseItems.isEmpty)
+        let isFiltered = filterState.isActive || !searchBar.stringValue.isEmpty
+        results.accept(Results(items: filtered, isSearchResult: isFiltered && filtered.count != baseItems.count))
+        updateEmptyListLabel(for: listMode.value, visible: filtered.isEmpty)
         syncHistoryTableToResults(mutation: mutation)
+        refreshFilterBarApps(from: baseItems)
     }
 
     /// Pushes `results` into the table; skip row layout while the panel is hidden (wrong window size at launch).
@@ -437,6 +444,9 @@ class HistoryViewController: NSViewController {
     func close(reason: PanelCloseReason = .userAction) {
         pendingDeletion.flushAll()
         isPreviewShowing = false
+        if appSettings.resetFiltersOnClose {
+            clearFilters(resetSearch: true)
+        }
         appState.panelCloseReason = reason
         appState.isHistoryPanelShown.accept(false)
         appState.previewHistoryItem.accept(nil)
@@ -573,7 +583,7 @@ class HistoryViewController: NSViewController {
             passwordRevealed: false,
             multiSelectActive: false,
             searchIsEmpty: searchBar.stringValue.isEmpty,
-            filtersActive: false
+            filtersActive: filterState.isActive
         )
         switch EscapeResolver.resolve(state) {
         case .dismissOverlay:
@@ -586,6 +596,9 @@ class HistoryViewController: NSViewController {
         case .clearSearch:
             searchBar.stringValue = ""
             applyListFilter()
+            return true
+        case .clearFilters:
+            clearFilters(resetSearch: false)
             return true
         case .closePanel:
             close()
@@ -688,6 +701,22 @@ class HistoryViewController: NSViewController {
             }
         case .undoDelete:
             undoPendingDeletion()
+        case .filterTypeAll:
+            setTypeFilter(.all)
+        case .filterTypeText:
+            setTypeFilter(.text)
+        case .filterTypeLinks:
+            setTypeFilter(.link)
+        case .filterTypeImages:
+            setTypeFilter(.image)
+        case .filterTypeFiles:
+            setTypeFilter(.file)
+        case .filterTypeColors:
+            setTypeFilter(.color)
+        case .filterApp:
+            showAppFilterMenu()
+        case .clearFilters:
+            clearFilters(resetSearch: true)
         case .cheatSheet:
             showCheatSheet()
         case .closePanel:
@@ -709,8 +738,11 @@ class HistoryViewController: NSViewController {
     }
 
     func runSearch() {
+        promoteCompletedSearchTokens()
         let query = searchBar.stringValue
-        let baseItems = itemsForActiveListMode(from: appState.history.items)
+        let tabItems = itemsForActiveListMode(from: appState.history.items)
+        let baseItems = applyTypeAndAppFilters(to: tabItems)
+        refreshFilterBarApps(from: tabItems)
         if query.isEmpty {
             applyListFilter()
             return
@@ -736,6 +768,109 @@ class HistoryViewController: NSViewController {
             let sources = appState.history.items.map(SearchSource.init)
             searchIndex.replaceAll(sources: sources, cache: cache, completion: applyResults)
         }
+    }
+
+    private func installFilterBar() {
+        filterBar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(filterBar)
+        NSLayoutConstraint.activate([
+            filterBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+            filterBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            filterBar.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 4),
+            filterBar.heightAnchor.constraint(equalToConstant: 28)
+        ])
+        filterBar.onTypeChange = { [weak self] type in
+            self?.setTypeFilter(type)
+        }
+        filterBar.onAppChange = { [weak self] query in
+            guard let self else { return }
+            self.filterState.appQuery = query
+            self.filterBar.apply(self.filterState)
+            self.scheduleSearch()
+        }
+        updateFilterBarVisibility()
+        listMode.subscribe(onNext: { [weak self] _ in
+            self?.updateFilterBarVisibility()
+            self?.scheduleSearch()
+        }).disposed(by: disposeBag)
+    }
+
+    private func updateFilterBarVisibility() {
+        let show = filterBarVisible && listMode.value != .passwords
+        filterBar.isHidden = !show
+    }
+
+    private func setTypeFilter(_ type: TypeFilter) {
+        filterState.type = type
+        filterBar.apply(filterState)
+        scheduleSearch()
+    }
+
+    private func clearFilters(resetSearch: Bool) {
+        filterState = FilterState()
+        filterBar.apply(filterState)
+        if resetSearch {
+            searchBar.stringValue = ""
+        }
+        applyListFilter()
+    }
+
+    private func showAppFilterMenu() {
+        filterBarVisible = true
+        updateFilterBarVisibility()
+        // Focus app popup so ⌥⌘A opens the source list (U14).
+        filterBar.window?.makeFirstResponder(filterBar)
+    }
+
+    private func promoteCompletedSearchTokens() {
+        let raw = searchBar.stringValue
+        let parsed = SearchTokenParser.parse(raw)
+        var changed = false
+        if parsed.filter.type != .all {
+            filterState.type = parsed.filter.type
+            changed = true
+        }
+        if let app = parsed.filter.appQuery {
+            filterState.appQuery = app
+            changed = true
+        }
+        if parsed.remainingQuery != raw {
+            searchBar.stringValue = parsed.remainingQuery
+            changed = true
+        }
+        if changed {
+            filterBar.apply(filterState)
+        }
+    }
+
+    private func applyTypeAndAppFilters(to items: [HistoryItem]) -> [HistoryItem] {
+        guard filterState.isActive, listMode.value != .passwords else { return items }
+        return items.filter { item in
+            filterState.matches(
+                kind: itemKind(for: item),
+                sourceBundleId: item.sourceBundleId,
+                appDisplayName: SourceAppDisplayName.name(forBundleId: item.sourceBundleId)
+            )
+        }
+    }
+
+    private func itemKind(for item: HistoryItem) -> ItemKind {
+        ItemKindClassifier.classify(
+            .init(
+                isPassword: item.isPassword,
+                typeIdentifiers: item.types.map(\.rawValue),
+                plainText: item.isPassword ? nil : item.getPlainString(),
+                fileURLCount: item.getFileUrl() == nil ? 0 : 1
+            )
+        )
+    }
+
+    private func refreshFilterBarApps(from items: [HistoryItem]) {
+        let pairs = items.map {
+            (bundleId: $0.sourceBundleId, displayName: SourceAppDisplayName.name(forBundleId: $0.sourceBundleId))
+        }
+        filterBar.reloadApps(from: pairs, selectedQuery: filterState.appQuery)
+        filterBar.apply(filterState)
     }
     
     private func incrementSelected() {

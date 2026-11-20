@@ -305,6 +305,15 @@ enum L10n {
     static var command_filterTypeColors: String { tr("command.filterTypeColors") }
     static var command_filterApp: String { tr("command.filterApp") }
     static var command_clearFilters: String { tr("command.clearFilters") }
+
+    static var filterAllApps: String { tr("filter.allApps") }
+    static var filterUnknownSource: String { tr("filter.unknownSource") }
+    static var filterTypeAll: String { tr("filter.typeAll") }
+    static var filterTypeText: String { tr("filter.typeText") }
+    static var filterTypeLinks: String { tr("filter.typeLinks") }
+    static var filterTypeImages: String { tr("filter.typeImages") }
+    static var filterTypeFiles: String { tr("filter.typeFiles") }
+    static var filterTypeColors: String { tr("filter.typeColors") }
     static var command_textSizeIncrease: String { tr("command.textSizeIncrease") }
     static var command_textSizeDecrease: String { tr("command.textSizeDecrease") }
     static var command_cheatSheet: String { tr("command.cheatSheet") }
