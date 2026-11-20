@@ -223,7 +223,7 @@ Or right-click **VaultClip.app** → **Open** → confirm once. Prefer **build f
 ### Build from source (step by step)
 
 1. **Clone** the repo (see Quick build above).
-2. **Open** `VaultClip.xcodeproj` in Xcode (first build resolves SPM packages: RxSwift, HotKey, Fuse).
+2. **Open** `VaultClip.xcodeproj` in Xcode (first build resolves SPM packages: RxSwift, HotKey).
 3. **Xcode schemes:**
    - **VaultClip** — release app;
    - **VaultClip Beta** — beta bundle;
@@ -309,7 +309,7 @@ Ideas, bugs, and pull requests are welcome: [issues](https://github.com/akarakut
 
 **GNU General Public License v3.0 or later** (GPL-3.0-or-later). See [LICENSE](LICENSE).
 
-Fork of [Yippy](https://github.com/mattDavo/Yippy) (Matthew Davidson), originally MIT. GPLv3 applies to VaultClip as a whole. Third-party code (RxSwift, HotKey, Fuse, vendored Default and LoginServiceKit) remains under its respective licenses.
+Fork of [Yippy](https://github.com/mattDavo/Yippy) (Matthew Davidson), originally MIT. GPLv3 applies to VaultClip as a whole. Third-party code (RxSwift, HotKey, vendored Default and LoginServiceKit) remains under its respective licenses.
 
 ---
 

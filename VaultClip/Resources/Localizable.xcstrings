@@ -28219,6 +28219,38 @@
           }
         }
       }
+    },
+    "search.label.pdf": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF document"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Документ PDF"
+          }
+        }
+      }
+    },
+    "search.label.image": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Image"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Изображение"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

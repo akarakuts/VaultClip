@@ -39,7 +39,7 @@ Legacy `State.main` / `Controller.main` / `Settings.main` remain as thin forward
 | **Composition** | `AppEnvironment`, `AppRouting`, `SettingsPersistence` | Bootstrap, navigation, settings I/O |
 | **App shell** | `AppDelegate`, `Controller` | Status item, windows, menu |
 | **State** | `State.swift` | Shared reactive state (`BehaviorRelay`) |
-| **Domain** | `History`, `HistoryItem`, `SearchEngine`, `HistoryPasteboardPolicy` | Clipboard rules, dedup, favorites/passwords, fuzzy search |
+| **Domain** | `History`, `HistoryItem`, `SearchIndex`, `HistoryPasteboardPolicy` | Clipboard rules, dedup, favorites/passwords, ranked search |
 | **Persistence** | `HistoryFileManager`, `HistoryFileManaging`, `SymmetricKeyStore` | Encrypted files under Application Support |
 | **Security** | `SecureStorageHelper`, `AESGCMDataEncryptor` | Path validation, chmod, Keychain key |
 | **Platform** | `PasteboardMonitor`, `PasteboardChangeTracking`, `LaunchAtLoginHelper` | Pasteboard polling, login items, `flock` |

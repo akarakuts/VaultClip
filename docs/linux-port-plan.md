@@ -16,7 +16,7 @@
 - `order.xml` / plist порядка UUID;
 - шифрование **VC1** + AES-256-GCM (`DataFileManager.swift`, `AESGCMDataEncryptor.swift`);
 - правила dedup, pruning, favorites/passwords (`History.swift`);
-- fuzzy search (`Search.swift`, `SearchEngine.swift`).
+- ranked search (`SearchIndex.swift`).
 
 **Важно:** ключ из macOS Keychain **не переносится** на Linux — нужен отдельный импорт/экспорт или общий файл ключа (опционально, с предупреждением).
 
@@ -142,7 +142,7 @@ VaultClip/
 | `crypto` | `AESGCMDataEncryptor`, `DataFileManager` |
 | `file_store` | `HistoryFileManager`, `ArrayFileManager` |
 | `history_engine` | `History`, `HistoryCache`, metadata |
-| `search` | `Search`, `SearchEngine` |
+| `search` | `SearchIndex` |
 | `settings` | `Settings` → JSON schema |
 | `ffi` | C API для Swift (macOS) |
 

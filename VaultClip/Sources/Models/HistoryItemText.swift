@@ -196,4 +196,73 @@ struct HistoryItemText {
             .link: url,
         ]
     }
+
+    /// Shared HTML strip for search (regex only — safe off the main thread).
+    static func stripHTMLTagsForSearch(_ html: String) -> String {
+        stripHTMLTags(html)
+    }
+
+    /// Cheap searchable blob for SearchIndex (no HTML AppKit parse, no PDF/image decode).
+    static func searchableText(for source: SearchSource, cache: HistoryCache) -> String {
+        #if DEBUG
+        dispatchPrecondition(condition: .notOnQueue(.main))
+        #endif
+        if source.isPassword {
+            return [source.passwordComment, source.passwordLogin, source.passwordURL]
+                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .filter { !$0.isEmpty }
+                .joined(separator: "\n")
+        }
+        if let prefetched = source.prefetchedText, !prefetched.isEmpty {
+            return prefetched
+        }
+        let types = Set(source.types)
+        if let plain = firstDecodedString(id: source.fsId, types: HistoryItem.plainTextPasteboardTypes, in: types, cache: cache) {
+            return String(plain.prefix(20_000))
+        }
+        if let rtf = cache.data(withId: source.fsId, forType: .rtf),
+           let attr = NSAttributedString(rtf: rtf, documentAttributes: nil) {
+            return String(attr.string.prefix(20_000))
+        }
+        if let html = cache.data(withId: source.fsId, forType: .html),
+           let raw = String(data: html, encoding: .utf8) {
+            return String(stripHTMLTags(raw).prefix(20_000))
+        }
+        if types.contains(.URL), let data = cache.data(withId: source.fsId, forType: .URL),
+           let url = HistoryItem.parseUrl(from: data) {
+            return url.absoluteString
+        }
+        if types.contains(.fileURL), let data = cache.data(withId: source.fsId, forType: .fileURL),
+           let url = HistoryItem.parseUrl(from: data) {
+            return url.path
+        }
+        if types.contains(.pdf) || types.contains(NSPasteboard.PasteboardType(rawValue: "com.adobe.pdf")) {
+            return L10n.searchLabelPDF
+        }
+        if HistoryItem.rasterImagePasteboardTypes.contains(where: types.contains) {
+            return L10n.searchLabelImage
+        }
+        return ""
+    }
+
+    private static func firstDecodedString(
+        id: UUID,
+        types: [NSPasteboard.PasteboardType],
+        in available: Set<NSPasteboard.PasteboardType>,
+        cache: HistoryCache
+    ) -> String? {
+        for type in types where available.contains(type) {
+            guard let data = cache.data(withId: id, forType: type),
+                  let string = String(data: data, encoding: .utf8),
+                  !string.isEmpty else { continue }
+            return string
+        }
+        return nil
+    }
+
+    private static func stripHTMLTags(_ html: String) -> String {
+        html.replacingOccurrences(of: "<[^>]+>", with: " ", options: .regularExpression)
+            .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
 }

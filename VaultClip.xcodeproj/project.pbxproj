@@ -192,9 +192,7 @@
 		34E516CD2352C4AF008B4256 /* HistoryItemBaseCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E516CC2352C4AF008B4256 /* HistoryItemBaseCellView.swift */; };
 		34E516CF2352C4D4008B4256 /* HistoryItemContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E516CE2352C4D4008B4256 /* HistoryItemContentView.swift */; };
 		34E56483235E777E00E362CF /* NSTextCheckingResult+Groups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E56482235E777E00E362CF /* NSTextCheckingResult+Groups.swift */; };
-		34EC0FF42504A599004E1A63 /* Fuse in Frameworks */ = {isa = PBXBuildFile; productRef = 34EC0FF32504A599004E1A63 /* Fuse */; };
-		34EC0FF72504AC9C004E1A63 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EC0FF62504AC9C004E1A63 /* Search.swift */; };
-		34EC0FF92504ADE7004E1A63 /* SearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EC0FF82504ADE7004E1A63 /* SearchEngine.swift */; };
+		VCSIX10212EB0B10004E6E63 /* SearchIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSIX10112EB0B10004E6E63 /* SearchIndex.swift */; };
 		34F1047D23542CCE00B65251 /* HistoryItem+HistoryListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F1047C23542CCE00B65251 /* HistoryItem+HistoryListItem.swift */; };
 		A1B2C3D41123456789001 /* SearchEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40123456789001 /* SearchEngineTests.swift */; };
 		A1B2C3D61123456789001 /* HistoryItem+Password.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D51123456789001 /* HistoryItem+Password.swift */; };
@@ -424,8 +422,7 @@
 		34E516CC2352C4AF008B4256 /* HistoryItemBaseCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryItemBaseCellView.swift; sourceTree = "<group>"; };
 		34E516CE2352C4D4008B4256 /* HistoryItemContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryItemContentView.swift; sourceTree = "<group>"; };
 		34E56482235E777E00E362CF /* NSTextCheckingResult+Groups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTextCheckingResult+Groups.swift"; sourceTree = "<group>"; };
-		34EC0FF62504AC9C004E1A63 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
-		34EC0FF82504ADE7004E1A63 /* SearchEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEngine.swift; sourceTree = "<group>"; };
+		VCSIX10112EB0B10004E6E63 /* SearchIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchIndex.swift; sourceTree = "<group>"; };
 		34F1047C23542CCE00B65251 /* HistoryItem+HistoryListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryItem+HistoryListItem.swift"; sourceTree = "<group>"; };
 		A1B2C3D31123456789001 /* HistoryTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTabBarView.swift; sourceTree = "<group>"; };
 		A1B2C3D40123456789001 /* SearchEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEngineTests.swift; sourceTree = "<group>"; };
@@ -462,7 +459,6 @@
 				VCSPM00312EB0C10004E6E63 /* RxRelay in Frameworks */,
 				344C1162234DD2EF00B35DC9 /* Quartz.framework in Frameworks */,
 				34545E50267715D600D6404D /* HotKey in Frameworks */,
-				34EC0FF42504A599004E1A63 /* Fuse in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -974,8 +970,7 @@
 		34EC0FF52504AC79004E1A63 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				34EC0FF62504AC9C004E1A63 /* Search.swift */,
-				34EC0FF82504ADE7004E1A63 /* SearchEngine.swift */,
+				VCSIX10112EB0B10004E6E63 /* SearchIndex.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -1007,7 +1002,6 @@
 			);
 			name = VaultClip;
 			packageProductDependencies = (
-				34EC0FF32504A599004E1A63 /* Fuse */,
 				34545E4F267715D600D6404D /* HotKey */,
 				VCSPM00102EB0C10004E6E63 /* RxSwift */,
 				VCSPM00202EB0C10004E6E63 /* RxCocoa */,
@@ -1147,7 +1141,6 @@
 			mainGroup = 34ACFBB222EB0B0E004E6E63;
 			packageReferences = (
 				345DCFBB2420C2D2003E214D /* XCRemoteSwiftPackageReference "HotKey" */,
-				34EC0FF22504A599004E1A63 /* XCRemoteSwiftPackageReference "fuse-swift" */,
 				VCSPM00012EB0C10004E6E63 /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 34ACFBBC22EB0B0F004E6E63 /* Products */;
@@ -1218,7 +1211,6 @@
 				34E516CD2352C4AF008B4256 /* HistoryItemBaseCellView.swift in Sources */,
 				3490D3992328EFB300BA8747 /* HelpViewController.swift in Sources */,
 				34E516CF2352C4D4008B4256 /* HistoryItemContentView.swift in Sources */,
-				34EC0FF72504AC9C004E1A63 /* Search.swift in Sources */,
 				34734C812330CB6A0056F855 /* PasteboardMonitorDelegate.swift in Sources */,
 				345B149323403B4100C2D0DA /* AccessControlMock.swift in Sources */,
 				345131EF23836725002D9D03 /* PreviewViewController.swift in Sources */,
@@ -1299,7 +1291,7 @@
 				34B1375A235BFB87004AB5ED /* HistoryFileManager.swift in Sources */,
 				34A30CC42356B93900D4C2D6 /* HistoryCache.swift in Sources */,
 				3423B1C3234DA3B700B40715 /* ClipStatusItem.swift in Sources */,
-				34EC0FF92504ADE7004E1A63 /* SearchEngine.swift in Sources */,
+				VCSIX10212EB0B10004E6E63 /* SearchIndex.swift in Sources */,
 				341D9D3C233ADE6E008A2BE6 /* HistoryWindowController.swift in Sources */,
 				340D3CA72361957100C2B335 /* ObservableType+WithPrevious.swift in Sources */,
 				34D018EB232B4D70006259E1 /* WelcomeWindowController.swift in Sources */,
@@ -2142,14 +2134,6 @@
 				version = 0.1.5;
 			};
 		};
-		34EC0FF22504A599004E1A63 /* XCRemoteSwiftPackageReference "fuse-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/krisk/fuse-swift";
-			requirement = {
-				kind = exactVersion;
-				version = 1.4.0;
-			};
-		};
 		VCSPM00012EB0C10004E6E63 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift";
@@ -2165,11 +2149,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 345DCFBB2420C2D2003E214D /* XCRemoteSwiftPackageReference "HotKey" */;
 			productName = HotKey;
-		};
-		34EC0FF32504A599004E1A63 /* Fuse */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 34EC0FF22504A599004E1A63 /* XCRemoteSwiftPackageReference "fuse-swift" */;
-			productName = Fuse;
 		};
 		VCSPM00102EB0C10004E6E63 /* RxSwift */ = {
 			isa = XCSwiftPackageProductDependency;

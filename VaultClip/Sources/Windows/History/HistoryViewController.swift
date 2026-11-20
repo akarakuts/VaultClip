@@ -43,8 +43,9 @@ class HistoryViewController: NSViewController {
     
     lazy var historyPanel = HistoryPanel(history: appState.history, items: [])
     
-    var searchEngine = SearchEngine(historyItems: [])
-    
+    let searchIndex = SearchIndex()
+    private var searchDebounceWork: DispatchWorkItem?
+
     let disposeBag = DisposeBag()
     
     var isPreviewShowing = false
@@ -231,6 +232,7 @@ class HistoryViewController: NSViewController {
     }
     
     func onHistoryChange(_ history: [HistoryItem], change: History.Change) {
+        updateSearchIndex(for: change, history: history)
         if !searchBar.stringValue.isEmpty {
             runSearch()
         } else {
@@ -264,6 +266,29 @@ class HistoryViewController: NSViewController {
             break
         }
     }
+
+    private func updateSearchIndex(for change: History.Change, history: [HistoryItem]) {
+        let cache = appState.historyCache
+        switch change {
+        case .initial:
+            searchIndex.invalidate()
+        case .clear:
+            searchIndex.clear()
+        case .insert(let index):
+            guard history.indices.contains(index) else { return }
+            searchIndex.upsert(source: SearchSource(item: history[index]), cache: cache)
+        case .delete(let deleted):
+            searchIndex.remove(id: deleted.fsId)
+        case .itemLimitDecreased(let deletedItems):
+            for item in deletedItems {
+                searchIndex.remove(id: item.fsId)
+            }
+        case .favoriteChanged(let item, _), .passwordChanged(let item, _):
+            searchIndex.upsert(source: SearchSource(item: item), cache: cache)
+        case .move, .pinnedLimitExceeded:
+            break
+        }
+    }
     
     func itemsForActiveListMode(from history: [HistoryItem]) -> [HistoryItem] {
         switch listMode.value {
@@ -278,7 +303,7 @@ class HistoryViewController: NSViewController {
     
     func applyListFilter() {
         let baseItems = itemsForActiveListMode(from: appState.history.items)
-        updateSearchEngine(items: baseItems)
+        // Do not rebuild a full-text engine here — SearchIndex updates incrementally / on demand (T22).
         results.accept(Results(items: baseItems, isSearchResult: false))
         updateEmptyListLabel(for: listMode.value, visible: baseItems.isEmpty)
         syncHistoryTableToResults()
@@ -312,10 +337,6 @@ class HistoryViewController: NSViewController {
         guard let row = visibleItems.firstIndex(where: { $0.fsId == item.fsId }) else { return }
         historyListView.noteHeightOfRows(withIndexesChanged: IndexSet(integer: row))
         historyListView.reloadItem(row)
-    }
-    
-    func updateSearchEngine(items: [HistoryItem]) {
-        self.searchEngine = SearchEngine(historyItems: items)
     }
     
     func onAllChange(_ results: Results, _ selected: (Int?, Int?)) {
@@ -399,6 +420,15 @@ class HistoryViewController: NSViewController {
         self.searchBar.becomeFirstResponder()
     }
     
+    func scheduleSearch() {
+        searchDebounceWork?.cancel()
+        let work = DispatchWorkItem { [weak self] in
+            self?.runSearch()
+        }
+        searchDebounceWork = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.12, execute: work)
+    }
+
     func runSearch() {
         let query = searchBar.stringValue
         let baseItems = itemsForActiveListMode(from: appState.history.items)
@@ -406,21 +436,27 @@ class HistoryViewController: NSViewController {
             applyListFilter()
             return
         }
-        
-        updateSearchEngine(items: baseItems)
-        searchEngine.search(query: query, completion: { result in
-            DispatchQueue.main.async {
-                guard self.searchBar.stringValue == result.query.query else { return }
-                
-                var filteredData = [HistoryItem]()
-                for index in result.results {
-                    guard index >= 0, index < baseItems.count else { continue }
-                    filteredData.append(baseItems[index])
-                }
-                self.results.accept(Results(items: filteredData, isSearchResult: true))
+
+        let copiedAt = Dictionary(uniqueKeysWithValues: baseItems.map { ($0.fsId, $0.copiedAt) })
+        let visibleIds = baseItems.map(\.fsId)
+        let cache = appState.historyCache
+        let applyResults: () -> Void = { [weak self] in
+            self?.searchIndex.search(query: query, visibleIds: visibleIds, copiedAt: copiedAt) { ids in
+                guard let self else { return }
+                guard self.searchBar.stringValue == query else { return }
+                let byId = Dictionary(uniqueKeysWithValues: baseItems.map { ($0.fsId, $0) })
+                let filtered = ids.compactMap { byId[$0] }
+                self.results.accept(Results(items: filtered, isSearchResult: true))
                 self.syncHistoryTableToResults()
             }
-        })
+        }
+        // Lazy full build on first non-empty query; later updates are incremental (T22).
+        if searchIndex.isBuilt {
+            applyResults()
+        } else {
+            let sources = appState.history.items.map(SearchSource.init)
+            searchIndex.replaceAll(sources: sources, cache: cache, completion: applyResults)
+        }
     }
     
     private func incrementSelected() {

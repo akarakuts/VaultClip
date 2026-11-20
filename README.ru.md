@@ -223,7 +223,7 @@ xattr -cr /Applications/VaultClip.app
 ### Сборка из исходников (пошагово)
 
 1. **Клонировать** репозиторий (см. быструю сборку выше).
-2. **Открыть** `VaultClip.xcodeproj` в Xcode (первая сборка загрузит SPM-пакеты: RxSwift, HotKey, Fuse).
+2. **Открыть** `VaultClip.xcodeproj` в Xcode (первая сборка загрузит SPM-пакеты: RxSwift, HotKey).
 3. **Схемы Xcode:**
    - **VaultClip** — релизное приложение;
    - **VaultClip Beta** — бета-сборка;
@@ -309,7 +309,7 @@ VaultClip — **активный форк с открытым кодом** (GPLv
 
 **GNU General Public License v3.0 или новее** (GPL-3.0-or-later). Текст — в [LICENSE](LICENSE).
 
-Форк [Yippy](https://github.com/mattDavo/Yippy) (Matthew Davidson), изначально MIT. К VaultClip в целом применяется GPLv3. Сторонний код (RxSwift, HotKey, Fuse, вендоренные Default и LoginServiceKit) — под своими лицензиями.
+Форк [Yippy](https://github.com/mattDavo/Yippy) (Matthew Davidson), изначально MIT. К VaultClip в целом применяется GPLv3. Сторонний код (RxSwift, HotKey, вендоренные Default и LoginServiceKit) — под своими лицензиями.
 
 ---
 

@@ -246,7 +246,7 @@ class HistoryItem: NSObject {
         return nil
     }
 
-    private static let plainTextPasteboardTypes: [NSPasteboard.PasteboardType] = [
+    static let plainTextPasteboardTypes: [NSPasteboard.PasteboardType] = [
         .string,
         NSPasteboard.PasteboardType(rawValue: "NSStringPboardType"),
         NSPasteboard.PasteboardType(rawValue: "public.text"),

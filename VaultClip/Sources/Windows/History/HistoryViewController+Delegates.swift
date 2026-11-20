@@ -9,7 +9,7 @@ import Cocoa
 
 extension HistoryViewController: NSTextFieldDelegate {
     func controlTextDidChange(_ obj: Notification) {
-        runSearch()
+        scheduleSearch()
     }
 }
 
