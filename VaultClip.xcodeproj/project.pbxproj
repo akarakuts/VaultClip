@@ -249,6 +249,14 @@
 		VCPNL25212EB0B10004E6E63 /* PanelHeaderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL25112EB0B10004E6E63 /* PanelHeaderModel.swift */; };
 		VCHDR10212EB0B10004E6E63 /* PanelHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCHDR10112EB0B10004E6E63 /* PanelHeaderView.swift */; };
 		VCPNL26212EB0B10004E6E63 /* PanelHeaderPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL26112EB0B10004E6E63 /* PanelHeaderPresenterTests.swift */; };
+		VCPNL27212EB0B10004E6E63 /* PanelStatusBarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */; };
+		VCPNL28212EB0B10004E6E63 /* PanelEmptyStateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */; };
+		VCPNL29212EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */; };
+		VCPNL30212EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */; };
+		VCPNL27212EB0B10004E6E63 /* PanelStatusBarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */; };
+		VCPNL28212EB0B10004E6E63 /* PanelEmptyStateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */; };
+		VCPNL29212EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */; };
+		VCPNL30212EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */; };
 		F7A8B9CA1123456789001 /* HistoryItem+Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9C91123456789001 /* HistoryItem+Favorite.swift */; };
 		F7A8B9CC1123456789001 /* HistoryListMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9CB1123456789001 /* HistoryListMode.swift */; };
 		F7A8B9CE1123456789001 /* HistoryFavoritesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9CD1123456789001 /* HistoryFavoritesTests.swift */; };
@@ -519,6 +527,14 @@
 		VCPNL25112EB0B10004E6E63 /* PanelHeaderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelHeaderModel.swift; sourceTree = "<group>"; };
 		VCHDR10112EB0B10004E6E63 /* PanelHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelHeaderView.swift; sourceTree = "<group>"; };
 		VCPNL26112EB0B10004E6E63 /* PanelHeaderPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelHeaderPresenterTests.swift; sourceTree = "<group>"; };
+		VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelStatusBarModel.swift; sourceTree = "<group>"; };
+		VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStateModel.swift; sourceTree = "<group>"; };
+		VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelStatusBarPresenterTests.swift; sourceTree = "<group>"; };
+		VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStatePresenterTests.swift; sourceTree = "<group>"; };
+		VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelStatusBarModel.swift; sourceTree = "<group>"; };
+		VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStateModel.swift; sourceTree = "<group>"; };
+		VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelStatusBarPresenterTests.swift; sourceTree = "<group>"; };
+		VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStatePresenterTests.swift; sourceTree = "<group>"; };
 		VCPCH10112EB0B10004E6E63 /* PanelChromeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelChromeController.swift; sourceTree = "<group>"; };
 		F7A8B9C91123456789001 /* HistoryItem+Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryItem+Favorite.swift"; sourceTree = "<group>"; };
 		F7A8B9CB1123456789001 /* HistoryListMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListMode.swift; sourceTree = "<group>"; };
@@ -912,6 +928,10 @@
 				VCPNL19112EB0B10004E6E63 /* PanelPresenter.swift */,
 				VCPNL23112EB0B10004E6E63 /* PanelFrameCalculator.swift */,
 				VCPNL25112EB0B10004E6E63 /* PanelHeaderModel.swift */,
+				VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */,
+				VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */,
+				VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */,
+				VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */,
 			);
 			path = Panel;
 			sourceTree = "<group>";
@@ -1052,6 +1072,10 @@
 				VCPNL22112EB0B10004E6E63 /* PanelPresenterTests.swift */,
 				VCPNL24112EB0B10004E6E63 /* PanelFrameCalculatorTests.swift */,
 				VCPNL26112EB0B10004E6E63 /* PanelHeaderPresenterTests.swift */,
+				VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */,
+				VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */,
+				VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */,
+				VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */,
 				VCDIG20112EB0B10004E6E63 /* ContentDigestDedupTests.swift */,
 				34ACFBD322EB0B11004E6E63 /* Info.plist */,
 				349F794D235C5759000CA5B9 /* Mocks */,
@@ -1484,6 +1508,10 @@
 				VCPNL19212EB0B10004E6E63 /* PanelPresenter.swift in Sources */,
 				VCPNL23212EB0B10004E6E63 /* PanelFrameCalculator.swift in Sources */,
 				VCPNL25212EB0B10004E6E63 /* PanelHeaderModel.swift in Sources */,
+				VCPNL27212EB0B10004E6E63 /* PanelStatusBarModel.swift in Sources */,
+				VCPNL28212EB0B10004E6E63 /* PanelEmptyStateModel.swift in Sources */,
+				VCPNL27212EB0B10004E6E63 /* PanelStatusBarModel.swift in Sources */,
+				VCPNL28212EB0B10004E6E63 /* PanelEmptyStateModel.swift in Sources */,
 				VCHDR10212EB0B10004E6E63 /* PanelHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1524,6 +1552,10 @@
 				VCPNL22212EB0B10004E6E63 /* PanelPresenterTests.swift in Sources */,
 				VCPNL24212EB0B10004E6E63 /* PanelFrameCalculatorTests.swift in Sources */,
 				VCPNL26212EB0B10004E6E63 /* PanelHeaderPresenterTests.swift in Sources */,
+				VCPNL29212EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift in Sources */,
+				VCPNL30212EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift in Sources */,
+				VCPNL29212EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift in Sources */,
+				VCPNL30212EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift in Sources */,
 				VCDIG20212EB0B10004E6E63 /* ContentDigestDedupTests.swift in Sources */,
 				349F7944235C24D4000CA5B9 /* HistoryFileManagerTests.swift in Sources */,
 				349F794A235C5722000CA5B9 /* WarningLoggerMock.swift in Sources */,
