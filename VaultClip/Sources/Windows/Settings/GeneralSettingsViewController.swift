@@ -17,6 +17,9 @@ class GeneralSettingsViewController: NSViewController {
     @IBOutlet var maxHistoryItemsPopUpButton: NSPopUpButton!
     @IBOutlet var showsRichTextButton: NSButton!
     @IBOutlet var pastesRichTextButton: NSButton!
+
+    private var maxItemSizePopUpButton: NSPopUpButton!
+    private var maxItemSizeLabel: NSTextField!
     
     private var disposeBag = DisposeBag()
     
@@ -25,6 +28,7 @@ class GeneralSettingsViewController: NSViewController {
         
         localizeUI()
         setupMaxHistoryItemsPopUpButton()
+        setupMaxItemSizeControls()
         setupShowsRichTextButton()
         setupPastesRichTextButton()
     }
@@ -70,6 +74,46 @@ class GeneralSettingsViewController: NSViewController {
         maxHistoryItemsPopUpButton.autoenablesItems = true
     }
     
+    private func setupMaxItemSizeControls() {
+        let label = NSTextField(labelWithString: L10n.settingsMaxItemSizeLabel)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(label)
+        maxItemSizeLabel = label
+
+        let popup = NSPopUpButton(frame: .zero, pullsDown: false)
+        popup.translatesAutoresizingMaskIntoConstraints = false
+        popup.removeAllItems()
+        for mb in Constants.settings.maxItemSizeMBOptions {
+            if mb == 0 {
+                popup.addItem(withTitle: L10n.settingsMaxItemSizeUnlimited)
+            } else {
+                popup.addItem(withTitle: L10n.settingsMaxItemSizeMB(mb))
+            }
+        }
+        popup.target = self
+        popup.action = #selector(onMaxItemSizeSelected)
+        view.addSubview(popup)
+        maxItemSizePopUpButton = popup
+
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: maxHistoryItemsPopUpButton.leadingAnchor),
+            label.topAnchor.constraint(equalTo: maxHistoryItemsPopUpButton.bottomAnchor, constant: 12),
+            popup.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: 8),
+            popup.centerYAnchor.constraint(equalTo: label.centerYAnchor),
+            popup.widthAnchor.constraint(greaterThanOrEqualToConstant: 140),
+        ])
+
+        selectMaxItemSize(Settings.main.maxItemSizeMB)
+    }
+
+    private func selectMaxItemSize(_ mb: Int) {
+        let options = Constants.settings.maxItemSizeMBOptions
+        let index = options.firstIndex(of: mb) ?? options.firstIndex(of: Constants.settings.maxItemSizeMBDefault) ?? 0
+        if index != maxItemSizePopUpButton.indexOfSelectedItem {
+            maxItemSizePopUpButton.selectItem(at: index)
+        }
+    }
+
     private func setupShowsRichTextButton() {
         AppEnvironment.shared.state.showsRichText.subscribe(onNext: onShowsRichText).disposed(by: disposeBag)
         
@@ -105,6 +149,12 @@ class GeneralSettingsViewController: NSViewController {
     
     @objc private func onMaxItemsSelected() {
         AppEnvironment.shared.state.history.setMaxItems(Constants.settings.maxHistoryItemsOptions[maxHistoryItemsPopUpButton.indexOfSelectedItem])
+    }
+
+    @objc private func onMaxItemSizeSelected() {
+        let index = maxItemSizePopUpButton.indexOfSelectedItem
+        guard Constants.settings.maxItemSizeMBOptions.indices.contains(index) else { return }
+        SettingsPersistence.apply { $0.maxItemSizeMB = Constants.settings.maxItemSizeMBOptions[index] }
     }
     
     @objc private func onShowsRichTextButtonClicked() {

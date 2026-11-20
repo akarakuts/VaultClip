@@ -107,5 +107,9 @@ struct Constants {
         static let maxHistoryItemsDefaultIndex = 3
         
         static let maxHistoryItemsDefault = Constants.settings.maxHistoryItemsOptions[Constants.settings.maxHistoryItemsDefaultIndex]
+
+        /// 0 = unlimited. Values are megabytes.
+        static let maxItemSizeMBOptions = [10, 25, 50, 100, 0]
+        static let maxItemSizeMBDefault = 50
     }
 }

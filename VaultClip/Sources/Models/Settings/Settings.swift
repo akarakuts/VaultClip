@@ -54,7 +54,8 @@ struct Settings: Codable, DefaultStorable {
         toggleHotKey: KeyCombo,
         maxHistory: Int,
         showsRichText: Bool,
-        pastesRichText: Bool
+        pastesRichText: Bool,
+        maxItemSizeMB: Int
     ) {
         self.panelPosition = panelPosition
         self.pasteboardChangeCount = pasteboardChangeCount
@@ -62,6 +63,7 @@ struct Settings: Codable, DefaultStorable {
         self.maxHistory = maxHistory
         self.showsRichText = showsRichText
         self.pastesRichText = pastesRichText
+        self.maxItemSizeMB = maxItemSizeMB
     }
     
     static let `default` = Settings(
@@ -70,7 +72,8 @@ struct Settings: Codable, DefaultStorable {
         toggleHotKey: KeyCombo(key: .v, modifiers: [.command, .shift]),
         maxHistory: Constants.settings.maxHistoryItemsDefault,
         showsRichText: true,
-        pastesRichText: true
+        pastesRichText: true,
+        maxItemSizeMB: Constants.settings.maxItemSizeMBDefault
     )
     
     // MARK: - Settings
@@ -87,6 +90,9 @@ struct Settings: Codable, DefaultStorable {
     
     var pastesRichText: Bool
 
+    /// Max clipboard item size in megabytes; `0` means unlimited (T26).
+    var maxItemSizeMB: Int
+
     enum CodingKeys: String, CodingKey {
         case panelPosition
         case pasteboardChangeCount
@@ -94,6 +100,7 @@ struct Settings: Codable, DefaultStorable {
         case maxHistory
         case showsRichText
         case pastesRichText
+        case maxItemSizeMB
     }
 
     init(from decoder: Decoder) throws {
@@ -117,6 +124,8 @@ struct Settings: Codable, DefaultStorable {
             ?? defaults.showsRichText
         pastesRichText = try container.decodeIfPresent(Bool.self, forKey: .pastesRichText)
             ?? defaults.pastesRichText
+        maxItemSizeMB = try container.decodeIfPresent(Int.self, forKey: .maxItemSizeMB)
+            ?? defaults.maxItemSizeMB
     }
 
     func encode(to encoder: Encoder) throws {
@@ -127,6 +136,7 @@ struct Settings: Codable, DefaultStorable {
         try container.encode(maxHistory, forKey: .maxHistory)
         try container.encode(showsRichText, forKey: .showsRichText)
         try container.encode(pastesRichText, forKey: .pastesRichText)
+        try container.encode(maxItemSizeMB, forKey: .maxItemSizeMB)
     }
 
     // MARK: - State Binding Methods

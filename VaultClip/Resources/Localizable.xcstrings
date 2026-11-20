@@ -28251,6 +28251,54 @@
           }
         }
       }
+    },
+    "settings.max_item_size.label": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maximum item size:"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Максимальный размер элемента:"
+          }
+        }
+      }
+    },
+    "settings.max_item_size.unlimited": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlimited"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Без ограничений"
+          }
+        }
+      }
+    },
+    "settings.max_item_size.mb": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d MB"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d МБ"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

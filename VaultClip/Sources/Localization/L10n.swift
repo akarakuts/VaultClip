@@ -203,6 +203,11 @@ enum L10n {
     }
     static var searchLabelPDF: String { tr("search.label.pdf") }
     static var searchLabelImage: String { tr("search.label.image") }
+    static var settingsMaxItemSizeLabel: String { tr("settings.max_item_size.label") }
+    static var settingsMaxItemSizeUnlimited: String { tr("settings.max_item_size.unlimited") }
+    static func settingsMaxItemSizeMB(_ mb: Int) -> String {
+        String(format: tr("settings.max_item_size.mb"), mb)
+    }
 
     static var launchAtLoginNeedsApprovalTitle: String { tr("launch_at_login.needs_approval.title") }
     static var launchAtLoginNeedsApprovalBody: String { tr("launch_at_login.needs_approval.body") }

@@ -536,6 +536,13 @@ extension History: PasteboardMonitorDelegate {
                 PasteboardDiagnostics.log("empty payload for types: \(filteredTypes.map(\.rawValue))")
                 continue
             }
+            let payloadBytes = data.values.reduce(0) { $0 + $1.count }
+            let maxMB = Settings.main.maxItemSizeMB
+            if maxMB > 0, payloadBytes > maxMB * 1_048_576 {
+                PasteboardDiagnostics.log("skipped oversize item (\(payloadBytes) bytes)")
+                currentClipboardItemId = nil
+                continue
+            }
             if let duplicate = existingDuplicate(for: data) {
                 PasteboardDiagnostics.log("duplicate payload promote (\(data.count) types)")
                 promoteDuplicate(duplicate.item, digest: duplicate.digest)
