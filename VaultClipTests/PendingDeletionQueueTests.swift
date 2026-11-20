@@ -13,7 +13,6 @@ final class PendingDeletionQueueTests: XCTestCase {
         XCTAssertTrue(queue.hiddenItemIds.contains(id))
         XCTAssertNotNil(queue.undoLast())
         XCTAssertFalse(queue.hiddenItemIds.contains(id))
-    }
 
     func testFlushCommits() {
         let scheduler = ImmediateTestScheduler()
@@ -26,4 +25,23 @@ final class PendingDeletionQueueTests: XCTestCase {
         XCTAssertEqual(committed, [id])
         XCTAssertTrue(queue.hiddenItemIds.isEmpty)
     }
+}
+
+    func testTimeoutCommitAndMultipleBatches() {
+        let scheduler = ImmediateTestScheduler()
+        var committed: [[UUID]] = []
+        let queue = PendingDeletionQueue(scheduler: scheduler, now: { Date(timeIntervalSince1970: 1000) })
+        queue.onCommit = { committed.append($0) }
+        let a = UUID(), b = UUID()
+        let batch1 = queue.enqueue(itemIds: [a], originalIndexes: [0])
+        let batch2 = queue.enqueue(itemIds: [b], originalIndexes: [1])
+        XCTAssertEqual(queue.hiddenItemIds.count, 2)
+        // Fire first scheduled token via scheduler fireAll — both commit paths
+        scheduler.fireAll()
+        XCTAssertEqual(Set(committed.flatMap { $0 }), Set([a, b]))
+        XCTAssertTrue(queue.hiddenItemIds.isEmpty)
+        _ = batch1; _ = batch2
+        XCTAssertNil(queue.undoLast())
+    }
+
 }

@@ -43,7 +43,7 @@ guard let window = target,
     exit(1)
 }
 
-// Layout mirrors PanelChrome.metrics density.
+// Layout mirrors PanelChrome.Metrics density.
 let scale: CGFloat = 0.855
 let yFromTop = scale * (30 + 15 + 8 + 28 + 15 + 18)
 let tabCenterX = (winW / 3) * (CGFloat(tabIndex) + 0.5)

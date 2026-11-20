@@ -116,7 +116,7 @@ final class HistoryTabBarView: NSView {
     }
     
     override var intrinsicContentSize: NSSize {
-        NSSize(width: NSView.noIntrinsicMetric, height: PanelChrome.metrics.tabBarHeight)
+        NSSize(width: NSView.noIntrinsicMetric, height: PanelChrome.Metrics.tabBarHeight)
     }
 }
 
@@ -150,7 +150,7 @@ private final class HistoryTabItemView: NSControl {
         layer?.masksToBounds = false
         
         backgroundLayer.masksToBounds = true
-        backgroundLayer.cornerRadius = PanelChrome.metrics.tabCornerRadius
+        backgroundLayer.cornerRadius = PanelChrome.Metrics.tabCornerRadius
         backgroundLayer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         layer?.addSublayer(backgroundLayer)
         
@@ -160,20 +160,20 @@ private final class HistoryTabItemView: NSControl {
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.stringValue = definition.title
-        titleLabel.font = NSFont.systemFont(ofSize: PanelChrome.typography.tabSize, weight: .medium)
+        titleLabel.font = NSFont.systemFont(ofSize: PanelChrome.Typography.tabSize, weight: .medium)
         titleLabel.lineBreakMode = .byTruncatingTail
         addSubview(titleLabel)
         
         let horizontalConstraints = [
-            iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: PanelChrome.metrics.tabContentInset),
-            iconView.widthAnchor.constraint(equalToConstant: PanelChrome.metrics.tabIconSize),
-            titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: PanelChrome.metrics.tabIconSpacing),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -PanelChrome.metrics.tabContentInset),
+            iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: PanelChrome.Metrics.tabContentInset),
+            iconView.widthAnchor.constraint(equalToConstant: PanelChrome.Metrics.tabIconSize),
+            titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: PanelChrome.Metrics.tabIconSpacing),
+            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -PanelChrome.Metrics.tabContentInset),
         ]
         horizontalConstraints.forEach { $0.priority = .defaultHigh }
         NSLayoutConstraint.activate(horizontalConstraints + [
             iconView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 1),
-            iconView.heightAnchor.constraint(equalToConstant: PanelChrome.metrics.tabIconSize),
+            iconView.heightAnchor.constraint(equalToConstant: PanelChrome.Metrics.tabIconSize),
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 1),
         ])
         
@@ -228,11 +228,11 @@ private final class HistoryTabItemView: NSControl {
     }
     
     var preferredMinWidth: CGFloat {
-        let font = titleLabel.font ?? NSFont.systemFont(ofSize: PanelChrome.typography.tabSize, weight: .medium)
+        let font = titleLabel.font ?? NSFont.systemFont(ofSize: PanelChrome.Typography.tabSize, weight: .medium)
         let titleWidth = (titleLabel.stringValue as NSString).size(withAttributes: [.font: font]).width
-        let chrome = PanelChrome.metrics.tabContentInset * 2
-            + PanelChrome.metrics.tabIconSize
-            + PanelChrome.metrics.tabIconSpacing
+        let chrome = PanelChrome.Metrics.tabContentInset * 2
+            + PanelChrome.Metrics.tabIconSize
+            + PanelChrome.Metrics.tabIconSpacing
         return ceil(titleWidth + chrome)
     }
     
@@ -242,7 +242,7 @@ private final class HistoryTabItemView: NSControl {
             backgroundLayer.borderWidth = 1
             backgroundLayer.borderColor = NSColor.separatorColor.withAlphaComponent(0.45).cgColor
             titleLabel.textColor = .labelColor
-            iconView.contentTintColor = PanelChrome.colors.accent
+            iconView.contentTintColor = PanelChrome.Colors.accent
         } else {
             backgroundLayer.backgroundColor = isHovered
                 ? NSColor.separatorColor.withAlphaComponent(0.12).cgColor

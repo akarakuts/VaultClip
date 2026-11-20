@@ -11,7 +11,6 @@ final class MultiPasteComposerTests: XCTestCase {
             .init(kind: .text, text: "b", isPassword: false)
         ])
         XCTAssertEqual(result.payload, .joinedText("a\nb"))
-    }
 
     func testExcludesPasswords() {
         let result = MultiPasteComposer.compose(items: [
@@ -30,4 +29,40 @@ final class MultiPasteComposerTests: XCTestCase {
         XCTAssertEqual(result.payload, .joinedText("a"))
         XCTAssertEqual(result.skippedImages, 1)
     }
+}
+
+    func testSeparatorsAndReverseAndDiscrete() {
+        let items = [
+            MultiPasteComposer.Item(kind: .text, text: "a", isPassword: false),
+            MultiPasteComposer.Item(kind: .text, text: "b", isPassword: false)
+        ]
+        XCTAssertEqual(
+            MultiPasteComposer.compose(items: items, separator: .comma).payload,
+            .joinedText("a, b")
+        )
+        XCTAssertEqual(
+            MultiPasteComposer.compose(items: items, separator: .tab, reverse: true).payload,
+            .joinedText("b\ta")
+        )
+        XCTAssertEqual(
+            MultiPasteComposer.compose(items: items, separator: .space).payload,
+            .joinedText("a b")
+        )
+        XCTAssertEqual(
+            MultiPasteComposer.compose(items: items, separator: .blankLine).payload,
+            .joinedText("a\n\nb")
+        )
+        let images = [
+            MultiPasteComposer.Item(kind: .image, text: nil, isPassword: false),
+            MultiPasteComposer.Item(kind: .image, text: nil, isPassword: false)
+        ]
+        XCTAssertEqual(MultiPasteComposer.compose(items: images).payload, .discreteItems(count: 2))
+        let files = [MultiPasteComposer.Item(kind: .file(1), text: nil, isPassword: false)]
+        XCTAssertEqual(MultiPasteComposer.compose(items: files).payload, .discreteItems(count: 1))
+        let empty = MultiPasteComposer.compose(items: [
+            MultiPasteComposer.Item(kind: .text, text: nil, isPassword: false)
+        ])
+        XCTAssertNil(empty.payload)
+    }
+
 }

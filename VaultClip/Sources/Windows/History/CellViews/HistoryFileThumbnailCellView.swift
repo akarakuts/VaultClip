@@ -17,11 +17,11 @@ class HistoryFileThumbnailCellView: HistoryItemBaseCellView, HistoryListItem {
         NSUserInterfaceItemIdentifier(Accessibility.identifiers.historyFileThumbnailCellView)
     }
     
-    static let fileNamePadding = PanelChrome.metrics.thumbnailFileNamePadding
+    static let fileNamePadding = PanelChrome.Metrics.thumbnailFileNamePadding
     
-    static let imageSize = PanelChrome.metrics.thumbnailPreviewSize
+    static let imageSize = PanelChrome.Metrics.thumbnailPreviewSize
     
-    static let imageTopPadding = PanelChrome.metrics.thumbnailTopPadding
+    static let imageTopPadding = PanelChrome.Metrics.thumbnailTopPadding
     
     let previewView = NSImageView(frame: .zero)
     

@@ -13,7 +13,7 @@ class HistoryTextCellView: HistoryItemBaseCellView, HistoryListItem {
     
     // MARK: - UI Constants
     
-    static let padding = PanelChrome.metrics.textPadding
+    static let padding = PanelChrome.Metrics.textPadding
     
     static let textInset = NSEdgeInsetsZero // NSEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
     
@@ -33,7 +33,7 @@ class HistoryTextCellView: HistoryItemBaseCellView, HistoryListItem {
         // Define the maximum size of the text container, so that the text renders correctly when there needs to be clipping.
         // Width can be any value
         itemTextView.textContainer?.containerSize = NSSize(
-            width: PanelChrome.metrics.listTextContainerWidth(cellWidth: 280, textPadding: Self.padding),
+            width: PanelChrome.Metrics.listTextContainerWidth(cellWidth: 280, textPadding: Self.padding),
             height: Constants.panel.maxCellHeight - Self.padding.top - Self.padding.bottom - Self.textInset.yTotal - Self.contentViewInsets.yTotal
         )
         
@@ -69,7 +69,7 @@ class HistoryTextCellView: HistoryItemBaseCellView, HistoryListItem {
     }
     
     static func getTextContainerWidth(cellWidth: CGFloat) -> CGFloat {
-        PanelChrome.metrics.listTextContainerWidth(cellWidth: cellWidth, textPadding: Self.padding)
+        PanelChrome.Metrics.listTextContainerWidth(cellWidth: cellWidth, textPadding: Self.padding)
     }
     
     private func updateTextContainerWidth(for tableView: HistoryTableView) {

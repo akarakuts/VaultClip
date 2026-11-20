@@ -185,4 +185,48 @@ final class PanelPresenterTests: XCTestCase {
         let elapsed = (CFAbsoluteTimeGetCurrent() - start) * 1000
         XCTAssertLessThan(elapsed, 200, "presenter took \(elapsed) ms")
     }
+
+    func testClassifierEdgeCasesAndCache() {
+        XCTAssertFalse(ItemKindClassifier.isStandaloneURL(nil))
+        XCTAssertFalse(ItemKindClassifier.isStandaloneURL("not a url"))
+        XCTAssertTrue(ItemKindClassifier.isStandaloneURL("mailto:a@b.c"))
+        XCTAssertEqual(
+            ItemKindClassifier.classify(.init(isPassword: false, typeIdentifiers: ["public.jpeg"], plainText: nil, fileURLCount: 0)),
+            .image
+        )
+        XCTAssertEqual(
+            ItemKindClassifier.classify(.init(isPassword: false, typeIdentifiers: ["public.html"], plainText: "x", fileURLCount: 0)),
+            .richText
+        )
+        XCTAssertEqual(
+            ItemKindClassifier.classify(.init(isPassword: false, typeIdentifiers: ["nsfilenamespboardtype"], plainText: nil, fileURLCount: 0)),
+            .file(1)
+        )
+        let cache = ItemKindCache()
+        let id = UUID()
+        let input = ItemKindClassifierInput(isPassword: false, typeIdentifiers: ["public.utf8-plain-text"], plainText: "hi", fileURLCount: 0)
+        XCTAssertEqual(cache.kind(for: input, fsId: id, digest: "d1"), .text)
+        XCTAssertEqual(cache.kind(for: input, fsId: id, digest: "d1"), .text)
+        cache.remove(fsId: id)
+        cache.clear()
+    }
+
+    func testPresentationSubtitlesAndEmpty() {
+        let now = Date()
+        let empty = PanelPresenter.present(PanelPresenterInput(
+            items: [], itemIds: [], tab: .favorites, searchQuery: "q", selectedIds: [], groupByDay: false,
+            now: now, calendar: .current, locale: Locale(identifier: "en_US")
+        ))
+        XCTAssertEqual(empty.emptyKind, .noResults(query: "q"))
+        let emptyFav = PanelPresenter.present(PanelPresenterInput(
+            items: [], itemIds: [], tab: .favorites, searchQuery: "", selectedIds: [], groupByDay: false,
+            now: now, calendar: .current, locale: Locale(identifier: "en_US")
+        ))
+        XCTAssertEqual(emptyFav.emptyKind, .favorites)
+        let emptyPass = PanelPresenter.present(PanelPresenterInput(
+            items: [], itemIds: [], tab: .passwords, searchQuery: "", selectedIds: [], groupByDay: false,
+            now: now, calendar: .current, locale: Locale(identifier: "ru_RU")
+        ))
+        XCTAssertEqual(emptyPass.emptyKind, .passwords)
+    }
 }

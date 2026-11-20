@@ -109,4 +109,58 @@ final class PanelKeyRouterTests: XCTestCase {
             .command(.closePanel)
         )
     }
+
+    func testSearchEditingChordsPassThrough() {
+        let ctx = PanelKeyRouterContext(searchIsEmpty: false, searchFieldOwnsEditingShortcuts: true)
+        XCTAssertEqual(
+            PanelKeyRouter.route(zone: .search, chord: KeyChord(key: .leftArrow, modifiers: []), context: ctx),
+            .passThrough
+        )
+        XCTAssertEqual(
+            PanelKeyRouter.route(zone: .search, chord: KeyChord(key: .rightArrow, modifiers: [.shift]), context: ctx),
+            .passThrough
+        )
+        XCTAssertEqual(
+            PanelKeyRouter.route(zone: .search, chord: KeyChord(key: .delete, modifiers: []), context: ctx),
+            .passThrough
+        )
+        XCTAssertEqual(
+            PanelKeyRouter.route(zone: .search, chord: KeyChord(key: .forwardDelete, modifiers: [.option]), context: ctx),
+            .passThrough
+        )
+        XCTAssertEqual(
+            PanelKeyRouter.route(zone: .search, chord: .cmd("c"), context: ctx),
+            .passThrough
+        )
+        XCTAssertEqual(
+            PanelKeyRouter.route(zone: .search, chord: KeyChord(key: .letter("z"), modifiers: [.command, .shift]), context: ctx),
+            .passThrough
+        )
+        let combos: [KeyModifiers] = [[.option], [.command], [.command, .shift]]
+        for mods in combos {
+            XCTAssertEqual(
+                PanelKeyRouter.route(zone: .search, chord: KeyChord(key: .leftArrow, modifiers: mods), context: ctx),
+                .passThrough
+            )
+        }
+    }
+
+    func testDigitTypeToSearchAndUnknownPassThrough() {
+        XCTAssertEqual(
+            PanelKeyRouter.route(zone: .list, chord: KeyChord(key: .digit(5), modifiers: []), typed: "5"),
+            .typeToSearch("5")
+        )
+        XCTAssertEqual(
+            PanelKeyRouter.route(zone: .preview, chord: KeyChord(key: .letter("q"), modifiers: [])),
+            .passThrough
+        )
+        XCTAssertEqual(
+            PanelKeyRouter.route(zone: .list, chord: KeyChord(key: .letter("x"), modifiers: [.shift]), typed: "X"),
+            .typeToSearch("X")
+        )
+        XCTAssertEqual(
+            PanelKeyRouter.route(zone: .list, chord: KeyChord(key: .return, modifiers: [])),
+            .command(.paste)
+        )
+    }
 }

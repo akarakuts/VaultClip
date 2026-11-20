@@ -16,7 +16,7 @@ func formatPdfDisplay(_ label: String) -> NSAttributedString {
         attributes: [
             .font: Constants.fonts.listFileNameText,
             .foregroundColor: NSColor.textColor,
-            .paragraphStyle: PanelChrome.typography.bodyParagraphStyle,
+            .paragraphStyle: PanelChrome.Typography.bodyParagraphStyle,
         ]
     )
 }

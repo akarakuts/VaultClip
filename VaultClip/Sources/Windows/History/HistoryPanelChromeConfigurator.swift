@@ -64,10 +64,10 @@ enum HistoryPanelChromeConfigurator {
     visit(root)
 
     for constraint in searchBar.constraints where constraint.firstAttribute == .height {
-      constraint.constant = PanelChrome.metrics.searchBarHeight
+      constraint.constant = PanelChrome.Metrics.searchBarHeight
     }
     for constraint in itemGroupScrollView.constraints where constraint.firstAttribute == .height {
-      constraint.constant = PanelChrome.metrics.tabBarHeight
+      constraint.constant = PanelChrome.Metrics.tabBarHeight
     }
 
     // Large "VaultClip" title removed — reclaim vertical space (U06).
@@ -79,7 +79,7 @@ enum HistoryPanelChromeConfigurator {
     itemCountLabel: NSTextField
   ) {
     itemCountLabel.font = NSFont.monospacedDigitSystemFont(
-      ofSize: PanelChrome.typography.countSize,
+      ofSize: PanelChrome.Typography.countSize,
       weight: .regular
     )
     itemCountLabel.textColor = .secondaryLabelColor
@@ -88,7 +88,7 @@ enum HistoryPanelChromeConfigurator {
 
     if let fieldCell = searchBar.cell as? NSTextFieldCell {
       fieldCell.font = NSFont.monospacedSystemFont(
-        ofSize: PanelChrome.typography.chromeSize,
+        ofSize: PanelChrome.Typography.chromeSize,
         weight: .regular
       )
     }
@@ -109,34 +109,34 @@ enum HistoryPanelChromeConfigurator {
     if constraint.firstAttribute == .leading,
        let first = constraint.firstItem as? NSObject,
        leadingItems.contains(where: { $0 === first }) {
-      constraint.constant = PanelChrome.metrics.panelContentInset
+      constraint.constant = PanelChrome.Metrics.panelContentInset
     }
     if constraint.firstAttribute == .trailing,
        let second = constraint.secondItem as? NSObject,
        trailingItems.contains(where: { $0 === second }) {
-      constraint.constant = PanelChrome.metrics.panelContentInset
+      constraint.constant = PanelChrome.Metrics.panelContentInset
     }
     if constraint.firstItem as? NSObject === searchBar,
        constraint.firstAttribute == .top,
        constraint.secondItem is NSTextField {
-      constraint.constant = PanelChrome.metrics.titleToSearchSpacing
+      constraint.constant = PanelChrome.Metrics.titleToSearchSpacing
     }
     if constraint.firstItem as? NSObject === itemGroupScrollView,
        constraint.firstAttribute == .top,
        constraint.secondItem as? NSObject === searchBar {
-      constraint.constant = PanelChrome.metrics.searchToTabsSpacing
+      constraint.constant = PanelChrome.Metrics.searchToTabsSpacing
     }
     if constraint.firstItem as? NSObject === scrollView,
        constraint.firstAttribute == .top,
        constraint.secondItem as? NSObject === itemGroupScrollView {
-      constraint.constant = PanelChrome.metrics.tabsToListSpacing
+      constraint.constant = PanelChrome.Metrics.tabsToListSpacing
     }
     if constraint.firstAttribute == .top,
        constraint.secondItem == nil,
        let first = constraint.firstItem as? NSTextField,
        first !== searchBar,
        first !== itemCountLabel {
-      constraint.constant = PanelChrome.metrics.headerTopInset
+      constraint.constant = PanelChrome.Metrics.headerTopInset
     }
   }
 

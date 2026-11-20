@@ -38,11 +38,11 @@ class HistoryItemContentView: NSView {
             layer?.backgroundColor = NSColor(named: NSColor.Name("TextBackgroundColor"))?.cgColor
         }
         
-        let border = PanelChrome.colors.cardBorder(isSelected: isRowSelected)
+        let border = PanelChrome.Colors.cardBorder(isSelected: isRowSelected)
         layer?.borderColor = border.cgColor
         layer?.borderWidth = isRowSelected
-            ? PanelChrome.metrics.selectedCardBorderWidth
-            : PanelChrome.metrics.cardBorderWidth
+            ? PanelChrome.Metrics.selectedCardBorderWidth
+            : PanelChrome.Metrics.cardBorderWidth
         
         if isRowSelected {
             layer?.shadowColor = NSColor.black.cgColor

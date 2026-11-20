@@ -28,7 +28,7 @@ enum DragOutPayload {
             return [.rtf, .plainText]
         case .link:
             return [.url, .plainText]
-        case .file(_), .pdf:
+        case .file, .pdf:
             return [.fileURL]
         case .image:
             return [.image, .fileURL]

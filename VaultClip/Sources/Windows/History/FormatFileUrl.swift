@@ -16,13 +16,13 @@ func formatFileUrl(_ url: URL) -> NSAttributedString {
     let lastComponentAttributes: [NSAttributedString.Key: Any] = [
         .font: Constants.fonts.listFileNameText,
         .foregroundColor: NSColor.textColor,
-        .paragraphStyle: PanelChrome.typography.bodyParagraphStyle,
+        .paragraphStyle: PanelChrome.Typography.bodyParagraphStyle,
     ]
     
     let pathAttributes: [NSAttributedString.Key: Any] = [
         .font: Constants.fonts.listFileNameText,
         .foregroundColor: NSColor.secondaryLabelColor,
-        .paragraphStyle: PanelChrome.typography.bodyParagraphStyle,
+        .paragraphStyle: PanelChrome.Typography.bodyParagraphStyle,
     ]
     
     let deletedAttributes: [NSAttributedString.Key: Any] = [

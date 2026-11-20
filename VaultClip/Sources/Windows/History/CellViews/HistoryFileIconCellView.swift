@@ -15,9 +15,9 @@ class HistoryFileIconCellView: HistoryItemBaseCellView, HistoryListItem {
     override class var identifier: NSUserInterfaceItemIdentifier {
         NSUserInterfaceItemIdentifier(Accessibility.identifiers.historyFileIconCellView)
     }
-    static let textContainerInset = PanelChrome.metrics.fileTypeTextInset
-    static let iconViewPadding = PanelChrome.metrics.fileTypeIconPadding
-    static let iconSize = PanelChrome.metrics.fileTypeIconSize
+    static let textContainerInset = PanelChrome.Metrics.fileTypeTextInset
+    static let iconViewPadding = PanelChrome.Metrics.fileTypeIconPadding
+    static let iconSize = PanelChrome.Metrics.fileTypeIconSize
     
     let iconView = NSImageView(frame: .zero)
     

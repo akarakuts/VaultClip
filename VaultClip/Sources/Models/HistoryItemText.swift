@@ -39,27 +39,27 @@ struct HistoryItemText {
     }
     
     static let itemStringAttributes: [NSAttributedString.Key: Any] = [
-        .font: PanelChrome.typography.body,
+        .font: PanelChrome.Typography.body,
         .foregroundColor: NSColor.textColor,
-        .paragraphStyle: PanelChrome.typography.bodyParagraphStyle,
+        .paragraphStyle: PanelChrome.Typography.bodyParagraphStyle,
     ]
     
     static let copiedAtLabelAttributes: [NSAttributedString.Key: Any] = [
-        .font: PanelChrome.typography.body,
-        .foregroundColor: PanelChrome.colors.copiedAtLabel,
-        .paragraphStyle: PanelChrome.typography.bodyParagraphStyle,
+        .font: PanelChrome.Typography.body,
+        .foregroundColor: PanelChrome.Colors.copiedAtLabel,
+        .paragraphStyle: PanelChrome.Typography.bodyParagraphStyle,
     ]
     
     static let passwordCommentAttributes: [NSAttributedString.Key: Any] = [
-        .font: PanelChrome.typography.body,
-        .foregroundColor: PanelChrome.colors.passwordCommentLabel,
-        .paragraphStyle: PanelChrome.typography.bodyParagraphStyle,
+        .font: PanelChrome.Typography.body,
+        .foregroundColor: PanelChrome.Colors.passwordCommentLabel,
+        .paragraphStyle: PanelChrome.Typography.bodyParagraphStyle,
     ]
     
     static let passwordLoginAttributes: [NSAttributedString.Key: Any] = [
-        .font: PanelChrome.typography.body,
-        .foregroundColor: PanelChrome.colors.passwordLoginLabel,
-        .paragraphStyle: PanelChrome.typography.bodyParagraphStyle,
+        .font: PanelChrome.Typography.body,
+        .foregroundColor: PanelChrome.Colors.passwordLoginLabel,
+        .paragraphStyle: PanelChrome.Typography.bodyParagraphStyle,
     ]
     
     static func displayCacheSignature(for item: HistoryItem, listMode: HistoryListMode) -> String {
@@ -201,14 +201,14 @@ struct HistoryItemText {
                 style = existing
             } else {
                 let fallback = NSMutableParagraphStyle()
-                fallback.setParagraphStyle(PanelChrome.typography.bodyParagraphStyle)
+                fallback.setParagraphStyle(PanelChrome.Typography.bodyParagraphStyle)
                 style = fallback
             }
             style.alignment = .left
             mutable.addAttribute(.paragraphStyle, value: style, range: range)
         }
         if !hasParagraphStyle {
-            mutable.addAttribute(.paragraphStyle, value: PanelChrome.typography.bodyParagraphStyle, range: fullRange)
+            mutable.addAttribute(.paragraphStyle, value: PanelChrome.Typography.bodyParagraphStyle, range: fullRange)
         }
         return mutable
     }

@@ -292,6 +292,7 @@
 		VCPNL51212EB0B10004E6E63 /* ExcludedAppsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL51112EB0B10004E6E63 /* ExcludedAppsModel.swift */; };
 		VCPNL52212EB0B10004E6E63 /* HotKeyCaptureState.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL52112EB0B10004E6E63 /* HotKeyCaptureState.swift */; };
 		VCPNL53212EB0B10004E6E63 /* PerformanceBudget.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL53112EB0B10004E6E63 /* PerformanceBudget.swift */; };
+		VCPNL55212EB0B10004E6E63 /* ASCIICapableLayoutTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL55112EB0B10004E6E63 /* ASCIICapableLayoutTranslator.swift */; };
 		VCPNL54212EB0B10004E6E63 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL54112EB0B10004E6E63 /* SettingsStore.swift */; };
 		VCFST23212EB0B10004E6E63 /* PasswordPrivacySurfacesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST23112EB0B10004E6E63 /* PasswordPrivacySurfacesTests.swift */; };
 		VCFST24212EB0B10004E6E63 /* CommandPaletteModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST24112EB0B10004E6E63 /* CommandPaletteModelTests.swift */; };
@@ -303,6 +304,10 @@
 		VCFST30212EB0B10004E6E63 /* SettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST30112EB0B10004E6E63 /* SettingsStoreTests.swift */; };
 		VCFST31212EB0B10004E6E63 /* PerformanceBudgetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST31112EB0B10004E6E63 /* PerformanceBudgetTests.swift */; };
 		VCFST32212EB0B10004E6E63 /* UIGuidelinesRegistryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST32112EB0B10004E6E63 /* UIGuidelinesRegistryTests.swift */; };
+		VCFST33212EB0B10004E6E63 /* DateGroupingCoverageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST33112EB0B10004E6E63 /* DateGroupingCoverageTests.swift */; };
+		VCFST34212EB0B10004E6E63 /* EscapeResolverCoverageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST34112EB0B10004E6E63 /* EscapeResolverCoverageTests.swift */; };
+		VCFST35212EB0B10004E6E63 /* KeyChordMatcherCoverageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST35112EB0B10004E6E63 /* KeyChordMatcherCoverageTests.swift */; };
+		VCFST36212EB0B10004E6E63 /* RowPresentationCoverageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST36112EB0B10004E6E63 /* RowPresentationCoverageTests.swift */; };
 		VCPNL27212EB0B10004E6E63 /* PanelStatusBarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */; };
 		VCPNL28212EB0B10004E6E63 /* PanelEmptyStateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */; };
 		VCPNL29212EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */; };
@@ -619,6 +624,7 @@
 		VCPNL51112EB0B10004E6E63 /* ExcludedAppsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExcludedAppsModel.swift; sourceTree = "<group>"; };
 		VCPNL52112EB0B10004E6E63 /* HotKeyCaptureState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKeyCaptureState.swift; sourceTree = "<group>"; };
 		VCPNL53112EB0B10004E6E63 /* PerformanceBudget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceBudget.swift; sourceTree = "<group>"; };
+		VCPNL55112EB0B10004E6E63 /* ASCIICapableLayoutTranslator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASCIICapableLayoutTranslator.swift; sourceTree = "<group>"; };
 		VCPNL54112EB0B10004E6E63 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		VCFST23112EB0B10004E6E63 /* PasswordPrivacySurfacesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPrivacySurfacesTests.swift; sourceTree = "<group>"; };
 		VCFST24112EB0B10004E6E63 /* CommandPaletteModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPaletteModelTests.swift; sourceTree = "<group>"; };
@@ -630,6 +636,10 @@
 		VCFST30112EB0B10004E6E63 /* SettingsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStoreTests.swift; sourceTree = "<group>"; };
 		VCFST31112EB0B10004E6E63 /* PerformanceBudgetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceBudgetTests.swift; sourceTree = "<group>"; };
 		VCFST32112EB0B10004E6E63 /* UIGuidelinesRegistryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIGuidelinesRegistryTests.swift; sourceTree = "<group>"; };
+		VCFST33112EB0B10004E6E63 /* DateGroupingCoverageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateGroupingCoverageTests.swift; sourceTree = "<group>"; };
+		VCFST34112EB0B10004E6E63 /* EscapeResolverCoverageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EscapeResolverCoverageTests.swift; sourceTree = "<group>"; };
+		VCFST35112EB0B10004E6E63 /* KeyChordMatcherCoverageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChordMatcherCoverageTests.swift; sourceTree = "<group>"; };
+		VCFST36112EB0B10004E6E63 /* RowPresentationCoverageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowPresentationCoverageTests.swift; sourceTree = "<group>"; };
 		VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStatePresenterTests.swift; sourceTree = "<group>"; };
 		VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelStatusBarModel.swift; sourceTree = "<group>"; };
 		VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStateModel.swift; sourceTree = "<group>"; };
@@ -1055,6 +1065,7 @@
 				VCPNL51112EB0B10004E6E63 /* ExcludedAppsModel.swift */,
 				VCPNL52112EB0B10004E6E63 /* HotKeyCaptureState.swift */,
 				VCPNL53112EB0B10004E6E63 /* PerformanceBudget.swift */,
+				VCPNL55112EB0B10004E6E63 /* ASCIICapableLayoutTranslator.swift */,
 				VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */,
 				VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */,
 			);
@@ -1223,6 +1234,10 @@
 				VCFST30112EB0B10004E6E63 /* SettingsStoreTests.swift */,
 				VCFST31112EB0B10004E6E63 /* PerformanceBudgetTests.swift */,
 				VCFST32112EB0B10004E6E63 /* UIGuidelinesRegistryTests.swift */,
+				VCFST33112EB0B10004E6E63 /* DateGroupingCoverageTests.swift */,
+				VCFST34112EB0B10004E6E63 /* EscapeResolverCoverageTests.swift */,
+				VCFST35112EB0B10004E6E63 /* KeyChordMatcherCoverageTests.swift */,
+				VCFST36112EB0B10004E6E63 /* RowPresentationCoverageTests.swift */,
 				VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */,
 				VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */,
 				VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */,
@@ -1682,6 +1697,7 @@
 				VCPNL51212EB0B10004E6E63 /* ExcludedAppsModel.swift in Sources */,
 				VCPNL52212EB0B10004E6E63 /* HotKeyCaptureState.swift in Sources */,
 				VCPNL53212EB0B10004E6E63 /* PerformanceBudget.swift in Sources */,
+				VCPNL55212EB0B10004E6E63 /* ASCIICapableLayoutTranslator.swift in Sources */,
 				VCPNL54212EB0B10004E6E63 /* SettingsStore.swift in Sources */,
 				VCHRV10212EB0B10004E6E63 /* HistoryRowView.swift in Sources */,
 				VCPNL28212EB0B10004E6E63 /* PanelEmptyStateModel.swift in Sources */,
@@ -1753,6 +1769,10 @@
 				VCFST30212EB0B10004E6E63 /* SettingsStoreTests.swift in Sources */,
 				VCFST31212EB0B10004E6E63 /* PerformanceBudgetTests.swift in Sources */,
 				VCFST32212EB0B10004E6E63 /* UIGuidelinesRegistryTests.swift in Sources */,
+				VCFST33212EB0B10004E6E63 /* DateGroupingCoverageTests.swift in Sources */,
+				VCFST34212EB0B10004E6E63 /* EscapeResolverCoverageTests.swift in Sources */,
+				VCFST35212EB0B10004E6E63 /* KeyChordMatcherCoverageTests.swift in Sources */,
+				VCFST36212EB0B10004E6E63 /* RowPresentationCoverageTests.swift in Sources */,
 				VCPNL30212EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift in Sources */,
 				VCPNL29212EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift in Sources */,
 				VCPNL30212EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift in Sources */,

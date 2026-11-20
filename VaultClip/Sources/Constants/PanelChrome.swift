@@ -11,7 +11,7 @@ import Cocoa
 
 enum PanelChrome {
     
-    struct metrics {
+    struct Metrics {
         /// Density factor for legacy chrome still migrating to PanelTheme tokens.
         private static let density: CGFloat = 0.855
         
@@ -91,7 +91,7 @@ enum PanelChrome {
         }
     }
     
-    struct colors {
+    struct Colors {
         
         static var accent: NSColor {
             .controlAccentColor
@@ -143,12 +143,12 @@ enum PanelChrome {
         }
     }
     
-    struct typography {
+    struct Typography {
         
-        static let bodySize: CGFloat = metrics.scaled(12)
-        static let chromeSize: CGFloat = metrics.scaled(13)
-        static let countSize: CGFloat = metrics.scaled(11)
-        static let tabSize: CGFloat = metrics.scaled(12)
+        static let bodySize: CGFloat = Metrics.scaled(12)
+        static let chromeSize: CGFloat = Metrics.scaled(13)
+        static let countSize: CGFloat = Metrics.scaled(11)
+        static let tabSize: CGFloat = Metrics.scaled(12)
         
         static var body: NSFont {
             NSFont.monospacedSystemFont(ofSize: bodySize, weight: .regular)
@@ -156,7 +156,7 @@ enum PanelChrome {
         
         static var bodyParagraphStyle: NSParagraphStyle {
             let style = NSMutableParagraphStyle()
-            style.lineSpacing = metrics.scaled(2)
+            style.lineSpacing = Metrics.scaled(2)
             style.alignment = .left
             return style
         }
