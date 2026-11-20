@@ -58,7 +58,8 @@ final class HistoryQuarantineTests: XCTestCase {
         try DataFileManager().writeData(orderPlist, to: Constants.urls.historyOrder)
 
         let cache = HistoryCache()
-        let history = HistoryFileManager().loadHistory(cache: cache)
+        let items = HistoryFileManager().loadHistory(cache: cache)
+        let history = History(historyFM: HistoryFileManager(), cache: cache, items: items)
 
         XCTAssertFalse(history.items.contains(where: { $0.fsId == id }))
         XCTAssertFalse(FileManager.default.fileExists(atPath: itemDir.path))

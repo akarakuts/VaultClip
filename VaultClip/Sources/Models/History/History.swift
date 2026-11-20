@@ -12,11 +12,19 @@ import Cocoa
 import RxSwift
 import RxRelay
 
-/// Representation of all the history.
+/// In-memory clipboard history.
 ///
-/// Invariant: mutations of `_items` happen on the main thread; background persistence
-/// receives immutable value snapshots (`[HistoryItem]` copies) only.
+/// Invariant (T13): `_items` is mutated only on the main queue. `HistoryItem` instances are
+/// reference types shared with the UI; persistence receives `[HistoryItem]` arrays of those
+/// same references (not value copies). Disk I/O runs on `HistoryFileManager`'s queue and must
+/// not call `startCaching`/`stopCaching` — those stay on main.
 class History {
+
+    private func assertMain() {
+        #if DEBUG
+        dispatchPrecondition(condition: .onQueue(.main))
+        #endif
+    }
     
     private var _items = [HistoryItem]()
     
@@ -74,36 +82,49 @@ class History {
     private static let deduplicationLookback = 20
     
     init(historyFM: HistoryFileManaging = HistoryFileManager.default, cache: HistoryCache, items: [HistoryItem], maxItems: Int = Constants.system.maxHistoryItems) {
+        #if DEBUG
+        dispatchPrecondition(condition: .onQueue(.main))
+        #endif
         self.historyFM = historyFM
         self.cache = cache
         self._items = items
         self._maxItems = BehaviorRelay<Int>(value: maxItems)
-        
+
         if items.count > maxItems {
             reduceHistory(to: maxItems)
         }
     }
-    
+
     static func load(historyFM: HistoryFileManaging = HistoryFileManager.default, cache: HistoryCache) -> History {
-        return historyFM.loadHistory(cache: cache)
+        #if DEBUG
+        dispatchPrecondition(condition: .onQueue(.main))
+        #endif
+        let items = historyFM.loadHistory(cache: cache)
+        return History(historyFM: historyFM, cache: cache, items: items)
     }
 
-    static func loadAsync(historyFM: HistoryFileManaging = HistoryFileManager.default, cache: HistoryCache, completion: @escaping (History) -> Void) {
+    static func loadAsync(
+        historyFM: HistoryFileManaging = HistoryFileManager.default,
+        cache: HistoryCache,
+        completion: @escaping ([HistoryItem]) -> Void
+    ) {
         historyFM.loadHistoryAsync(cache: cache, completion: completion)
     }
 
     /// Swaps in the asynchronously loaded list (main thread) and notifies subscribers.
     /// During startup there are usually no subscribers yet; the notify keeps the contract honest.
     func replaceLoaded(with loaded: [HistoryItem]) {
+        assertMain()
         _items.forEach { $0.stopCaching() }
         _items = loaded
         notify(Change.initial)
         pruneExcessItems()
         historyFM.captureHistoryOrder(_items)
     }
-    
+
     @discardableResult
     func subscribe(onNext: @escaping SubscribeHandler) -> () -> Void {
+        assertMain()
         let subscription = Subscription(handler: onNext)
         subscriptions.append(subscription)
         onNext(_items, Change.initial)
@@ -112,21 +133,24 @@ class History {
             self.subscriptions.removeAll { $0 === subscription }
         }
     }
-    
+
     private func notify(_ change: Change) {
         subscriptions.forEach { $0.handler(_items, change) }
     }
-    
+
     func insertItem(_ item: HistoryItem, at i: Int) {
+        assertMain()
         _items.insert(item, at: i)
         notify(Change.insert(index: i))
         historyFM.insertItem(item, historyOrder: _items)
         pruneExcessItems()
     }
-    
+
     func deleteItem(at i: Int) {
+        assertMain()
         guard _items.indices.contains(i) else { return }
         let removed = _items.remove(at: i)
+        removed.stopCaching()
         notify(Change.delete(deletedItem: removed))
         historyFM.deleteItem(newHistory: _items, deleted: removed)
     }
@@ -145,6 +169,7 @@ class History {
     }
     
     func clear(nonFavoritesOnly: Bool = false) {
+        assertMain()
         if nonFavoritesOnly {
             // Ordinary "Clear History" keeps favorites and saved passwords; only "Clear All" removes them.
             let removed = _items.filter { !$0.isFavorite && !$0.isPassword }
@@ -160,8 +185,9 @@ class History {
         notify(Change.clear)
         historyFM.clearHistory()
     }
-    
+
     func setFavorite(_ isFavorite: Bool, for item: HistoryItem) {
+        assertMain()
         guard let index = index(of: item) else { return }
         guard _items[index].isFavorite != isFavorite else { return }
         _items[index].isFavorite = isFavorite
@@ -184,6 +210,7 @@ class History {
         login: String? = nil,
         url: String? = nil
     ) {
+        assertMain()
         guard let index = index(of: item) else { return }
         let resolvedComment = (comment ?? (isPassword ? _items[index].passwordComment : ""))
             .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -215,6 +242,7 @@ class History {
     }
     
     func setPasswordMetadata(comment: String, login: String, url: String, for item: HistoryItem) {
+        assertMain()
         guard let index = index(of: item), _items[index].isPassword else { return }
         let trimmedComment = comment.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedLogin = login.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -243,6 +271,7 @@ class History {
     }
     
     func moveItem(at i: Int, to j: Int) {
+        assertMain()
         guard _items.indices.contains(i), _items.indices.contains(j) else { return }
         guard i != j else { return }
         let item = _items.remove(at: i)
@@ -257,6 +286,7 @@ class History {
     }
     
     private func pruneExcessItems() {
+        assertMain()
         var deleted: [HistoryItem] = []
         while _items.count > _maxItems.value {
             guard let index = _items.lastIndex(where: { !$0.isPinnedFromPruning }) else {
@@ -266,24 +296,28 @@ class History {
             deleted.append(_items.remove(at: index))
         }
         guard !deleted.isEmpty else { return }
+        deleted.forEach { $0.stopCaching() }
         historyFM.deleteItems(deleted, historyOrder: _items)
         for item in deleted {
             notify(Change.delete(deletedItem: item))
         }
     }
-    
+
     func recordPasteboardChange(withCount changeCount: Int) {
+        assertMain()
         _lastRecordedChangeCount.accept(changeCount)
     }
-    
+
     func setMaxItems(_ maxItems: Int) {
+        assertMain()
         if maxItems < _maxItems.value {
             reduceHistory(to: maxItems)
         }
         _maxItems.accept(maxItems)
     }
-    
+
     private func reduceHistory(to maxItems: Int) {
+        assertMain()
         guard _items.count > maxItems else { return }
         var deletedItems: [HistoryItem] = []
         while _items.count > maxItems {
@@ -294,6 +328,7 @@ class History {
             deletedItems.append(_items.remove(at: index))
         }
         guard !deletedItems.isEmpty else { return }
+        deletedItems.forEach { $0.stopCaching() }
         historyFM.deleteItems(deletedItems, historyOrder: _items)
         notify(Change.itemLimitDecreased(deletedItems: deletedItems))
     }
@@ -337,6 +372,7 @@ extension History: PasteboardMonitorDelegate {
 
     /// Re-reads the live pasteboard on launch even when `changeCount` matches persisted settings.
     func syncWithPasteboardOnLaunch(_ pasteboard: NSPasteboard) {
+        assertMain()
         processPasteboardChange(
             pasteboard,
             originBundleId: NSWorkspace.shared.frontmostApplication?.bundleIdentifier,
@@ -345,6 +381,7 @@ extension History: PasteboardMonitorDelegate {
     }
 
     func pasteboardDidChange(_ pasteboard: NSPasteboard, originBundleId: String?) {
+        assertMain()
         processPasteboardChange(pasteboard, originBundleId: originBundleId, ignoreChangeCount: false)
     }
 
@@ -353,6 +390,7 @@ extension History: PasteboardMonitorDelegate {
         originBundleId: String?,
         ignoreChangeCount: Bool
     ) {
+        assertMain()
         if !ignoreChangeCount, pasteboard.changeCount == lastRecordedChangeCount {
             return
         }

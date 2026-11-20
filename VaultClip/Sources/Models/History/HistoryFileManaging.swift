@@ -8,8 +8,8 @@
 import Foundation
 
 protocol HistoryFileManaging: AnyObject {
-    func loadHistory(cache: HistoryCache) -> History
-    func loadHistoryAsync(cache: HistoryCache, completion: @escaping (History) -> Void)
+    func loadHistory(cache: HistoryCache) -> [HistoryItem]
+    func loadHistoryAsync(cache: HistoryCache, completion: @escaping ([HistoryItem]) -> Void)
     func captureHistoryOrder(_ history: [HistoryItem])
     func scheduleHistoryOrderWrite(history: [HistoryItem], immediate: Bool, completionHandler: ((Bool) -> Void)?)
     func saveHistoryOrder(history: [HistoryItem], completionHandler: ((Bool) -> Void)?)
@@ -40,7 +40,7 @@ protocol HistoryFileManaging: AnyObject {
 extension HistoryFileManaging {
 
     /// Non-blocking managers only need the synchronous loader; wrap it for the async API.
-    func loadHistoryAsync(cache: HistoryCache, completion: @escaping (History) -> Void) {
+    func loadHistoryAsync(cache: HistoryCache, completion: @escaping ([HistoryItem]) -> Void) {
         completion(loadHistory(cache: cache))
     }
 

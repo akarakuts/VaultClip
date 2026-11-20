@@ -48,14 +48,17 @@ class HistoryFileManagerMock: HistoryFileManager {
     override func insertItem(_ item: HistoryItem, historyOrder: [HistoryItem], completionHandler handler: ((Bool) -> Void)? = nil) {
         insertedItems.append(item.fsId)
         savedHistoryOrders.append(historyOrder.map(\.fsId))
-        item.startCaching()
+        // Mirror production: startCaching happens on main after disk write.
+        DispatchQueue.main.async {
+            item.startCaching()
+        }
         handler?(true)
     }
 
     override func deleteItems(_ deletedItems: [HistoryItem], historyOrder: [HistoryItem], completionHandler handler: ((Bool) -> Void)? = nil) {
         self.deletedItems.append(contentsOf: deletedItems.map(\.fsId))
         savedHistoryOrders.append(historyOrder.map(\.fsId))
-        deletedItems.forEach { $0.stopCaching() }
+        // stopCaching is owned by History on the main queue (T13).
         handler?(true)
     }
 

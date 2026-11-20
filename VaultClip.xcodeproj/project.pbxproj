@@ -143,6 +143,7 @@
 		VCQLT10212EB0B10004E6E63 /* QuickLookTempStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCQLT10112EB0B10004E6E63 /* QuickLookTempStoreTests.swift */; };
 		VCCST10212EB0B10004E6E63 /* ClipboardSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCCST10112EB0B10004E6E63 /* ClipboardSourceTests.swift */; };
 		VCPUT10212EB0B10004E6E63 /* PasswordURLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPUT10112EB0B10004E6E63 /* PasswordURLTests.swift */; };
+		VCHIC10212EB0B10004E6E63 /* HistoryItemConcurrencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCHIC10112EB0B10004E6E63 /* HistoryItemConcurrencyTests.swift */; };
 		VCLMT10212EB0B10004E6E63 /* LegacyHistoryMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCLMT10112EB0B10004E6E63 /* LegacyHistoryMigrationTests.swift */; };
 		VCTST05212EB0B10004E6E63 /* VaultClipTestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */; };
 		VCSET02212EB0B10004E6E63 /* SettingsPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */; };
@@ -366,6 +367,7 @@
 		VCQLT10112EB0B10004E6E63 /* QuickLookTempStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookTempStoreTests.swift; sourceTree = "<group>"; };
 		VCCST10112EB0B10004E6E63 /* ClipboardSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardSourceTests.swift; sourceTree = "<group>"; };
 		VCPUT10112EB0B10004E6E63 /* PasswordURLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordURLTests.swift; sourceTree = "<group>"; };
+		VCHIC10112EB0B10004E6E63 /* HistoryItemConcurrencyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryItemConcurrencyTests.swift; sourceTree = "<group>"; };
 		VCLMT10112EB0B10004E6E63 /* LegacyHistoryMigrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyHistoryMigrationTests.swift; sourceTree = "<group>"; };
 		VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultClipTestSupport.swift; sourceTree = "<group>"; };
 		VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPersistenceTests.swift; sourceTree = "<group>"; };
@@ -927,6 +929,7 @@
 				VCQLT10112EB0B10004E6E63 /* QuickLookTempStoreTests.swift */,
 				VCCST10112EB0B10004E6E63 /* ClipboardSourceTests.swift */,
 				VCPUT10112EB0B10004E6E63 /* PasswordURLTests.swift */,
+				VCHIC10112EB0B10004E6E63 /* HistoryItemConcurrencyTests.swift */,
 				VCLMT10112EB0B10004E6E63 /* LegacyHistoryMigrationTests.swift */,
 				VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */,
 				VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */,
@@ -1359,6 +1362,7 @@
 				VCQLT10212EB0B10004E6E63 /* QuickLookTempStoreTests.swift in Sources */,
 				VCCST10212EB0B10004E6E63 /* ClipboardSourceTests.swift in Sources */,
 				VCPUT10212EB0B10004E6E63 /* PasswordURLTests.swift in Sources */,
+				VCHIC10212EB0B10004E6E63 /* HistoryItemConcurrencyTests.swift in Sources */,
 				VCLMT10212EB0B10004E6E63 /* LegacyHistoryMigrationTests.swift in Sources */,
 				VCTST05212EB0B10004E6E63 /* VaultClipTestSupport.swift in Sources */,
 				VCSET02212EB0B10004E6E63 /* SettingsPersistenceTests.swift in Sources */,

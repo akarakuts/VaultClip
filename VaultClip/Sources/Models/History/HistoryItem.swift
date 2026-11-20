@@ -18,6 +18,7 @@ class HistoryItem: NSObject {
     
     /// Private variable for data that hasn't yet been saved to disk.
     private var _unsavedData: [NSPasteboard.PasteboardType: Data]?
+    private let unsavedDataLock = NSLock()
     
     
     // MARK: - Public attributes
@@ -31,6 +32,8 @@ class HistoryItem: NSObject {
     ///
     /// If you expect to need the items data after a call to `stopCaching(unsavedData:)` and the data is not saved to disk then you should should provide the data as an argument to `stopCaching(unsavedData:)`.
     var unsavedData: [NSPasteboard.PasteboardType: Data]? {
+        unsavedDataLock.lock()
+        defer { unsavedDataLock.unlock() }
         return _unsavedData
     }
     
@@ -189,7 +192,9 @@ class HistoryItem: NSObject {
     ///
     /// Deallocates the `unsavedData`. Assumes that the data has been saved to disk.
     func startCaching() {
+        unsavedDataLock.lock()
         _unsavedData = nil
+        unsavedDataLock.unlock()
         guard !isPassword else { return }
         cache.registerItem(withId: fsId)
     }
@@ -198,7 +203,9 @@ class HistoryItem: NSObject {
     ///
     /// - Parameter unsavedData: If the item's data is writen to disk this parameter can be ignored. But if itsn't then the `unsavedData` should be provided so it isn't lost.
     func stopCaching(unsavedData: [NSPasteboard.PasteboardType: Data]? = nil) {
+        unsavedDataLock.lock()
         self._unsavedData = unsavedData
+        unsavedDataLock.unlock()
         cache.unregisterItem(withId: fsId)
     }
     

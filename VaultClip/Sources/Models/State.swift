@@ -114,10 +114,10 @@ class State {
             history.syncWithPasteboardOnLaunch(monitoredPasteboard)
             pasteboardMonitor.historyReady(liveChangeCount: monitoredPasteboard.changeCount)
         } else {
-            History.loadAsync(historyFM: HistoryFileManager.default, cache: historyCache) { [weak self] loaded in
+            History.loadAsync(historyFM: HistoryFileManager.default, cache: historyCache) { [weak self] loadedItems in
                 guard let self else { return }
                 self.isHistoryLoaded = true
-                self.history.replaceLoaded(with: loaded.items)
+                self.history.replaceLoaded(with: loadedItems)
                 self.history.syncWithPasteboardOnLaunch(monitoredPasteboard)
                 self.pasteboardMonitor.historyReady(liveChangeCount: monitoredPasteboard.changeCount)
             }

@@ -144,6 +144,7 @@ struct SymmetricKeyStore {
     static let `default` = SymmetricKeyStore()
 
     private static var cachedKey: SymmetricKey?
+    private static let cachedKeyLock = NSLock()
 
     private static let keyFileName = ".history-encryption-key"
     private static let legacyAppSupportFolders = [
@@ -164,11 +165,16 @@ struct SymmetricKeyStore {
 
     @discardableResult
     func loadOrCreateKey() throws -> SymmetricKey {
+        Self.cachedKeyLock.lock()
         if let cachedKey = Self.cachedKey {
+            Self.cachedKeyLock.unlock()
             return cachedKey
         }
+        Self.cachedKeyLock.unlock()
         let key = try resolveKey()
+        Self.cachedKeyLock.lock()
         Self.cachedKey = key
+        Self.cachedKeyLock.unlock()
         return key
     }
 
@@ -218,7 +224,9 @@ struct SymmetricKeyStore {
     }
 
     static func clearCachedKey() {
+        cachedKeyLock.lock()
         cachedKey = nil
+        cachedKeyLock.unlock()
     }
 
     func resetEncryptedHistoryAndCreateNewKey(fileManager: FileManager = .default) throws {
@@ -234,7 +242,9 @@ struct SymmetricKeyStore {
         try SecureStorageHelper.ensureSecureDirectory(at: Constants.urls.appSupport, fileManager: fileManager)
         try SecureStorageHelper.ensureSecureDirectory(at: Constants.urls.history, fileManager: fileManager)
         let newKey = try createNewKey()
+        Self.cachedKeyLock.lock()
         Self.cachedKey = newKey
+        Self.cachedKeyLock.unlock()
     }
 
     private func createNewKey() throws -> SymmetricKey {

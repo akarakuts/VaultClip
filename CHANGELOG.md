@@ -29,6 +29,7 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 
 ### Changed
 
+- **History threading** — `loadHistory` returns `[HistoryItem]`; caching and History mutations stay on main; `_unsavedData` and encryption key cache use locks (T13).
 - **Cache zeroize** — removed ineffective CoW `zeroize` calls from HistoryCache (T12).
 - **Password URL schemes** — only http/https password links are openable or clickable (T11).
 - **Legacy plaintext migration** — history load re-encrypts leftover open files and successful legacy App Support merges move the old folder to Trash (T10).

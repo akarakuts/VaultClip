@@ -221,7 +221,7 @@ class HistoryFileManagerTests: XCTestCase {
         let noItems = expectation(description: "Empty history")
         
         // 2. Get the history
-        let history = historyFM.loadHistory(cache: cache)
+        let history = History(historyFM: historyFM, cache: cache, items: historyFM.loadHistory(cache: cache))
         
         // 3. There should be an error logged
         history.subscribe(onNext: { items, _ in
@@ -245,7 +245,7 @@ class HistoryFileManagerTests: XCTestCase {
         let noItems = expectation(description: "Empty history")
         
         // 2. Get the history
-        let history = historyFM.loadHistory(cache: cache)
+        let history = History(historyFM: historyFM, cache: cache, items: historyFM.loadHistory(cache: cache))
         
         // 3. There should be a history with no items
         history.subscribe(onNext: { items, _ in
@@ -276,7 +276,7 @@ class HistoryFileManagerTests: XCTestCase {
         let itemsExp = expectation(description: "History items")
         
         // 2. Get the history
-        let history = historyFM.loadHistory(cache: cache)
+        let history = History(historyFM: historyFM, cache: cache, items: historyFM.loadHistory(cache: cache))
         
         // 3. Should contain 2 items and warnings and errors should have happened
         history.subscribe { items, _ in
@@ -310,7 +310,7 @@ class HistoryFileManagerTests: XCTestCase {
         let itemsExp = expectation(description: "History items")
         
         // 2. Get the history
-        let history = historyFM.loadHistory(cache: cache)
+        let history = History(historyFM: historyFM, cache: cache, items: historyFM.loadHistory(cache: cache))
         
         // 3. Should contain 2 items and errors should have happened
         history.subscribe { items, _ in
@@ -343,7 +343,7 @@ class HistoryFileManagerTests: XCTestCase {
         let itemsExp = expectation(description: "History items")
         
         // 2. Get the history
-        let history = historyFM.loadHistory(cache: cache)
+        let history = History(historyFM: historyFM, cache: cache, items: historyFM.loadHistory(cache: cache))
         
         // 3. Should contain 2 items and errors should have happened
         history.subscribe { items, _ in
@@ -374,7 +374,7 @@ class HistoryFileManagerTests: XCTestCase {
         let itemsExp = expectation(description: "History items")
         
         // 2. Get the history
-        let history = historyFM.loadHistory(cache: cache)
+        let history = History(historyFM: historyFM, cache: cache, items: historyFM.loadHistory(cache: cache))
         
         // 3. Should contain 2 items and errors should have happened
         history.subscribe { items, _ in
@@ -502,8 +502,11 @@ class HistoryFileManagerTests: XCTestCase {
             }
         }
         
-        // 3. Wait for errors
+        // 3. Wait for errors — disk delete succeeds; cache unregister is History's job on main (T13).
         waitForExpectations(timeout: 1) { _ in
+            XCTAssertTrue(self.fileManager.removeItem[self.historyFM.getUrl(forItemWithId: deleted.fsId)] == true
+                || !self.fileManager.fileExists(atPath: self.historyFM.getUrl(forItemWithId: deleted.fsId).path))
+            deleted.stopCaching()
             XCTAssertFalse(self.cache.isItemRegistered(deleted.fsId))
         }
     }
@@ -695,7 +698,8 @@ class HistoryFileManagerTests: XCTestCase {
         fileManager.directoryContents[Constants.urls.history] = []
         let loaded = expectation(description: "async load")
 
-        historyFM.loadHistoryAsync(cache: cache) { history in
+        historyFM.loadHistoryAsync(cache: cache) { items in
+            let history = History(historyFM: self.historyFM, cache: self.cache, items: items)
             dispatchPrecondition(condition: .onQueue(.main))
             XCTAssertEqual(history.items.count, 0)
             loaded.fulfill()

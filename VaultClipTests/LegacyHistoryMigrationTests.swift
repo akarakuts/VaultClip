@@ -42,7 +42,7 @@ final class LegacyHistoryMigrationTests: XCTestCase {
         try order.write(to: Constants.urls.historyOrder)
 
         let cache = HistoryCache()
-        _ = HistoryFileManager().loadHistory(cache: cache)
+        _ = History(historyFM: HistoryFileManager(), cache: cache, items: HistoryFileManager().loadHistory(cache: cache))
 
         XCTAssertTrue(HistoryEncryptionProbe.isEncryptedFile(at: fileURL))
         let decrypted = try DataFileManager().loadData(contentsOf: fileURL)

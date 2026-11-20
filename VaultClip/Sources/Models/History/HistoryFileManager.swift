@@ -203,33 +203,33 @@ class HistoryFileManager {
         }
     }
     
-    func loadHistory(cache: HistoryCache) -> History {
+    func loadHistory(cache: HistoryCache) -> [HistoryItem] {
         makeHistory(cache: cache)
     }
 
-    /// Builds the history off the calling thread (heavy directory scan), then publishes on main.
-    func loadHistoryAsync(cache: HistoryCache, completion: @escaping (History) -> Void) {
+    /// Builds item list off the calling thread (heavy directory scan), then publishes on main.
+    func loadHistoryAsync(cache: HistoryCache, completion: @escaping ([HistoryItem]) -> Void) {
         dispatchQueue.async {
-            let history = self.makeHistory(cache: cache)
+            let items = self.makeHistory(cache: cache)
             DispatchQueue.main.async {
-                completion(history)
+                completion(items)
             }
         }
     }
 
-    private func makeHistory(cache: HistoryCache) -> History {
+    private func makeHistory(cache: HistoryCache) -> [HistoryItem] {
         guard let order = loadHistoryOrder() else {
             if HistoryEncryptionProbe.hasEncryptedPayloads(fileManager: fileManager) {
                 ClipWarning(localizedDescription: "Encrypted history is present but could not be loaded.").log(with: warningLogger)
-                return History(cache: cache, items: [])
+                return []
             }
             ClipWarning(localizedDescription: "Failed to retrieve order. Creating new order...").log(with: warningLogger)
             saveHistoryOrder(history: [])
-            return History(cache: cache, items: [])
+            return []
         }
 
         if order.isEmpty, !HistoryEncryptionProbe.hasEncryptedPayloads(fileManager: fileManager) {
-            return History(cache: cache, items: [])
+            return []
         }
         var items = [UUID: HistoryItem]()
         var contents = [URL]()
@@ -246,7 +246,7 @@ class HistoryFileManager {
             historyError.log(with: self.errorLogger)
             historyError.show(with: self.alerter)
             saveHistoryOrder(history: [])
-            return History(cache: cache, items: [])
+            return []
         }
         
         // Re-encrypt any leftover plaintext payloads from pre-VC1 installs (T10).
@@ -377,7 +377,7 @@ class HistoryFileManager {
             }
         }
         
-        return History(cache: cache, items: orderedItems)
+        return orderedItems
     }
 
     enum ItemReadability {
@@ -494,7 +494,9 @@ class HistoryFileManager {
                 }
             }
             
-            item.startCaching()
+            DispatchQueue.main.async {
+                item.startCaching()
+            }
             self.scheduleHistoryOrderWrite(history: historyOrder, completionHandler: handler)
         }
     }
@@ -518,7 +520,6 @@ class HistoryFileManager {
                     historyError.show(with: self.alerter)
                 }
                 HistoryItem.removeQuickLookCache(for: deleted.fsId)
-                deleted.stopCaching()
             }
             self.scheduleHistoryOrderWrite(history: historyOrder, immediate: true, completionHandler: { wroteOrder in
                 self.callHander(handler, withVal: wroteOrder && allSucceeded)
@@ -547,8 +548,6 @@ class HistoryFileManager {
                     historyError.log(with: self.errorLogger)
                     historyError.show(with: self.alerter)
                 }
-
-                item.stopCaching()
             }
 
             // Update order
