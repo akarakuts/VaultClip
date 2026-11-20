@@ -28411,6 +28411,86 @@
           }
         }
       }
+    },
+    "password.auth.reason": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock to access the saved password."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Разблокируйте доступ к сохранённому паролю."
+          }
+        }
+      }
+    },
+    "settings.password_auth": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Require authentication for passwords"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Требовать аутентификацию для паролей"
+          }
+        }
+      }
+    },
+    "settings.password_auth_grace": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Re-auth grace period:"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Льготный период повторной проверки:"
+          }
+        }
+      }
+    },
+    "settings.password_auth_grace.immediate": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every time"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сразу"
+          }
+        }
+      }
+    },
+    "settings.password_auth_grace.minutes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d min"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d мин"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

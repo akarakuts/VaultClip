@@ -77,8 +77,11 @@ class PreviewTextViewController: NSViewController, PreviewViewController {
     
     override func mouseDown(with event: NSEvent) {
         if let item = previewItem, item.isPassword, !passwordRevealed {
-            passwordRevealed = true
-            updatePreviewText()
+            PasswordAccessGate.shared.authorize { [weak self] ok in
+                guard ok, let self else { return }
+                self.passwordRevealed = true
+                self.updatePreviewText()
+            }
             return
         }
         super.mouseDown(with: event)

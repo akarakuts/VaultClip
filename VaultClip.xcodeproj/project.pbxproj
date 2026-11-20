@@ -125,6 +125,7 @@
 		34AAA1010000000000000010 /* LaunchAtLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA101000000000000000F /* LaunchAtLoginHelper.swift */; };
 		VCINST0022EB0D10004E6E63 /* SingleInstanceGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCINST0012EB0D10004E6E63 /* SingleInstanceGuard.swift */; };
 		34AAA1010000000000000012 /* SymmetricKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA1010000000000000011 /* SymmetricKeyStore.swift */; };
+		VCPAG10212EB0B10004E6E63 /* PasswordAccessGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPAG10112EB0B10004E6E63 /* PasswordAccessGate.swift */; };
 		34ACFBBF22EB0B0F004E6E63 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ACFBBE22EB0B0F004E6E63 /* AppDelegate.swift */; };
 		34ACFBC622EB0B11004E6E63 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34ACFBC422EB0B11004E6E63 /* Main.storyboard */; };
 		VCLOC00022EB0B10004E6E63 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = VCLOC00012EB0B10004E6E63 /* Localizable.xcstrings */; };
@@ -196,6 +197,7 @@
 		VCSIX10212EB0B10004E6E63 /* SearchIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSIX10112EB0B10004E6E63 /* SearchIndex.swift */; };
 		34F1047D23542CCE00B65251 /* HistoryItem+HistoryListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F1047C23542CCE00B65251 /* HistoryItem+HistoryListItem.swift */; };
 		A1B2C3D41123456789001 /* SearchEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40123456789001 /* SearchEngineTests.swift */; };
+		VCPAT10212EB0B10004E6E63 /* PasswordAccessGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPAT10112EB0B10004E6E63 /* PasswordAccessGateTests.swift */; };
 		VCHKT10212EB0B10004E6E63 /* HotKeyValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCHKT10112EB0B10004E6E63 /* HotKeyValidatorTests.swift */; };
 		VCMAX10212EB0B10004E6E63 /* MaxItemSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCMAX10112EB0B10004E6E63 /* MaxItemSizeTests.swift */; };
 		VCDIG20212EB0B10004E6E63 /* ContentDigestDedupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCDIG20112EB0B10004E6E63 /* ContentDigestDedupTests.swift */; };
@@ -359,6 +361,7 @@
 		34AAA101000000000000000F /* LaunchAtLoginHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginHelper.swift; sourceTree = "<group>"; };
 		VCINST0012EB0D10004E6E63 /* SingleInstanceGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleInstanceGuard.swift; sourceTree = "<group>"; };
 		34AAA1010000000000000011 /* SymmetricKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetricKeyStore.swift; sourceTree = "<group>"; };
+		VCPAG10112EB0B10004E6E63 /* PasswordAccessGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordAccessGate.swift; sourceTree = "<group>"; };
 		34ACFBBB22EB0B0F004E6E63 /* VaultClip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VaultClip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34ACFBBE22EB0B0F004E6E63 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		34ACFBC522EB0B11004E6E63 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -433,6 +436,7 @@
 		34F1047C23542CCE00B65251 /* HistoryItem+HistoryListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryItem+HistoryListItem.swift"; sourceTree = "<group>"; };
 		A1B2C3D31123456789001 /* HistoryTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTabBarView.swift; sourceTree = "<group>"; };
 		A1B2C3D40123456789001 /* SearchEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEngineTests.swift; sourceTree = "<group>"; };
+		VCPAT10112EB0B10004E6E63 /* PasswordAccessGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordAccessGateTests.swift; sourceTree = "<group>"; };
 		VCHKT10112EB0B10004E6E63 /* HotKeyValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKeyValidatorTests.swift; sourceTree = "<group>"; };
 		VCMAX10112EB0B10004E6E63 /* MaxItemSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxItemSizeTests.swift; sourceTree = "<group>"; };
 		VCCEL10112EB0B10004E6E63 /* CellHeightsCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellHeightsCacheTests.swift; sourceTree = "<group>"; };
@@ -884,6 +888,7 @@
 				34AAA1010000000000000003 /* AESGCMDataEncryptor.swift */,
 				34AAA1010000000000000005 /* KeychainSymmetricKeyStore.swift */,
 				34AAA1010000000000000011 /* SymmetricKeyStore.swift */,
+				VCPAG10112EB0B10004E6E63 /* PasswordAccessGate.swift */,
 				34AAA101000000000000000B /* SecureStorageHelper.swift */,
 				34AAA101000000000000000D /* AppDataMigrator.swift */,
 			);
@@ -932,6 +937,7 @@
 				344EC47B235D9288006792FF /* HistoryItemTests.swift */,
 				F7A8B9CD1123456789001 /* HistoryFavoritesTests.swift */,
 				A1B2C3D40123456789001 /* SearchEngineTests.swift */,
+				VCPAT10112EB0B10004E6E63 /* PasswordAccessGateTests.swift */,
 				VCHKT10112EB0B10004E6E63 /* HotKeyValidatorTests.swift */,
 				VCMAX10112EB0B10004E6E63 /* MaxItemSizeTests.swift */,
 				VCCEL10112EB0B10004E6E63 /* CellHeightsCacheTests.swift */,
@@ -1320,6 +1326,7 @@
 				34AAA1010000000000000004 /* AESGCMDataEncryptor.swift in Sources */,
 				34AAA1010000000000000006 /* KeychainSymmetricKeyStore.swift in Sources */,
 				34AAA1010000000000000012 /* SymmetricKeyStore.swift in Sources */,
+				VCPAG10212EB0B10004E6E63 /* PasswordAccessGate.swift in Sources */,
 				34AAA101000000000000000C /* SecureStorageHelper.swift in Sources */,
 				34AAA1010000000000000010 /* LaunchAtLoginHelper.swift in Sources */,
 				VCINST0022EB0D10004E6E63 /* SingleInstanceGuard.swift in Sources */,
@@ -1368,6 +1375,7 @@
 				344EC47C235D9288006792FF /* HistoryItemTests.swift in Sources */,
 				F7A8B9CE1123456789001 /* HistoryFavoritesTests.swift in Sources */,
 				A1B2C3D41123456789001 /* SearchEngineTests.swift in Sources */,
+				VCPAT10212EB0B10004E6E63 /* PasswordAccessGateTests.swift in Sources */,
 				VCHKT10212EB0B10004E6E63 /* HotKeyValidatorTests.swift in Sources */,
 				VCMAX10212EB0B10004E6E63 /* MaxItemSizeTests.swift in Sources */,
 				VCCEL10212EB0B10004E6E63 /* CellHeightsCacheTests.swift in Sources */,

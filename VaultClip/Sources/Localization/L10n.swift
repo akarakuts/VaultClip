@@ -201,6 +201,13 @@ enum L10n {
         String(format: tr("alert.reduce_history.message"), count)
     }
     static var commonContinue: String { tr("common.continue") }
+    static var passwordAuthReason: String { tr("password.auth.reason") }
+    static var settingsPasswordAuth: String { tr("settings.password_auth") }
+    static var settingsPasswordAuthGrace: String { tr("settings.password_auth_grace") }
+    static var settingsPasswordAuthGraceImmediate: String { tr("settings.password_auth_grace.immediate") }
+    static func settingsPasswordAuthGraceMinutes(_ minutes: Int) -> String {
+        String(format: tr("settings.password_auth_grace.minutes"), minutes)
+    }
     static var alertErrorsTitle: String { tr("alert.errors.title") }
     static var alertOpenLogsFolder: String { tr("alert.errors.open_logs") }
     static func alertErrorsAggregated(count: Int, lastMessage: String) -> String {

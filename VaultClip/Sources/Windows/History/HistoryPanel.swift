@@ -40,17 +40,25 @@ class HistoryPanel {
     }
 
     func paste(item: HistoryItem) {
-        guard let index = history.index(of: item) else { return }
-        history.moveItem(at: index, to: 0)
-
-        // Per-item rich-text decision from current settings (D5).
-        item.pastesRichText = settings().pastesRichText
-
-        let changeCount = item.write(to: pasteboard)
-        HistoryPanel.markSelfWrite(changeCount)
-        history.noteClipboardItemId(item.fsId)
-        history.recordPasteboardChange(withCount: changeCount)
-        scheduleSimulatedPaste()
+        guard history.index(of: item) != nil else { return }
+        let perform = { [weak self] in
+            guard let self, let index = self.history.index(of: item) else { return }
+            self.history.moveItem(at: index, to: 0)
+            // Per-item rich-text decision from current settings (D5).
+            item.pastesRichText = self.settings().pastesRichText
+            let changeCount = item.write(to: self.pasteboard)
+            HistoryPanel.markSelfWrite(changeCount)
+            self.history.noteClipboardItemId(item.fsId)
+            self.history.recordPasteboardChange(withCount: changeCount)
+            self.scheduleSimulatedPaste()
+        }
+        if item.isPassword {
+            PasswordAccessGate.shared.authorize { ok in
+                if ok { perform() }
+            }
+        } else {
+            perform()
+        }
     }
     
     func paste(displayedIndex: Int) {
@@ -174,7 +182,10 @@ class HistoryPanel {
     
     func copyPassword(item: HistoryItem) {
         guard let password = item.getPasswordValue(), !password.isEmpty else { return }
-        copyStringToClipboard(password, concealed: true)
+        PasswordAccessGate.shared.authorize { [weak self] ok in
+            guard ok, let self else { return }
+            self.copyStringToClipboard(password, concealed: true)
+        }
     }
     
     private func copyStringToClipboard(_ string: String, concealed: Bool) {

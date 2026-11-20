@@ -29,6 +29,7 @@ class GeneralSettingsViewController: NSViewController {
         localizeUI()
         setupMaxHistoryItemsPopUpButton()
         setupMaxItemSizeControls()
+        setupPasswordAuthControls()
         setupShowsRichTextButton()
         setupPastesRichTextButton()
     }
@@ -106,6 +107,44 @@ class GeneralSettingsViewController: NSViewController {
         selectMaxItemSize(Settings.main.maxItemSizeMB)
     }
 
+    private func setupPasswordAuthControls() {
+        let authButton = NSButton(checkboxWithTitle: L10n.settingsPasswordAuth, target: self, action: #selector(onPasswordAuthToggled))
+        authButton.translatesAutoresizingMaskIntoConstraints = false
+        authButton.state = Settings.main.requiresPasswordAuthentication ? .on : .off
+        view.addSubview(authButton)
+
+        let graceLabel = NSTextField(labelWithString: L10n.settingsPasswordAuthGrace)
+        graceLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(graceLabel)
+
+        let gracePopup = NSPopUpButton(frame: .zero, pullsDown: false)
+        gracePopup.translatesAutoresizingMaskIntoConstraints = false
+        gracePopup.removeAllItems()
+        for minutes in [0, 1, 5, 15] {
+            if minutes == 0 {
+                gracePopup.addItem(withTitle: L10n.settingsPasswordAuthGraceImmediate)
+            } else {
+                gracePopup.addItem(withTitle: L10n.settingsPasswordAuthGraceMinutes(minutes))
+            }
+        }
+        let graceOptions = [0, 1, 5, 15]
+        let graceIndex = graceOptions.firstIndex(of: Settings.main.passwordAuthGraceMinutes) ?? 2
+        gracePopup.selectItem(at: graceIndex)
+        gracePopup.target = self
+        gracePopup.action = #selector(onPasswordAuthGraceSelected)
+        gracePopup.tag = 2901
+        view.addSubview(gracePopup)
+
+        NSLayoutConstraint.activate([
+            authButton.leadingAnchor.constraint(equalTo: maxItemSizeLabel.leadingAnchor),
+            authButton.topAnchor.constraint(equalTo: maxItemSizeLabel.bottomAnchor, constant: 14),
+            graceLabel.leadingAnchor.constraint(equalTo: authButton.leadingAnchor),
+            graceLabel.topAnchor.constraint(equalTo: authButton.bottomAnchor, constant: 8),
+            gracePopup.leadingAnchor.constraint(equalTo: graceLabel.trailingAnchor, constant: 8),
+            gracePopup.centerYAnchor.constraint(equalTo: graceLabel.centerYAnchor),
+        ])
+    }
+
     private func selectMaxItemSize(_ mb: Int) {
         let options = Constants.settings.maxItemSizeMBOptions
         let index = options.firstIndex(of: mb) ?? options.firstIndex(of: Constants.settings.maxItemSizeMBDefault) ?? 0
@@ -173,6 +212,16 @@ class GeneralSettingsViewController: NSViewController {
         let index = maxItemSizePopUpButton.indexOfSelectedItem
         guard Constants.settings.maxItemSizeMBOptions.indices.contains(index) else { return }
         SettingsPersistence.apply { $0.maxItemSizeMB = Constants.settings.maxItemSizeMBOptions[index] }
+    }
+
+    @objc private func onPasswordAuthToggled(_ sender: NSButton) {
+        SettingsPersistence.apply { $0.requiresPasswordAuthentication = sender.state == .on }
+    }
+
+    @objc private func onPasswordAuthGraceSelected(_ sender: NSPopUpButton) {
+        let options = [0, 1, 5, 15]
+        guard options.indices.contains(sender.indexOfSelectedItem) else { return }
+        SettingsPersistence.apply { $0.passwordAuthGraceMinutes = options[sender.indexOfSelectedItem] }
     }
     
     @objc private func onShowsRichTextButtonClicked() {

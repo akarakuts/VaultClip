@@ -55,7 +55,9 @@ struct Settings: Codable, DefaultStorable {
         maxHistory: Int,
         showsRichText: Bool,
         pastesRichText: Bool,
-        maxItemSizeMB: Int
+        maxItemSizeMB: Int,
+        requiresPasswordAuthentication: Bool,
+        passwordAuthGraceMinutes: Int
     ) {
         self.panelPosition = panelPosition
         self.pasteboardChangeCount = pasteboardChangeCount
@@ -64,6 +66,8 @@ struct Settings: Codable, DefaultStorable {
         self.showsRichText = showsRichText
         self.pastesRichText = pastesRichText
         self.maxItemSizeMB = maxItemSizeMB
+        self.requiresPasswordAuthentication = requiresPasswordAuthentication
+        self.passwordAuthGraceMinutes = passwordAuthGraceMinutes
     }
     
     static let `default` = Settings(
@@ -73,7 +77,9 @@ struct Settings: Codable, DefaultStorable {
         maxHistory: Constants.settings.maxHistoryItemsDefault,
         showsRichText: true,
         pastesRichText: true,
-        maxItemSizeMB: Constants.settings.maxItemSizeMBDefault
+        maxItemSizeMB: Constants.settings.maxItemSizeMBDefault,
+        requiresPasswordAuthentication: true,
+        passwordAuthGraceMinutes: 5
     )
     
     // MARK: - Settings
@@ -93,6 +99,12 @@ struct Settings: Codable, DefaultStorable {
     /// Max clipboard item size in megabytes; `0` means unlimited (T26).
     var maxItemSizeMB: Int
 
+    /// Require Touch ID / Mac password before revealing or pasting saved passwords (T29).
+    var requiresPasswordAuthentication: Bool
+
+    /// Minutes after a successful unlock when password actions skip re-auth; `0` = every time.
+    var passwordAuthGraceMinutes: Int
+
     enum CodingKeys: String, CodingKey {
         case panelPosition
         case pasteboardChangeCount
@@ -101,6 +113,8 @@ struct Settings: Codable, DefaultStorable {
         case showsRichText
         case pastesRichText
         case maxItemSizeMB
+        case requiresPasswordAuthentication
+        case passwordAuthGraceMinutes
     }
 
     init(from decoder: Decoder) throws {
@@ -126,6 +140,10 @@ struct Settings: Codable, DefaultStorable {
             ?? defaults.pastesRichText
         maxItemSizeMB = try container.decodeIfPresent(Int.self, forKey: .maxItemSizeMB)
             ?? defaults.maxItemSizeMB
+        requiresPasswordAuthentication = try container.decodeIfPresent(Bool.self, forKey: .requiresPasswordAuthentication)
+            ?? defaults.requiresPasswordAuthentication
+        passwordAuthGraceMinutes = try container.decodeIfPresent(Int.self, forKey: .passwordAuthGraceMinutes)
+            ?? defaults.passwordAuthGraceMinutes
     }
 
     func encode(to encoder: Encoder) throws {
@@ -137,6 +155,8 @@ struct Settings: Codable, DefaultStorable {
         try container.encode(showsRichText, forKey: .showsRichText)
         try container.encode(pastesRichText, forKey: .pastesRichText)
         try container.encode(maxItemSizeMB, forKey: .maxItemSizeMB)
+        try container.encode(requiresPasswordAuthentication, forKey: .requiresPasswordAuthentication)
+        try container.encode(passwordAuthGraceMinutes, forKey: .passwordAuthGraceMinutes)
     }
 
     // MARK: - State Binding Methods

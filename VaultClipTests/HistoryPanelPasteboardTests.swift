@@ -13,9 +13,12 @@ final class HistoryPanelPasteboardTests: XCTestCase {
     private var pasteboard: NSPasteboard!
     private var cache: HistoryCache!
     private var history: History!
+    private var previousRequiresAuth: Bool!
 
     override func setUp() {
         super.setUp()
+        previousRequiresAuth = Settings.main.requiresPasswordAuthentication
+        SettingsPersistence.apply { $0.requiresPasswordAuthentication = false }
         pasteboard = NSPasteboard(name: NSPasteboard.Name("VaultClipTests-\(UUID().uuidString)"))
         pasteboard.clearContents()
         cache = HistoryCache()
@@ -24,6 +27,7 @@ final class HistoryPanelPasteboardTests: XCTestCase {
     }
 
     override func tearDown() {
+        SettingsPersistence.apply { $0.requiresPasswordAuthentication = previousRequiresAuth }
         pasteboard.releaseGlobally()
         pasteboard = nil
         HistoryPanel.lastSelfWriteChangeCount = nil
