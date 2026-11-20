@@ -46,14 +46,17 @@ struct Constants {
     
     struct urls {
         static var applicationSupport: URL {
-            FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+            if let override = StorageRoot.override {
+                return override
+            }
+            return FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
                 ?? FileManager.default.homeDirectoryForCurrentUser
                     .appendingPathComponent("Library", isDirectory: true)
                     .appendingPathComponent("Application Support", isDirectory: true)
         }
         
         static var appSupport: URL {
-            return applicationSupport.appendingPathComponent(Constants.branding.bundleIdentifier, isDirectory: true)
+            return applicationSupport.appendingPathComponent(AppIdentity.bundleIdentifier, isDirectory: true)
         }
 
         static var legacyAppSupport: URL {

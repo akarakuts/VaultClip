@@ -18,15 +18,13 @@ enum SingleInstanceGuard {
         Constants.urls.appSupport.appendingPathComponent("instance.lock", isDirectory: false)
     }
 
-    private static var isRunningUnitTests: Bool {
-        ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
-    }
-
     /// Returns `true` when this process should stop starting up (duplicate of an already running copy).
     @discardableResult
     static func terminateIfDuplicate() -> Bool {
-        guard !isRunningUnitTests else { return false }
+        guard !AppIdentity.isRunningUnitTests else { return false }
+        #if DEBUG
         guard !ProcessInfo.processInfo.arguments.contains("--uitesting") else { return false }
+        #endif
 
         if !acquireExclusiveLock() {
             activateExistingInstance()

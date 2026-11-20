@@ -11,27 +11,28 @@ import Foundation
 
 struct UITesting {
 
+    #if DEBUG
     /// True when the app was launched for UI testing (`--uitesting`).
     static let isRunning = CommandLine.arguments.contains("--uitesting")
 
     static func setupUITestEnvironment(launchArgs: [String], environment: [String: String]) throws {
-        // Mock the access control and key pressing
         Helper.accessControlHelper = AccessControlHelperMock()
         Helper.keyPressHelper = KeyPressHelperMock()
-        
-        // Remove the settings
+
         _ = UserDefaults.standard.blank()
-        
-        if let test = CommandLine.arguments.filter({$0.contains("--Settings.testData=")}).first,
+
+        if let test = CommandLine.arguments.first(where: { $0.contains("--Settings.testData=") }),
            let settings = Settings.testData.from(test) {
             Settings.main = settings
         }
-        
+
         try loadTestAppSupport(launchArgs: launchArgs, environment: environment)
+        AppIdentity.assertStorageIsIsolatedIfNeeded()
     }
-    
+
+    /// Copies fixture data into a temporary Application Support root — never the production folder.
     static func loadTestAppSupport(launchArgs: [String], environment: [String: String]) throws {
-        guard let testData = launchArgs.first(where: {$0.contains("--test-dir=")}) else {
+        guard let testData = launchArgs.first(where: { $0.contains("--test-dir=") }) else {
             return
         }
         let pattern = "--test-dir=(.*)"
@@ -44,7 +45,7 @@ struct UITesting {
             return
         }
         let test = groups[1]
-        
+
         guard let srcroot = environment["SRCROOT"] else {
             throw NSError(domain: "UITestError", code: 0, userInfo: [
                 NSLocalizedDescriptionKey: "Cannot load test app support directory because the SRCROOT environment variable is not set."
@@ -57,16 +58,24 @@ struct UITesting {
                 NSLocalizedDescriptionKey: "Failed to create test url for path srcroot/TestData/\(test)."
             ])
         }
-        if FileManager.default.fileExists(atPath: testDir.path) {
-            if FileManager.default.fileExists(atPath: Constants.urls.appSupport.path) {
-                try FileManager.default.removeItem(at: Constants.urls.appSupport)
-            }
-            try FileManager.default.copyItem(at: testDir, to: Constants.urls.appSupport)
-        }
-        else {
+        guard FileManager.default.fileExists(atPath: testDir.path) else {
             throw NSError(domain: "TestDirectoryError", code: 0, userInfo: [
                 NSLocalizedDescriptionKey: "Could not copy test directory \(test) because it doesn't exist."
             ])
         }
+
+        let root = FileManager.default.temporaryDirectory
+            .appendingPathComponent("VaultClip-UITests-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        StorageRoot.override = root
+
+        let destination = Constants.urls.appSupport
+        if FileManager.default.fileExists(atPath: destination.path) {
+            try FileManager.default.removeItem(at: destination)
+        }
+        try FileManager.default.copyItem(at: testDir, to: destination)
     }
+    #else
+    static let isRunning = false
+    #endif
 }

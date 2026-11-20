@@ -246,14 +246,17 @@ struct SymmetricKeyStore {
             append(key, source: "keychain")
         }
 
-        for service in Self.legacyKeychainServices {
-            let legacy = KeychainSymmetricKeyStore(service: service, account: "history-data-key")
-            do {
-                if let key = try legacy.loadExistingKey() {
-                    append(key, source: "keychain:\(service)")
+        // Legacy Keychain / file locations belong to the production app only.
+        if AppIdentity.isProduction {
+            for service in Self.legacyKeychainServices {
+                let legacy = KeychainSymmetricKeyStore(service: service, account: "history-data-key")
+                do {
+                    if let key = try legacy.loadExistingKey() {
+                        append(key, source: "keychain:\(service)")
+                    }
+                } catch let KeychainSymmetricKeyStore.KeychainError.osStatus(status) where status == errSecMissingEntitlement {
+                    continue
                 }
-            } catch let KeychainSymmetricKeyStore.KeychainError.osStatus(status) where status == errSecMissingEntitlement {
-                continue
             }
         }
 
@@ -261,12 +264,14 @@ struct SymmetricKeyStore {
             append(key, source: "file")
         }
 
-        for folder in Self.legacyAppSupportFolders {
-            let url = Constants.urls.applicationSupport
-                .appendingPathComponent(folder, isDirectory: true)
-                .appendingPathComponent(Self.keyFileName, isDirectory: false)
-            if let key = try loadFromFile(at: url) {
-                append(key, source: "file:\(folder)")
+        if AppIdentity.isProduction {
+            for folder in Self.legacyAppSupportFolders {
+                let url = Constants.urls.applicationSupport
+                    .appendingPathComponent(folder, isDirectory: true)
+                    .appendingPathComponent(Self.keyFileName, isDirectory: false)
+                if let key = try loadFromFile(at: url) {
+                    append(key, source: "file:\(folder)")
+                }
             }
         }
 

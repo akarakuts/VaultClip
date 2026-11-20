@@ -7,6 +7,7 @@
 //
 //  SPDX-License-Identifier: GPL-3.0-or-later
 //
+#if DEBUG
 import Foundation
 import Cocoa
 
@@ -24,3 +25,4 @@ struct AccessControlMock {
         return pasteboard.string(forType: .string) == "true"
     }
 }
+#endif

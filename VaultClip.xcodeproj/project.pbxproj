@@ -133,6 +133,7 @@
 		VCTST02212EB0B10004E6E63 /* HistoryPasteboardPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCTST02112EB0B10004E6E63 /* HistoryPasteboardPolicyTests.swift */; };
 		VCTST03212EB0B10004E6E63 /* SingleInstanceGuardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCTST03112EB0B10004E6E63 /* SingleInstanceGuardTests.swift */; };
 		VCTST04212EB0B10004E6E63 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCTST04112EB0B10004E6E63 /* AppEnvironmentTests.swift */; };
+		VCSTR00212EB0B10004E6E63 /* StorageRootTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSTR00112EB0B10004E6E63 /* StorageRootTests.swift */; };
 		VCTST05212EB0B10004E6E63 /* VaultClipTestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */; };
 		VCSET02212EB0B10004E6E63 /* SettingsPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */; };
 		34ACFBDD22EB0B11004E6E63 /* VaultClipUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ACFBDC22EB0B11004E6E63 /* VaultClipUITests.swift */; };
@@ -152,6 +153,7 @@
 		34B5C42E23580CD9005247EB /* ClipError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B5C42D23580CD9005247EB /* ClipError.swift */; };
 		VCERR00212EB0B10004E6E63 /* ClipErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCERR00112EB0B10004E6E63 /* ClipErrorCode.swift */; };
 		VCENV00212EB0B10004E6E63 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCENV00112EB0B10004E6E63 /* AppEnvironment.swift */; };
+		VCIDN00212EB0B10004E6E63 /* AppIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCIDN00112EB0B10004E6E63 /* AppIdentity.swift */; };
 		VCARC00212EB0B10004E6E63 /* AppRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCARC00112EB0B10004E6E63 /* AppRouting.swift */; };
 		VCSP00212EB0B10004E6E63 /* SettingsPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSP00112EB0B10004E6E63 /* SettingsPersistence.swift */; };
 		VCPCT00212EB0B10004E6E63 /* PasteboardChangeTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPCT00112EB0B10004E6E63 /* PasteboardChangeTracking.swift */; };
@@ -342,6 +344,7 @@
 		VCTST02112EB0B10004E6E63 /* HistoryPasteboardPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryPasteboardPolicyTests.swift; sourceTree = "<group>"; };
 		VCTST03112EB0B10004E6E63 /* SingleInstanceGuardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleInstanceGuardTests.swift; sourceTree = "<group>"; };
 		VCTST04112EB0B10004E6E63 /* AppEnvironmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironmentTests.swift; sourceTree = "<group>"; };
+		VCSTR00112EB0B10004E6E63 /* StorageRootTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageRootTests.swift; sourceTree = "<group>"; };
 		VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultClipTestSupport.swift; sourceTree = "<group>"; };
 		VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPersistenceTests.swift; sourceTree = "<group>"; };
 		34ACFBD322EB0B11004E6E63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -364,6 +367,7 @@
 		34B5C42D23580CD9005247EB /* ClipError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipError.swift; sourceTree = "<group>"; };
 		VCERR00112EB0B10004E6E63 /* ClipErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipErrorCode.swift; sourceTree = "<group>"; };
 		VCENV00112EB0B10004E6E63 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		VCIDN00112EB0B10004E6E63 /* AppIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIdentity.swift; sourceTree = "<group>"; };
 		VCARC00112EB0B10004E6E63 /* AppRouting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouting.swift; sourceTree = "<group>"; };
 		VCSP00112EB0B10004E6E63 /* SettingsPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPersistence.swift; sourceTree = "<group>"; };
 		VCPCT00112EB0B10004E6E63 /* PasteboardChangeTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardChangeTracking.swift; sourceTree = "<group>"; };
@@ -758,6 +762,7 @@
 				343F4116233C5A6F004DA324 /* Settings */,
 				3488B14122FAE9FA0019E7DA /* State.swift */,
 				VCENV00112EB0B10004E6E63 /* AppEnvironment.swift */,
+				VCIDN00112EB0B10004E6E63 /* AppIdentity.swift */,
 				VCARC00112EB0B10004E6E63 /* AppRouting.swift */,
 				348D525E2387667D0024A5C7 /* ClipHotKey */,
 				341FFEE82442EDA500C47E6D /* HistoryItemText.swift */,
@@ -885,6 +890,7 @@
 				VCTST02112EB0B10004E6E63 /* HistoryPasteboardPolicyTests.swift */,
 				VCTST03112EB0B10004E6E63 /* SingleInstanceGuardTests.swift */,
 				VCTST04112EB0B10004E6E63 /* AppEnvironmentTests.swift */,
+				VCSTR00112EB0B10004E6E63 /* StorageRootTests.swift */,
 				VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */,
 				VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */,
 				C661A498BA1A4094B9CCB1ED /* LogStorageTests.swift */,
@@ -1163,6 +1169,7 @@
 				341D9D27233724FE008A2BE6 /* NSEventModifierFlags+KeyPressMonitor.swift in Sources */,
 				3488B14222FAE9FA0019E7DA /* State.swift in Sources */,
 				VCENV00212EB0B10004E6E63 /* AppEnvironment.swift in Sources */,
+				VCIDN00212EB0B10004E6E63 /* AppIdentity.swift in Sources */,
 				VCARC00212EB0B10004E6E63 /* AppRouting.swift in Sources */,
 				VCSP00212EB0B10004E6E63 /* SettingsPersistence.swift in Sources */,
 				VCPCT00212EB0B10004E6E63 /* PasteboardChangeTracking.swift in Sources */,
@@ -1303,6 +1310,7 @@
 				VCTST02212EB0B10004E6E63 /* HistoryPasteboardPolicyTests.swift in Sources */,
 				VCTST03212EB0B10004E6E63 /* SingleInstanceGuardTests.swift in Sources */,
 				VCTST04212EB0B10004E6E63 /* AppEnvironmentTests.swift in Sources */,
+				VCSTR00212EB0B10004E6E63 /* StorageRootTests.swift in Sources */,
 				VCTST05212EB0B10004E6E63 /* VaultClipTestSupport.swift in Sources */,
 				VCSET02212EB0B10004E6E63 /* SettingsPersistenceTests.swift in Sources */,
 				34268113233D9EC500BA226A /* NSMenuItemFunctionalTests.swift in Sources */,

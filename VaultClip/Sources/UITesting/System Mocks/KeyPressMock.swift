@@ -7,6 +7,7 @@
 //
 //  SPDX-License-Identifier: GPL-3.0-or-later
 //
+#if DEBUG
 import Foundation
 import Cocoa
 import HotKey
@@ -50,3 +51,4 @@ struct KeyPressMock {
         static let enterEventFlags = CGEventFlags.maskCommand
     }
 }
+#endif

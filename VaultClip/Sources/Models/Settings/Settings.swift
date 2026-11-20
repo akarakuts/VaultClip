@@ -115,6 +115,7 @@ extension Settings {
     }
 }
 
+#if DEBUG
 extension Settings {
     
     struct testData {
@@ -134,6 +135,7 @@ extension Settings {
         }
     }
 }
+#endif
 
 extension Settings: Equatable {
     

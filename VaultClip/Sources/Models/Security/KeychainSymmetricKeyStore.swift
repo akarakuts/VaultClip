@@ -21,7 +21,7 @@ struct KeychainSymmetricKeyStore {
     static let legacyService = Constants.branding.legacyBundleIdentifier
 
     static let `default` = KeychainSymmetricKeyStore(
-        service: Constants.branding.bundleIdentifier,
+        service: AppIdentity.bundleIdentifier,
         account: "history-data-key"
     )
 

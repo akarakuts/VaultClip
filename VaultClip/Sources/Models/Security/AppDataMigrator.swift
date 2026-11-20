@@ -14,6 +14,7 @@ enum AppDataMigrator {
     private static let keyFileName = ".history-encryption-key"
 
     static func migrateIfNeeded() {
+        guard AppIdentity.isProduction else { return }
         removeLegacyDiagnosticsLogIfNeeded()
         migrateApplicationSupportIfNeeded(from: Constants.branding.legacyBundleIdentifier)
         migrateApplicationSupportIfNeeded(from: "VaultClip")

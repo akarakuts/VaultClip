@@ -70,7 +70,9 @@ class State {
         self.isHistoryPanelShown = BehaviorRelay<Bool>(value: false)
         self.panelPosition = BehaviorRelay<PanelPosition>(value: settings.panelPosition)
         self.previewHistoryItem = BehaviorRelay<HistoryItem?>(value: nil)
-        self.launchAtLogin = BehaviorRelay<Bool>(value: LaunchAtLoginHelper.isEnabled())
+        self.launchAtLogin = BehaviorRelay<Bool>(
+            value: AppIdentity.isRunningUnitTests ? false : LaunchAtLoginHelper.isEnabled()
+        )
         self.showsRichText = BehaviorRelay<Bool>(value: settings.showsRichText)
         self.pastesRichText = BehaviorRelay<Bool>(value: settings.pastesRichText)
         self.currentScreen = BehaviorRelay<NSScreen?>(value: Self.getCurrentScreen(forMouseLocation: NSEvent.mouseLocation))
@@ -94,22 +96,27 @@ class State {
             history.setMaxItems(settings.maxHistory)
         }
 
-        // Setup pasteboard monitor
-        self.pasteboardMonitor = PasteboardMonitor(pasteboard: NSPasteboard.general, changeCount: settings.pasteboardChangeCount, delegate: history)
+        // Setup pasteboard monitor (private pasteboard for the XCTest host — never the system clipboard).
+        let monitoredPasteboard = Self.pasteboardForProcess()
+        self.pasteboardMonitor = PasteboardMonitor(
+            pasteboard: monitoredPasteboard,
+            changeCount: settings.pasteboardChangeCount,
+            delegate: history
+        )
 
         // Bind settings to state
         Self.bind(settings: settings, toState: self, disposeBag: disposeBag)
 
         if isHistoryLoaded {
-            history.syncWithPasteboardOnLaunch(NSPasteboard.general)
-            pasteboardMonitor.historyReady(liveChangeCount: NSPasteboard.general.changeCount)
+            history.syncWithPasteboardOnLaunch(monitoredPasteboard)
+            pasteboardMonitor.historyReady(liveChangeCount: monitoredPasteboard.changeCount)
         } else {
             History.loadAsync(historyFM: HistoryFileManager.default, cache: historyCache) { [weak self] loaded in
                 guard let self else { return }
                 self.isHistoryLoaded = true
                 self.history.replaceLoaded(with: loaded.items)
-                self.history.syncWithPasteboardOnLaunch(NSPasteboard.general)
-                self.pasteboardMonitor.historyReady(liveChangeCount: NSPasteboard.general.changeCount)
+                self.history.syncWithPasteboardOnLaunch(monitoredPasteboard)
+                self.pasteboardMonitor.historyReady(liveChangeCount: monitoredPasteboard.changeCount)
             }
         }
 
@@ -156,5 +163,12 @@ class State {
         NSScreen.screens.first(where: { $0.frame.contains(location) })
             ?? NSScreen.main
             ?? NSScreen.screens.first
+    }
+
+    private static func pasteboardForProcess() -> NSPasteboard {
+        if AppIdentity.isRunningUnitTests {
+            return NSPasteboard(name: NSPasteboard.Name("com.karakuts.VaultClip.unit-tests"))
+        }
+        return .general
     }
 }

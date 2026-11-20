@@ -7,6 +7,7 @@
 //
 //  SPDX-License-Identifier: GPL-3.0-or-later
 //
+#if DEBUG
 import Foundation
 import Cocoa
 
@@ -20,3 +21,4 @@ class AccessControlHelperMock: AccessControlHelper {
         return AccessControlMock.isControlGranted()
     }
 }
+#endif

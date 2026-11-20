@@ -7,6 +7,7 @@
 //
 //  SPDX-License-Identifier: GPL-3.0-or-later
 //
+#if DEBUG
 import CoreGraphics
 import Foundation
 
@@ -16,3 +17,4 @@ class KeyPressHelperMock: KeyPressHelper {
         KeyPressMock.keyPress(keyCode: keyCode, flags: flags)
     }
 }
+#endif
