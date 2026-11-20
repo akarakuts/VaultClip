@@ -134,6 +134,7 @@ class HistoryViewController: NSViewController {
         ClipHotKeys.pageUp.onLong(goToPreviousItem)
         ClipHotKeys.escape.onDown { self.close() }
         ClipHotKeys.return.onDown(pasteSelected)
+        ClipHotKeys.shiftReturn.onDown(pasteSelectedPlainText)
         ClipHotKeys.ctrlAltCmdLeftArrow.onDown { self.appState.panelPosition.accept(.left) }
         ClipHotKeys.ctrlAltCmdRightArrow.onDown { self.appState.panelPosition.accept(.right) }
         ClipHotKeys.ctrlAltCmdDownArrow.onDown { self.appState.panelPosition.accept(.bottom) }
@@ -394,6 +395,12 @@ class HistoryViewController: NSViewController {
         if let selected = self.historyListView.selected {
             paste(selected: selected)
         }
+    }
+
+    func pasteSelectedPlainText() {
+        guard let selected = historyListView.selected,
+              selected >= 0, selected < historyPanel.items.count else { return }
+        historyPanel.paste(item: historyPanel.items[selected], plainTextOnly: true)
     }
     
     func deleteSelected() {

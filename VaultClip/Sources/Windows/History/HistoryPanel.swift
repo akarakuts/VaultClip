@@ -39,10 +39,23 @@ class HistoryPanel {
         self.settings = settings
     }
 
-    func paste(item: HistoryItem) {
+    func paste(item: HistoryItem, plainTextOnly: Bool = false) {
         guard history.index(of: item) != nil else { return }
         let perform = { [weak self] in
             guard let self, let index = self.history.index(of: item) else { return }
+            if plainTextOnly {
+                guard let plain = Self.plainTextForPaste(from: item) else { return }
+                self.history.moveItem(at: index, to: 0)
+                let changeCount = PasteboardWriter.writeString(plain, to: self.pasteboard, concealed: item.isPassword)
+                HistoryPanel.markSelfWrite(changeCount)
+                self.history.noteClipboardItemId(item.fsId)
+                self.history.recordPasteboardChange(withCount: changeCount)
+                if item.isPassword {
+                    PasswordClipboardClearer.shared.scheduleClear(afterWritingChangeCount: changeCount, pasteboard: self.pasteboard)
+                }
+                self.scheduleSimulatedPaste()
+                return
+            }
             self.history.moveItem(at: index, to: 0)
             // Per-item rich-text decision from current settings (D5).
             item.pastesRichText = self.settings().pastesRichText
@@ -62,6 +75,25 @@ class HistoryPanel {
         } else {
             perform()
         }
+    }
+
+    /// Plain / RTF / HTML / URL text for Shift+Return paste (T32).
+    static func plainTextForPaste(from item: HistoryItem) -> String? {
+        if let plain = item.getPlainString(), !plain.isEmpty { return plain }
+        if let rtf = item.data(forType: .rtf),
+           let attr = NSAttributedString(rtf: rtf, documentAttributes: nil),
+           !attr.string.isEmpty {
+            return attr.string
+        }
+        if let html = item.data(forType: .html),
+           let raw = String(data: html, encoding: .utf8) {
+            let stripped = HistoryItemText.stripHTMLTagsForSearch(raw)
+            if !stripped.isEmpty { return stripped }
+        }
+        if let url = item.getUrl() {
+            return url.absoluteString
+        }
+        return nil
     }
     
     func paste(displayedIndex: Int) {

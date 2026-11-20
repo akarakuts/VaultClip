@@ -198,6 +198,7 @@
 		VCSIX10212EB0B10004E6E63 /* SearchIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSIX10112EB0B10004E6E63 /* SearchIndex.swift */; };
 		34F1047D23542CCE00B65251 /* HistoryItem+HistoryListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F1047C23542CCE00B65251 /* HistoryItem+HistoryListItem.swift */; };
 		A1B2C3D41123456789001 /* SearchEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40123456789001 /* SearchEngineTests.swift */; };
+		VCPLT10212EB0B10004E6E63 /* PlainTextPasteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPLT10112EB0B10004E6E63 /* PlainTextPasteTests.swift */; };
 		VCCAP10212EB0B10004E6E63 /* CapturePauseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCCAP10112EB0B10004E6E63 /* CapturePauseTests.swift */; };
 		VCPCT10212EB0B10004E6E63 /* PasswordClipboardClearerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPCT10112EB0B10004E6E63 /* PasswordClipboardClearerTests.swift */; };
 		VCPAT10212EB0B10004E6E63 /* PasswordAccessGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPAT10112EB0B10004E6E63 /* PasswordAccessGateTests.swift */; };
@@ -440,6 +441,7 @@
 		34F1047C23542CCE00B65251 /* HistoryItem+HistoryListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryItem+HistoryListItem.swift"; sourceTree = "<group>"; };
 		A1B2C3D31123456789001 /* HistoryTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTabBarView.swift; sourceTree = "<group>"; };
 		A1B2C3D40123456789001 /* SearchEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEngineTests.swift; sourceTree = "<group>"; };
+		VCPLT10112EB0B10004E6E63 /* PlainTextPasteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTextPasteTests.swift; sourceTree = "<group>"; };
 		VCCAP10112EB0B10004E6E63 /* CapturePauseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapturePauseTests.swift; sourceTree = "<group>"; };
 		VCPCT10112EB0B10004E6E63 /* PasswordClipboardClearerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordClipboardClearerTests.swift; sourceTree = "<group>"; };
 		VCPAT10112EB0B10004E6E63 /* PasswordAccessGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordAccessGateTests.swift; sourceTree = "<group>"; };
@@ -944,6 +946,7 @@
 				344EC47B235D9288006792FF /* HistoryItemTests.swift */,
 				F7A8B9CD1123456789001 /* HistoryFavoritesTests.swift */,
 				A1B2C3D40123456789001 /* SearchEngineTests.swift */,
+				VCPLT10112EB0B10004E6E63 /* PlainTextPasteTests.swift */,
 				VCCAP10112EB0B10004E6E63 /* CapturePauseTests.swift */,
 				VCPCT10112EB0B10004E6E63 /* PasswordClipboardClearerTests.swift */,
 				VCPAT10112EB0B10004E6E63 /* PasswordAccessGateTests.swift */,
@@ -1385,6 +1388,7 @@
 				344EC47C235D9288006792FF /* HistoryItemTests.swift in Sources */,
 				F7A8B9CE1123456789001 /* HistoryFavoritesTests.swift in Sources */,
 				A1B2C3D41123456789001 /* SearchEngineTests.swift in Sources */,
+				VCPLT10212EB0B10004E6E63 /* PlainTextPasteTests.swift in Sources */,
 				VCCAP10212EB0B10004E6E63 /* CapturePauseTests.swift in Sources */,
 				VCPCT10212EB0B10004E6E63 /* PasswordClipboardClearerTests.swift in Sources */,
 				VCPAT10212EB0B10004E6E63 /* PasswordAccessGateTests.swift in Sources */,

@@ -15,6 +15,7 @@ struct ClipHotKeys {
     static var toggle = ClipHotKey(key: .v, modifiers: [.command, .shift], startsPaused: false)
 
     static var `return` = ClipHotKey(key: .return, modifiers: [])
+    static var shiftReturn = ClipHotKey(key: .return, modifiers: [.shift])
     static var escape = ClipHotKey(key: .escape, modifiers: [])
     static var downArrow = ClipHotKey(key: .downArrow, modifiers: [])
     static var upArrow = ClipHotKey(key: .upArrow, modifiers: [])
@@ -44,7 +45,7 @@ struct ClipHotKeys {
     /// Hot keys that must only be registered while the history panel is visible.
     static var panelScoped: [ClipHotKey] {
         [
-            `return`, escape, downArrow, upArrow, pageDown, pageUp,
+            `return`, shiftReturn, escape, downArrow, upArrow, pageDown, pageUp,
             ctrlAltCmdLeftArrow, ctrlAltCmdRightArrow, ctrlAltCmdDownArrow, ctrlAltCmdUpArrow,
             ctrlDelete, ctrlSpace, cmdBackslash, ctrlLeftBracket, ctrlRightBracket,
             cmd0, cmd1, cmd2, cmd3, cmd4, cmd5, cmd6, cmd7, cmd8, cmd9,
