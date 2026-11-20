@@ -164,9 +164,12 @@ class HistoryViewController: NSViewController {
                 guard let self else { return }
                 if shown {
                     self.panelKeyMonitor.start()
+                    self.syncEmbeddedPreviewVisibility()
                 } else {
                     self.panelKeyMonitor.stop()
                     self.isPreviewShowing = false
+                    self.embeddedPreview.isHidden = true
+                    self.applyPreviewListInset()
                     self.appState.previewHistoryItem.accept(nil)
                 }
             })
@@ -181,16 +184,17 @@ class HistoryViewController: NSViewController {
     
     override func viewWillAppear() {
         super.viewWillAppear()
-        
-        isPreviewShowing = false
+        syncEmbeddedPreviewVisibility()
         refreshHistoryListOnPanelOpen()
     }
     
     override func viewDidAppear() {
         super.viewDidAppear()
         alignHistoryListToScrollView()
+        applyPreviewListInset()
         DispatchQueue.main.async { [weak self] in
             self?.alignHistoryListToScrollView()
+            self?.refreshEmbeddedPreview()
         }
     }
     
@@ -473,6 +477,8 @@ class HistoryViewController: NSViewController {
     func close(reason: PanelCloseReason = .userAction) {
         pendingDeletion.flushAll()
         isPreviewShowing = false
+        embeddedPreview.isHidden = true
+        applyPreviewListInset()
         if appSettings.resetFiltersOnClose {
             clearFilters(resetSearch: true)
         }
@@ -480,6 +486,15 @@ class HistoryViewController: NSViewController {
         appState.isHistoryPanelShown.accept(false)
         appState.previewHistoryItem.accept(nil)
         resetSelected()
+    }
+
+    private func syncEmbeddedPreviewVisibility() {
+        isPreviewShowing = appSettings.previewVisible
+        embeddedPreview.isHidden = !isPreviewShowing
+        applyPreviewListInset()
+        if isPreviewShowing {
+            refreshEmbeddedPreview()
+        }
     }
     
     func shortcutPressed(key: Int) {
@@ -495,6 +510,7 @@ class HistoryViewController: NSViewController {
         isPreviewShowing.toggle()
         SettingsPersistence.apply { $0.previewVisible = self.isPreviewShowing }
         embeddedPreview.isHidden = !isPreviewShowing
+        applyPreviewListInset()
         if isPreviewShowing {
             refreshEmbeddedPreview()
         }
@@ -507,11 +523,12 @@ class HistoryViewController: NSViewController {
         embeddedPreview.translatesAutoresizingMaskIntoConstraints = false
         embeddedPreview.isHidden = !isPreviewShowing
         view.addSubview(embeddedPreview)
+        // Sit beside the list (not over search/filter chips); list gets a matching inset.
         NSLayoutConstraint.activate([
             embeddedPreview.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            embeddedPreview.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 8),
-            embeddedPreview.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            embeddedPreview.widthAnchor.constraint(equalToConstant: 280)
+            embeddedPreview.topAnchor.constraint(equalTo: filterBar.bottomAnchor, constant: 4),
+            embeddedPreview.bottomAnchor.constraint(equalTo: itemCountLabel.topAnchor, constant: -4),
+            embeddedPreview.widthAnchor.constraint(equalToConstant: PreviewLayout.minPreviewWidth)
         ])
         embeddedPreview.onPaste = { [weak self] in self?.pasteSelected() }
         embeddedPreview.onCopy = { [weak self] in
@@ -522,9 +539,26 @@ class HistoryViewController: NSViewController {
                 _ = PasteboardWriter.writeString(text, to: NSPasteboard.general, concealed: item.isPassword)
             }
         }
+        applyPreviewListInset()
         selected.subscribe(onNext: { [weak self] _ in
             self?.scheduleEmbeddedPreviewUpdate()
         }).disposed(by: disposeBag)
+        DispatchQueue.main.async { [weak self] in
+            self?.refreshEmbeddedPreview()
+        }
+    }
+
+    /// Keep table content clear of the trailing preview pane (U21).
+    private func applyPreviewListInset() {
+        guard let scrollView = historyListView.enclosingScrollView else { return }
+        let inset = isPreviewShowing ? PreviewLayout.minPreviewWidth : 0
+        var content = scrollView.contentInsets
+        content.right = inset
+        scrollView.contentInsets = content
+        var scroller = scrollView.scrollerInsets
+        scroller.right = inset
+        scrollView.scrollerInsets = scroller
+        historyListView.syncColumnWidthToScrollView()
     }
 
     private func scheduleEmbeddedPreviewUpdate() {

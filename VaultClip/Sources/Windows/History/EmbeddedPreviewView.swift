@@ -30,10 +30,17 @@ final class EmbeddedPreviewView: NSView {
         textView.string = ""
         placeholder.isHidden = false
         placeholder.stringValue = L10n.commandTitle(for: "command.togglePreview")
+        actions.isHidden = true
     }
 
     func showText(_ text: String, isPassword: Bool) {
+        let body = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !body.isEmpty || isPassword else {
+            showEmpty()
+            return
+        }
         placeholder.isHidden = true
+        actions.isHidden = false
         textView.string = isPassword ? "••••••••" : text
         textView.isEditable = false
         textView.isSelectable = !isPassword
@@ -41,17 +48,33 @@ final class EmbeddedPreviewView: NSView {
 
     private func setup() {
         wantsLayer = true
+        layerContentsRedrawPolicy = .onSetNeedsDisplay
         setAccessibilityIdentifier(Accessibility.identifiers.panelPreviewSplit)
 
+        let separator = NSBox(frame: .zero)
+        separator.boxType = .separator
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(separator)
+
         placeholder.textColor = .secondaryLabelColor
+        placeholder.alignment = .center
+        placeholder.maximumNumberOfLines = 3
         placeholder.translatesAutoresizingMaskIntoConstraints = false
         addSubview(placeholder)
 
-        textView.isRichText = true
+        textView.isRichText = false
         textView.font = .systemFont(ofSize: 13)
-        textView.drawsBackground = false
+        textView.textColor = .labelColor
+        textView.drawsBackground = true
+        textView.backgroundColor = .textBackgroundColor
+        textView.isVerticallyResizable = true
+        textView.isHorizontallyResizable = false
+        textView.textContainer?.widthTracksTextView = true
         scroll.documentView = textView
         scroll.hasVerticalScroller = true
+        scroll.borderType = .noBorder
+        scroll.drawsBackground = true
+        scroll.backgroundColor = .textBackgroundColor
         scroll.translatesAutoresizingMaskIntoConstraints = false
         addSubview(scroll)
 
@@ -66,6 +89,10 @@ final class EmbeddedPreviewView: NSView {
         addSubview(actions)
 
         NSLayoutConstraint.activate([
+            separator.leadingAnchor.constraint(equalTo: leadingAnchor),
+            separator.topAnchor.constraint(equalTo: topAnchor),
+            separator.bottomAnchor.constraint(equalTo: bottomAnchor),
+            separator.widthAnchor.constraint(equalToConstant: 1),
             scroll.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             scroll.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
             scroll.topAnchor.constraint(equalTo: topAnchor, constant: 8),
@@ -73,11 +100,18 @@ final class EmbeddedPreviewView: NSView {
             actions.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             actions.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -8),
             actions.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-            placeholder.centerXAnchor.constraint(equalTo: centerXAnchor),
+            placeholder.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            placeholder.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             placeholder.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
         showEmpty()
     }
+
+    override func updateLayer() {
+        layer?.backgroundColor = NSColor.controlBackgroundColor.cgColor
+    }
+
+    override var wantsUpdateLayer: Bool { true }
 
     @objc private func pasteTapped() { onPaste?() }
     @objc private func copyTapped() { onCopy?() }
