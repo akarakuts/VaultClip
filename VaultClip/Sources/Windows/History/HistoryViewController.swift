@@ -71,6 +71,7 @@ class HistoryViewController: NSViewController {
     private let filterBar = PanelFilterBarView()
     private var filterState = FilterState()
     private var filterBarVisible = true
+    private var selectionModel = SelectionModel()
     private let previewDebouncer = PreviewUpdateDebouncer(scheduler: PreviewDispatchScheduler())
     private lazy var pendingDeletion = PendingDeletionQueue(
         scheduler: PendingDeletionDispatchScheduler()
@@ -322,6 +323,13 @@ class HistoryViewController: NSViewController {
         updateEmptyListLabel(for: listMode.value, visible: filtered.isEmpty)
         syncHistoryTableToResults(mutation: mutation)
         refreshFilterBarApps(from: baseItems)
+        let visibleOrder = filtered.map(\.fsId)
+        selectionModel.retainVisible(Set(visibleOrder), visibleOrder: visibleOrder)
+        if selectionModel.isMulti {
+            let indexes = IndexSet(selectionModel.orderedIds.compactMap { id in visibleOrder.firstIndex(of: id) })
+            historyListView.selectItems(indexes)
+        }
+        refreshSelectionChrome()
     }
 
     /// Pushes `results` into the table; skip row layout while the panel is hidden (wrong window size at launch).
@@ -397,32 +405,51 @@ class HistoryViewController: NSViewController {
     }
     
     func pasteSelected() {
+        if selectionModel.isMulti {
+            multiPasteSelected(plainTextOnly: false)
+            return
+        }
         if let selected = self.historyListView.selected {
             paste(selected: selected)
         }
     }
 
     func pasteSelectedPlainText() {
+        if selectionModel.isMulti {
+            multiPasteSelected(plainTextOnly: true)
+            return
+        }
         guard let selected = historyListView.selected,
               selected >= 0, selected < historyPanel.items.count else { return }
         historyPanel.paste(item: historyPanel.items[selected], plainTextOnly: true)
     }
     
     func deleteSelected() {
-        guard let row = historyListView.selected,
-              row >= 0, row < historyPanel.items.count else { return }
-        let item = historyPanel.items[row]
-        pendingDeletion.enqueue(itemIds: [item.fsId], originalIndexes: [row])
+        let rows: [Int]
+        if selectionModel.isMulti {
+            let order = historyPanel.items.map(\.fsId)
+            let idToRow = Dictionary(uniqueKeysWithValues: order.enumerated().map { ($0.element, $0.offset) })
+            rows = selectionModel.orderedIds.compactMap { idToRow[$0] }.sorted()
+        } else if let row = historyListView.selected {
+            rows = [row]
+        } else {
+            rows = []
+        }
+        guard !rows.isEmpty else { return }
+        let ids = rows.map { historyPanel.items[$0].fsId }
+        pendingDeletion.enqueue(itemIds: ids, originalIndexes: rows)
         // Soft-hide: filter pending ids out of the table until commit/undo.
         let hidden = pendingDeletion.hiddenItemIds
         let visible = results.value.items.filter { !hidden.contains($0.fsId) }
         results.accept(Results(items: visible, isSearchResult: results.value.isSearchResult))
         syncHistoryTableToResults(mutation: .reload)
+        selectionModel.clear()
         if !visible.isEmpty {
-            selected.accept(min(row, visible.count - 1))
+            selected.accept(min(rows.first ?? 0, visible.count - 1))
         } else {
             selected.accept(nil)
         }
+        refreshSelectionChrome()
     }
 
     func undoPendingDeletion() {
@@ -581,7 +608,7 @@ class HistoryViewController: NSViewController {
             editorHasChanges: false,
             editorDiscardArmed: false,
             passwordRevealed: false,
-            multiSelectActive: false,
+            multiSelectActive: selectionModel.isMulti,
             searchIsEmpty: searchBar.stringValue.isEmpty,
             filtersActive: filterState.isActive
         )
@@ -592,6 +619,9 @@ class HistoryViewController: NSViewController {
             } else {
                 cheatSheetOverlay.dismiss()
             }
+            return true
+        case .collapseMultiSelect:
+            collapseMultiSelectToAnchor()
             return true
         case .clearSearch:
             searchBar.stringValue = ""
@@ -670,6 +700,12 @@ class HistoryViewController: NSViewController {
             if !historyPanel.items.isEmpty { selected.accept(0) }
         case .selectLast:
             if !historyPanel.items.isEmpty { selected.accept(historyPanel.items.count - 1) }
+        case .extendSelectionUp:
+            extendSelection(direction: -1)
+        case .extendSelectionDown:
+            extendSelection(direction: 1)
+        case .selectAll:
+            selectAllVisible()
         case .delete: deleteSelected()
         case .togglePreview: togglePreview()
         case .focusSearch: focusSearchBar()
@@ -902,7 +938,110 @@ class HistoryViewController: NSViewController {
         historyPanel.paste(displayedIndex: selected)
     }
     
+    func syncSelectionModelFromTable() {
+        let items = historyPanel.items
+        let indexes = historyListView.selectedRowIndexes.sorted()
+        let ids = indexes.compactMap { idx -> UUID? in
+            guard items.indices.contains(idx) else { return nil }
+            return items[idx].fsId
+        }
+        selectionModel.replace(ordered: ids, anchor: ids.last)
+    }
+
+    func refreshSelectionChrome() {
+        itemCountLabel.stringValue = countLabelText(for: results.value)
+    }
+
+    private func collapseMultiSelectToAnchor() {
+        let anchor = selectionModel.anchorId ?? selectionModel.orderedIds.first
+        selectionModel.clear()
+        if let anchor, let row = historyPanel.items.firstIndex(where: { $0.fsId == anchor }) {
+            selectionModel.selectSingle(anchor)
+            historyListView.selectItem(row)
+            selected.accept(row)
+        } else {
+            historyListView.deselectAll(nil)
+            selected.accept(nil)
+        }
+        refreshSelectionChrome()
+    }
+
+    private func selectAllVisible() {
+        let order = historyPanel.items.map(\.fsId)
+        selectionModel.selectAll(visibleOrder: order)
+        let indexes = IndexSet(integersIn: 0..<historyPanel.items.count)
+        historyListView.selectItems(indexes)
+        if !historyPanel.items.isEmpty {
+            selected.accept(0)
+        }
+        refreshSelectionChrome()
+    }
+
+    private func extendSelection(direction: Int) {
+        let order = historyPanel.items.map(\.fsId)
+        guard !order.isEmpty else { return }
+        let current = selectionModel.anchorId
+            ?? selectionModel.orderedIds.last
+            ?? historyListView.selected.flatMap { historyPanel.items.indices.contains($0) ? historyPanel.items[$0].fsId : nil }
+        guard let current,
+              let index = order.firstIndex(of: current) else {
+            if let first = order.first {
+                selectionModel.selectSingle(first)
+                historyListView.selectItem(0)
+                selected.accept(0)
+            }
+            return
+        }
+        let next = min(max(index + direction, 0), order.count - 1)
+        selectionModel.selectRange(to: order[next], visibleOrder: order)
+        let selectedIndexes = IndexSet(selectionModel.orderedIds.compactMap { id in order.firstIndex(of: id) })
+        historyListView.selectItems(selectedIndexes)
+        selected.accept(next)
+        refreshSelectionChrome()
+    }
+
+    private func multiPasteSelected(plainTextOnly: Bool) {
+        let items = selectionModel.orderedIds.compactMap { id in historyPanel.items.first(where: { $0.fsId == id }) }
+        guard !items.isEmpty else { return }
+        let separator = MultiPasteSeparator(rawValue: appSettings.multiPasteSeparator) ?? .newline
+        let composeItems = items.map { item in
+            MultiPasteComposer.Item(
+                kind: itemKind(for: item),
+                text: item.getPlainString(),
+                isPassword: item.isPassword
+            )
+        }
+        let result = MultiPasteComposer.compose(
+            items: composeItems,
+            separator: separator,
+            reverse: false
+        )
+        close(reason: .paste)
+        switch result.payload {
+        case .joinedText(let text):
+            let body = plainTextOnly ? text : text
+            historyPanel.multiPasteJoined(body, items: items)
+        case .discreteItems:
+            historyPanel.multiPasteDiscrete(items)
+        case .none:
+            break
+        }
+    }
+
     private func countLabelText(for results: Results) -> String {
+        if selectionModel.isMulti {
+            return PanelStatusBarPresenter.counter(for: PanelStatusBarInput(
+                totalCount: results.items.count,
+                visibleCount: results.items.count,
+                isSearch: results.isSearchResult,
+                selectedCount: selectionModel.count,
+                isLoading: false,
+                hintContext: .multiSelect(count: selectionModel.count),
+                availableWidth: 400,
+                showKeyHints: false,
+                locale: .current
+            ))
+        }
         let count = results.items.count
         if results.isSearchResult {
             return L10n.countMatches(count)

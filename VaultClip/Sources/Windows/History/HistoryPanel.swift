@@ -105,6 +105,34 @@ class HistoryPanel {
         guard displayedIndex >= 0, displayedIndex < items.count else { return }
         paste(item: items[displayedIndex])
     }
+
+    /// Multi-paste joined text without reordering history; updates `lastUsedAt` (U16).
+    func multiPasteJoined(_ text: String, items: [HistoryItem]) {
+        let changeCount = PasteboardWriter.writeString(text, to: pasteboard, concealed: false)
+        HistoryPanel.markSelfWrite(changeCount)
+        history.recordPasteboardChange(withCount: changeCount)
+        let now = Date()
+        for item in items where !item.isPassword {
+            item.lastUsedAt = now
+        }
+        scheduleSimulatedPaste()
+    }
+
+    /// Multi-paste discrete file/image items without reordering (U16).
+    func multiPasteDiscrete(_ items: [HistoryItem]) {
+        let writers = items.filter { !$0.isPassword }
+        guard !writers.isEmpty else { return }
+        _ = pasteboard.prepareForNewContents(with: [])
+        pasteboard.writeObjects(writers)
+        let changeCount = pasteboard.changeCount
+        HistoryPanel.markSelfWrite(changeCount)
+        history.recordPasteboardChange(withCount: changeCount)
+        let now = Date()
+        for item in writers {
+            item.lastUsedAt = now
+        }
+        scheduleSimulatedPaste()
+    }
     
     /// Simulates ⌘V in the previously focused app after the history panel closes.
     private func scheduleSimulatedPaste() {

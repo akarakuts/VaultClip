@@ -39,7 +39,7 @@ class HistoryTableView: NSTableView {
     
     private func commonInit() {
         selectionHighlightStyle = .none
-        allowsMultipleSelection = false
+        allowsMultipleSelection = true
         columnAutoresizingStyle = .noColumnAutoresizing
         applyPlainListAppearance()
         setAccessibilityIdentifier(Accessibility.identifiers.historyTableView)
@@ -260,6 +260,19 @@ extension HistoryTableView: NSTableViewDataSource {
     func tableViewSelectionIsChanging(_ notification: Notification) {
         if let delegate = historyDelegate {
             delegate.historyTableView(self, selectedDidChange: selected)
+        }
+    }
+
+    func tableViewSelectionDidChange(_ notification: Notification) {
+        if let delegate = historyDelegate {
+            delegate.historyTableView(self, selectedDidChange: selected)
+        }
+    }
+
+    func selectItems(_ indexes: IndexSet) {
+        selectRowIndexes(indexes, byExtendingSelection: false)
+        if let first = indexes.first {
+            scrollRowToVisible(first)
         }
     }
     

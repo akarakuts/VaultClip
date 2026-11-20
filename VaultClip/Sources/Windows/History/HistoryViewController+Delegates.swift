@@ -15,7 +15,9 @@ extension HistoryViewController: NSTextFieldDelegate {
 
 extension HistoryViewController: HistoryTableViewDelegate {
     func historyTableView(_ historyTableView: HistoryTableView, selectedDidChange selected: Int?) {
+        syncSelectionModelFromTable()
         self.selected.accept(selected)
+        refreshSelectionChrome()
     }
 
     func historyTableView(_ historyTableView: HistoryTableView, didMoveItem from: Int, to: Int) {

@@ -21,6 +21,12 @@ struct SelectionModel: Equatable {
         anchorId = id
     }
 
+    /// Replace selection from the table’s ordered visible ids (list order).
+    mutating func replace(ordered ids: [UUID], anchor: UUID? = nil) {
+        orderedIds = ids
+        anchorId = anchor ?? ids.last
+    }
+
     mutating func clear() {
         orderedIds = []
         anchorId = nil
