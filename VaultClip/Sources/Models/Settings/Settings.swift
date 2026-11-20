@@ -61,7 +61,8 @@ struct Settings: Codable, DefaultStorable {
         passwordClipboardClearSeconds: Int,
         isCapturePaused: Bool,
         excludedBundleIds: [String],
-        retentionDays: Int
+        retentionDays: Int,
+        panelTextSize: TextSizePreference
     ) {
         self.panelPosition = panelPosition
         self.pasteboardChangeCount = pasteboardChangeCount
@@ -76,6 +77,7 @@ struct Settings: Codable, DefaultStorable {
         self.isCapturePaused = isCapturePaused
         self.excludedBundleIds = excludedBundleIds
         self.retentionDays = retentionDays
+        self.panelTextSize = panelTextSize
     }
     
     static let `default` = Settings(
@@ -91,7 +93,8 @@ struct Settings: Codable, DefaultStorable {
         passwordClipboardClearSeconds: 90,
         isCapturePaused: false,
         excludedBundleIds: [],
-        retentionDays: 0
+        retentionDays: 0,
+        panelTextSize: .m
     )
     
     // MARK: - Settings
@@ -129,6 +132,9 @@ struct Settings: Codable, DefaultStorable {
     /// Auto-delete unpinned items older than N days; `0` disables (T34).
     var retentionDays: Int
 
+    /// Compact / default / large / extra-large panel row typography (U02).
+    var panelTextSize: TextSizePreference
+
     enum CodingKeys: String, CodingKey {
         case panelPosition
         case pasteboardChangeCount
@@ -143,6 +149,7 @@ struct Settings: Codable, DefaultStorable {
         case isCapturePaused
         case excludedBundleIds
         case retentionDays
+        case panelTextSize
     }
 
     init(from decoder: Decoder) throws {
@@ -180,6 +187,8 @@ struct Settings: Codable, DefaultStorable {
             ?? defaults.excludedBundleIds
         retentionDays = try container.decodeIfPresent(Int.self, forKey: .retentionDays)
             ?? defaults.retentionDays
+        panelTextSize = try container.decodeIfPresent(TextSizePreference.self, forKey: .panelTextSize)
+            ?? defaults.panelTextSize
     }
 
     func encode(to encoder: Encoder) throws {
@@ -197,6 +206,7 @@ struct Settings: Codable, DefaultStorable {
         try container.encode(isCapturePaused, forKey: .isCapturePaused)
         try container.encode(excludedBundleIds, forKey: .excludedBundleIds)
         try container.encode(retentionDays, forKey: .retentionDays)
+        try container.encode(panelTextSize, forKey: .panelTextSize)
     }
 
     // MARK: - State Binding Methods

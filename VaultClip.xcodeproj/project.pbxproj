@@ -227,6 +227,9 @@
 		VCDIG10212EB0B10004E6E63 /* ContentDigest.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCDIG10112EB0B10004E6E63 /* ContentDigest.swift */; };
 		F6A7B8C91123456789001 /* HistoryListTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7B8C80123456789001 /* HistoryListTheme.swift */; };
 		F6A7B8CA11234567890002 /* HistoryListTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7B8C80123456789001 /* HistoryListTheme.swift */; };
+		VCPTH10212EB0B10004E6E63 /* PanelTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPTH10112EB0B10004E6E63 /* PanelTheme.swift */; };
+		VCPTH10312EB0B10004E6E63 /* PanelTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPTH10112EB0B10004E6E63 /* PanelTheme.swift */; };
+		VCPTH20212EB0B10004E6E63 /* PanelThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPTH20112EB0B10004E6E63 /* PanelThemeTests.swift */; };
 		F7A8B9CA1123456789001 /* HistoryItem+Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9C91123456789001 /* HistoryItem+Favorite.swift */; };
 		F7A8B9CC1123456789001 /* HistoryListMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9CB1123456789001 /* HistoryListMode.swift */; };
 		F7A8B9CE1123456789001 /* HistoryFavoritesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9CD1123456789001 /* HistoryFavoritesTests.swift */; };
@@ -477,6 +480,8 @@
 		E5F6A7B70123456789001 /* HistoryItem+CopiedAt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryItem+CopiedAt.swift"; sourceTree = "<group>"; };
 		VCDIG10112EB0B10004E6E63 /* ContentDigest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentDigest.swift; sourceTree = "<group>"; };
 		F6A7B8C80123456789001 /* HistoryListTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListTheme.swift; sourceTree = "<group>"; };
+		VCPTH10112EB0B10004E6E63 /* PanelTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelTheme.swift; sourceTree = "<group>"; };
+		VCPTH20112EB0B10004E6E63 /* PanelThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelThemeTests.swift; sourceTree = "<group>"; };
 		F7A8B9C91123456789001 /* HistoryItem+Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryItem+Favorite.swift"; sourceTree = "<group>"; };
 		F7A8B9CB1123456789001 /* HistoryListMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListMode.swift; sourceTree = "<group>"; };
 		F7A8B9CD1123456789001 /* HistoryFavoritesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFavoritesTests.swift; sourceTree = "<group>"; };
@@ -857,6 +862,7 @@
 				3426811D233E0A4600BA226A /* Accessibility.swift */,
 				3488B13F22FAE8F30019E7DA /* Constants.swift */,
 				F6A7B8C80123456789001 /* HistoryListTheme.swift */,
+				VCPTH10112EB0B10004E6E63 /* PanelTheme.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -980,6 +986,7 @@
 				VCHKT10112EB0B10004E6E63 /* HotKeyValidatorTests.swift */,
 				VCMAX10112EB0B10004E6E63 /* MaxItemSizeTests.swift */,
 				VCCEL10112EB0B10004E6E63 /* CellHeightsCacheTests.swift */,
+				VCPTH20112EB0B10004E6E63 /* PanelThemeTests.swift */,
 				VCDIG20112EB0B10004E6E63 /* ContentDigestDedupTests.swift */,
 				34ACFBD322EB0B11004E6E63 /* Info.plist */,
 				349F794D235C5759000CA5B9 /* Mocks */,
@@ -1398,6 +1405,7 @@
 				34B5C42C23580CC6005247EB /* WarningLogger.swift in Sources */,
 				3488B14022FAE8F30019E7DA /* Constants.swift in Sources */,
 				F6A7B8C91123456789001 /* HistoryListTheme.swift in Sources */,
+				VCPTH10212EB0B10004E6E63 /* PanelTheme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1431,6 +1439,7 @@
 				VCHKT10212EB0B10004E6E63 /* HotKeyValidatorTests.swift in Sources */,
 				VCMAX10212EB0B10004E6E63 /* MaxItemSizeTests.swift in Sources */,
 				VCCEL10212EB0B10004E6E63 /* CellHeightsCacheTests.swift in Sources */,
+				VCPTH20212EB0B10004E6E63 /* PanelThemeTests.swift in Sources */,
 				VCDIG20212EB0B10004E6E63 /* ContentDigestDedupTests.swift in Sources */,
 				349F7944235C24D4000CA5B9 /* HistoryFileManagerTests.swift in Sources */,
 				349F794A235C5722000CA5B9 /* WarningLoggerMock.swift in Sources */,
@@ -1476,6 +1485,7 @@
 				345B14B42341B37A00C2D0DA /* KeyPressMock.swift in Sources */,
 				345B14A823406E0500C2D0DA /* Constants.swift in Sources */,
 				F6A7B8CA11234567890002 /* HistoryListTheme.swift in Sources */,
+				VCPTH10312EB0B10004E6E63 /* PanelTheme.swift in Sources */,
 				345B14962340493600C2D0DA /* XCUIApplication+Windows.swift in Sources */,
 				345B149423403B8F00C2D0DA /* AccessControlMock.swift in Sources */,
 				345B14A3234060BB00C2D0DA /* XCUIApplication+StaticTexts.swift in Sources */,
