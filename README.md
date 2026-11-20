@@ -2,7 +2,7 @@
 
 [![Release](https://img.shields.io/github/v/release/akarakuts/VaultClip)](https://github.com/akarakuts/VaultClip/releases)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
-[![macOS](https://img.shields.io/badge/macOS-10.15%2B-000000?logo=apple)](https://github.com/akarakuts/VaultClip)
+[![macOS](https://img.shields.io/badge/macOS-12%2B-000000?logo=apple)](https://github.com/akarakuts/VaultClip)
 
 **Your clipboard, finally under control.** VaultClip is a macOS clipboard history manager: instant access to past copies, favorites at your fingertips, passwords kept apart from the main stream — all **encrypted on disk**, with no cloud and no subscriptions.
 
@@ -163,7 +163,7 @@ Apple does **not** offer a free **Developer ID** certificate. Open source does n
 
 ### Quick build (personal use, free)
 
-Requirements: **Xcode**, **macOS 10.15+** (Swift Package Manager resolves dependencies at build time).
+Requirements: **Xcode**, **macOS 12+** (Swift Package Manager resolves dependencies at build time).
 
 ```bash
 git clone https://github.com/akarakuts/VaultClip.git

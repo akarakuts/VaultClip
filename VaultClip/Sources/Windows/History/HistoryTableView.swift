@@ -52,9 +52,7 @@ class HistoryTableView: NSTableView {
     
     /// `.automatic` resolves to `.inset` in borderless scroll views (~10pt side padding on Big Sur+).
     func applyPlainListAppearance() {
-        if #available(macOS 11.0, *) {
-            style = .plain
-        }
+        style = .plain
         rowSizeStyle = .custom
         intercellSpacing = NSSize(
             width: 0,
@@ -67,10 +65,8 @@ class HistoryTableView: NSTableView {
         scrollView.horizontalScrollElasticity = .none
         scrollView.hasVerticalScroller = true
         scrollView.autohidesScrollers = true
-        if #available(macOS 11.0, *) {
-            scrollView.scrollerStyle = .overlay
-            scrollView.contentInsets = .init(top: 0, left: 0, bottom: 0, right: 0)
-        }
+        scrollView.scrollerStyle = .overlay
+        scrollView.contentInsets = .init(top: 0, left: 0, bottom: 0, right: 0)
     }
     
     override func awakeFromNib() {

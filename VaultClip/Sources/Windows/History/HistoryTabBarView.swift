@@ -218,12 +218,10 @@ private final class HistoryTabItemView: NSControl {
     }
     
     private func updateIcon() {
-        if #available(macOS 11.0, *) {
-            if let image = NSImage(systemSymbolName: definition.iconName, accessibilityDescription: definition.title) {
-                image.isTemplate = true
-                iconView.image = image
-                return
-            }
+        if let image = NSImage(systemSymbolName: definition.iconName, accessibilityDescription: definition.title) {
+            image.isTemplate = true
+            iconView.image = image
+            return
         }
         titleLabel.stringValue = "\(definition.fallbackGlyph) \(definition.title)"
         iconView.isHidden = true

@@ -95,10 +95,7 @@ struct HistoryListTheme {
     struct colors {
         
         static var accent: NSColor {
-            if #available(macOS 10.14, *) {
-                return .controlAccentColor
-            }
-            return .systemBlue
+            .controlAccentColor
         }
         
         static func rowOuterFill(isSelected: Bool, isHovered: Bool) -> NSColor {
@@ -155,12 +152,8 @@ struct HistoryListTheme {
         static let tabSize: CGFloat = metrics.scaled(12)
         
         static var body: NSFont {
-            if #available(OSX 10.15, *) {
-                return NSFont(name: "SF Mono Regular", size: bodySize)
-                    ?? NSFont.monospacedSystemFont(ofSize: bodySize, weight: .regular)
-            }
-            return NSFont(name: "Roboto Mono Light for Powerline", size: bodySize)
-                ?? NSFont.systemFont(ofSize: bodySize)
+            NSFont(name: "SF Mono Regular", size: bodySize)
+                ?? NSFont.monospacedSystemFont(ofSize: bodySize, weight: .regular)
         }
         
         static var bodyParagraphStyle: NSParagraphStyle {

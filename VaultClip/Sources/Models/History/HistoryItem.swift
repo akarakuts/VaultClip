@@ -358,11 +358,10 @@ class HistoryItem: NSObject {
         try? SecureStorageHelper.ensureSecureDirectory(at: directory)
         let url = directory.appendingPathComponent("\(fsId.uuidString).pdf")
         if !FileManager.default.fileExists(atPath: url.path) {
-            var options: Data.WritingOptions = .atomic
-            if #available(macOS 11.0, *) {
-                options.insert(.completeFileProtectionUntilFirstUserAuthentication)
-            }
-            try? data.write(to: url, options: options)
+            try? data.write(
+                to: url,
+                options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]
+            )
         }
         return url
     }
