@@ -29,6 +29,7 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 
 ### Changed
 
+- **Layout-aware paste** — ⌘V simulation resolves the “v” keycode for the current keyboard layout (T19).
 - **Aggregated alerts** — error modals coalesce to at most one every 30 s with a count and log-folder action (T18).
 - **Settings decode** — missing fields fall back to defaults; corrupt JSON is backed up under `settings.corrupt-backup` (T17).
 - **Log rotation** — error/warning logs always rotate above 2 MB; new log files are created with mode 0600; Logger writes on a serial queue (T16).

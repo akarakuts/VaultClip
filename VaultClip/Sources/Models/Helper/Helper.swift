@@ -21,7 +21,7 @@ class Helper {
     }
     
     static func pressCommandV() {
-        Helper.press(keyCode: 9, flags: .maskCommand)
+        Helper.press(keyCode: KeyCodeResolver.keyCodeForV(), flags: .maskCommand)
     }
     
     // MARK: - Access Control
