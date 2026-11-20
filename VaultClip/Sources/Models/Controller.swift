@@ -71,6 +71,7 @@ class Controller {
         self.previewWindowController = Self.createPreviewWindowController(previewItem: state.previewHistoryItem, disposeBag: state.disposeBag)
 
         self.statusItem.menu = Self.createMenu(settings: settings, state: state, target: self)
+        self.statusItem.button?.alphaValue = settings.isCapturePaused ? 0.4 : 1.0
         self.historyWindowController.loadWindow()
     }
     
@@ -97,6 +98,9 @@ class Controller {
                 .with(tag: StatusMenuTag.toggleWindow.rawValue)
                 .with(accessibilityIdentifier: Accessibility.identifiers.toggleHistoryWindowButton)
             )
+            .with(menuItem: NSMenuItem(title: L10n.menuPauseCapture, action: #selector(toggleCapturePaused), keyEquivalent: "")
+                .with(tag: StatusMenuTag.pauseCapture.rawValue)
+            )
             .with(menuItem: NSMenuItem(title: L10n.menuLaunchAtLogin, action: #selector(launchAtLogin), keyEquivalent: "")
                 .with(tag: StatusMenuTag.launchAtLogin.rawValue)
                 .with(accessibilityIdentifier: Accessibility.identifiers.launchAtLoginButton)
@@ -121,6 +125,7 @@ class Controller {
         menu.autoenablesItems = false
         
         Self.setMenuItemsTarget(target: target, menu: menu)
+        Self.refreshCapturePausedMenu(menu)
         
         state.launchAtLogin
             .subscribe (onNext: {
@@ -218,6 +223,21 @@ class Controller {
             state.refreshCurrentScreenFromMouse()
         }
         state.isHistoryPanelShown.accept(willShow)
+    }
+
+    @objc func toggleCapturePaused() {
+        let paused = !Settings.main.isCapturePaused
+        SettingsPersistence.apply { $0.isCapturePaused = paused }
+        statusItem.button?.alphaValue = paused ? 0.4 : 1.0
+        if let menu = statusItem.menu {
+            Self.refreshCapturePausedMenu(menu)
+        }
+    }
+
+    private static func refreshCapturePausedMenu(_ menu: NSMenu) {
+        let paused = Settings.main.isCapturePaused
+        menu.item(withTag: StatusMenuTag.pauseCapture.rawValue)?.title =
+            paused ? L10n.menuResumeCapture : L10n.menuPauseCapture
     }
     
     @objc func deleteSelectedClicked() {

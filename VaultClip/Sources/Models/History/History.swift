@@ -518,6 +518,13 @@ extension History: PasteboardMonitorDelegate {
             return
         }
 
+        if Settings.main.isCapturePaused {
+            PasteboardDiagnostics.log("skipped capture paused")
+            currentClipboardItemId = nil
+            recordPasteboardChange(withCount: pasteboard.changeCount)
+            return
+        }
+
         let liveBundleId = Self.clipboardSourceBundleId(originBundleId: originBundleId)
         if HistoryPasteboardPolicy.shouldIgnoreSource(bundleId: liveBundleId) {
             PasteboardDiagnostics.log("skipped bundle denylist: \(liveBundleId ?? "nil")")

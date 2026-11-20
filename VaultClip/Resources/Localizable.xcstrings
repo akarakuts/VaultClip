@@ -28491,6 +28491,38 @@
           }
         }
       }
+    },
+    "menu.pause_capture": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause Capture"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Приостановить запись"
+          }
+        }
+      }
+    },
+    "menu.resume_capture": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resume Capture"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Возобновить запись"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

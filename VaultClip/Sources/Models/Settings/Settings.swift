@@ -58,7 +58,8 @@ struct Settings: Codable, DefaultStorable {
         maxItemSizeMB: Int,
         requiresPasswordAuthentication: Bool,
         passwordAuthGraceMinutes: Int,
-        passwordClipboardClearSeconds: Int
+        passwordClipboardClearSeconds: Int,
+        isCapturePaused: Bool
     ) {
         self.panelPosition = panelPosition
         self.pasteboardChangeCount = pasteboardChangeCount
@@ -70,6 +71,7 @@ struct Settings: Codable, DefaultStorable {
         self.requiresPasswordAuthentication = requiresPasswordAuthentication
         self.passwordAuthGraceMinutes = passwordAuthGraceMinutes
         self.passwordClipboardClearSeconds = passwordClipboardClearSeconds
+        self.isCapturePaused = isCapturePaused
     }
     
     static let `default` = Settings(
@@ -82,7 +84,8 @@ struct Settings: Codable, DefaultStorable {
         maxItemSizeMB: Constants.settings.maxItemSizeMBDefault,
         requiresPasswordAuthentication: true,
         passwordAuthGraceMinutes: 5,
-        passwordClipboardClearSeconds: 90
+        passwordClipboardClearSeconds: 90,
+        isCapturePaused: false
     )
     
     // MARK: - Settings
@@ -111,6 +114,9 @@ struct Settings: Codable, DefaultStorable {
     /// Auto-clear password clipboard after N seconds; `0` disables (T30).
     var passwordClipboardClearSeconds: Int
 
+    /// When true, pasteboard changes are ignored (T31).
+    var isCapturePaused: Bool
+
     enum CodingKeys: String, CodingKey {
         case panelPosition
         case pasteboardChangeCount
@@ -122,6 +128,7 @@ struct Settings: Codable, DefaultStorable {
         case requiresPasswordAuthentication
         case passwordAuthGraceMinutes
         case passwordClipboardClearSeconds
+        case isCapturePaused
     }
 
     init(from decoder: Decoder) throws {
@@ -153,6 +160,8 @@ struct Settings: Codable, DefaultStorable {
             ?? defaults.passwordAuthGraceMinutes
         passwordClipboardClearSeconds = try container.decodeIfPresent(Int.self, forKey: .passwordClipboardClearSeconds)
             ?? defaults.passwordClipboardClearSeconds
+        isCapturePaused = try container.decodeIfPresent(Bool.self, forKey: .isCapturePaused)
+            ?? defaults.isCapturePaused
     }
 
     func encode(to encoder: Encoder) throws {
@@ -167,6 +176,7 @@ struct Settings: Codable, DefaultStorable {
         try container.encode(requiresPasswordAuthentication, forKey: .requiresPasswordAuthentication)
         try container.encode(passwordAuthGraceMinutes, forKey: .passwordAuthGraceMinutes)
         try container.encode(passwordClipboardClearSeconds, forKey: .passwordClipboardClearSeconds)
+        try container.encode(isCapturePaused, forKey: .isCapturePaused)
     }
 
     // MARK: - State Binding Methods

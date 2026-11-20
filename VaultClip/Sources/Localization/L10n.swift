@@ -19,6 +19,8 @@ enum L10n {
     static var menuClearHistory: String { tr( "menu.clear_history") }
     static var menuClearAll: String { tr( "menu.clear_all") }
     static var menuPosition: String { tr( "menu.position") }
+    static var menuPauseCapture: String { tr("menu.pause_capture") }
+    static var menuResumeCapture: String { tr("menu.resume_capture") }
     static var menuQuit: String { tr( "menu.quit") }
 
     // MARK: - Tabs

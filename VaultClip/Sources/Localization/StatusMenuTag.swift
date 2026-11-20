@@ -11,4 +11,5 @@ enum StatusMenuTag: Int {
     case clearHistory = 7
     case position = 8
     case quit = 9
+    case pauseCapture = 10
 }
