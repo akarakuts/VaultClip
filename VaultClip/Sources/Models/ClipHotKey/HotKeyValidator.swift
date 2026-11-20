@@ -44,8 +44,71 @@ enum HotKeyValidator {
     }
 
     private static func conflictsWithPanelScoped(key: Key, modifiers: NSEvent.ModifierFlags) -> Bool {
-        ClipHotKeys.panelScoped.contains { hotKey in
-            hotKey.keyCombo.key == key && hotKey.keyCombo.modifiers == modifiers
+        guard let logical = logicalKey(from: key) else { return false }
+        let chord = KeyChord(key: logical, modifiers: .from(flags: modifiers))
+        return FocusZone.allCases.contains { zone in
+            !PanelCommandRegistry.commands(matching: chord, in: zone).isEmpty
+        }
+    }
+
+    private static func logicalKey(from key: Key) -> LogicalKey? {
+        switch key {
+        case .a: return .letter("a")
+        case .b: return .letter("b")
+        case .c: return .letter("c")
+        case .d: return .letter("d")
+        case .e: return .letter("e")
+        case .f: return .letter("f")
+        case .g: return .letter("g")
+        case .h: return .letter("h")
+        case .i: return .letter("i")
+        case .j: return .letter("j")
+        case .k: return .letter("k")
+        case .l: return .letter("l")
+        case .m: return .letter("m")
+        case .n: return .letter("n")
+        case .o: return .letter("o")
+        case .p: return .letter("p")
+        case .q: return .letter("q")
+        case .r: return .letter("r")
+        case .s: return .letter("s")
+        case .t: return .letter("t")
+        case .u: return .letter("u")
+        case .v: return .letter("v")
+        case .w: return .letter("w")
+        case .x: return .letter("x")
+        case .y: return .letter("y")
+        case .z: return .letter("z")
+        case .zero: return .digit(0)
+        case .one: return .digit(1)
+        case .two: return .digit(2)
+        case .three: return .digit(3)
+        case .four: return .digit(4)
+        case .five: return .digit(5)
+        case .six: return .digit(6)
+        case .seven: return .digit(7)
+        case .eight: return .digit(8)
+        case .nine: return .digit(9)
+        case .return: return .return
+        case .space: return .space
+        case .escape: return .escape
+        case .tab: return .tab
+        case .delete: return .delete
+        case .upArrow: return .upArrow
+        case .downArrow: return .downArrow
+        case .leftArrow: return .leftArrow
+        case .rightArrow: return .rightArrow
+        case .pageUp: return .pageUp
+        case .pageDown: return .pageDown
+        case .home: return .home
+        case .end: return .end
+        case .equal: return .equal
+        case .minus: return .minus
+        case .slash: return .slash
+        case .leftBracket: return .leftBracket
+        case .rightBracket: return .rightBracket
+        case .comma: return .comma
+        default: return nil
         }
     }
 

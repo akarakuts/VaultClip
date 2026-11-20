@@ -63,6 +63,8 @@ class HistoryViewController: NSViewController {
     let selected = BehaviorRelay<Int?>(value: nil)
     
     private var emptyListLabel: NSTextField?
+
+    private let panelKeyMonitor = PanelLocalKeyMonitor()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,47 +131,18 @@ class HistoryViewController: NSViewController {
         applyListFilter()
         resetSelected()
         
-        ClipHotKeys.downArrow.onDown(goToNextItem)
-        ClipHotKeys.downArrow.onLong(goToNextItem)
-        ClipHotKeys.pageDown.onDown(goToNextItem)
-        ClipHotKeys.pageDown.onLong(goToNextItem)
-        ClipHotKeys.upArrow.onDown(goToPreviousItem)
-        ClipHotKeys.upArrow.onLong(goToPreviousItem)
-        ClipHotKeys.pageUp.onDown(goToPreviousItem)
-        ClipHotKeys.pageUp.onLong(goToPreviousItem)
-        ClipHotKeys.escape.onDown { self.close() }
-        ClipHotKeys.return.onDown(pasteSelected)
-        ClipHotKeys.shiftReturn.onDown(pasteSelectedPlainText)
-        ClipHotKeys.ctrlAltCmdLeftArrow.onDown { self.appState.panelPosition.accept(.left) }
-        ClipHotKeys.ctrlAltCmdRightArrow.onDown { self.appState.panelPosition.accept(.right) }
-        ClipHotKeys.ctrlAltCmdDownArrow.onDown { self.appState.panelPosition.accept(.bottom) }
-        ClipHotKeys.ctrlAltCmdUpArrow.onDown { self.appState.panelPosition.accept(.top) }
-        ClipHotKeys.ctrlDelete.onDown(deleteSelected)
-        ClipHotKeys.ctrlSpace.onDown(togglePreview)
-        ClipHotKeys.cmdBackslash.onDown(focusSearchBar)
-        ClipHotKeys.ctrlLeftBracket.onDown(switchToPreviousTab)
-        ClipHotKeys.ctrlRightBracket.onDown(switchToNextTab)
-        
-        // Paste hot keys
-        ClipHotKeys.cmd0.onDown { self.shortcutPressed(key: 0) }
-        ClipHotKeys.cmd1.onDown { self.shortcutPressed(key: 1) }
-        ClipHotKeys.cmd2.onDown { self.shortcutPressed(key: 2) }
-        ClipHotKeys.cmd3.onDown { self.shortcutPressed(key: 3) }
-        ClipHotKeys.cmd4.onDown { self.shortcutPressed(key: 4) }
-        ClipHotKeys.cmd5.onDown { self.shortcutPressed(key: 5) }
-        ClipHotKeys.cmd6.onDown { self.shortcutPressed(key: 6) }
-        ClipHotKeys.cmd7.onDown { self.shortcutPressed(key: 7) }
-        ClipHotKeys.cmd8.onDown { self.shortcutPressed(key: 8) }
-        ClipHotKeys.cmd9.onDown { self.shortcutPressed(key: 9) }
-        
+        configurePanelKeyMonitor()
+
         appState.isHistoryPanelShown
             .distinctUntilChanged()
             .subscribe(onNext: { [weak self] shown in
-                ClipHotKeys.setPanelHotKeysActive(shown)
-                // Deactivation closes via the relay without calling close() — clear preview here.
-                if !shown {
-                    self?.isPreviewShowing = false
-                    self?.appState.previewHistoryItem.accept(nil)
+                guard let self else { return }
+                if shown {
+                    self.panelKeyMonitor.start()
+                } else {
+                    self.panelKeyMonitor.stop()
+                    self.isPreviewShowing = false
+                    self.appState.previewHistoryItem.accept(nil)
                 }
             })
             .disposed(by: disposeBag)
@@ -449,6 +422,126 @@ class HistoryViewController: NSViewController {
         guard appState.isHistoryPanelShown.value else { return }
         AppActivation.activateFrontmostApplication()
         self.searchBar.becomeFirstResponder()
+        if let editor = searchBar.currentEditor() as? NSTextView {
+            editor.selectAll(nil)
+        } else {
+            searchBar.selectText(nil)
+        }
+    }
+
+    // MARK: - Local key monitor (U04)
+
+    private func configurePanelKeyMonitor() {
+        panelKeyMonitor.isPanelKeyWindow = { [weak self] window in
+            guard let self, let window else { return false }
+            if window == self.view.window { return true }
+            if let parent = window.sheetParent, parent == self.view.window { return true }
+            return window.parent == self.view.window
+        }
+        panelKeyMonitor.focusZone = { [weak self] in
+            self?.currentFocusZone() ?? .search
+        }
+        panelKeyMonitor.routerContext = { [weak self] in
+            PanelKeyRouterContext(
+                searchIsEmpty: self?.searchBar.stringValue.isEmpty ?? true,
+                searchFieldOwnsEditingShortcuts: self?.searchBar.currentEditor() != nil,
+                canUndoDelete: false
+            )
+        }
+        panelKeyMonitor.onRoute = { [weak self] route, event in
+            self?.handlePanelKeyRoute(route, event: event) ?? false
+        }
+    }
+
+    private func currentFocusZone() -> FocusZone {
+        if searchBar.currentEditor() != nil { return .search }
+        return .list
+    }
+
+    @discardableResult
+    private func handlePanelKeyRoute(_ route: PanelKeyRoute, event: NSEvent) -> Bool {
+        // Esc walks the stack; ⌘W closes immediately (same registry id).
+        if event.keyCode == 53, event.modifierFlags.intersection([.command, .control, .option, .shift]).isEmpty {
+            return performEscape()
+        }
+        switch route {
+        case .passThrough:
+            return false
+        case .typeToSearch(let text):
+            focusSearchBar()
+            searchBar.stringValue += text
+            scheduleSearch()
+            return true
+        case .command(let id):
+            return performPanelCommand(id)
+        }
+    }
+
+    private func performEscape() -> Bool {
+        let state = EscapeStackState(
+            overlayVisible: false,
+            editorActive: false,
+            editorHasChanges: false,
+            editorDiscardArmed: false,
+            passwordRevealed: false,
+            multiSelectActive: false,
+            searchIsEmpty: searchBar.stringValue.isEmpty,
+            filtersActive: false
+        )
+        switch EscapeResolver.resolve(state) {
+        case .clearSearch:
+            searchBar.stringValue = ""
+            applyListFilter()
+            return true
+        case .closePanel:
+            close()
+            return true
+        default:
+            close()
+            return true
+        }
+    }
+
+    @discardableResult
+    private func performPanelCommand(_ id: PanelCommandID) -> Bool {
+        switch id {
+        case .paste: pasteSelected()
+        case .pastePlainText: pasteSelectedPlainText()
+        case .selectNext, .pageDown: goToNextItem()
+        case .selectPrevious, .pageUp: goToPreviousItem()
+        case .selectFirst:
+            if !historyPanel.items.isEmpty { selected.accept(0) }
+        case .selectLast:
+            if !historyPanel.items.isEmpty { selected.accept(historyPanel.items.count - 1) }
+        case .delete: deleteSelected()
+        case .togglePreview: togglePreview()
+        case .focusSearch: focusSearchBar()
+        case .nextTab: switchToNextTab()
+        case .previousTab: switchToPreviousTab()
+        case .panelPositionLeft: appState.panelPosition.accept(.left)
+        case .panelPositionRight: appState.panelPosition.accept(.right)
+        case .panelPositionUp: appState.panelPosition.accept(.top)
+        case .panelPositionDown: appState.panelPosition.accept(.bottom)
+        case .quickPaste0: shortcutPressed(key: 0)
+        case .quickPaste1: shortcutPressed(key: 1)
+        case .quickPaste2: shortcutPressed(key: 2)
+        case .quickPaste3: shortcutPressed(key: 3)
+        case .quickPaste4: shortcutPressed(key: 4)
+        case .quickPaste5: shortcutPressed(key: 5)
+        case .quickPaste6: shortcutPressed(key: 6)
+        case .quickPaste7: shortcutPressed(key: 7)
+        case .quickPaste8: shortcutPressed(key: 8)
+        case .quickPaste9: shortcutPressed(key: 9)
+        case .openSettings:
+            close()
+            AppActivation.activateFrontmostApplication()
+            NSApp.sendAction(#selector(Controller.showSettings), to: nil, from: nil)
+        case .closePanel:
+            close()
+        default:
+            break
+        }
+        return true
     }
     
     func scheduleSearch() {

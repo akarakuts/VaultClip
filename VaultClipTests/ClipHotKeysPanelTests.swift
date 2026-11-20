@@ -1,5 +1,5 @@
 //
-// ClipHotKeysPanelTests — panel-scoped hot keys stay paused until activated.
+// ClipHotKeysPanelTests — panel input uses local monitor; no Carbon panel keys (U04 / T05).
 //
 // Copyright (C) 2026 Aleksey Karakuts <aleksey@karakuts.com>
 //
@@ -10,23 +10,17 @@ import XCTest
 
 final class ClipHotKeysPanelTests: XCTestCase {
 
-    func testPanelScopedIncludesCmdBackslash() {
-        XCTAssertTrue(ClipHotKeys.panelScoped.contains(where: { $0 === ClipHotKeys.cmdBackslash }))
+    func testPanelScopedCarbonRegistrationsAreEmpty() {
+        XCTAssertTrue(ClipHotKeys.panelScoped.isEmpty)
+        XCTAssertFalse(ClipHotKeys.toggle.isPaused)
     }
 
-    func testSetPanelHotKeysActiveTogglesPause() {
-        ClipHotKeys.setPanelHotKeysActive(false)
-        for hotKey in ClipHotKeys.panelScoped {
-            XCTAssertTrue(hotKey.isPaused)
-        }
-        XCTAssertFalse(ClipHotKeys.toggle.isPaused)
-
-        ClipHotKeys.setPanelHotKeysActive(true)
-        for hotKey in ClipHotKeys.panelScoped {
-            XCTAssertFalse(hotKey.isPaused)
-        }
-        XCTAssertFalse(ClipHotKeys.toggle.isPaused)
-
-        ClipHotKeys.setPanelHotKeysActive(false)
+    func testLocalMonitorActiveOnlyWhenStarted() {
+        let monitor = PanelLocalKeyMonitor()
+        XCTAssertFalse(monitor.isActive)
+        monitor.start()
+        XCTAssertTrue(monitor.isActive)
+        monitor.stop()
+        XCTAssertFalse(monitor.isActive)
     }
 }
