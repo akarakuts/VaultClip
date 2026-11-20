@@ -294,6 +294,7 @@ class HistoryFileManager {
                     let dataUrls = try self.fileManager.contentsOfDirectory(at: content, includingPropertiesForKeys: nil)
                     let sourceBundleId = self.loadSourceBundleId(from: content)
                     let copiedAt = self.loadCopiedAt(from: content)
+                    let lastUsedAt = self.loadLastUsedAt(from: content, fallback: copiedAt)
                     let isFavorite = self.loadFavorite(from: content)
                     let isPassword = self.loadPassword(from: content)
                     let passwordComment = self.loadPasswordComment(from: content)
@@ -310,6 +311,7 @@ class HistoryFileManager {
                         cache: cache,
                         sourceBundleId: sourceBundleId,
                         copiedAt: copiedAt,
+                        lastUsedAt: lastUsedAt,
                         isFavorite: isFavorite,
                         isPassword: isPassword,
                         passwordComment: passwordComment,
@@ -499,6 +501,14 @@ class HistoryFileManager {
                 try self.writeMetadata(HistoryItem.serializeCopiedAt(item.copiedAt), to: copiedAtUrl)
             } catch {
                 ClipWarning(localizedDescription: "Failed to save copy time for item '\(item.fsId.uuidString)': \(error.localizedDescription)")
+                    .log(with: self.warningLogger)
+            }
+
+            let lastUsedUrl = directoryUrl.appendingPathComponent(HistoryItem.lastUsedAtMetadataFileName)
+            do {
+                try self.writeMetadata(HistoryItem.serializeCopiedAt(item.lastUsedAt), to: lastUsedUrl)
+            } catch {
+                ClipWarning(localizedDescription: "Failed to save last-used time for item '\(item.fsId.uuidString)': \(error.localizedDescription)")
                     .log(with: self.warningLogger)
             }
 
@@ -736,6 +746,17 @@ class HistoryFileManager {
             return created
         }
         return Date()
+    }
+
+    private func loadLastUsedAt(from itemDirectory: URL, fallback: Date) -> Date {
+        let url = itemDirectory.appendingPathComponent(HistoryItem.lastUsedAtMetadataFileName)
+        if let raw = readMetadata(from: url) ?? (try? String(contentsOf: url, encoding: .utf8)) {
+            let stamp = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+            if let date = HistoryItem.deserializeCopiedAt(stamp) {
+                return date
+            }
+        }
+        return fallback
     }
 
     private func loadContentDigest(from itemDirectory: URL) -> String? {

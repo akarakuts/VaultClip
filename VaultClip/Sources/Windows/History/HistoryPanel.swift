@@ -49,6 +49,7 @@ class HistoryPanel {
             if plainTextOnly {
                 guard let plain = Self.plainTextForPaste(from: item) else { return }
                 self.history.moveItem(at: index, to: 0)
+                item.lastUsedAt = Date()
                 let changeCount = PasteboardWriter.writeString(plain, to: self.pasteboard, concealed: item.isPassword)
                 HistoryPanel.markSelfWrite(changeCount)
                 self.history.noteClipboardItemId(item.fsId)
@@ -60,6 +61,7 @@ class HistoryPanel {
                 return
             }
             self.history.moveItem(at: index, to: 0)
+            item.lastUsedAt = Date()
             // Per-item rich-text decision from current settings (D5).
             item.pastesRichText = self.settings().pastesRichText
             let changeCount = item.write(to: self.pasteboard)

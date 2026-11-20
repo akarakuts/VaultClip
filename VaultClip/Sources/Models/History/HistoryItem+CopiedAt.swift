@@ -12,10 +12,12 @@ import Foundation
 extension HistoryItem {
     
     static let copiedAtMetadataFileName = "copiedAt"
+    static let lastUsedAtMetadataFileName = "lastUsedAt"
     
     static let metadataFileNames: Set<String> = [
         sourceBundleIdMetadataFileName,
         copiedAtMetadataFileName,
+        lastUsedAtMetadataFileName,
         favoriteMetadataFileName,
         passwordMetadataFileName,
         passwordCommentMetadataFileName,

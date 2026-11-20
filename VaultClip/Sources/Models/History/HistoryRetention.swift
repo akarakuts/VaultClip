@@ -17,7 +17,7 @@ enum HistoryRetention {
         guard retentionDays > 0 else { return [] }
         let cutoff = now.addingTimeInterval(-TimeInterval(retentionDays) * 86_400)
         return items
-            .filter { !$0.isPinnedFromPruning && $0.copiedAt < cutoff }
+            .filter { !$0.isPinnedFromPruning && $0.lastUsedAt < cutoff }
             .map(\.fsId)
     }
 }

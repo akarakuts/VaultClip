@@ -49,6 +49,9 @@ class HistoryItem: NSObject {
     
     /// When this item was added to the history.
     let copiedAt: Date
+
+    /// Last paste/copy/promote time; defaults to `copiedAt` when missing on disk (U12).
+    var lastUsedAt: Date
     
     /// Pinned in the Favorites tab; exempt from automatic history pruning.
     var isFavorite: Bool
@@ -102,6 +105,7 @@ class HistoryItem: NSObject {
         cache: HistoryCache,
         sourceBundleId: String? = nil,
         copiedAt: Date = Date(),
+        lastUsedAt: Date? = nil,
         isFavorite: Bool = false,
         isPassword: Bool = false,
         passwordComment: String = "",
@@ -115,6 +119,7 @@ class HistoryItem: NSObject {
         self.fsId = UUID()
         self.sourceBundleId = sourceBundleId
         self.copiedAt = copiedAt
+        self.lastUsedAt = lastUsedAt ?? copiedAt
         self.isFavorite = isFavorite
         self.isPassword = isPassword
         self.passwordComment = passwordComment
@@ -134,6 +139,7 @@ class HistoryItem: NSObject {
         cache: HistoryCache,
         sourceBundleId: String? = nil,
         copiedAt: Date = Date(),
+        lastUsedAt: Date? = nil,
         isFavorite: Bool = false,
         isPassword: Bool = false,
         passwordComment: String = "",
@@ -147,6 +153,7 @@ class HistoryItem: NSObject {
         self.cache = cache
         self.sourceBundleId = sourceBundleId
         self.copiedAt = copiedAt
+        self.lastUsedAt = lastUsedAt ?? copiedAt
         self.isFavorite = isFavorite
         self.isPassword = isPassword
         self.passwordComment = passwordComment

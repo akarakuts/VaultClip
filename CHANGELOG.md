@@ -30,6 +30,7 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 ### Changed
 
 - **Minimum macOS version** — **14.0**; launch-at-login is SMAppService-only; legacy `LSSharedFileList` / LoginServiceKit path removed (U01).
+- **History retention** — age is measured by `lastUsedAt` (falls back to `copiedAt` when missing); paste/promote refreshes `lastUsedAt` (U12).
 - **HistoryCache I/O** — decrypt loads run outside the cache lock; empty LRU usage no longer traps (T21).
 - **Launch at login** — SMAppService with an approval alert and Settings deep-link (T20; macOS 12 path removed in U01).
 - **Layout-aware paste** — ⌘V simulation resolves the “v” keycode for the current keyboard layout (T19).

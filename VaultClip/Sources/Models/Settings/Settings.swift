@@ -67,7 +67,8 @@ struct Settings: Codable, DefaultStorable {
         panelEdgeWidth: Double,
         panelEdgeHeight: Double,
         panelCenterWidth: Double,
-        panelCenterHeight: Double
+        panelCenterHeight: Double,
+        groupHistoryByDate: Bool
     ) {
         self.panelPosition = panelPosition
         self.pasteboardChangeCount = pasteboardChangeCount
@@ -87,6 +88,7 @@ struct Settings: Codable, DefaultStorable {
         self.panelEdgeHeight = panelEdgeHeight
         self.panelCenterWidth = panelCenterWidth
         self.panelCenterHeight = panelCenterHeight
+        self.groupHistoryByDate = groupHistoryByDate
     }
     
     static let `default` = Settings(
@@ -107,7 +109,8 @@ struct Settings: Codable, DefaultStorable {
         panelEdgeWidth: 480,
         panelEdgeHeight: 360,
         panelCenterWidth: 0,
-        panelCenterHeight: 0
+        panelCenterHeight: 0,
+        groupHistoryByDate: true
     )
     
     // MARK: - Settings
@@ -154,6 +157,9 @@ struct Settings: Codable, DefaultStorable {
     var panelCenterWidth: Double
     var panelCenterHeight: Double
 
+    /// Group History tab by lastUsedAt buckets (U12); on by default.
+    var groupHistoryByDate: Bool
+
     var panelSizes: PanelSizeState {
         PanelSizeState(
             edgeWidth: CGFloat(panelEdgeWidth),
@@ -182,6 +188,7 @@ struct Settings: Codable, DefaultStorable {
         case panelEdgeHeight
         case panelCenterWidth
         case panelCenterHeight
+        case groupHistoryByDate
     }
 
     init(from decoder: Decoder) throws {
@@ -241,6 +248,8 @@ struct Settings: Codable, DefaultStorable {
             panelCenterWidth = defaults.panelCenterWidth
             panelCenterHeight = defaults.panelCenterHeight
         }
+        groupHistoryByDate = try container.decodeIfPresent(Bool.self, forKey: .groupHistoryByDate)
+            ?? defaults.groupHistoryByDate
     }
 
     func encode(to encoder: Encoder) throws {
@@ -263,6 +272,7 @@ struct Settings: Codable, DefaultStorable {
         try container.encode(panelEdgeHeight, forKey: .panelEdgeHeight)
         try container.encode(panelCenterWidth, forKey: .panelCenterWidth)
         try container.encode(panelCenterHeight, forKey: .panelCenterHeight)
+        try container.encode(groupHistoryByDate, forKey: .groupHistoryByDate)
     }
 
     // MARK: - State Binding Methods
