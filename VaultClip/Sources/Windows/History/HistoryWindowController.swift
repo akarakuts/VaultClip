@@ -105,6 +105,7 @@ class HistoryWindowController: NSWindowController {
     }
 
     private func closeForAppDeactivationIfNeeded() {
+        guard !AppIdentity.isRunningUnitTests else { return }
         guard let toggle = shownToggle, let state = appState else { return }
         guard PanelVisibilityPolicy.shouldClose(
             reason: .appDeactivated,

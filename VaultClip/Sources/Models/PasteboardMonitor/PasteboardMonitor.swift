@@ -111,12 +111,10 @@ class PasteboardMonitor {
 
     /// When the history panel is key, frontmost is VaultClip — use the last non-VaultClip app as copy source.
     private static func clipboardOriginBundleId(trackedApp: String?) -> String? {
-        let ownBundleId = Bundle.main.bundleIdentifier
-        let frontmost = NSWorkspace.shared.frontmostApplication?.bundleIdentifier
-        if frontmost == ownBundleId {
-            return trackedApp
-        }
-        return frontmost ?? trackedApp
+        ClipboardSource.resolve(
+            frontmost: NSWorkspace.shared.frontmostApplication?.bundleIdentifier,
+            tracked: trackedApp
+        )
     }
     
     deinit {

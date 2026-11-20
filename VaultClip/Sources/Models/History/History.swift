@@ -408,12 +408,10 @@ extension History: PasteboardMonitorDelegate {
     }
 
     private static func clipboardSourceBundleId(originBundleId: String?) -> String? {
-        let ownBundleId = Constants.branding.bundleIdentifier
-        let frontmost = NSWorkspace.shared.frontmostApplication?.bundleIdentifier
-        if frontmost == ownBundleId {
-            return originBundleId
-        }
-        return frontmost ?? originBundleId
+        ClipboardSource.resolve(
+            frontmost: NSWorkspace.shared.frontmostApplication?.bundleIdentifier,
+            tracked: originBundleId
+        )
     }
 
     /// `pasteboardItems` can be nil while legacy `data(forType:)` still works on some macOS builds.
