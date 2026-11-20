@@ -231,6 +231,12 @@ enum L10n {
     }
     static var imageGeneric: String { tr("image.generic") }
     static func imageTyped(_ type: String) -> String { String(format: tr("image.typed"), type) }
+    static var a11yTypeText: String { tr("a11y.type.text") }
+    static var a11yTypePassword: String { tr("a11y.type.password") }
+    static var a11yTypeImage: String { tr("a11y.type.image") }
+    static var a11yTypePDF: String { tr("a11y.type.pdf") }
+    static var a11yTypeColor: String { tr("a11y.type.color") }
+    static var a11yTypeFile: String { tr("a11y.type.file") }
     static var settingsMaxItemSizeLabel: String { tr("settings.max_item_size.label") }
     static var settingsMaxItemSizeUnlimited: String { tr("settings.max_item_size.unlimited") }
     static func settingsMaxItemSizeMB(_ mb: Int) -> String {

@@ -13,6 +13,30 @@ import Cocoa
 struct HistoryItemText {
     
     static let passwordMask = "••••••••"
+
+    /// VoiceOver label: localized type + preview text; passwords never include the secret (T36).
+    static func accessibilityLabel(for item: HistoryItem, listMode: HistoryListMode) -> String {
+        let typeName = accessibilityTypeName(for: item)
+        let preview: String
+        if item.isPassword {
+            preview = passwordMask
+        } else {
+            preview = String(getString(forItem: item, listMode: listMode).prefix(200))
+        }
+        if preview.isEmpty { return typeName }
+        return "\(typeName), \(preview)"
+    }
+
+    private static func accessibilityTypeName(for item: HistoryItem) -> String {
+        if item.isPassword { return L10n.a11yTypePassword }
+        if item.hasRasterImage() { return L10n.a11yTypeImage }
+        if item.types.contains(.pdf) || item.types.contains(NSPasteboard.PasteboardType(rawValue: "com.adobe.pdf")) {
+            return L10n.a11yTypePDF
+        }
+        if item.getColor() != nil { return L10n.a11yTypeColor }
+        if item.getFileUrl() != nil { return L10n.a11yTypeFile }
+        return L10n.a11yTypeText
+    }
     
     static let itemStringAttributes: [NSAttributedString.Key: Any] = [
         .font: HistoryListTheme.typography.body,

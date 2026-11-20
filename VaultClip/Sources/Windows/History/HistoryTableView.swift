@@ -219,7 +219,10 @@ extension HistoryTableView: NSTableViewDataSource {
             baseCell.bindHost(self, row: row, historyItem: historyItem)
         }
         if let cell = cell as? NSTableCellView {
-            cell.setAccessibilityLabel(itemType.identifier.rawValue)
+            cell.setAccessibilityIdentifier(itemType.identifier.rawValue)
+            cell.setAccessibilityLabel(
+                HistoryItemText.accessibilityLabel(for: historyItem, listMode: listMode)
+            )
             cell.identifier = itemType.identifier
         }
         return cell as? NSView

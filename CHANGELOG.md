@@ -51,6 +51,7 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 - **Coverage gate** (`scripts/check-coverage.sh`) now enforces the **minimum** per-file line coverage across core Security/History files (threshold and `VAULTCLIP_COVERAGE_THRESHOLD` unchanged at 55%); structurally untestable files are excluded with reasons in the script header.
 - **CI** installs pinned SwiftLint **0.65.1** from the portable release asset instead of `brew install` (baseline parity with local linting) and checks `MARKETING_VERSION` consistency across build configurations.
 - **Localization** — PDF/image labels and history loading strings use the catalog; settings UI tags controls by accessibility identifier (T35).
+- **Accessibility** — history cells use VoiceOver labels (localized type + preview; passwords masked) and accessibility identifiers for UI tests (T36).
 - **Excluded apps** — Privacy settings list of bundle IDs whose clipboard changes are ignored (T33).
 - **History retention** — optional auto-delete of unpinned items older than 1/7/30/90 days (T34).
 - **Paste as plain text** — ⇧Return pastes only the string representation of the selected item (T32).
