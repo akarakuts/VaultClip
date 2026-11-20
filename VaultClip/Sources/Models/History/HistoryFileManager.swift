@@ -55,7 +55,7 @@ class HistoryFileManager {
         self.dispatchQueue = dispatchQueue ?? DispatchQueue(label: "HistoryFileManagerQueue", qos: .background)
     }
     
-    private func callHander(_ handler: ((Bool) -> Void)?, withVal val: Bool) {
+    private func callHandler(_ handler: ((Bool) -> Void)?, withVal val: Bool) {
         if let handler = handler {
             handler(val)
         }
@@ -90,6 +90,28 @@ class HistoryFileManager {
         dispatchQueue.async { self.pendingHistoryOrder = history }
     }
 
+    /// Must run on `dispatchQueue`. Updates pending order synchronously so later on-queue
+    /// callers cannot be overtaken by a stale `scheduleHistoryOrderWrite` async hop (T14).
+    private func enqueueOrderWriteOnQueue(
+        history: [HistoryItem],
+        immediate: Bool,
+        handler: ((Bool) -> Void)?
+    ) {
+        dispatchPrecondition(condition: .onQueue(dispatchQueue))
+        pendingHistoryOrder = history
+        if let handler { pendingOrderHandlers.append(handler) }
+        if immediate {
+            flushPendingOrder()
+            return
+        }
+        guard !orderFlushScheduled else { return }
+        orderFlushScheduled = true
+        dispatchQueue.asyncAfter(deadline: .now() + orderCoalesceInterval) {
+            self.orderFlushScheduled = false
+            self.flushPendingOrder()
+        }
+    }
+
     /// Queues an order write; coalesced bursts collapse to one disk hit unless `immediate`.
     func scheduleHistoryOrderWrite(
         history: [HistoryItem],
@@ -97,18 +119,7 @@ class HistoryFileManager {
         completionHandler handler: ((Bool) -> Void)? = nil
     ) {
         dispatchQueue.async {
-            self.pendingHistoryOrder = history
-            if let handler { self.pendingOrderHandlers.append(handler) }
-            if immediate {
-                self.flushPendingOrder()
-                return
-            }
-            guard !self.orderFlushScheduled else { return }
-            self.orderFlushScheduled = true
-            self.dispatchQueue.asyncAfter(deadline: .now() + self.orderCoalesceInterval) {
-                self.orderFlushScheduled = false
-                self.flushPendingOrder()
-            }
+            self.enqueueOrderWriteOnQueue(history: history, immediate: immediate, handler: handler)
         }
     }
 
@@ -133,14 +144,14 @@ class HistoryFileManager {
         guard let snapshot = pendingHistoryOrder else {
             let handlers = pendingOrderHandlers
             pendingOrderHandlers = []
-            handlers.forEach { callHander($0, withVal: true) }
+            handlers.forEach { callHandler($0, withVal: true) }
             return
         }
         pendingHistoryOrder = nil
         let result = writeHistoryOrder(history: snapshot)
         let handlers = pendingOrderHandlers
         pendingOrderHandlers = []
-        handlers.forEach { callHander($0, withVal: result) }
+        handlers.forEach { callHandler($0, withVal: result) }
     }
     
     private func writeMetadata(_ string: String, to url: URL) throws {
@@ -447,7 +458,7 @@ class HistoryFileManager {
                 let historyError = ClipError(.historyItemSaveFailed, localizedDescription: "Failed to save new item due to error: unsavedError is nil")
                 historyError.log(with: self.errorLogger)
                 historyError.show(with: self.alerter)
-                self.callHander(handler, withVal: false)
+                self.callHandler(handler, withVal: false)
                 return
             }
             
@@ -458,7 +469,7 @@ class HistoryFileManager {
                 let historyError = ClipError(.historyItemSaveFailed, localizedDescription: "Failed to save new item due to error: \(error.localizedDescription)")
                 historyError.log(with: self.errorLogger)
                 historyError.show(with: self.alerter)
-                self.callHander(handler, withVal: false)
+                self.callHandler(handler, withVal: false)
                 return
             }
             
@@ -489,7 +500,7 @@ class HistoryFileManager {
                     let historyError = ClipError(.historyItemSaveFailed, localizedDescription: "Failed to save new pasteboard item due to error: \(error.localizedDescription) Attempted to save pasteboard item at '\(itemUrl)'.")
                     historyError.log(with: self.errorLogger)
                     historyError.show(with: self.alerter)
-                    self.callHander(handler, withVal: false)
+                    self.callHandler(handler, withVal: false)
                     return
                 }
             }
@@ -497,7 +508,7 @@ class HistoryFileManager {
             DispatchQueue.main.async {
                 item.startCaching()
             }
-            self.scheduleHistoryOrderWrite(history: historyOrder, completionHandler: handler)
+            self.enqueueOrderWriteOnQueue(history: historyOrder, immediate: false, handler: handler)
         }
     }
     
@@ -521,15 +532,15 @@ class HistoryFileManager {
                 }
                 HistoryItem.removeQuickLookCache(for: deleted.fsId)
             }
-            self.scheduleHistoryOrderWrite(history: historyOrder, immediate: true, completionHandler: { wroteOrder in
-                self.callHander(handler, withVal: wroteOrder && allSucceeded)
+            self.enqueueOrderWriteOnQueue(history: historyOrder, immediate: true, handler: { wroteOrder in
+                self.callHandler(handler, withVal: wroteOrder && allSucceeded)
             })
         }
     }
     
     func reduce(oldHistory: [HistoryItem], toSize size: Int, completionHandler handler: ((Bool) -> Void)? = nil) {
         if oldHistory.count <= size {
-            callHander(handler, withVal: true)
+            callHandler(handler, withVal: true)
             return
         }
         
@@ -551,8 +562,8 @@ class HistoryFileManager {
             }
 
             // Update order
-            self.scheduleHistoryOrderWrite(history: newHistory, immediate: true, completionHandler: { wroteOrder in
-                self.callHander(handler, withVal: wroteOrder && allSucceeded)
+            self.enqueueOrderWriteOnQueue(history: newHistory, immediate: true, handler: { wroteOrder in
+                self.callHandler(handler, withVal: wroteOrder && allSucceeded)
             })
         }
     }
@@ -575,7 +586,7 @@ class HistoryFileManager {
                 let historyError = ClipError(.historyClearFailed, localizedDescription: "Failed to delete old history due to error: \(error.localizedDescription)")
                 historyError.log(with: self.errorLogger)
                 historyError.show(with: self.alerter)
-                self.callHander(handler, withVal: false)
+                self.callHandler(handler, withVal: false)
                 return
             }
 
@@ -587,12 +598,12 @@ class HistoryFileManager {
                 let historyError = ClipError(.historyClearFailed, localizedDescription: "Failed to create directory for new history due to error: \(error.localizedDescription)")
                 historyError.log(with: self.errorLogger)
                 historyError.show(with: self.alerter)
-                self.callHander(handler, withVal: false)
+                self.callHandler(handler, withVal: false)
                 return
             }
 
             // Save the new order
-            self.scheduleHistoryOrderWrite(history: [], immediate: true, completionHandler: handler)
+            self.enqueueOrderWriteOnQueue(history: [], immediate: true, handler: handler)
         }
     }
     
@@ -613,11 +624,11 @@ class HistoryFileManager {
                 } else if self.fileManager.fileExists(atPath: favoriteUrl.path) {
                     try self.fileManager.removeItem(at: favoriteUrl)
                 }
-                self.callHander(handler, withVal: true)
+                self.callHandler(handler, withVal: true)
             } catch {
                 ClipWarning(localizedDescription: "Failed to save favorite flag for item '\(item.fsId.uuidString)': \(error.localizedDescription)")
                     .log(with: self.warningLogger)
-                self.callHander(handler, withVal: false)
+                self.callHandler(handler, withVal: false)
             }
         }
     }
@@ -653,11 +664,11 @@ class HistoryFileManager {
                         try self.fileManager.removeItem(at: url)
                     }
                 }
-                self.callHander(handler, withVal: true)
+                self.callHandler(handler, withVal: true)
             } catch {
                 ClipWarning(localizedDescription: "Failed to save password metadata for item '\(item.fsId.uuidString)': \(error.localizedDescription)")
                     .log(with: self.warningLogger)
-                self.callHander(handler, withVal: false)
+                self.callHandler(handler, withVal: false)
             }
         }
     }
@@ -678,11 +689,11 @@ class HistoryFileManager {
                 try self.writeOptionalMetadata(comment, to: commentUrl)
                 try self.writeOptionalMetadata(login, to: loginUrl)
                 try self.writeOptionalMetadata(url, to: siteUrl)
-                self.callHander(handler, withVal: true)
+                self.callHandler(handler, withVal: true)
             } catch {
                 ClipWarning(localizedDescription: "Failed to save password metadata for item '\(item.fsId.uuidString)': \(error.localizedDescription)")
                     .log(with: self.warningLogger)
-                self.callHander(handler, withVal: false)
+                self.callHandler(handler, withVal: false)
             }
         }
     }

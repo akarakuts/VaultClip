@@ -627,6 +627,21 @@ class HistoryFileManagerTests: XCTestCase {
         XCTAssertEqual(orderManager.writeCount, 1)
     }
 
+    func testOnQueueDeleteThenMainSaveKeepsNewerOrder() {
+        historyFM.orderCoalesceInterval = 0
+        orderManager.shouldWriteSucceed = true
+        let older = history1
+        let newer = history2
+        let done = expectation(description: "flush")
+
+        historyFM.deleteItems(older, historyOrder: []) { _ in }
+        historyFM.saveHistoryOrder(history: newer) { _ in done.fulfill() }
+
+        wait(for: [done], timeout: 2)
+        historyFM.flushHistoryOrderSync(timeout: 1)
+        XCTAssertEqual(orderManager.writtenOrders.last, newer.map(\.fsId.uuidString))
+    }
+
     func testSyncFlushDrainsPendingOrderWithinTimeout() {
         // `flushHistoryOrderSync` blocks the caller until the file-manager queue drains,
         // so it must never be exercised with a main-queue manager (that would deadlock).

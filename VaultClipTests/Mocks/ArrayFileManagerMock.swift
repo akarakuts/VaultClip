@@ -16,6 +16,7 @@ class ArrayFileManagerMock: ArrayFileManager {
     var shouldReadSucceed = true
     var shouldWriteSucceed = true
     private(set) var writeCount = 0
+    private(set) var writtenOrders: [[String]] = []
 
     override func read() -> NSArray? {
         if shouldReadSucceed {
@@ -30,6 +31,7 @@ class ArrayFileManagerMock: ArrayFileManager {
         writeCount += 1
         if shouldWriteSucceed {
             order = array
+            writtenOrders.append((array as? [String]) ?? [])
         }
         else {
             throw NSError(domain: "Testing skrt", code: 0, userInfo: [:])
