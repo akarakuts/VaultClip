@@ -65,6 +65,7 @@ class HistoryViewController: NSViewController {
     private var emptyListLabel: NSTextField?
 
     private let panelKeyMonitor = PanelLocalKeyMonitor()
+    private let commandPaletteOverlay = CommandPaletteOverlayView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,6 +75,7 @@ class HistoryViewController: NSViewController {
         configurePanelLayout()
         applyPanelChromeMetrics()
         styleHistoryChrome()
+        installCommandPaletteOverlay()
         searchBar.placeholderString = L10n.searchPlaceholder
         historyListView.historyDelegate = self
         
@@ -486,7 +488,7 @@ class HistoryViewController: NSViewController {
 
     private func performEscape() -> Bool {
         let state = EscapeStackState(
-            overlayVisible: false,
+            overlayVisible: !commandPaletteOverlay.isHidden,
             editorActive: false,
             editorHasChanges: false,
             editorDiscardArmed: false,
@@ -496,6 +498,9 @@ class HistoryViewController: NSViewController {
             filtersActive: false
         )
         switch EscapeResolver.resolve(state) {
+        case .dismissOverlay:
+            commandPaletteOverlay.dismiss()
+            return true
         case .clearSearch:
             searchBar.stringValue = ""
             applyListFilter()
@@ -507,6 +512,32 @@ class HistoryViewController: NSViewController {
             close()
             return true
         }
+    }
+
+    private func installCommandPaletteOverlay() {
+        commandPaletteOverlay.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(commandPaletteOverlay)
+        NSLayoutConstraint.activate([
+            commandPaletteOverlay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            commandPaletteOverlay.topAnchor.constraint(equalTo: view.topAnchor, constant: 56),
+            commandPaletteOverlay.widthAnchor.constraint(lessThanOrEqualToConstant: 440),
+            commandPaletteOverlay.heightAnchor.constraint(equalToConstant: 320)
+        ])
+        let width = commandPaletteOverlay.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24)
+        width.priority = .defaultHigh
+        width.isActive = true
+        commandPaletteOverlay.onSelect = { [weak self] id in
+            _ = self?.performPanelCommand(id)
+        }
+    }
+
+    private func showCommandPalette() {
+        let ctx = PanelCommandContext(
+            hasSelection: historyListView.selected != nil,
+            selectionCount: historyListView.selected == nil ? 0 : 1,
+            searchIsEmpty: searchBar.stringValue.isEmpty
+        )
+        commandPaletteOverlay.present(context: ctx)
     }
 
     @discardableResult
@@ -543,6 +574,12 @@ class HistoryViewController: NSViewController {
             close()
             AppActivation.activateFrontmostApplication()
             NSApp.sendAction(#selector(Controller.showSettings), to: nil, from: nil)
+        case .commandPalette:
+            if commandPaletteOverlay.isHidden {
+                showCommandPalette()
+            } else {
+                commandPaletteOverlay.dismiss()
+            }
         case .closePanel:
             close()
         default:
