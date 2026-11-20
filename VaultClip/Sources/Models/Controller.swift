@@ -292,8 +292,7 @@ class Controller {
     }
     
     @objc func showSettings() {
-        (settingsWindowController.contentViewController as? SettingsTabViewController)?
-            .configure(state: state)
+        settingsWindowController.configure(state: state)
         showWindowIfNeeded(settingsWindowController)
     }
 

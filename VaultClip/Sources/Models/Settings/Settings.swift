@@ -79,6 +79,9 @@ struct Settings: Codable, DefaultStorable {
         hidesPanelFromScreenCapture: Bool,
         multiPasteSeparator: String,
         usesMonospacedContentFont: Bool,
+        showsFilterBarPreference: Bool,
+        showKeyHints: Bool,
+        previewPlacement: PreviewPlacement,
         capturePausedUntil: Date?
     ) {
         self.panelPosition = panelPosition
@@ -110,6 +113,9 @@ struct Settings: Codable, DefaultStorable {
         self.hidesPanelFromScreenCapture = hidesPanelFromScreenCapture
         self.multiPasteSeparator = multiPasteSeparator
         self.usesMonospacedContentFont = usesMonospacedContentFont
+        self.showsFilterBarPreference = showsFilterBarPreference
+        self.showKeyHints = showKeyHints
+        self.previewPlacement = previewPlacement
         self.capturePausedUntil = capturePausedUntil
     }
     
@@ -143,6 +149,9 @@ struct Settings: Codable, DefaultStorable {
         hidesPanelFromScreenCapture: false,
         multiPasteSeparator: "newline",
         usesMonospacedContentFont: false,
+        showsFilterBarPreference: true,
+        showKeyHints: true,
+        previewPlacement: .automatic,
         capturePausedUntil: nil
     )
     
@@ -212,6 +221,12 @@ struct Settings: Codable, DefaultStorable {
     var multiPasteSeparator: String
     /// Monospace content font in preview (U30).
     var usesMonospacedContentFont: Bool
+    /// Show type/app filter bar in panel (U13/U30).
+    var showsFilterBarPreference: Bool
+    /// Show key hints in the status footer (U09/U30).
+    var showKeyHints: Bool
+    /// Embedded preview placement (U21/U30).
+    var previewPlacement: PreviewPlacement
     /// Soft pause end date (U28); nil when not time-limited.
     var capturePausedUntil: Date?
 
@@ -254,6 +269,9 @@ struct Settings: Codable, DefaultStorable {
         case hidesPanelFromScreenCapture
         case multiPasteSeparator
         case usesMonospacedContentFont
+        case showsFilterBarPreference
+        case showKeyHints
+        case previewPlacement
         case capturePausedUntil
     }
 
@@ -336,6 +354,12 @@ struct Settings: Codable, DefaultStorable {
             ?? defaults.multiPasteSeparator
         usesMonospacedContentFont = try container.decodeIfPresent(Bool.self, forKey: .usesMonospacedContentFont)
             ?? defaults.usesMonospacedContentFont
+        showsFilterBarPreference = try container.decodeIfPresent(Bool.self, forKey: .showsFilterBarPreference)
+            ?? defaults.showsFilterBarPreference
+        showKeyHints = try container.decodeIfPresent(Bool.self, forKey: .showKeyHints)
+            ?? defaults.showKeyHints
+        previewPlacement = try container.decodeIfPresent(PreviewPlacement.self, forKey: .previewPlacement)
+            ?? defaults.previewPlacement
         capturePausedUntil = try container.decodeIfPresent(Date.self, forKey: .capturePausedUntil)
             ?? defaults.capturePausedUntil
     }
@@ -371,6 +395,9 @@ struct Settings: Codable, DefaultStorable {
         try container.encode(hidesPanelFromScreenCapture, forKey: .hidesPanelFromScreenCapture)
         try container.encode(multiPasteSeparator, forKey: .multiPasteSeparator)
         try container.encode(usesMonospacedContentFont, forKey: .usesMonospacedContentFont)
+        try container.encode(showsFilterBarPreference, forKey: .showsFilterBarPreference)
+        try container.encode(showKeyHints, forKey: .showKeyHints)
+        try container.encode(previewPlacement, forKey: .previewPlacement)
         try container.encodeIfPresent(capturePausedUntil, forKey: .capturePausedUntil)
     }
 

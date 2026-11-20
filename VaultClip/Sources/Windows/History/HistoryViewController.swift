@@ -70,7 +70,7 @@ class HistoryViewController: NSViewController {
     private let embeddedPreview = EmbeddedPreviewView()
     private let filterBar = PanelFilterBarView()
     private var filterState = FilterState()
-    private var filterBarVisible = true
+    private var filterBarVisible: Bool { appSettings.showsFilterBarPreference }
     private var selectionModel = SelectionModel()
     private let previewDebouncer = PreviewUpdateDebouncer(scheduler: PreviewDispatchScheduler())
     private lazy var pendingDeletion = PendingDeletionQueue(
@@ -852,7 +852,6 @@ class HistoryViewController: NSViewController {
     }
 
     private func showAppFilterMenu() {
-        filterBarVisible = true
         updateFilterBarVisibility()
         // Focus app popup so ⌥⌘A opens the source list (U14).
         filterBar.window?.makeFirstResponder(filterBar)

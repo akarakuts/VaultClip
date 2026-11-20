@@ -55,6 +55,7 @@
 		343F411A233C8C14004DA324 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343F4119233C8C14004DA324 /* SettingsTests.swift */; };
 		343F411C233C97A4004DA324 /* UserDefaults+Blank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343F411B233C97A4004DA324 /* UserDefaults+Blank.swift */; };
 		34417677240863930076BEDA /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34417676240863930076BEDA /* SettingsWindowController.swift */; };
+		VCPNL60412EB0B10004E6E63 /* SettingsSwiftUITabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL60312EB0B10004E6E63 /* SettingsSwiftUITabs.swift */; };
 		344176792408640D0076BEDA /* HotKeySettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344176782408640D0076BEDA /* HotKeySettingsViewController.swift */; };
 		344C1160234DB23B00B35DC9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 344C115F234DB23B00B35DC9 /* Assets.xcassets */; };
 		344C1162234DD2EF00B35DC9 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 344C1161234DD2EF00B35DC9 /* Quartz.framework */; };
@@ -284,6 +285,7 @@
 		VCPNL47212EB0B10004E6E63 /* CommandPaletteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL47112EB0B10004E6E63 /* CommandPaletteModel.swift */; };
 		VCPNL48212EB0B10004E6E63 /* CheatSheetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL48112EB0B10004E6E63 /* CheatSheetModel.swift */; };
 		VCPNL49212EB0B10004E6E63 /* StatusItemClickMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL49112EB0B10004E6E63 /* StatusItemClickMode.swift */; };
+		VCPNL60212EB0B10004E6E63 /* PreviewPlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL60112EB0B10004E6E63 /* PreviewPlacement.swift */; };
 		VCPNL50212EB0B10004E6E63 /* MenuBarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL50112EB0B10004E6E63 /* MenuBarModel.swift */; };
 		VCPNL51212EB0B10004E6E63 /* ExcludedAppsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL51112EB0B10004E6E63 /* ExcludedAppsModel.swift */; };
 		VCPNL52212EB0B10004E6E63 /* HotKeyCaptureState.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL52112EB0B10004E6E63 /* HotKeyCaptureState.swift */; };
@@ -393,6 +395,7 @@
 		343F4119233C8C14004DA324 /* SettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
 		343F411B233C97A4004DA324 /* UserDefaults+Blank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Blank.swift"; sourceTree = "<group>"; };
 		34417676240863930076BEDA /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
+		VCPNL60312EB0B10004E6E63 /* SettingsSwiftUITabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwiftUITabs.swift; sourceTree = "<group>"; };
 		344176782408640D0076BEDA /* HotKeySettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKeySettingsViewController.swift; sourceTree = "<group>"; };
 		344C115F234DB23B00B35DC9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		344C1161234DD2EF00B35DC9 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
@@ -616,6 +619,7 @@
 		VCPNL47112EB0B10004E6E63 /* CommandPaletteModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPaletteModel.swift; sourceTree = "<group>"; };
 		VCPNL48112EB0B10004E6E63 /* CheatSheetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatSheetModel.swift; sourceTree = "<group>"; };
 		VCPNL49112EB0B10004E6E63 /* StatusItemClickMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemClickMode.swift; sourceTree = "<group>"; };
+		VCPNL60112EB0B10004E6E63 /* PreviewPlacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewPlacement.swift; sourceTree = "<group>"; };
 		VCPNL50112EB0B10004E6E63 /* MenuBarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarModel.swift; sourceTree = "<group>"; };
 		VCPNL51112EB0B10004E6E63 /* ExcludedAppsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExcludedAppsModel.swift; sourceTree = "<group>"; };
 		VCPNL52112EB0B10004E6E63 /* HotKeyCaptureState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKeyCaptureState.swift; sourceTree = "<group>"; };
@@ -849,6 +853,7 @@
 				3496BADA2442B28A00D110AE /* SettingsTabViewController.swift */,
 				VCPRV10112EB0B10004E6E63 /* PrivacySettingsViewController.swift */,
 				34417676240863930076BEDA /* SettingsWindowController.swift */,
+				VCPNL60312EB0B10004E6E63 /* SettingsSwiftUITabs.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1061,6 +1066,7 @@
 				VCPNL47112EB0B10004E6E63 /* CommandPaletteModel.swift */,
 				VCPNL48112EB0B10004E6E63 /* CheatSheetModel.swift */,
 				VCPNL49112EB0B10004E6E63 /* StatusItemClickMode.swift */,
+				VCPNL60112EB0B10004E6E63 /* PreviewPlacement.swift */,
 				VCPNL50112EB0B10004E6E63 /* MenuBarModel.swift */,
 				VCPNL51112EB0B10004E6E63 /* ExcludedAppsModel.swift */,
 				VCPNL52112EB0B10004E6E63 /* HotKeyCaptureState.swift */,
@@ -1603,6 +1609,7 @@
 				341D9D3523373083008A2BE6 /* ClipHotKey.swift in Sources */,
 				345B14B32341AFB800C2D0DA /* KeyPressMock.swift in Sources */,
 				34417677240863930076BEDA /* SettingsWindowController.swift in Sources */,
+				VCPNL60412EB0B10004E6E63 /* SettingsSwiftUITabs.swift in Sources */,
 				3490D3972328D6BD00BA8747 /* WelcomeViewController.swift in Sources */,
 				34B5C43423581B7B005247EB /* Alertable.swift in Sources */,
 				34B5C43023580CF0005247EB /* ClipWarning.swift in Sources */,
@@ -1693,6 +1700,7 @@
 				VCPNL47212EB0B10004E6E63 /* CommandPaletteModel.swift in Sources */,
 				VCPNL48212EB0B10004E6E63 /* CheatSheetModel.swift in Sources */,
 				VCPNL49212EB0B10004E6E63 /* StatusItemClickMode.swift in Sources */,
+				VCPNL60212EB0B10004E6E63 /* PreviewPlacement.swift in Sources */,
 				VCPNL50212EB0B10004E6E63 /* MenuBarModel.swift in Sources */,
 				VCPNL51212EB0B10004E6E63 /* ExcludedAppsModel.swift in Sources */,
 				VCPNL52212EB0B10004E6E63 /* HotKeyCaptureState.swift in Sources */,
