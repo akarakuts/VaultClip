@@ -352,6 +352,14 @@ class History {
         _maxItems.accept(maxItems)
     }
 
+    func purgeExpiredItems(now: Date = Date()) {
+        assertMain()
+        let ids = HistoryRetention.expiredIds(in: _items, retentionDays: Settings.main.retentionDays, now: now)
+        for id in ids {
+            deleteItem(withId: id)
+        }
+    }
+
     /// How many unpinned items would be deleted if the limit became `newMax` (T28).
     func itemsToPrune(forNewMax newMax: Int) -> Int {
         assertMain()

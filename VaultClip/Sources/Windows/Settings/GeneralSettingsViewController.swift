@@ -30,6 +30,7 @@ class GeneralSettingsViewController: NSViewController {
         setupMaxHistoryItemsPopUpButton()
         setupMaxItemSizeControls()
         setupPasswordAuthControls()
+        setupRetentionControls()
         setupShowsRichTextButton()
         setupPastesRichTextButton()
     }
@@ -222,6 +223,40 @@ class GeneralSettingsViewController: NSViewController {
         let options = [0, 1, 5, 15]
         guard options.indices.contains(sender.indexOfSelectedItem) else { return }
         SettingsPersistence.apply { $0.passwordAuthGraceMinutes = options[sender.indexOfSelectedItem] }
+    }
+
+    private func setupRetentionControls() {
+        let label = NSTextField(labelWithString: L10n.settingsRetention)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(label)
+        let popup = NSPopUpButton(frame: .zero, pullsDown: false)
+        popup.translatesAutoresizingMaskIntoConstraints = false
+        let options = [0, 1, 7, 30, 90]
+        for days in options {
+            if days == 0 {
+                popup.addItem(withTitle: L10n.settingsRetentionNever)
+            } else {
+                popup.addItem(withTitle: L10n.settingsRetentionDays(days))
+            }
+        }
+        let index = options.firstIndex(of: Settings.main.retentionDays) ?? 0
+        popup.selectItem(at: index)
+        popup.target = self
+        popup.action = #selector(onRetentionSelected)
+        view.addSubview(popup)
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: maxItemSizeLabel.leadingAnchor),
+            label.topAnchor.constraint(equalTo: maxItemSizeLabel.bottomAnchor, constant: 90),
+            popup.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: 8),
+            popup.centerYAnchor.constraint(equalTo: label.centerYAnchor),
+        ])
+    }
+
+    @objc private func onRetentionSelected(_ sender: NSPopUpButton) {
+        let options = [0, 1, 7, 30, 90]
+        guard options.indices.contains(sender.indexOfSelectedItem) else { return }
+        SettingsPersistence.apply { $0.retentionDays = options[sender.indexOfSelectedItem] }
+        AppEnvironment.shared.state.history.purgeExpiredItems()
     }
     
     @objc private func onShowsRichTextButtonClicked() {

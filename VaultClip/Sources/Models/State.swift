@@ -118,6 +118,19 @@ class State {
 
         Self.monitorPastesRichText(state: self)
         Self.monitorScreenParameters(state: self)
+        Self.scheduleHistoryRetention(state: self)
+    }
+
+    static func scheduleHistoryRetention(state: State) {
+        let timer = Timer.scheduledTimer(withTimeInterval: 3600, repeats: true) { [weak state] _ in
+            state?.history.purgeExpiredItems()
+        }
+        timer.tolerance = 60
+        RunLoop.main.add(timer, forMode: .common)
+        // First pass after async/sync load settles.
+        DispatchQueue.main.async {
+            state.history.purgeExpiredItems()
+        }
     }
     
     // MARK: - Constructor Helpers
