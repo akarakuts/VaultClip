@@ -32,4 +32,5 @@ excluded:
   - scripts
   - TestData
 
-reporter: github-actions-logging
+# Local default; CI passes `--reporter github-actions-logging` explicitly.
+reporter: xcode

@@ -205,6 +205,7 @@
 		VCL10N10212EB0B10004E6E63 /* L10nCatalogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCL10N10112EB0B10004E6E63 /* L10nCatalogTests.swift */; };
 		VCA11Y10212EB0B10004E6E63 /* AccessibilityLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCA11Y10112EB0B10004E6E63 /* AccessibilityLabelTests.swift */; };
 		VCKEYT10212EB0B10004E6E63 /* KeyResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCKEYT10112EB0B10004E6E63 /* KeyResolverTests.swift */; };
+		VCKCHS10212EB0B10004E6E63 /* KeychainSymmetricKeyStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCKCHS10112EB0B10004E6E63 /* KeychainSymmetricKeyStoreTests.swift */; };
 		VCHRT10212EB0B10004E6E63 /* HistoryRetentionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCHRT10112EB0B10004E6E63 /* HistoryRetentionTests.swift */; };
 		VCEXT10212EB0B10004E6E63 /* ExcludedAppsPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCEXT10112EB0B10004E6E63 /* ExcludedAppsPolicyTests.swift */; };
 		VCPLT10212EB0B10004E6E63 /* PlainTextPasteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPLT10112EB0B10004E6E63 /* PlainTextPasteTests.swift */; };
@@ -457,6 +458,7 @@
 		VCL10N10112EB0B10004E6E63 /* L10nCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10nCatalogTests.swift; sourceTree = "<group>"; };
 		VCA11Y10112EB0B10004E6E63 /* AccessibilityLabelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityLabelTests.swift; sourceTree = "<group>"; };
 		VCKEYT10112EB0B10004E6E63 /* KeyResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyResolverTests.swift; sourceTree = "<group>"; };
+		VCKCHS10112EB0B10004E6E63 /* KeychainSymmetricKeyStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainSymmetricKeyStoreTests.swift; sourceTree = "<group>"; };
 		VCHRT10112EB0B10004E6E63 /* HistoryRetentionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRetentionTests.swift; sourceTree = "<group>"; };
 		VCEXT10112EB0B10004E6E63 /* ExcludedAppsPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExcludedAppsPolicyTests.swift; sourceTree = "<group>"; };
 		VCPLT10112EB0B10004E6E63 /* PlainTextPasteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTextPasteTests.swift; sourceTree = "<group>"; };
@@ -971,6 +973,7 @@
 				VCL10N10112EB0B10004E6E63 /* L10nCatalogTests.swift */,
 				VCA11Y10112EB0B10004E6E63 /* AccessibilityLabelTests.swift */,
 				VCKEYT10112EB0B10004E6E63 /* KeyResolverTests.swift */,
+				VCKCHS10112EB0B10004E6E63 /* KeychainSymmetricKeyStoreTests.swift */,
 				VCHRT10112EB0B10004E6E63 /* HistoryRetentionTests.swift */,
 				VCEXT10112EB0B10004E6E63 /* ExcludedAppsPolicyTests.swift */,
 				VCPLT10112EB0B10004E6E63 /* PlainTextPasteTests.swift */,
@@ -1422,6 +1425,7 @@
 				VCL10N10212EB0B10004E6E63 /* L10nCatalogTests.swift in Sources */,
 				VCA11Y10212EB0B10004E6E63 /* AccessibilityLabelTests.swift in Sources */,
 				VCKEYT10212EB0B10004E6E63 /* KeyResolverTests.swift in Sources */,
+				VCKCHS10212EB0B10004E6E63 /* KeychainSymmetricKeyStoreTests.swift in Sources */,
 				VCHRT10212EB0B10004E6E63 /* HistoryRetentionTests.swift in Sources */,
 				VCEXT10212EB0B10004E6E63 /* ExcludedAppsPolicyTests.swift in Sources */,
 				VCPLT10212EB0B10004E6E63 /* PlainTextPasteTests.swift in Sources */,

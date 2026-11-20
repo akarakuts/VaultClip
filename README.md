@@ -66,17 +66,21 @@ Favorites and saving to Passwords are available from the **context menu** (right
 
 ### Search, preview, paste
 
-- **Search** (⌘\\) — fuzzy text matching; for passwords, search runs on comment, login, and URL, not the secret.
+- **Search** (⌘\\) — ranked substring search (case/diacritic-insensitive); for passwords, search runs on comment, login, and URL, not the secret.
 - **Preview** (Ctrl+Space) — text, image, or Quick Look; passwords are masked outside the Passwords tab.
 - **Return** — paste into the app that was active before the panel opened.
+- **Shift+Return** — paste as plain text only.
 - **⌘0 … ⌘9** — quick paste by list position.
 - **Drag and drop** to reorder; moving to the top updates the system clipboard.
+- Duplicate copies of the same payload are **promoted** to the top instead of inserting a second row.
 
 ### Panel and menu bar
 
 **No Dock icon** — menu bar only. Dock the panel left, right, top, bottom, centered, or full screen; the position is remembered. Change it from the **Position** menu or with **Ctrl+Alt+⌘ + arrow keys**.
 
-Menu items: **Toggle Window** (default **⌘⇧V**), launch at login, clear history (keeps favorites and saved passwords), preferences, help.
+Menu items: **Toggle Window** (default **⌘⇧V**), pause capture, launch at login, clear history (keeps favorites and saved passwords), preferences, help.
+
+Preferences also cover history size, max item size, password authentication (Touch ID / system password), password clipboard auto-clear, history retention, and a Privacy denylist of apps to ignore.
 
 ### First launch and language
 
@@ -93,17 +97,26 @@ VaultClip is designed as **local storage**, not a sign-in service.
 ### Encryption at rest
 
 - Item payloads use **AES-GCM** (CryptoKit, 256-bit key), `VC1` format + sealed box.
-- Key in **macOS Keychain** (`com.karakuts.VaultClip` / `history-data-key`), `AfterFirstUnlockThisDeviceOnly`, no iCloud sync.
+- Key in **macOS Keychain** (`com.karakuts.VaultClip` / `history-data-key`), `AfterFirstUnlockThisDeviceOnly`, no iCloud sync — when the build is properly signed.
+- **Ad-hoc / unsigned builds** cannot use Keychain entitlements; the AES key is stored as `.history-encryption-key` next to the history data (mode **0600**). That is weaker than Keychain (any process with access to your home directory can read the file). Prefer a Developer ID build for day-to-day use.
 - Metadata (favorite flag, password flag, comment, login, time, bundle id) uses the same encryption layer.
 - Legacy plaintext files are read and re-encrypted on write; migration from Yippy and early VaultClip is automatic.
+- Unreadable ciphertext after a key mismatch is **quarantined** (not deleted) so a restored key can recover it.
+
+### Passwords and temporary files
+
+- Saved passwords are **local only** — never synced; list cells show a mask; VoiceOver labels never include the secret.
+- Optional **LocalAuthentication** (Touch ID / system password) before revealing or pasting a password; grace period is configurable.
+- After pasting a password, the system clipboard can be **auto-cleared** after a short delay.
+- Quick Look previews write through `QuickLookTempStore` (restricted temp files) and are removed when the preview closes — plaintext PDFs are not left in `TMPDIR`.
 
 ### Leak prevention
 
 - History directory: `~/Library/Application Support/com.karakuts.VaultClip/history/` with mode **0700**.
 - Symlink checks on paths; pasteboard-type file names are stored fully percent-encoded (the `%` sign itself included), so name ↔ type round-trips and `.`/`..` can never become path components.
-- **Denylist** of password-manager bundle ids (1Password, LastPass, Bitwarden, Dashlane, Keeper, Apple Passwords, Proton Pass, and others) and sensitive pasteboard types.
+- **Denylist** of password-manager bundle ids (1Password, LastPass, Bitwarden, Dashlane, Keeper, Apple Passwords, Proton Pass, and others), a user Privacy denylist, and sensitive pasteboard types.
 - Error/warning logs are locked to **0600** and rotated above ~2 MB. Pasteboard diagnostics (`--pasteboard-diagnostics` launch argument) are **opt-in**, record change counts and metadata only — never clipboard contents.
-- **Hardened Runtime**; ATS blocks arbitrary HTTP loads. The app does not fetch history over the network.
+- **Hardened Runtime** with library validation; ATS blocks arbitrary HTTP loads. The app does not fetch history over the network.
 
 ### macOS permissions
 
@@ -244,11 +257,11 @@ VAULTCLIP_SIGN_RELEASE=1 ./codesign-app.sh VaultClip.app
 
 ```bash
 chmod +x scripts/run-unit-tests.sh scripts/check-coverage.sh
-./scripts/run-unit-tests.sh    # 141 unit tests + code coverage
+./scripts/run-unit-tests.sh    # 219 unit tests + code coverage
 ./scripts/check-coverage.sh    # per-file gate: min coverage of core Security/History files ≥55%
 ```
 
-Raw `xcodebuild test` (scheme **VaultClip XCTest**) works too; the scripts match CI flags.
+Raw `xcodebuild test` (scheme **VaultClip XCTest**) works too; the scripts match CI flags. CI also runs a Thread Sanitizer job.
 
 UI tests need Accessibility enabled for the test runner in System Settings (local only — not run in CI).
 
@@ -299,7 +312,7 @@ Ideas, bugs, and pull requests are welcome: [issues](https://github.com/akarakut
 - `VaultClip/Sources/` — application code; `AppEnvironment` is the composition root after launch;
 - `VaultClip/Sources/Models/Security/` — Keychain, AES-GCM, migrations;
 - `VaultClip/Resources/Localizable.xcstrings` — localized UI strings (all macOS app languages);
-- `VaultClipTests/` — unit tests (141); `VaultClipUITests/` — UI tests (local);
+- `VaultClipTests/` — unit tests (219); `VaultClipUITests/` — UI tests (local);
 - `scripts/run-unit-tests.sh`, `scripts/check-coverage.sh` — same as CI;
 - `graphify-out/graph.html` — code graph (`graphify update .`).
 

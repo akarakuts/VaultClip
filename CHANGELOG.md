@@ -20,7 +20,7 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 - **Pasteboard gate for the launch window** — `PasteboardMonitor.historyReady(liveChangeCount:)` replays anything copied while history was loading; nothing made during startup is missed.
 - **Coalesced `order.xml` writes** — inserts/moves batch into a single disk write (~1 s window); deletes, reduce and clear flush immediately; `applicationWillTerminate` drains synchronously (1.5 s timeout). Crash staleness is bounded by orphan-directory recovery on next load.
 - **Per-item `pastesRichText` flag** — paste/move attach RTF/HTML variants according to the setting captured at copy time.
-- Unit tests grew from 99 to **141** — log hardening, storage helper encode/decode, AES-GCM contract, `DataFileManager` encryption, encryption probe, async load semantics, order coalescing, pasteboard gate, settings shared install.
+- Unit tests grew from 99 to **219** — log hardening, storage helper encode/decode, AES-GCM contract, `DataFileManager` encryption, encryption probe, async load semantics, order coalescing, pasteboard gate, settings shared install, KeyResolver matrix, Keychain round-trips, accessibility labels, L10n catalog, retention/dedup/hotkey gates.
 
 ### Security
 

@@ -32,6 +32,6 @@ extension XCUIApplication {
     }
     
     func getHistoryTableViewCellType(at i: Int) -> String {
-        return getHistoryTableViewCell(at: i).identifier
+        getHistoryTableViewCell(at: i).identifier
     }
 }

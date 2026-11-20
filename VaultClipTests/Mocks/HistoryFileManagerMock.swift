@@ -11,8 +11,22 @@ import XCTest
 @testable import VaultClip
 
 class HistoryFileManagerMock: HistoryFileManager {
-    
-    var dataCallCount = 0
+
+    /// Concurrent HistoryItem reads under TSan hit this counter; protect it (test-only).
+    private let dataCallCountLock = NSLock()
+    private var _dataCallCount = 0
+    var dataCallCount: Int {
+        get {
+            dataCallCountLock.lock()
+            defer { dataCallCountLock.unlock() }
+            return _dataCallCount
+        }
+        set {
+            dataCallCountLock.lock()
+            defer { dataCallCountLock.unlock() }
+            _dataCallCount = newValue
+        }
+    }
     var data = [UUID: [NSPasteboard.PasteboardType: Data]]()
     var savedHistoryOrders = [[UUID]]()
     var capturedOrders = [[UUID]]()
@@ -25,7 +39,9 @@ class HistoryFileManagerMock: HistoryFileManager {
     var contentDigestUpdates = [(id: UUID, digest: String)]()
 
     override func loadData(forItemWithId id: UUID, andType type: NSPasteboard.PasteboardType) -> Data? {
-        dataCallCount += 1
+        dataCallCountLock.lock()
+        _dataCallCount += 1
+        dataCallCountLock.unlock()
         if let d = data[id]?[type] {
             return d
         }

@@ -78,12 +78,12 @@ final class SearchIndexTests: XCTestCase {
     func testSearchIndexReturnsRankedIdsOffMain() {
         let cache = HistoryCache(historyFM: HistoryFileManagerMock(), maxCacheSize: 1_000_000)
         let older = HistoryItem(
-            unsavedData: [.string: "Say Hello world".data(using: .utf8)!],
+            unsavedData: [.string: Data("Say Hello world".utf8)],
             cache: cache,
             copiedAt: Date(timeIntervalSince1970: 1)
         )
         let newer = HistoryItem(
-            unsavedData: [.string: "hello".data(using: .utf8)!],
+            unsavedData: [.string: Data("hello".utf8)],
             cache: cache,
             copiedAt: Date(timeIntervalSince1970: 100)
         )

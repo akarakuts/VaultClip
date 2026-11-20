@@ -116,7 +116,7 @@ class GeneralSettingsViewController: NSViewController {
             label.topAnchor.constraint(equalTo: maxHistoryItemsPopUpButton.bottomAnchor, constant: 12),
             popup.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: 8),
             popup.centerYAnchor.constraint(equalTo: label.centerYAnchor),
-            popup.widthAnchor.constraint(greaterThanOrEqualToConstant: 140),
+            popup.widthAnchor.constraint(greaterThanOrEqualToConstant: 140)
         ])
 
         selectMaxItemSize(Settings.main.maxItemSizeMB)
@@ -156,7 +156,7 @@ class GeneralSettingsViewController: NSViewController {
             graceLabel.leadingAnchor.constraint(equalTo: authButton.leadingAnchor),
             graceLabel.topAnchor.constraint(equalTo: authButton.bottomAnchor, constant: 8),
             gracePopup.leadingAnchor.constraint(equalTo: graceLabel.trailingAnchor, constant: 8),
-            gracePopup.centerYAnchor.constraint(equalTo: graceLabel.centerYAnchor),
+            gracePopup.centerYAnchor.constraint(equalTo: graceLabel.centerYAnchor)
         ])
     }
 
@@ -262,7 +262,7 @@ class GeneralSettingsViewController: NSViewController {
             label.leadingAnchor.constraint(equalTo: maxItemSizeLabel.leadingAnchor),
             label.topAnchor.constraint(equalTo: maxItemSizeLabel.bottomAnchor, constant: 90),
             popup.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: 8),
-            popup.centerYAnchor.constraint(equalTo: label.centerYAnchor),
+            popup.centerYAnchor.constraint(equalTo: label.centerYAnchor)
         ])
     }
 
