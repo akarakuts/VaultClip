@@ -552,7 +552,8 @@ class HistoryViewController: NSViewController {
             self?.runSearch()
         }
         searchDebounceWork = work
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.12, execute: work)
+        let delay = Double(PanelHeaderPresenter.searchDebounceMs) / 1000.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: work)
     }
 
     func runSearch() {
