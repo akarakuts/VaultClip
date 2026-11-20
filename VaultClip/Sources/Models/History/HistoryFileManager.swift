@@ -284,6 +284,8 @@ class HistoryFileManager {
                 .log(with: warningLogger)
         }
 
+        var itemLoadFailures = 0
+        var lastItemLoadFailure = ""
         for content in contents {
             // Get the id and build the item
             if let id = UUID(uuidString: content.lastPathComponent) {
@@ -317,13 +319,20 @@ class HistoryFileManager {
                 catch {
                     let historyError = ClipError(.historyItemLoadFailed, localizedDescription: "Failed to load clipboard data for history item with id '\(id.uuidString)' due to error: \(error.localizedDescription). Will continue anyway.")
                     historyError.log(with: self.errorLogger)
-                    historyError.show(with: self.alerter)
+                    itemLoadFailures += 1
+                    lastItemLoadFailure = historyError.localizedDescription
                 }
             }
             else {
                 // Skip
                 ClipWarning(localizedDescription: "Directory '\(content.lastPathComponent)' in history directory could not be interpreted as a history item.").log(with: self.warningLogger)
             }
+        }
+        if itemLoadFailures > 0 {
+            let message = itemLoadFailures == 1
+                ? lastItemLoadFailure
+                : L10n.alertErrorsAggregated(count: itemLoadFailures, lastMessage: lastItemLoadFailure)
+            ClipError(.historyItemLoadFailed, localizedDescription: message).show(with: alerter)
         }
         
         var orderedItems = [HistoryItem]()

@@ -196,6 +196,11 @@ enum L10n {
 
     static var alertClearHistoryTitle: String { tr( "alert.clear_history.title") }
     static var alertClearHistoryMessage: String { tr( "alert.clear_history.message") }
+    static var alertErrorsTitle: String { tr("alert.errors.title") }
+    static var alertOpenLogsFolder: String { tr("alert.errors.open_logs") }
+    static func alertErrorsAggregated(count: Int, lastMessage: String) -> String {
+        String(format: tr("alert.errors.aggregated"), locale: .current, arguments: [count, lastMessage])
+    }
 
     // MARK: - Hot key
 
