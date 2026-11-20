@@ -249,6 +249,30 @@ class HistoryFileManager {
             return History(cache: cache, items: [])
         }
         
+        // Re-encrypt any leftover plaintext payloads from pre-VC1 installs (T10).
+        var migratedLegacyFiles = 0
+        let orderURL = Constants.urls.historyOrder
+        if fileManager.fileExists(atPath: orderURL.path),
+           !HistoryEncryptionProbe.isEncryptedFile(at: orderURL, fileManager: fileManager) {
+            dataFileManager.migrateLegacyFileIfNeeded(at: orderURL)
+            migratedLegacyFiles += 1
+        }
+        for content in contents {
+            guard let dataUrls = try? fileManager.contentsOfDirectory(at: content, includingPropertiesForKeys: nil) else {
+                continue
+            }
+            for url in dataUrls where !HistoryItem.isMetadataFileName(url.lastPathComponent) {
+                if !HistoryEncryptionProbe.isEncryptedFile(at: url, fileManager: fileManager) {
+                    dataFileManager.migrateLegacyFileIfNeeded(at: url)
+                    migratedLegacyFiles += 1
+                }
+            }
+        }
+        if migratedLegacyFiles > 0 {
+            ClipWarning(localizedDescription: "Re-encrypted \(migratedLegacyFiles) legacy plaintext history file(s).")
+                .log(with: warningLogger)
+        }
+
         for content in contents {
             // Get the id and build the item
             if let id = UUID(uuidString: content.lastPathComponent) {

@@ -39,7 +39,10 @@ enum AppDataMigrator {
         guard fm.fileExists(atPath: legacy.path) else { return }
 
         if fm.fileExists(atPath: current.path) {
-            mergeLegacySupport(from: legacy, into: current, fileManager: fm)
+            let merged = mergeLegacySupport(from: legacy, into: current, fileManager: fm)
+            if merged {
+                trashLegacySupportIfSafe(legacy, currentHistory: current.appendingPathComponent("history", isDirectory: true), fileManager: fm)
+            }
             return
         }
 
@@ -53,7 +56,9 @@ enum AppDataMigrator {
     }
 
     /// Copies a legacy encryption key and history when the current folder already exists.
-    private static func mergeLegacySupport(from legacy: URL, into current: URL, fileManager: FileManager) {
+    /// Returns true when history was copied into the current tree.
+    @discardableResult
+    private static func mergeLegacySupport(from legacy: URL, into current: URL, fileManager: FileManager) -> Bool {
         let legacyKey = legacy.appendingPathComponent(keyFileName, isDirectory: false)
         let currentKey = current.appendingPathComponent(keyFileName, isDirectory: false)
 
@@ -68,11 +73,29 @@ enum AppDataMigrator {
         let legacyHasHistory = fileManager.fileExists(atPath: legacyHistory.path)
             && !isHistoryDirectoryEmpty(at: legacyHistory, fileManager: fileManager)
 
-        if currentHistoryEmpty, legacyHasHistory {
-            if fileManager.fileExists(atPath: currentHistory.path) {
-                try? fileManager.removeItem(at: currentHistory)
-            }
-            try? fileManager.copyItem(at: legacyHistory, to: currentHistory)
+        guard currentHistoryEmpty, legacyHasHistory else { return false }
+        if fileManager.fileExists(atPath: currentHistory.path) {
+            try? fileManager.removeItem(at: currentHistory)
+        }
+        do {
+            try fileManager.copyItem(at: legacyHistory, to: currentHistory)
+            return !isHistoryDirectoryEmpty(at: currentHistory, fileManager: fileManager)
+        } catch {
+            return false
+        }
+    }
+
+    /// After a successful copy, move the legacy Application Support folder to Trash (production only).
+    private static func trashLegacySupportIfSafe(_ legacy: URL, currentHistory: URL, fileManager: FileManager) {
+        guard AppIdentity.isProduction else { return }
+        guard !isHistoryDirectoryEmpty(at: currentHistory, fileManager: fileManager) else { return }
+        var resulting: NSURL?
+        do {
+            try fileManager.trashItem(at: legacy, resultingItemURL: &resulting)
+        } catch {
+            #if DEBUG
+            print("AppDataMigrator: failed to trash legacy support at \(legacy.path): \(error)")
+            #endif
         }
     }
 

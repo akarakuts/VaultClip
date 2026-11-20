@@ -24,11 +24,12 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 
 ### Security
 
-- **Concealed password clipboard**
-- **Quarantine undecryptable history** — items that fail AES authentication move to `quarantine/` instead of being deleted; key selection scores multiple payload samples (T04). — copying or pasting a password uses `org.nspasteboard.ConcealedType` and `.currentHostOnly` so other clipboard managers and Universal Clipboard do not capture it (`PasteboardWriter`).
+- **Concealed password clipboard** — copying or pasting a password uses `org.nspasteboard.ConcealedType` and `.currentHostOnly` so other clipboard managers and Universal Clipboard do not capture it (`PasteboardWriter`).
+- **Quarantine undecryptable history** — items that fail AES authentication move to `quarantine/` instead of being deleted; key selection scores multiple payload samples (T04).
 
 ### Changed
 
+- **Legacy plaintext migration** — history load re-encrypts leftover open files and successful legacy App Support merges move the old folder to Trash (T10).
 - **Beta storage isolation** — Beta uses its own Application Support / Keychain / instance.lock via `AppIdentity.bundleIdentifier`; first Beta launch starts with an empty history (T09).
 - **Library validation** — removed `disable-library-validation` from all entitlements; SPM deps link statically (T08).
 - **Quick Look temp cleanup** — decrypted PDF previews live in a 0700/0600 temp store and are removed on preview close, clear-all, launch, and quit (T07).
