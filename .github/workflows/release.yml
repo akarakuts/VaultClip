@@ -11,12 +11,45 @@ on:
 permissions:
   contents: write
 
+env:
+  SWIFTLINT_VERSION: "0.65.1"
+
 jobs:
   build:
     runs-on: macos-15
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Install SwiftLint (pinned)
+        run: |
+          curl -fsSL -o /tmp/swiftlint.zip \
+            "https://github.com/realm/SwiftLint/releases/download/${SWIFTLINT_VERSION}/portable_swiftlint.zip"
+          mkdir -p "$HOME/bin"
+          unzip -o /tmp/swiftlint.zip -d "$HOME/bin"
+          chmod +x "$HOME/bin/swiftlint"
+          echo "$HOME/bin" >> "$GITHUB_PATH"
+          swiftlint version
+
+      - name: SwiftLint
+        run: swiftlint lint --quiet --baseline .swiftlint-baseline.yml
+
+      - name: Verify tag matches MARKETING_VERSION
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          versions="$(grep -o 'MARKETING_VERSION = [^;]*;' VaultClip.xcodeproj/project.pbxproj | awk '{print $3}' | tr -d ';' | sort -u | sed '/^$/d')"
+          count="$(printf '%s\n' "$versions" | wc -l | tr -d ' ')"
+          if [ "$count" != "1" ]; then
+            echo "MARKETING_VERSION must resolve to a single value, found:" >&2
+            echo "$versions" >&2
+            exit 1
+          fi
+          if [ "$tag" != "$versions" ]; then
+            echo "Tag version '$tag' does not match MARKETING_VERSION '$versions'" >&2
+            exit 1
+          fi
+          echo "Tag $GITHUB_REF_NAME matches MARKETING_VERSION $versions"
 
       - name: Install create-dmg
         run: brew install create-dmg
@@ -80,14 +113,14 @@ jobs:
           ls -lh VaultClip.dmg
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: VaultClip-${{ github.ref_name }}
           path: VaultClip.dmg
           retention-days: 90
 
       - name: Publish GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@c95fe1489396fe8a9eb87c0abf8aa5b2ef267fda # v2.2.1
         with:
           name: VaultClip ${{ github.ref_name }}
           generate_release_notes: true
