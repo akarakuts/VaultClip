@@ -12,8 +12,9 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 
 ### Interface
 
-- Native panel chrome, fixed-height rows, type/app filters, date groups, row actions, multi-select paste, undoable delete, embedded preview models, ⌘K palette / ⌘/ cheat sheet models, status-item click modes, SettingsStore (U00–U37 in progress).
-- Shortcuts: ⌘1…⌘9 / ⌘0 (10th), ⌘F search, ⌘Y/Space preview (no ⌃Space), ⌘K palette.
+- UI redesign branch `ui-redesign-2026-11` (U00–U37): native panel chrome, fixed-height rows, type/app filters + search tokens, date groups, row actions, multi-select + multi-paste, undoable delete, embedded preview, ⌘K palette / ⌘/ cheat sheet, status-item click modes, SwiftUI SettingsStore tabs, empty states.
+- Shortcuts: ⌘1…⌘9 / ⌘0 (10th), ⌘F search, ⌘Y/Space preview (no ⌃Space), ⌘K palette, ⌘/ cheat sheet.
+- Retention (T34) uses `lastUsedAt` when present.
 
 ### Added
 
