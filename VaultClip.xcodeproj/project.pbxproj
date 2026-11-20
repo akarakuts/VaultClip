@@ -148,6 +148,7 @@
 		VCSDT10212EB0B10004E6E63 /* SettingsDecodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSDT10112EB0B10004E6E63 /* SettingsDecodeTests.swift */; };
 		VCAGT10212EB0B10004E6E63 /* AlerterAggregationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCAGT10112EB0B10004E6E63 /* AlerterAggregationTests.swift */; };
 		VCKCT10212EB0B10004E6E63 /* KeyCodeResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCKCT10112EB0B10004E6E63 /* KeyCodeResolverTests.swift */; };
+		VCHCL10212EB0B10004E6E63 /* HistoryCacheLockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCHCL10112EB0B10004E6E63 /* HistoryCacheLockTests.swift */; };
 		VCLMT10212EB0B10004E6E63 /* LegacyHistoryMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCLMT10112EB0B10004E6E63 /* LegacyHistoryMigrationTests.swift */; };
 		VCTST05212EB0B10004E6E63 /* VaultClipTestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */; };
 		VCSET02212EB0B10004E6E63 /* SettingsPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */; };
@@ -376,6 +377,7 @@
 		VCSDT10112EB0B10004E6E63 /* SettingsDecodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDecodeTests.swift; sourceTree = "<group>"; };
 		VCAGT10112EB0B10004E6E63 /* AlerterAggregationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlerterAggregationTests.swift; sourceTree = "<group>"; };
 		VCKCT10112EB0B10004E6E63 /* KeyCodeResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodeResolverTests.swift; sourceTree = "<group>"; };
+		VCHCL10112EB0B10004E6E63 /* HistoryCacheLockTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCacheLockTests.swift; sourceTree = "<group>"; };
 		VCLMT10112EB0B10004E6E63 /* LegacyHistoryMigrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyHistoryMigrationTests.swift; sourceTree = "<group>"; };
 		VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultClipTestSupport.swift; sourceTree = "<group>"; };
 		VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPersistenceTests.swift; sourceTree = "<group>"; };
@@ -942,6 +944,7 @@
 				VCSDT10112EB0B10004E6E63 /* SettingsDecodeTests.swift */,
 				VCAGT10112EB0B10004E6E63 /* AlerterAggregationTests.swift */,
 				VCKCT10112EB0B10004E6E63 /* KeyCodeResolverTests.swift */,
+				VCHCL10112EB0B10004E6E63 /* HistoryCacheLockTests.swift */,
 				VCLMT10112EB0B10004E6E63 /* LegacyHistoryMigrationTests.swift */,
 				VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */,
 				VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */,
@@ -1379,6 +1382,7 @@
 				VCSDT10212EB0B10004E6E63 /* SettingsDecodeTests.swift in Sources */,
 				VCAGT10212EB0B10004E6E63 /* AlerterAggregationTests.swift in Sources */,
 				VCKCT10212EB0B10004E6E63 /* KeyCodeResolverTests.swift in Sources */,
+				VCHCL10212EB0B10004E6E63 /* HistoryCacheLockTests.swift in Sources */,
 				VCLMT10212EB0B10004E6E63 /* LegacyHistoryMigrationTests.swift in Sources */,
 				VCTST05212EB0B10004E6E63 /* VaultClipTestSupport.swift in Sources */,
 				VCSET02212EB0B10004E6E63 /* SettingsPersistenceTests.swift in Sources */,
