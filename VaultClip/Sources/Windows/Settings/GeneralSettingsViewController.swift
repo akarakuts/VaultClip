@@ -148,7 +148,25 @@ class GeneralSettingsViewController: NSViewController {
     // MARK: Handle Actions
     
     @objc private func onMaxItemsSelected() {
-        AppEnvironment.shared.state.history.setMaxItems(Constants.settings.maxHistoryItemsOptions[maxHistoryItemsPopUpButton.indexOfSelectedItem])
+        let history = AppEnvironment.shared.state.history
+        let selected = Constants.settings.maxHistoryItemsOptions[maxHistoryItemsPopUpButton.indexOfSelectedItem]
+        let pruneCount = history.itemsToPrune(forNewMax: selected)
+        if pruneCount > 0 {
+            let response = PanelFocusGuard.withSuspended { () -> NSApplication.ModalResponse in
+                let alert = NSAlert()
+                alert.messageText = L10n.alertReduceHistoryTitle
+                alert.informativeText = L10n.alertReduceHistoryMessage(pruneCount)
+                alert.addButton(withTitle: L10n.commonContinue)
+                alert.addButton(withTitle: L10n.commonCancel)
+                alert.alertStyle = .warning
+                return alert.runModal()
+            }
+            if response != .alertFirstButtonReturn {
+                onMaxHistoryItems(SettingsPersistence.current().maxHistory)
+                return
+            }
+        }
+        history.setMaxItems(selected)
     }
 
     @objc private func onMaxItemSizeSelected() {

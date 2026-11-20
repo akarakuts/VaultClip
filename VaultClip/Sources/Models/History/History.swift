@@ -352,6 +352,20 @@ class History {
         _maxItems.accept(maxItems)
     }
 
+    /// How many unpinned items would be deleted if the limit became `newMax` (T28).
+    func itemsToPrune(forNewMax newMax: Int) -> Int {
+        assertMain()
+        guard newMax < _items.count else { return 0 }
+        var remaining = _items
+        var pruned = 0
+        while remaining.count > newMax {
+            guard let index = remaining.lastIndex(where: { !$0.isPinnedFromPruning }) else { break }
+            remaining.remove(at: index)
+            pruned += 1
+        }
+        return pruned
+    }
+
     private func reduceHistory(to maxItems: Int) {
         assertMain()
         guard _items.count > maxItems else { return }

@@ -160,4 +160,14 @@ final class HistoryFavoritesTests: XCTestCase {
         XCTAssertEqual(history.items.count, 1)
         XCTAssertEqual(history.items.first?.fsId, pinned.fsId)
     }
+
+    func testItemsToPruneSkipsPinnedItems() {
+        let pinned = HistoryItem(unsavedData: [.string: Data("pin".utf8)], cache: cache, isFavorite: true)
+        let a = HistoryItem(unsavedData: [.string: Data("a".utf8)], cache: cache)
+        let b = HistoryItem(unsavedData: [.string: Data("b".utf8)], cache: cache)
+        let history = History(historyFM: HistoryFileManagerMock(), cache: cache, items: [pinned, a, b], maxItems: 100)
+        XCTAssertEqual(history.itemsToPrune(forNewMax: 1), 2)
+        XCTAssertEqual(history.itemsToPrune(forNewMax: 2), 1)
+        XCTAssertEqual(history.itemsToPrune(forNewMax: 10), 0)
+    }
 }
