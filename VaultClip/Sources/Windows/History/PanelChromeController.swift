@@ -170,7 +170,7 @@ final class PanelChromeController {
 extension PanelPosition {
     var isFloating: Bool {
         switch self {
-        case .centerExtraSmall, .centerSmall, .centerMedium, .centerLarge, .fullScreen:
+        case .center, .fullScreen:
             return true
         case .left, .right, .top, .bottom:
             return false

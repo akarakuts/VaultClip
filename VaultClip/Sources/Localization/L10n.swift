@@ -35,6 +35,7 @@ enum L10n {
     static var positionLeft: String { tr( "position.left") }
     static var positionTop: String { tr( "position.top") }
     static var positionBottom: String { tr( "position.bottom") }
+    static var positionCenter: String { tr("position.center") }
     static var positionCenterExtraSmall: String { tr( "position.center_extra_small") }
     static var positionCenterSmall: String { tr( "position.center_small") }
     static var positionCenterMedium: String { tr( "position.center_medium") }

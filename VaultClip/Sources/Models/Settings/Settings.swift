@@ -7,6 +7,7 @@
 //
 //  SPDX-License-Identifier: GPL-3.0-or-later
 //
+import CoreGraphics
 import Foundation
 import RxSwift
 import RxRelay
@@ -62,7 +63,11 @@ struct Settings: Codable, DefaultStorable {
         isCapturePaused: Bool,
         excludedBundleIds: [String],
         retentionDays: Int,
-        panelTextSize: TextSizePreference
+        panelTextSize: TextSizePreference,
+        panelEdgeWidth: Double,
+        panelEdgeHeight: Double,
+        panelCenterWidth: Double,
+        panelCenterHeight: Double
     ) {
         self.panelPosition = panelPosition
         self.pasteboardChangeCount = pasteboardChangeCount
@@ -78,6 +83,10 @@ struct Settings: Codable, DefaultStorable {
         self.excludedBundleIds = excludedBundleIds
         self.retentionDays = retentionDays
         self.panelTextSize = panelTextSize
+        self.panelEdgeWidth = panelEdgeWidth
+        self.panelEdgeHeight = panelEdgeHeight
+        self.panelCenterWidth = panelCenterWidth
+        self.panelCenterHeight = panelCenterHeight
     }
     
     static let `default` = Settings(
@@ -94,7 +103,11 @@ struct Settings: Codable, DefaultStorable {
         isCapturePaused: false,
         excludedBundleIds: [],
         retentionDays: 0,
-        panelTextSize: .m
+        panelTextSize: .m,
+        panelEdgeWidth: 480,
+        panelEdgeHeight: 360,
+        panelCenterWidth: 0,
+        panelCenterHeight: 0
     )
     
     // MARK: - Settings
@@ -135,6 +148,21 @@ struct Settings: Codable, DefaultStorable {
     /// Compact / default / large / extra-large panel row typography (U02).
     var panelTextSize: TextSizePreference
 
+    /// Edge panel width/height and center size (0 = 60% of visible) (U07).
+    var panelEdgeWidth: Double
+    var panelEdgeHeight: Double
+    var panelCenterWidth: Double
+    var panelCenterHeight: Double
+
+    var panelSizes: PanelSizeState {
+        PanelSizeState(
+            edgeWidth: CGFloat(panelEdgeWidth),
+            edgeHeight: CGFloat(panelEdgeHeight),
+            centerWidth: CGFloat(panelCenterWidth),
+            centerHeight: CGFloat(panelCenterHeight)
+        )
+    }
+
     enum CodingKeys: String, CodingKey {
         case panelPosition
         case pasteboardChangeCount
@@ -150,15 +178,23 @@ struct Settings: Codable, DefaultStorable {
         case excludedBundleIds
         case retentionDays
         case panelTextSize
+        case panelEdgeWidth
+        case panelEdgeHeight
+        case panelCenterWidth
+        case panelCenterHeight
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let defaults = Settings.default
 
-        if let raw = try container.decodeIfPresent(Int.self, forKey: .panelPosition),
-           let position = PanelPosition(rawValue: raw) {
-            panelPosition = position
+        var legacyCenterFraction: Double?
+        if let raw = try container.decodeIfPresent(Int.self, forKey: .panelPosition) {
+            let migrated = PanelFrameCalculator.migrateLegacyPosition(rawValue: raw)
+            panelPosition = migrated.0
+            if let fraction = migrated.1 {
+                legacyCenterFraction = Double(fraction)
+            }
         } else {
             panelPosition = defaults.panelPosition
         }
@@ -189,6 +225,22 @@ struct Settings: Codable, DefaultStorable {
             ?? defaults.retentionDays
         panelTextSize = try container.decodeIfPresent(TextSizePreference.self, forKey: .panelTextSize)
             ?? defaults.panelTextSize
+        panelEdgeWidth = try container.decodeIfPresent(Double.self, forKey: .panelEdgeWidth)
+            ?? defaults.panelEdgeWidth
+        panelEdgeHeight = try container.decodeIfPresent(Double.self, forKey: .panelEdgeHeight)
+            ?? defaults.panelEdgeHeight
+        if let width = try container.decodeIfPresent(Double.self, forKey: .panelCenterWidth),
+           let height = try container.decodeIfPresent(Double.self, forKey: .panelCenterHeight) {
+            panelCenterWidth = width
+            panelCenterHeight = height
+        } else if let fraction = legacyCenterFraction {
+            // Negative = fraction of visible frame (legacy 8/4/5/6 centers).
+            panelCenterWidth = -fraction
+            panelCenterHeight = -fraction
+        } else {
+            panelCenterWidth = defaults.panelCenterWidth
+            panelCenterHeight = defaults.panelCenterHeight
+        }
     }
 
     func encode(to encoder: Encoder) throws {
@@ -207,6 +259,10 @@ struct Settings: Codable, DefaultStorable {
         try container.encode(excludedBundleIds, forKey: .excludedBundleIds)
         try container.encode(retentionDays, forKey: .retentionDays)
         try container.encode(panelTextSize, forKey: .panelTextSize)
+        try container.encode(panelEdgeWidth, forKey: .panelEdgeWidth)
+        try container.encode(panelEdgeHeight, forKey: .panelEdgeHeight)
+        try container.encode(panelCenterWidth, forKey: .panelCenterWidth)
+        try container.encode(panelCenterHeight, forKey: .panelCenterHeight)
     }
 
     // MARK: - State Binding Methods

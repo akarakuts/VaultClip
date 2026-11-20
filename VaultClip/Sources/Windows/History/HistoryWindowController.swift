@@ -79,7 +79,8 @@ class HistoryWindowController: NSWindowController {
             (position, screen) in
             guard let screen else { return }
             self.panelChrome.applyChrome(for: position)
-            self.window?.setFrame(position.getFrame(forScreen: screen), display: true)
+            let sizes = SettingsPersistence.current().panelSizes
+            self.window?.setFrame(position.getFrame(forScreen: screen, sizes: sizes), display: true)
             DispatchQueue.main.async {
                 (self.contentViewController as? HistoryViewController)?
                     .alignHistoryListAfterWindowFrameChange()

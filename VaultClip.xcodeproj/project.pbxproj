@@ -244,6 +244,8 @@
 		VCPNL19212EB0B10004E6E63 /* PanelPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL19112EB0B10004E6E63 /* PanelPresenter.swift */; };
 		VCPNL22212EB0B10004E6E63 /* PanelPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL22112EB0B10004E6E63 /* PanelPresenterTests.swift */; };
 		VCPCH10212EB0B10004E6E63 /* PanelChromeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPCH10112EB0B10004E6E63 /* PanelChromeController.swift */; };
+		VCPNL23212EB0B10004E6E63 /* PanelFrameCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL23112EB0B10004E6E63 /* PanelFrameCalculator.swift */; };
+		VCPNL24212EB0B10004E6E63 /* PanelFrameCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL24112EB0B10004E6E63 /* PanelFrameCalculatorTests.swift */; };
 		F7A8B9CA1123456789001 /* HistoryItem+Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9C91123456789001 /* HistoryItem+Favorite.swift */; };
 		F7A8B9CC1123456789001 /* HistoryListMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9CB1123456789001 /* HistoryListMode.swift */; };
 		F7A8B9CE1123456789001 /* HistoryFavoritesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9CD1123456789001 /* HistoryFavoritesTests.swift */; };
@@ -509,6 +511,8 @@
 		VCPNL18112EB0B10004E6E63 /* RowPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowPresentation.swift; sourceTree = "<group>"; };
 		VCPNL19112EB0B10004E6E63 /* PanelPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelPresenter.swift; sourceTree = "<group>"; };
 		VCPNL22112EB0B10004E6E63 /* PanelPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelPresenterTests.swift; sourceTree = "<group>"; };
+		VCPNL23112EB0B10004E6E63 /* PanelFrameCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelFrameCalculator.swift; sourceTree = "<group>"; };
+		VCPNL24112EB0B10004E6E63 /* PanelFrameCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelFrameCalculatorTests.swift; sourceTree = "<group>"; };
 		VCPCH10112EB0B10004E6E63 /* PanelChromeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelChromeController.swift; sourceTree = "<group>"; };
 		F7A8B9C91123456789001 /* HistoryItem+Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryItem+Favorite.swift"; sourceTree = "<group>"; };
 		F7A8B9CB1123456789001 /* HistoryListMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListMode.swift; sourceTree = "<group>"; };
@@ -899,6 +903,7 @@
 				VCPNL17112EB0B10004E6E63 /* ItemKind.swift */,
 				VCPNL18112EB0B10004E6E63 /* RowPresentation.swift */,
 				VCPNL19112EB0B10004E6E63 /* PanelPresenter.swift */,
+				VCPNL23112EB0B10004E6E63 /* PanelFrameCalculator.swift */,
 			);
 			path = Panel;
 			sourceTree = "<group>";
@@ -1037,6 +1042,7 @@
 				VCPNL20112EB0B10004E6E63 /* PanelCommandRegistryTests.swift */,
 				VCPNL21112EB0B10004E6E63 /* PanelKeyRouterTests.swift */,
 				VCPNL22112EB0B10004E6E63 /* PanelPresenterTests.swift */,
+				VCPNL24112EB0B10004E6E63 /* PanelFrameCalculatorTests.swift */,
 				VCDIG20112EB0B10004E6E63 /* ContentDigestDedupTests.swift */,
 				34ACFBD322EB0B11004E6E63 /* Info.plist */,
 				349F794D235C5759000CA5B9 /* Mocks */,
@@ -1467,6 +1473,7 @@
 				VCPNL17212EB0B10004E6E63 /* ItemKind.swift in Sources */,
 				VCPNL18212EB0B10004E6E63 /* RowPresentation.swift in Sources */,
 				VCPNL19212EB0B10004E6E63 /* PanelPresenter.swift in Sources */,
+				VCPNL23212EB0B10004E6E63 /* PanelFrameCalculator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1504,6 +1511,7 @@
 				VCPNL20212EB0B10004E6E63 /* PanelCommandRegistryTests.swift in Sources */,
 				VCPNL21212EB0B10004E6E63 /* PanelKeyRouterTests.swift in Sources */,
 				VCPNL22212EB0B10004E6E63 /* PanelPresenterTests.swift in Sources */,
+				VCPNL24212EB0B10004E6E63 /* PanelFrameCalculatorTests.swift in Sources */,
 				VCDIG20212EB0B10004E6E63 /* ContentDigestDedupTests.swift in Sources */,
 				349F7944235C24D4000CA5B9 /* HistoryFileManagerTests.swift in Sources */,
 				349F794A235C5722000CA5B9 /* WarningLoggerMock.swift in Sources */,

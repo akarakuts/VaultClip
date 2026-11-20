@@ -1,11 +1,10 @@
 //
-//  PanelPosition.swift
-//  VaultClip
+// PanelPosition — panel docking; center sizes live in Settings (U07).
 //
-//  Copyright (C) 2019 Matthew Davidson
-//  Copyright (C) 2026 Aleksey Karakuts <aleksey@karakuts.com>
+// Copyright (C) 2019 Matthew Davidson
+// Copyright (C) 2026 Aleksey Karakuts <aleksey@karakuts.com>
 //
-//  SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: GPL-3.0-or-later
 //
 import Foundation
 import Cocoa
@@ -15,108 +14,54 @@ enum PanelPosition: Int, Codable, CaseIterable {
     case left = 1
     case top = 2
     case bottom = 3
-    case centerExtraSmall = 8
-    case centerSmall = 4
-    case centerMedium = 5
-    case centerLarge = 6
     case fullScreen = 7
-    
-    public func getFrame(forScreen screen: NSScreen) -> NSRect {
-        // visibleFrame excludes the menu bar and Dock so panel chrome stays on screen.
+    case center = 9
+
+    func getFrame(forScreen screen: NSScreen, sizes: PanelSizeState = .default) -> NSRect {
         let visible = screen.visibleFrame
-        switch self {
-        case .right:
-            return NSRect(
-                x: screen.frame.maxX - Constants.panel.menuWidth,
-                y: visible.minY,
-                width: Constants.panel.menuWidth,
-                height: visible.height
-            )
-        case .left:
-            return NSRect(
-                x: screen.frame.minX,
-                y: visible.minY,
-                width: Constants.panel.menuWidth,
-                height: visible.height
-            )
-        case .top:
-            return NSRect(
-                x: visible.minX,
-                y: visible.maxY - Constants.panel.menuHeight,
-                width: visible.width,
-                height: Constants.panel.menuHeight
-            )
-        case .bottom:
-            return NSRect(
-                x: visible.minX,
-                y: visible.minY,
-                width: visible.width,
-                height: Constants.panel.menuHeight
-            )
-        case .centerExtraSmall:
-            let size = NSSize(width: visible.width / 3, height: visible.height / 3)
-            return Self.centerRect(ofSize: size, inRect: visible)
-        case .centerSmall:
-            let size = NSSize(width: visible.width / 2, height: visible.height / 2)
-            return Self.centerRect(ofSize: size, inRect: visible)
-        case .centerMedium:
-            let size = NSSize(width: visible.width * 0.7, height: visible.height * 0.7)
-            return Self.centerRect(ofSize: size, inRect: visible)
-        case .centerLarge:
-            let size = NSSize(width: visible.width * 0.85, height: visible.height * 0.85)
-            return Self.centerRect(ofSize: size, inRect: visible)
-        case .fullScreen:
-            return visible
-        }
+        return PanelFrameCalculator.frame(
+            position: self,
+            visible: visible,
+            screenFrame: screen.frame,
+            sizes: sizes
+        )
     }
-    
-    private static func centerRect(ofSize size: NSSize, inRect rect: NSRect) -> NSRect {
-        return NSRect(origin: NSPoint(x: (rect.width - size.width) / 2 + rect.minX, y: (rect.height - size.height) / 2 + rect.minY), size: size)
+
+    /// Backwards-compatible overload used by UI tests and call sites without sizes.
+    func getFrame(forScreen screen: NSScreen) -> NSRect {
+        getFrame(forScreen: screen, sizes: .default)
     }
-    
+
     var title: String {
         switch self {
-        case .right:
-            return L10n.positionRight
-        case .left:
-            return L10n.positionLeft
-        case .top:
-            return L10n.positionTop
-        case .bottom:
-            return L10n.positionBottom
-        case .centerExtraSmall:
-            return L10n.positionCenterExtraSmall
-        case .centerSmall:
-            return L10n.positionCenterSmall
-        case .centerMedium:
-            return L10n.positionCenterMedium
-        case .centerLarge:
-            return L10n.positionCenterLarge
-        case .fullScreen:
-            return L10n.positionFullScreen
+        case .right: return L10n.positionRight
+        case .left: return L10n.positionLeft
+        case .top: return L10n.positionTop
+        case .bottom: return L10n.positionBottom
+        case .center: return L10n.positionCenter
+        case .fullScreen: return L10n.positionFullScreen
         }
     }
-    
+
+    var symbolName: String {
+        switch self {
+        case .left: return "rectangle.lefthalf.inset.filled"
+        case .right: return "rectangle.righthalf.inset.filled"
+        case .top: return "rectangle.tophalf.inset.filled"
+        case .bottom: return "rectangle.bottomhalf.inset.filled"
+        case .center: return "rectangle.center.inset.filled"
+        case .fullScreen: return "rectangle.inset.filled"
+        }
+    }
+
     var identifier: String {
         switch self {
-        case .right:
-            return Accessibility.identifiers.positionRightButton
-        case .left:
-            return Accessibility.identifiers.positionLeftButton
-        case .top:
-            return Accessibility.identifiers.positionTopButton
-        case .bottom:
-            return Accessibility.identifiers.positionBottomButton
-        case.centerExtraSmall:
-            return Accessibility.identifiers.positionCenterExtraSmall
-        case .centerSmall:
-            return Accessibility.identifiers.positionCenterSmall
-        case .centerMedium:
-            return Accessibility.identifiers.positionCenterMedium
-        case .centerLarge:
-            return Accessibility.identifiers.positionCenterLarge
-        case .fullScreen:
-            return Accessibility.identifiers.positionFullScreen
+        case .right: return Accessibility.identifiers.positionRightButton
+        case .left: return Accessibility.identifiers.positionLeftButton
+        case .top: return Accessibility.identifiers.positionTopButton
+        case .bottom: return Accessibility.identifiers.positionBottomButton
+        case .center: return Accessibility.identifiers.positionCenter
+        case .fullScreen: return Accessibility.identifiers.positionFullScreen
         }
     }
 }
