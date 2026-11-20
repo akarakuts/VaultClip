@@ -39,6 +39,8 @@ final class EmbeddedPreviewView: NSView {
 
     var editedText: String { textView.string }
 
+    var hasUnsavedEdits: Bool { isEditing && textView.string != originalText }
+
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         setup()

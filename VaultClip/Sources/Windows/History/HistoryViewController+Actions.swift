@@ -91,6 +91,7 @@ extension HistoryViewController {
         guard EditBeforePaste.availability(for: kind) != .unavailable else { return }
         if !isPreviewShowing { togglePreview() }
         refreshEmbeddedPreview()
+        editorDiscardArmed = false
         embeddedPreview.beginEditing()
         refreshFooterHints()
     }

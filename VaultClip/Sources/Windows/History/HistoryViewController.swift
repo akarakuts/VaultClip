@@ -85,6 +85,7 @@ class HistoryViewController: NSViewController {
     var lastLayoutWidth: CGFloat = 0
     var quickLookURL: URL?
     var otherTabSearchHit: (tab: HistoryListMode, count: Int)?
+    var editorDiscardArmed = false
     let previewDebouncer = PreviewUpdateDebouncer(scheduler: PreviewDispatchScheduler())
     lazy var pendingDeletion = PendingDeletionQueue(
         scheduler: PendingDeletionDispatchScheduler()
@@ -591,6 +592,7 @@ class HistoryViewController: NSViewController {
     }
 
     private func currentFocusZone() -> FocusZone {
+        if embeddedPreview.isEditing { return .editor }
         if searchBar.currentEditor() != nil { return .search }
         return .list
     }
@@ -610,6 +612,15 @@ class HistoryViewController: NSViewController {
         if event.keyCode == 53, event.modifierFlags.isDisjoint(with: [.command, .control, .option, .shift]) {
             return performEscape()
         }
+        // Inline editor keeps typing, ⏎ and arrows; only ⌘⏎ pastes the edit (U24).
+        if embeddedPreview.isEditing {
+            let mods = event.modifierFlags.intersection([.command, .control, .option, .shift])
+            if mods == .command, event.keyCode == 36 || event.keyCode == 76 {
+                pasteEditedPreviewText()
+                return true
+            }
+            return false
+        }
         switch route {
         case .passThrough:
             return false
@@ -626,9 +637,9 @@ class HistoryViewController: NSViewController {
     private func performEscape() -> Bool {
         let state = EscapeStackState(
             overlayVisible: !commandPaletteOverlay.isHidden || !cheatSheetOverlay.isHidden,
-            editorActive: false,
-            editorHasChanges: false,
-            editorDiscardArmed: false,
+            editorActive: embeddedPreview.isEditing,
+            editorHasChanges: embeddedPreview.hasUnsavedEdits,
+            editorDiscardArmed: editorDiscardArmed,
             passwordRevealed: false,
             multiSelectActive: selectionModel.isMulti,
             searchIsEmpty: searchBar.stringValue.isEmpty,
@@ -644,6 +655,18 @@ class HistoryViewController: NSViewController {
             return true
         case .collapseMultiSelect:
             collapseMultiSelectToAnchor()
+            return true
+        case .warnEditorDiscard:
+            editorDiscardArmed = true
+            showToast(Locale.current.language.languageCode?.identifier == "ru"
+                ? "Правка не вставлена. Esc ещё раз — отменить"
+                : "Edit not pasted. Press Esc again to discard")
+            return true
+        case .leaveEditor:
+            editorDiscardArmed = false
+            embeddedPreview.endEditing()
+            restorePanelFocus()
+            refreshFooterHints()
             return true
         case .clearSearch:
             searchBar.stringValue = ""
