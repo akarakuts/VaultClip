@@ -322,19 +322,99 @@ class HistoryFileManager {
             saveHistoryOrder(history: orderedItems)
         }
 
-        let unreadable = orderedItems.filter { !$0.hasReadableStoredData() }
-        if !unreadable.isEmpty {
-            let ids = unreadable.map { "'\($0.fsId.uuidString)'" }.joined(separator: ", ")
-            ClipWarning(localizedDescription: "Removing \(unreadable.count) clipboard item(s) that could not be decrypted: \(ids).")
-                .log(with: warningLogger)
-            for item in unreadable {
-                try? fileManager.removeItem(at: getUrl(forItemWithId: item.fsId))
+        var quarantined: [HistoryItem] = []
+        var kept: [HistoryItem] = []
+        for item in orderedItems {
+            switch probeReadability(itemDirectory: getUrl(forItemWithId: item.fsId), types: item.types) {
+            case .readable:
+                kept.append(item)
+            case .undecryptable:
+                if quarantineItemDirectory(getUrl(forItemWithId: item.fsId), id: item.fsId) {
+                    quarantined.append(item)
+                } else {
+                    kept.append(item)
+                }
+            case .ioError:
+                ClipWarning(localizedDescription: "Clipboard item '\(item.fsId.uuidString)' could not be read (I/O); keeping it in history.")
+                    .log(with: warningLogger)
+                kept.append(item)
             }
-            orderedItems.removeAll { item in unreadable.contains(where: { $0.fsId == item.fsId }) }
+        }
+        if kept.count != orderedItems.count {
+            orderedItems = kept
             saveHistoryOrder(history: orderedItems)
+        }
+        if !quarantined.isEmpty {
+            let message = L10n.encryptionQuarantineBody(count: quarantined.count)
+            ClipWarning(localizedDescription: message).log(with: warningLogger)
+            // Skip modal alerts in the XCTest host — runModal blocks the test run loop.
+            if !AppIdentity.isRunningUnitTests {
+                ClipError(.historyItemLoadFailed, localizedDescription: message).show(with: alerter)
+            }
         }
         
         return History(cache: cache, items: orderedItems)
+    }
+
+    enum ItemReadability {
+        case readable
+        case undecryptable
+        case ioError
+    }
+
+    /// Probes the smallest data file in the item directory without going through HistoryCache.
+    func probeReadability(itemDirectory: URL, types: [NSPasteboard.PasteboardType]) -> ItemReadability {
+        let files: [URL]
+        do {
+            files = try fileManager.contentsOfDirectory(
+                at: itemDirectory,
+                includingPropertiesForKeys: [.fileSizeKey],
+                options: [.skipsHiddenFiles]
+            )
+        } catch {
+            return .ioError
+        }
+        let dataFiles = files
+            .filter { !HistoryItem.isMetadataFileName($0.lastPathComponent) }
+            .sorted { lhs, rhs in
+                let ls = (try? lhs.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? Int.max
+                let rs = (try? rhs.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? Int.max
+                return ls < rs
+            }
+        guard let probe = dataFiles.first else {
+            return .readable
+        }
+        do {
+            _ = try dataFileManager.loadData(contentsOf: probe)
+            return .readable
+        } catch StoredDataError.authenticationFailed {
+            return .undecryptable
+        } catch {
+            if DataFileManager.isAuthenticationFailure(error) {
+                return .undecryptable
+            }
+            return .ioError
+        }
+    }
+
+    @discardableResult
+    private func quarantineItemDirectory(_ directory: URL, id: UUID) -> Bool {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyyMMdd-HHmmss"
+        let stamp = formatter.string(from: Date())
+        let destinationRoot = Constants.urls.quarantine.appendingPathComponent(stamp, isDirectory: true)
+        do {
+            try SecureStorageHelper.ensureSecureDirectory(at: Constants.urls.quarantine, fileManager: fileManager)
+            try SecureStorageHelper.ensureSecureDirectory(at: destinationRoot, fileManager: fileManager)
+            let destination = destinationRoot.appendingPathComponent(id.uuidString, isDirectory: true)
+            try fileManager.moveItem(at: directory, to: destination)
+            return true
+        } catch {
+            ClipWarning(localizedDescription: "Failed to quarantine item '\(id.uuidString)': \(error.localizedDescription)")
+                .log(with: warningLogger)
+            return false
+        }
     }
     
     func insertItem(_ item: HistoryItem, historyOrder: [HistoryItem], completionHandler handler: ((Bool) -> Void)? = nil) {

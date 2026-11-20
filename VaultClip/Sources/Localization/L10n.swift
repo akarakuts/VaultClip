@@ -128,6 +128,10 @@ enum L10n {
     static var encryptionDecryptTitle: String { tr( "encryption.decrypt_title") }
     static var encryptionDecryptBody: String { tr( "encryption.decrypt_body") }
     static var encryptionKeyTitle: String { tr( "encryption.key_title") }
+
+    static func encryptionQuarantineBody(count: Int) -> String {
+        String(format: tr("encryption.quarantine_body"), count)
+    }
     static var encryptionKeychainUnlock: String { tr( "encryption.keychain_unlock") }
 
     static func encryptionKeychainDenied(account: String) -> String {

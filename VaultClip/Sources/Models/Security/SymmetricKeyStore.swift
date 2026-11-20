@@ -73,48 +73,68 @@ enum HistoryEncryptionProbe {
     }
 
     static func canDecrypt(with key: SymmetricKey, fileManager: FileManager = .default) -> Bool {
-        guard let sample = firstEncryptedPayload(fileManager: fileManager) else {
-            return true
-        }
-        do {
-            let raw = try Data(contentsOf: sample)
-            let ciphertext = raw.dropFirst(encryptedPrefix.count)
-            let box = try AES.GCM.SealedBox(combined: Data(ciphertext))
-            _ = try AES.GCM.open(box, using: key)
-            return true
-        } catch {
-            return false
-        }
+        decryptableSampleCount(with: key, fileManager: fileManager) > 0
+            || samplePayloads(limit: 1, fileManager: fileManager).isEmpty
     }
 
-    private static func firstEncryptedPayload(fileManager: FileManager) -> URL? {
-        if isEncryptedFile(at: Constants.urls.historyOrder, fileManager: fileManager) {
-            return Constants.urls.historyOrder
-        }
+    /// Up to `limit` encrypted data files from distinct item directories (sorted by name), plus `order.xml` when encrypted.
+    static func samplePayloads(limit: Int = 8, fileManager: FileManager = .default) -> [URL] {
+        var samples: [URL] = []
         guard let itemDirs = try? fileManager.contentsOfDirectory(
             at: Constants.urls.history,
             includingPropertiesForKeys: [.isDirectoryKey],
             options: [.skipsHiddenFiles]
         ) else {
-            return nil
+            if isEncryptedFile(at: Constants.urls.historyOrder, fileManager: fileManager) {
+                return [Constants.urls.historyOrder]
+            }
+            return []
         }
         for itemDir in itemDirs.sorted(by: { $0.lastPathComponent < $1.lastPathComponent }) {
+            guard samples.count < limit else { break }
             var isDirectory = ObjCBool(false)
             guard fileManager.fileExists(atPath: itemDir.path, isDirectory: &isDirectory), isDirectory.boolValue else {
                 continue
             }
             guard let files = try? fileManager.contentsOfDirectory(
                 at: itemDir,
-                includingPropertiesForKeys: nil,
+                includingPropertiesForKeys: [.fileSizeKey],
                 options: [.skipsHiddenFiles]
             ) else {
                 continue
             }
-            if let encrypted = files.first(where: { isEncryptedFile(at: $0, fileManager: fileManager) }) {
-                return encrypted
+            let dataFiles = files
+                .filter { !HistoryItem.isMetadataFileName($0.lastPathComponent) }
+                .filter { isEncryptedFile(at: $0, fileManager: fileManager) }
+                .sorted { lhs, rhs in
+                    let ls = (try? lhs.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? Int.max
+                    let rs = (try? rhs.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? Int.max
+                    return ls < rs
+                }
+            if let smallest = dataFiles.first {
+                samples.append(smallest)
             }
         }
-        return nil
+        if isEncryptedFile(at: Constants.urls.historyOrder, fileManager: fileManager) {
+            samples.append(Constants.urls.historyOrder)
+        }
+        return samples
+    }
+
+    static func decryptableSampleCount(with key: SymmetricKey, fileManager: FileManager = .default) -> Int {
+        var count = 0
+        for sample in samplePayloads(limit: 8, fileManager: fileManager) {
+            do {
+                let raw = try Data(contentsOf: sample)
+                let ciphertext = raw.dropFirst(encryptedPrefix.count)
+                let box = try AES.GCM.SealedBox(combined: Data(ciphertext))
+                _ = try AES.GCM.open(box, using: key)
+                count += 1
+            } catch {
+                continue
+            }
+        }
+        return count
     }
 }
 
@@ -158,13 +178,30 @@ struct SymmetricKeyStore {
         let hasEncryptedHistory = HistoryEncryptionProbe.hasEncryptedPayloads()
 
         if hasEncryptedHistory {
+            var best: (source: String, key: SymmetricKey, score: Int)?
             for candidate in candidates {
-                if HistoryEncryptionProbe.canDecrypt(with: candidate.key) {
-                    try persistResolvedKey(candidate.key)
-                    return candidate.key
+                let score = HistoryEncryptionProbe.decryptableSampleCount(with: candidate.key)
+                if let current = best {
+                    if score > current.score {
+                        best = (candidate.source, candidate.key, score)
+                    } else if score == current.score, score > 0, candidate.source == "keychain" {
+                        // Prefer the current Keychain key on a tie.
+                        best = (candidate.source, candidate.key, score)
+                    }
+                } else if score > 0 {
+                    best = (candidate.source, candidate.key, score)
                 }
             }
-            throw SymmetricKeyStoreError.keyMismatch
+            guard let best, best.score > 0 else {
+                throw SymmetricKeyStoreError.keyMismatch
+            }
+            let totalSamples = HistoryEncryptionProbe.samplePayloads().count
+            if best.score < totalSamples {
+                ClipWarning(localizedDescription: "Encryption key decrypts \(best.score)/\(totalSamples) sample payloads; remaining items will be quarantined.")
+                    .log(with: WarningLogger.general)
+            }
+            try persistResolvedKey(best.key)
+            return best.key
         }
 
         if let keychainKey = try loadFromKeychainIfAvailable() {

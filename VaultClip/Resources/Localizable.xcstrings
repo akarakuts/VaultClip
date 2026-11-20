@@ -27824,6 +27824,305 @@
           }
         }
       }
+    },
+    "encryption.quarantine_body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d элемент(ов) буфера не удалось расшифровать — они перемещены в папку карантина."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "bg": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "ca": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "cs": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "en-IN": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "es-US": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "hr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "kk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "lt": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "lv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "sk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "sl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "te": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        },
+        "zh-HK": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%d clipboard item(s) could not be decrypted and were moved to the quarantine folder."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

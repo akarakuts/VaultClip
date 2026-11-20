@@ -7,7 +7,13 @@
 //
 //  SPDX-License-Identifier: GPL-3.0-or-later
 //
+import CryptoKit
 import Foundation
+
+enum StoredDataError: Error {
+    case authenticationFailed
+    case unreadable(Error)
+}
 
 class DataFileManager {
 
@@ -21,13 +27,25 @@ class DataFileManager {
     }
 
     func loadData(contentsOf url: URL) throws -> Data {
-        let raw = try Data(contentsOf: url)
+        let raw: Data
+        do {
+            raw = try Data(contentsOf: url)
+        } catch {
+            throw StoredDataError.unreadable(error)
+        }
         guard raw.starts(with: Self.encryptedPrefix) else {
             // Legacy plaintext written before encryption — returned as-is; next write re-encrypts.
             return raw
         }
-        let ciphertext = raw.dropFirst(Self.encryptedPrefix.count)
-        return try encryptor.decrypt(Data(ciphertext))
+        let ciphertext = Data(raw.dropFirst(Self.encryptedPrefix.count))
+        do {
+            return try encryptor.decrypt(ciphertext)
+        } catch {
+            if Self.isAuthenticationFailure(error) {
+                throw StoredDataError.authenticationFailed
+            }
+            throw StoredDataError.unreadable(error)
+        }
     }
 
     func writeData(_ data: Data, to url: URL, options: Data.WritingOptions = .atomic) throws {
@@ -45,5 +63,16 @@ class DataFileManager {
     func migrateLegacyFileIfNeeded(at url: URL) {
         guard let raw = try? Data(contentsOf: url), !raw.starts(with: Self.encryptedPrefix) else { return }
         try? writeData(raw, to: url, options: .atomic)
+    }
+
+    static func isAuthenticationFailure(_ error: Error) -> Bool {
+        if case StoredDataError.authenticationFailed = error {
+            return true
+        }
+        if let crypto = error as? CryptoKitError {
+            if case .authenticationFailure = crypto { return true }
+            if case .incorrectParameterSize = crypto { return true }
+        }
+        return (error as NSError).domain.contains("CryptoKit")
     }
 }

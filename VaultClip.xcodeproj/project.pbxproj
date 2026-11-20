@@ -135,6 +135,7 @@
 		VCTST04212EB0B10004E6E63 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCTST04112EB0B10004E6E63 /* AppEnvironmentTests.swift */; };
 		VCSTR00212EB0B10004E6E63 /* StorageRootTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSTR00112EB0B10004E6E63 /* StorageRootTests.swift */; };
 		VCPBT10212EB0B10004E6E63 /* HistoryPanelPasteboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPBT10112EB0B10004E6E63 /* HistoryPanelPasteboardTests.swift */; };
+		VCQRT10212EB0B10004E6E63 /* HistoryQuarantineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCQRT10112EB0B10004E6E63 /* HistoryQuarantineTests.swift */; };
 		VCTST05212EB0B10004E6E63 /* VaultClipTestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */; };
 		VCSET02212EB0B10004E6E63 /* SettingsPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */; };
 		34ACFBDD22EB0B11004E6E63 /* VaultClipUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ACFBDC22EB0B11004E6E63 /* VaultClipUITests.swift */; };
@@ -348,6 +349,7 @@
 		VCTST04112EB0B10004E6E63 /* AppEnvironmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironmentTests.swift; sourceTree = "<group>"; };
 		VCSTR00112EB0B10004E6E63 /* StorageRootTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageRootTests.swift; sourceTree = "<group>"; };
 		VCPBT10112EB0B10004E6E63 /* HistoryPanelPasteboardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryPanelPasteboardTests.swift; sourceTree = "<group>"; };
+		VCQRT10112EB0B10004E6E63 /* HistoryQuarantineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryQuarantineTests.swift; sourceTree = "<group>"; };
 		VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultClipTestSupport.swift; sourceTree = "<group>"; };
 		VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPersistenceTests.swift; sourceTree = "<group>"; };
 		34ACFBD322EB0B11004E6E63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -897,6 +899,7 @@
 				VCTST04112EB0B10004E6E63 /* AppEnvironmentTests.swift */,
 				VCSTR00112EB0B10004E6E63 /* StorageRootTests.swift */,
 				VCPBT10112EB0B10004E6E63 /* HistoryPanelPasteboardTests.swift */,
+				VCQRT10112EB0B10004E6E63 /* HistoryQuarantineTests.swift */,
 				VCTST05112EB0B10004E6E63 /* VaultClipTestSupport.swift */,
 				VCSET01112EB0B10004E6E63 /* SettingsPersistenceTests.swift */,
 				C661A498BA1A4094B9CCB1ED /* LogStorageTests.swift */,
@@ -1319,6 +1322,7 @@
 				VCTST04212EB0B10004E6E63 /* AppEnvironmentTests.swift in Sources */,
 				VCSTR00212EB0B10004E6E63 /* StorageRootTests.swift in Sources */,
 				VCPBT10212EB0B10004E6E63 /* HistoryPanelPasteboardTests.swift in Sources */,
+				VCQRT10212EB0B10004E6E63 /* HistoryQuarantineTests.swift in Sources */,
 				VCTST05212EB0B10004E6E63 /* VaultClipTestSupport.swift in Sources */,
 				VCSET02212EB0B10004E6E63 /* SettingsPersistenceTests.swift in Sources */,
 				34268113233D9EC500BA226A /* NSMenuItemFunctionalTests.swift in Sources */,

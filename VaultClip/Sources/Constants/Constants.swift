@@ -82,6 +82,10 @@ struct Constants {
         static var pasteboardDebugLog: URL {
             return appSupport.appendingPathComponent("pasteboard-debug.log", isDirectory: false)
         }
+
+        static var quarantine: URL {
+            return appSupport.appendingPathComponent("quarantine", isDirectory: true)
+        }
     }
     
     struct logging {

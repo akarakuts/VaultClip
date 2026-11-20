@@ -24,7 +24,8 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 
 ### Security
 
-- **Concealed password clipboard** — copying or pasting a password uses `org.nspasteboard.ConcealedType` and `.currentHostOnly` so other clipboard managers and Universal Clipboard do not capture it (`PasteboardWriter`).
+- **Concealed password clipboard**
+- **Quarantine undecryptable history** — items that fail AES authentication move to `quarantine/` instead of being deleted; key selection scores multiple payload samples (T04). — copying or pasting a password uses `org.nspasteboard.ConcealedType` and `.currentHostOnly` so other clipboard managers and Universal Clipboard do not capture it (`PasteboardWriter`).
 
 ### Changed
 
