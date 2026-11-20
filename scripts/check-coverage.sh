@@ -7,8 +7,8 @@
 # Excluded from the gate (structurally low unit-testability, listed with reason):
 #   AppDataMigrator.swift      - one-shot Yippy migration, needs a legacy on-disk
 #                                layout the tests do not control
-#   SymmetricKeyStore.swift    - mostly EncryptionKeyBootstrap launch UI (NSAlert)
-#                                and keychain-failure branches
+#   SymmetricKeyStore.swift    - Keychain/file I/O wiring; selection logic lives in KeyResolver
+#   EncryptionKeyBootstrap.swift - launch NSAlert recovery UI
 #   HistoryFileManaging.swift  - protocol + default-forwarding shims exercised via mocks
 #   ArrayFileManager.swift     - 19 lines, remainder is FileManager error branches
 #   HistoryItem+Password.swift - 11 lines, keychain-backed favorite/password toggles
@@ -22,6 +22,7 @@ GATED="
 AESGCMDataEncryptor.swift
 SecureStorageHelper.swift
 KeychainSymmetricKeyStore.swift
+KeyResolver.swift
 History.swift
 HistoryCache.swift
 HistoryFileManager.swift

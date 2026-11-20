@@ -127,6 +127,8 @@
 		34AAA1010000000000000010 /* LaunchAtLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA101000000000000000F /* LaunchAtLoginHelper.swift */; };
 		VCINST0022EB0D10004E6E63 /* SingleInstanceGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCINST0012EB0D10004E6E63 /* SingleInstanceGuard.swift */; };
 		34AAA1010000000000000012 /* SymmetricKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAA1010000000000000011 /* SymmetricKeyStore.swift */; };
+		VCKEYB10212EB0B10004E6E63 /* EncryptionKeyBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCKEYB10112EB0B10004E6E63 /* EncryptionKeyBootstrap.swift */; };
+		VCKEYR10212EB0B10004E6E63 /* KeyResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCKEYR10112EB0B10004E6E63 /* KeyResolver.swift */; };
 		VCPAG10212EB0B10004E6E63 /* PasswordAccessGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPAG10112EB0B10004E6E63 /* PasswordAccessGate.swift */; };
 		VCPCC10212EB0B10004E6E63 /* PasswordClipboardClearer.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPCC10112EB0B10004E6E63 /* PasswordClipboardClearer.swift */; };
 		34ACFBBF22EB0B0F004E6E63 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ACFBBE22EB0B0F004E6E63 /* AppDelegate.swift */; };
@@ -202,6 +204,7 @@
 		A1B2C3D41123456789001 /* SearchEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40123456789001 /* SearchEngineTests.swift */; };
 		VCL10N10212EB0B10004E6E63 /* L10nCatalogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCL10N10112EB0B10004E6E63 /* L10nCatalogTests.swift */; };
 		VCA11Y10212EB0B10004E6E63 /* AccessibilityLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCA11Y10112EB0B10004E6E63 /* AccessibilityLabelTests.swift */; };
+		VCKEYT10212EB0B10004E6E63 /* KeyResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCKEYT10112EB0B10004E6E63 /* KeyResolverTests.swift */; };
 		VCHRT10212EB0B10004E6E63 /* HistoryRetentionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCHRT10112EB0B10004E6E63 /* HistoryRetentionTests.swift */; };
 		VCEXT10212EB0B10004E6E63 /* ExcludedAppsPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCEXT10112EB0B10004E6E63 /* ExcludedAppsPolicyTests.swift */; };
 		VCPLT10212EB0B10004E6E63 /* PlainTextPasteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPLT10112EB0B10004E6E63 /* PlainTextPasteTests.swift */; };
@@ -373,6 +376,8 @@
 		34AAA101000000000000000F /* LaunchAtLoginHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginHelper.swift; sourceTree = "<group>"; };
 		VCINST0012EB0D10004E6E63 /* SingleInstanceGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleInstanceGuard.swift; sourceTree = "<group>"; };
 		34AAA1010000000000000011 /* SymmetricKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetricKeyStore.swift; sourceTree = "<group>"; };
+		VCKEYB10112EB0B10004E6E63 /* EncryptionKeyBootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionKeyBootstrap.swift; sourceTree = "<group>"; };
+		VCKEYR10112EB0B10004E6E63 /* KeyResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyResolver.swift; sourceTree = "<group>"; };
 		VCPAG10112EB0B10004E6E63 /* PasswordAccessGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordAccessGate.swift; sourceTree = "<group>"; };
 		VCPCC10112EB0B10004E6E63 /* PasswordClipboardClearer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordClipboardClearer.swift; sourceTree = "<group>"; };
 		34ACFBBB22EB0B0F004E6E63 /* VaultClip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VaultClip.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -451,6 +456,7 @@
 		A1B2C3D40123456789001 /* SearchEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEngineTests.swift; sourceTree = "<group>"; };
 		VCL10N10112EB0B10004E6E63 /* L10nCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10nCatalogTests.swift; sourceTree = "<group>"; };
 		VCA11Y10112EB0B10004E6E63 /* AccessibilityLabelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityLabelTests.swift; sourceTree = "<group>"; };
+		VCKEYT10112EB0B10004E6E63 /* KeyResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyResolverTests.swift; sourceTree = "<group>"; };
 		VCHRT10112EB0B10004E6E63 /* HistoryRetentionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRetentionTests.swift; sourceTree = "<group>"; };
 		VCEXT10112EB0B10004E6E63 /* ExcludedAppsPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExcludedAppsPolicyTests.swift; sourceTree = "<group>"; };
 		VCPLT10112EB0B10004E6E63 /* PlainTextPasteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTextPasteTests.swift; sourceTree = "<group>"; };
@@ -910,6 +916,8 @@
 				34AAA1010000000000000003 /* AESGCMDataEncryptor.swift */,
 				34AAA1010000000000000005 /* KeychainSymmetricKeyStore.swift */,
 				34AAA1010000000000000011 /* SymmetricKeyStore.swift */,
+				VCKEYB10112EB0B10004E6E63 /* EncryptionKeyBootstrap.swift */,
+				VCKEYR10112EB0B10004E6E63 /* KeyResolver.swift */,
 				VCPAG10112EB0B10004E6E63 /* PasswordAccessGate.swift */,
 				VCPCC10112EB0B10004E6E63 /* PasswordClipboardClearer.swift */,
 				34AAA101000000000000000B /* SecureStorageHelper.swift */,
@@ -962,6 +970,7 @@
 				A1B2C3D40123456789001 /* SearchEngineTests.swift */,
 				VCL10N10112EB0B10004E6E63 /* L10nCatalogTests.swift */,
 				VCA11Y10112EB0B10004E6E63 /* AccessibilityLabelTests.swift */,
+				VCKEYT10112EB0B10004E6E63 /* KeyResolverTests.swift */,
 				VCHRT10112EB0B10004E6E63 /* HistoryRetentionTests.swift */,
 				VCEXT10112EB0B10004E6E63 /* ExcludedAppsPolicyTests.swift */,
 				VCPLT10112EB0B10004E6E63 /* PlainTextPasteTests.swift */,
@@ -1358,6 +1367,8 @@
 				34AAA1010000000000000004 /* AESGCMDataEncryptor.swift in Sources */,
 				34AAA1010000000000000006 /* KeychainSymmetricKeyStore.swift in Sources */,
 				34AAA1010000000000000012 /* SymmetricKeyStore.swift in Sources */,
+				VCKEYB10212EB0B10004E6E63 /* EncryptionKeyBootstrap.swift in Sources */,
+				VCKEYR10212EB0B10004E6E63 /* KeyResolver.swift in Sources */,
 				VCPAG10212EB0B10004E6E63 /* PasswordAccessGate.swift in Sources */,
 				VCPCC10212EB0B10004E6E63 /* PasswordClipboardClearer.swift in Sources */,
 				34AAA101000000000000000C /* SecureStorageHelper.swift in Sources */,
@@ -1410,6 +1421,7 @@
 				A1B2C3D41123456789001 /* SearchEngineTests.swift in Sources */,
 				VCL10N10212EB0B10004E6E63 /* L10nCatalogTests.swift in Sources */,
 				VCA11Y10212EB0B10004E6E63 /* AccessibilityLabelTests.swift in Sources */,
+				VCKEYT10212EB0B10004E6E63 /* KeyResolverTests.swift in Sources */,
 				VCHRT10212EB0B10004E6E63 /* HistoryRetentionTests.swift in Sources */,
 				VCEXT10212EB0B10004E6E63 /* ExcludedAppsPolicyTests.swift in Sources */,
 				VCPLT10212EB0B10004E6E63 /* PlainTextPasteTests.swift in Sources */,

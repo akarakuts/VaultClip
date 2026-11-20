@@ -54,6 +54,7 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 - **Accessibility** — history cells use VoiceOver labels (localized type + preview; passwords masked) and accessibility identifiers for UI tests (T36).
 - **Cleanup** — removed unused pasteboard-binding / reduce / link-detector helpers; Preferences menu item has an accessibility id (T37).
 - **DI** — history/preview/settings take live `Settings`/`State` providers instead of stale snapshots (T38).
+- **Encryption** — `KeyResolver` selects AES keys among Keychain/file/legacy backends with unit-tested matrix; bootstrap UI isolated (T39).
 - **Excluded apps** — Privacy settings list of bundle IDs whose clipboard changes are ignored (T33).
 - **History retention** — optional auto-delete of unpinned items older than 1/7/30/90 days (T34).
 - **Paste as plain text** — ⇧Return pastes only the string representation of the selected item (T32).
