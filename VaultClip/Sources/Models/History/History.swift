@@ -27,6 +27,9 @@ class History {
     }
     
     private var _items = [HistoryItem]()
+
+    /// fsId of the history item that currently matches the system pasteboard contents.
+    private(set) var currentClipboardItemId: UUID?
     
     private var _lastRecordedChangeCount = BehaviorRelay<Int>(value: -1)
     
@@ -141,9 +144,22 @@ class History {
     func insertItem(_ item: HistoryItem, at i: Int) {
         assertMain()
         _items.insert(item, at: i)
+        if i == 0 {
+            currentClipboardItemId = item.fsId
+        }
         notify(Change.insert(index: i))
         historyFM.insertItem(item, historyOrder: _items)
         pruneExcessItems()
+    }
+
+    func noteClipboardItemId(_ id: UUID?) {
+        assertMain()
+        currentClipboardItemId = id
+    }
+
+    func clearCurrentClipboardItemId() {
+        assertMain()
+        currentClipboardItemId = nil
     }
 
     func deleteItem(at i: Int) {
@@ -396,6 +412,7 @@ extension History: PasteboardMonitorDelegate {
         }
         // Our own paste (panel action) is never re-recorded, whatever app turns out to be frontmost (P8.3).
         if !ignoreChangeCount, pasteboard.changeCount == HistoryPanel.lastSelfWriteChangeCount {
+            // Own write — currentClipboardItemId is set by the panel path that wrote.
             recordPasteboardChange(withCount: pasteboard.changeCount)
             return
         }
@@ -403,6 +420,7 @@ extension History: PasteboardMonitorDelegate {
         let liveBundleId = Self.clipboardSourceBundleId(originBundleId: originBundleId)
         if HistoryPasteboardPolicy.shouldIgnoreSource(bundleId: liveBundleId) {
             PasteboardDiagnostics.log("skipped bundle denylist: \(liveBundleId ?? "nil")")
+            currentClipboardItemId = nil
             recordPasteboardChange(withCount: pasteboard.changeCount)
             return
         }
@@ -410,6 +428,7 @@ extension History: PasteboardMonitorDelegate {
         let pasteboardItems = Self.pasteboardItems(from: pasteboard)
         guard !pasteboardItems.isEmpty else {
             PasteboardDiagnostics.log("no pasteboard items (changeCount=\(pasteboard.changeCount))")
+            currentClipboardItemId = nil
             recordPasteboardChange(withCount: pasteboard.changeCount)
             return
         }
@@ -439,6 +458,9 @@ extension History: PasteboardMonitorDelegate {
             inserted += 1
         }
 
+        if inserted == 0 {
+            currentClipboardItemId = nil
+        }
         PasteboardDiagnostics.log(
             "processed changeCount=\(pasteboard.changeCount) inserted=\(inserted) historyCount=\(_items.count) launchSync=\(ignoreChangeCount)"
         )

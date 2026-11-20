@@ -62,6 +62,38 @@ final class HistoryPanelPasteboardTests: XCTestCase {
         XCTAssertNil(pasteboard.string(forType: HistoryItem.historyItemIdType))
     }
 
+    func testDeleteFavoriteRowDoesNotClearUnrelatedClipboard() {
+        let favorite = HistoryItem(unsavedData: [.string: Data("fav".utf8)], cache: cache, isFavorite: true)
+        let other = HistoryItem(unsavedData: [.string: Data("other".utf8)], cache: cache)
+        history.insertItem(other, at: 0)
+        history.insertItem(favorite, at: 0)
+        history.noteClipboardItemId(other.fsId)
+        history.recordPasteboardChange(withCount: pasteboard.changeCount)
+        pasteboard.setString("other", forType: .string)
+        history.recordPasteboardChange(withCount: pasteboard.changeCount)
+        history.noteClipboardItemId(other.fsId)
+
+        let panel = HistoryPanel(history: history, items: [favorite], pasteboard: pasteboard)
+        _ = panel.delete(item: favorite)
+
+        XCTAssertEqual(pasteboard.string(forType: .string), "other")
+        XCTAssertEqual(history.currentClipboardItemId, other.fsId)
+    }
+
+    func testDeleteCurrentClipboardItemClearsPasteboard() {
+        let item = HistoryItem(unsavedData: [.string: Data("top".utf8)], cache: cache)
+        history.insertItem(item, at: 0)
+        pasteboard.setString("top", forType: .string)
+        history.noteClipboardItemId(item.fsId)
+        history.recordPasteboardChange(withCount: pasteboard.changeCount)
+
+        let panel = HistoryPanel(history: history, items: [item], pasteboard: pasteboard)
+        _ = panel.delete(item: item)
+
+        XCTAssertNil(pasteboard.string(forType: .string))
+        XCTAssertNil(history.currentClipboardItemId)
+    }
+
     private func makePasswordItem(value: String, login: String = "") -> HistoryItem {
         let item = HistoryItem(
             unsavedData: [.string: Data(value.utf8)],

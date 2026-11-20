@@ -29,6 +29,7 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 
 ### Changed
 
+- **Clipboard clear on delete** — pasteboard is cleared only when the deleted item is the current clipboard contents (T15).
 - **Order write race** — on-queue order snapshots update pending state synchronously so a later main-thread save cannot lose to a stale delete/insert flush (T14).
 - **History threading** — `loadHistory` returns `[HistoryItem]`; caching and History mutations stay on main; `_unsavedData` and encryption key cache use locks (T13).
 - **Cache zeroize** — removed ineffective CoW `zeroize` calls from HistoryCache (T12).

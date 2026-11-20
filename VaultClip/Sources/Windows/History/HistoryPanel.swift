@@ -48,6 +48,7 @@ class HistoryPanel {
 
         let changeCount = item.write(to: pasteboard)
         HistoryPanel.markSelfWrite(changeCount)
+        history.noteClipboardItemId(item.fsId)
         history.recordPasteboardChange(withCount: changeCount)
         scheduleSimulatedPaste()
     }
@@ -94,14 +95,18 @@ class HistoryPanel {
     /// Returns the next row index to select in the displayed list.
     func delete(item: HistoryItem) -> Int? {
         guard let displayedIndex = items.firstIndex(where: { $0.fsId == item.fsId }) else { return nil }
+        let matchesClipboard = item.fsId == history.currentClipboardItemId
+            && pasteboard.changeCount == history.lastRecordedChangeCount
         history.deleteItem(withId: item.fsId)
-        
-        if displayedIndex == 0 {
+
+        // Clear the system pasteboard only when this item is what is currently on it (T15).
+        if matchesClipboard {
             let newChangeCount = pasteboard.clearContents()
             HistoryPanel.markSelfWrite(newChangeCount)
+            history.clearCurrentClipboardItemId()
             history.recordPasteboardChange(withCount: newChangeCount)
         }
-        
+
         if displayedIndex < items.count - 1 {
             return displayedIndex
         }
@@ -131,6 +136,7 @@ class HistoryPanel {
             fromItem.pastesRichText = settings().pastesRichText
             let changeCount = fromItem.write(to: pasteboard)
             HistoryPanel.markSelfWrite(changeCount)
+            history.noteClipboardItemId(fromItem.fsId)
             history.recordPasteboardChange(withCount: changeCount)
         }
     }
@@ -174,6 +180,7 @@ class HistoryPanel {
     private func copyStringToClipboard(_ string: String, concealed: Bool) {
         let changeCount = PasteboardWriter.writeString(string, to: pasteboard, concealed: concealed)
         HistoryPanel.markSelfWrite(changeCount)
+        history.clearCurrentClipboardItemId()
         history.recordPasteboardChange(withCount: changeCount)
     }
 }
