@@ -64,6 +64,9 @@ class HistoryItem: NSObject {
     
     /// Site URL shown on the Passwords tab (optional).
     var passwordURL: String
+
+    /// SHA-256 hex digest of sorted pasteboard payloads for O(1) dedup (T23).
+    var contentDigest: String?
     
     /// Items kept when clearing history or trimming the list.
     var isPinnedFromPruning: Bool {
@@ -72,6 +75,7 @@ class HistoryItem: NSObject {
     
     /// On-disk metadata filename (not a pasteboard type).
     static let sourceBundleIdMetadataFileName = "sourceBundleId"
+    static let contentDigestMetadataFileName = "contentDigest"
     
     /// Whether the item is being cached.
     var isCached: Bool {
@@ -102,7 +106,8 @@ class HistoryItem: NSObject {
         isPassword: Bool = false,
         passwordComment: String = "",
         passwordLogin: String = "",
-        passwordURL: String = ""
+        passwordURL: String = "",
+        contentDigest: String? = nil
     ) {
         self._unsavedData = unsavedData
         self.types = unsavedData.keys.map({$0})
@@ -115,6 +120,7 @@ class HistoryItem: NSObject {
         self.passwordComment = passwordComment
         self.passwordLogin = passwordLogin
         self.passwordURL = passwordURL
+        self.contentDigest = contentDigest ?? ContentDigest.compute(from: unsavedData)
     }
     
     /// Creates a `HistoryItem` for an item that is saved to disk.
@@ -132,7 +138,8 @@ class HistoryItem: NSObject {
         isPassword: Bool = false,
         passwordComment: String = "",
         passwordLogin: String = "",
-        passwordURL: String = ""
+        passwordURL: String = "",
+        contentDigest: String? = nil
     ) {
         self.fsId = fsId
         self._unsavedData = nil
@@ -145,6 +152,7 @@ class HistoryItem: NSObject {
         self.passwordComment = passwordComment
         self.passwordLogin = passwordLogin
         self.passwordURL = passwordURL
+        self.contentDigest = contentDigest
         // Mirrors `startCaching()`: password payloads must never enter the plaintext RAM cache.
         if !isPassword {
             self.cache.registerItem(withId: fsId)

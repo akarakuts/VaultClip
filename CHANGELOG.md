@@ -50,6 +50,7 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 - **Minimum macOS version** raised to **12.0** (Xcode 27+ no longer builds against 10.15); always-true `#available` guards for 10.x–12 removed.
 - **Coverage gate** (`scripts/check-coverage.sh`) now enforces the **minimum** per-file line coverage across core Security/History files (threshold and `VAULTCLIP_COVERAGE_THRESHOLD` unchanged at 55%); structurally untestable files are excluded with reasons in the script header.
 - **CI** installs pinned SwiftLint **0.65.1** from the portable release asset instead of `brew install` (baseline parity with local linting) and checks `MARKETING_VERSION` consistency across build configurations.
+- **Content digest dedup** — SHA-256 of pasteboard payloads promotes an existing row (flags kept) instead of ignoring a re-copy (T23).
 - **SearchIndex** — folded substring search runs off the main thread with ranking; unused Fuse SPM dependency removed (T22).
 - `Settings.bootstrapOverride` replaced with the installed `Settings.shared` slot; `SettingsPersistence` reads it when no `AppEnvironment` is bootstrapped (production code still goes through `AppEnvironment`).
 - Foreground activation unified in `AppActivation` — `NSRunningApplication.activate()` on macOS 14+, legacy `ignoringOtherApps` API below.

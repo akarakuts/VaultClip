@@ -83,6 +83,8 @@ class History {
     private var subscriptions = [Subscription]()
     
     private static let deduplicationLookback = 20
+    /// Digest → fsId for O(1) duplicate promotion (T23).
+    private var digestIndex: [String: UUID] = [:]
     
     init(historyFM: HistoryFileManaging = HistoryFileManager.default, cache: HistoryCache, items: [HistoryItem], maxItems: Int = Constants.system.maxHistoryItems) {
         #if DEBUG
@@ -92,6 +94,8 @@ class History {
         self.cache = cache
         self._items = items
         self._maxItems = BehaviorRelay<Int>(value: maxItems)
+        rebuildDigestIndex()
+        scheduleMissingDigestBackfill()
 
         if items.count > maxItems {
             reduceHistory(to: maxItems)
@@ -120,6 +124,8 @@ class History {
         assertMain()
         _items.forEach { $0.stopCaching() }
         _items = loaded
+        rebuildDigestIndex()
+        scheduleMissingDigestBackfill()
         notify(Change.initial)
         pruneExcessItems()
         historyFM.captureHistoryOrder(_items)
@@ -144,6 +150,9 @@ class History {
     func insertItem(_ item: HistoryItem, at i: Int) {
         assertMain()
         _items.insert(item, at: i)
+        if let digest = item.contentDigest {
+            digestIndex[digest] = item.fsId
+        }
         if i == 0 {
             currentClipboardItemId = item.fsId
         }
@@ -166,6 +175,7 @@ class History {
         assertMain()
         guard _items.indices.contains(i) else { return }
         let removed = _items.remove(at: i)
+        removeFromDigestIndex(removed)
         removed.stopCaching()
         notify(Change.delete(deletedItem: removed))
         historyFM.deleteItem(newHistory: _items, deleted: removed)
@@ -191,13 +201,17 @@ class History {
             let removed = _items.filter { !$0.isFavorite && !$0.isPassword }
             guard !removed.isEmpty else { return }
             _items = _items.filter { $0.isFavorite || $0.isPassword }
-            removed.forEach { $0.stopCaching() }
+            removed.forEach {
+                removeFromDigestIndex($0)
+                $0.stopCaching()
+            }
             historyFM.deleteItems(removed, historyOrder: _items)
             notify(Change.clear)
             return
         }
         _items.forEach({ $0.stopCaching() })
         _items = []
+        digestIndex = [:]
         notify(Change.clear)
         historyFM.clearHistory()
     }
@@ -292,6 +306,9 @@ class History {
         guard i != j else { return }
         let item = _items.remove(at: i)
         _items.insert(item, at: j)
+        if j == 0 {
+            currentClipboardItemId = item.fsId
+        }
         notify(Change.move(from: i, to: j))
         historyFM.moveItem(newHistory: _items, from: i, to: j)
     }
@@ -312,7 +329,10 @@ class History {
             deleted.append(_items.remove(at: index))
         }
         guard !deleted.isEmpty else { return }
-        deleted.forEach { $0.stopCaching() }
+        deleted.forEach {
+            removeFromDigestIndex($0)
+            $0.stopCaching()
+        }
         historyFM.deleteItems(deleted, historyOrder: _items)
         for item in deleted {
             notify(Change.delete(deletedItem: item))
@@ -344,16 +364,53 @@ class History {
             deletedItems.append(_items.remove(at: index))
         }
         guard !deletedItems.isEmpty else { return }
-        deletedItems.forEach { $0.stopCaching() }
+        deletedItems.forEach {
+            removeFromDigestIndex($0)
+            $0.stopCaching()
+        }
         historyFM.deleteItems(deletedItems, historyOrder: _items)
         notify(Change.itemLimitDecreased(deletedItems: deletedItems))
     }
     
-    private func isDuplicatePayload(
-        _ payload: [NSPasteboard.PasteboardType: Data],
-        comparedTo items: [HistoryItem]
-    ) -> Bool {
-        for item in items.prefix(Self.deduplicationLookback) {
+    private func rebuildDigestIndex() {
+        digestIndex = [:]
+        for item in _items {
+            if let digest = item.contentDigest {
+                digestIndex[digest] = item.fsId
+            }
+        }
+    }
+
+    private func removeFromDigestIndex(_ item: HistoryItem) {
+        guard let digest = item.contentDigest else { return }
+        if digestIndex[digest] == item.fsId {
+            digestIndex.removeValue(forKey: digest)
+        }
+    }
+
+    private func promoteDuplicate(_ item: HistoryItem, digest: String) {
+        if item.contentDigest == nil {
+            item.contentDigest = digest
+            digestIndex[digest] = item.fsId
+            historyFM.saveContentDigest(digest, for: item)
+        }
+        if let idx = index(ofId: item.fsId) {
+            if idx != 0 {
+                moveItem(at: idx, to: 0)
+            } else {
+                currentClipboardItemId = item.fsId
+            }
+        }
+    }
+
+    /// Digest hit, else byte-compare lookback for legacy items missing a digest.
+    private func existingDuplicate(for payload: [NSPasteboard.PasteboardType: Data]) -> (item: HistoryItem, digest: String)? {
+        let digest = ContentDigest.compute(from: payload)
+        if let id = digestIndex[digest], let item = _items.first(where: { $0.fsId == id }) {
+            return (item, digest)
+        }
+        for item in _items.prefix(Self.deduplicationLookback) {
+            if item.contentDigest != nil { continue }
             var matches = true
             for (type, bytes) in payload {
                 guard let previous = item.data(forType: type), previous == bytes else {
@@ -361,9 +418,39 @@ class History {
                     break
                 }
             }
-            if matches { return true }
+            if matches {
+                return (item, digest)
+            }
         }
-        return false
+        return nil
+    }
+
+    private func scheduleMissingDigestBackfill() {
+        let targets = Array(_items.prefix(Self.deduplicationLookback).filter { $0.contentDigest == nil })
+        guard !targets.isEmpty else { return }
+        let fm = historyFM
+        DispatchQueue.global(qos: .utility).async { [weak self] in
+            var computed: [(UUID, String)] = []
+            for item in targets {
+                var payload: [NSPasteboard.PasteboardType: Data] = [:]
+                for type in item.types {
+                    if let data = item.data(forType: type) {
+                        payload[type] = data
+                    }
+                }
+                guard !payload.isEmpty else { continue }
+                computed.append((item.fsId, ContentDigest.compute(from: payload)))
+            }
+            DispatchQueue.main.async {
+                guard let self else { return }
+                for (id, digest) in computed {
+                    guard let item = self._items.first(where: { $0.fsId == id }), item.contentDigest == nil else { continue }
+                    item.contentDigest = digest
+                    self.digestIndex[digest] = id
+                    fm.saveContentDigest(digest, for: item)
+                }
+            }
+        }
     }
     
     private static func extractPasteboardPayload(
@@ -449,8 +536,10 @@ extension History: PasteboardMonitorDelegate {
                 PasteboardDiagnostics.log("empty payload for types: \(filteredTypes.map(\.rawValue))")
                 continue
             }
-            if isDuplicatePayload(data, comparedTo: _items) {
-                PasteboardDiagnostics.log("duplicate payload (\(data.count) types)")
+            if let duplicate = existingDuplicate(for: data) {
+                PasteboardDiagnostics.log("duplicate payload promote (\(data.count) types)")
+                promoteDuplicate(duplicate.item, digest: duplicate.digest)
+                inserted += 1 // counts as handled clipboard binding (not a new row)
                 continue
             }
             let historyItem = HistoryItem(unsavedData: data, cache: cache, sourceBundleId: liveBundleId)

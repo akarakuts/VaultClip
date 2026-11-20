@@ -35,6 +35,7 @@ protocol HistoryFileManaging: AnyObject {
         for item: HistoryItem,
         completionHandler: ((Bool) -> Void)?
     )
+    func saveContentDigest(_ digest: String, for item: HistoryItem, completionHandler: ((Bool) -> Void)?)
 }
 
 extension HistoryFileManaging {
@@ -90,6 +91,14 @@ extension HistoryFileManaging {
 
     func moveItem(newHistory: [HistoryItem], from: Int, to: Int) {
         moveItem(newHistory: newHistory, from: from, to: to, completionHandler: nil)
+    }
+
+    func saveContentDigest(_ digest: String, for item: HistoryItem) {
+        saveContentDigest(digest, for: item, completionHandler: nil)
+    }
+
+    func saveContentDigest(_ digest: String, for item: HistoryItem, completionHandler: ((Bool) -> Void)?) {
+        completionHandler?(true)
     }
 }
 

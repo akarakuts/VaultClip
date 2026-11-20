@@ -22,6 +22,7 @@ class HistoryFileManagerMock: HistoryFileManager {
     var favoriteUpdates = [(id: UUID, isFavorite: Bool)]()
     var passwordUpdates = [(id: UUID, isPassword: Bool, comment: String, login: String, url: String)]()
     var passwordMetadataUpdates = [(id: UUID, comment: String, login: String, url: String)]()
+    var contentDigestUpdates = [(id: UUID, digest: String)]()
 
     override func loadData(forItemWithId id: UUID, andType type: NSPasteboard.PasteboardType) -> Data? {
         dataCallCount += 1
@@ -98,5 +99,10 @@ class HistoryFileManagerMock: HistoryFileManager {
     ) {
         passwordMetadataUpdates.append((item.fsId, comment, login, url))
         handler?(true)
+    }
+
+    override func saveContentDigest(_ digest: String, for item: HistoryItem, completionHandler: ((Bool) -> Void)? = nil) {
+        contentDigestUpdates.append((item.fsId, digest))
+        completionHandler?(true)
     }
 }

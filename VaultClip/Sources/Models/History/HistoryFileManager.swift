@@ -299,6 +299,7 @@ class HistoryFileManager {
                     let passwordComment = self.loadPasswordComment(from: content)
                     let passwordLogin = self.loadPasswordLogin(from: content)
                     let passwordURL = self.loadPasswordURL(from: content)
+                    let contentDigest = self.loadContentDigest(from: content)
                     let types = dataUrls
                         .map(\.lastPathComponent)
                         .filter { !HistoryItem.isMetadataFileName($0) }
@@ -313,7 +314,8 @@ class HistoryFileManager {
                         isPassword: isPassword,
                         passwordComment: passwordComment,
                         passwordLogin: passwordLogin,
-                        passwordURL: passwordURL
+                        passwordURL: passwordURL,
+                        contentDigest: contentDigest
                     )
                 }
                 catch {
@@ -498,6 +500,16 @@ class HistoryFileManager {
             } catch {
                 ClipWarning(localizedDescription: "Failed to save copy time for item '\(item.fsId.uuidString)': \(error.localizedDescription)")
                     .log(with: self.warningLogger)
+            }
+
+            if let digest = item.contentDigest, !digest.isEmpty {
+                let digestUrl = directoryUrl.appendingPathComponent(HistoryItem.contentDigestMetadataFileName)
+                do {
+                    try self.writeMetadata(digest, to: digestUrl)
+                } catch {
+                    ClipWarning(localizedDescription: "Failed to save content digest for item '\(item.fsId.uuidString)': \(error.localizedDescription)")
+                        .log(with: self.warningLogger)
+                }
             }
             
             for (type, data) in unsavedData {
@@ -754,6 +766,28 @@ class HistoryFileManager {
             return created
         }
         return Date()
+    }
+
+    private func loadContentDigest(from itemDirectory: URL) -> String? {
+        let url = itemDirectory.appendingPathComponent(HistoryItem.contentDigestMetadataFileName)
+        guard let raw = readMetadata(from: url) ?? (try? String(contentsOf: url, encoding: .utf8)) else { return nil }
+        let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? nil : trimmed
+    }
+
+    func saveContentDigest(_ digest: String, for item: HistoryItem, completionHandler: ((Bool) -> Void)? = nil) {
+        dispatchQueue.async {
+            do {
+                let directoryUrl = try self.ensureItemDirectory(for: item)
+                let digestUrl = directoryUrl.appendingPathComponent(HistoryItem.contentDigestMetadataFileName)
+                try self.writeMetadata(digest, to: digestUrl)
+                self.callHandler(completionHandler, withVal: true)
+            } catch {
+                ClipWarning(localizedDescription: "Failed to save content digest for item '\(item.fsId.uuidString)': \(error.localizedDescription)")
+                    .log(with: self.warningLogger)
+                self.callHandler(completionHandler, withVal: false)
+            }
+        }
     }
     
     func getUrl(forItemWithId id: UUID) -> URL {

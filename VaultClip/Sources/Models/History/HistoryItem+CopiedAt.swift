@@ -21,6 +21,7 @@ extension HistoryItem {
         passwordCommentMetadataFileName,
         passwordLoginMetadataFileName,
         passwordURLMetadataFileName,
+        contentDigestMetadataFileName,
     ]
     
     static func isMetadataFileName(_ name: String) -> Bool {
