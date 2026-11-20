@@ -50,14 +50,12 @@ class HistoryTableView: NSTableView {
         registerForDraggedTypes([HistoryItem.historyItemIdType])
     }
     
-    /// `.automatic` resolves to `.inset` in borderless scroll views (~10pt side padding on Big Sur+).
+    /// Compact inset rows with fixed height from PanelTheme (U11).
     func applyPlainListAppearance() {
-        style = .plain
+        style = .inset
         rowSizeStyle = .custom
-        intercellSpacing = NSSize(
-            width: 0,
-            height: HistoryListTheme.metrics.rowVerticalSpacing
-        )
+        intercellSpacing = .zero
+        usesAutomaticRowHeights = false
         guard let scrollView = enclosingScrollView else { return }
         scrollView.automaticallyAdjustsContentInsets = false
         scrollView.drawsBackground = false
@@ -210,22 +208,53 @@ extension HistoryTableView: NSTableViewDataSource {
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        
         let historyItem = historyListItems[row]
-        let itemType = historyItem.getTableViewItemType()
-        let cell = tableView.makeView(withIdentifier: itemType.identifier, owner: nil) as? HistoryListItem ?? itemType.makeItem()
-        cell.setupCell(withHistoryTableView: self, forHistoryItem: historyItem, at: row)
-        if let baseCell = cell as? HistoryItemBaseCellView {
-            baseCell.bindHost(self, row: row, historyItem: historyItem)
-        }
-        if let cell = cell as? NSTableCellView {
-            cell.setAccessibilityIdentifier(itemType.identifier.rawValue)
-            cell.setAccessibilityLabel(
-                HistoryItemText.accessibilityLabel(for: historyItem, listMode: listMode)
+        let cell = tableView.makeView(withIdentifier: HistoryRowView.identifier, owner: nil) as? HistoryRowView
+            ?? HistoryRowView(frame: .zero)
+        let kind = ItemKindClassifier.classify(
+            .init(
+                isPassword: historyItem.isPassword,
+                typeIdentifiers: historyItem.types.map(\.rawValue),
+                plainText: historyItem.isPassword ? nil : historyItem.getPlainString(),
+                fileURLCount: historyItem.getFileUrl() == nil ? 0 : 1
             )
-            cell.identifier = itemType.identifier
-        }
-        return cell as? NSView
+        )
+        let title = historyItem.isPassword
+            ? historyItem.passwordComment
+            : (historyItem.getPlainString() ?? "")
+        // Temporary presentation bridge until SearchIndex builds ItemSummary (U05/U11).
+        let summary = ItemSummary(
+            title: title,
+            charCount: title.count,
+            lineCount: max(1, title.split(whereSeparator: \.isNewline).count),
+            linkHost: nil,
+            fileNames: [],
+            imagePixelSize: nil,
+            imageFormat: nil,
+            colorHex: nil,
+            sourceBundleId: historyItem.sourceBundleId,
+            copiedAt: historyItem.copiedAt,
+            lastUsedAt: historyItem.copiedAt,
+            kind: kind,
+            passwordComment: historyItem.passwordComment,
+            pdfPageCount: nil,
+            isRichText: isRichText
+        )
+        let presentation = RowPresentationBuilder.presentation(
+            id: historyItem.fsId,
+            summary: summary,
+            locale: .current,
+            now: Date()
+        )
+        let shortcut: Int? = (1...9).contains(row + 1) ? row + 1 : (row == 9 ? 0 : nil)
+        cell.apply(
+            presentation: presentation,
+            shortcutNumber: shortcut,
+            textSize: SettingsPersistence.current().panelTextSize,
+            isFavorite: historyItem.isFavorite,
+            isPassword: historyItem.isPassword
+        )
+        return cell
     }
     
     func tableViewSelectionIsChanging(_ notification: Notification) {
@@ -317,26 +346,7 @@ extension HistoryTableView: NSTableViewDataSource {
 extension HistoryTableView: NSTableViewDelegate {
     
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        guard let historyTableView = tableView as? HistoryTableView else { return 0 }
-        let historyItem = historyListItems[row]
-        let itemType = historyItem.getTableViewItemType()
-        let displaySignature = HistoryItemText.displayCacheSignature(for: historyItem, listMode: historyTableView.listMode)
-        
-        if let height = cellHeightsCache.cellHeight(forId: historyItem.fsId, withCellIdentifier: itemType.identifier.rawValue, cellWidth: cellWidth, isRichText: isRichText, displaySignature: displaySignature) {
-            return height
-        }
-        
-        let height = historyItem.getTableViewItemType().getItemHeight(withHistoryTableView: historyTableView, forHistoryItem: historyItem)
-        
-        cellHeightsCache.storeCellHeight(
-            height,
-            forId: historyItem.fsId,
-            withCellIdentifier: itemType.identifier.rawValue,
-            layout: .init(cellWidth: cellWidth, isRichText: isRichText),
-            displaySignature: displaySignature
-        )
-        
-        return height
+        PanelTheme.rowHeight(for: SettingsPersistence.current().panelTextSize)
     }
     
 }
