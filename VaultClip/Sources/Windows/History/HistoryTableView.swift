@@ -144,6 +144,63 @@ class HistoryTableView: NSTableView {
         syncColumnWidthToScrollView()
         remeasureVisibleRows()
     }
+
+    enum RowMutation: Equatable {
+        case insertTop
+        case delete(UUID)
+        case move(UUID)
+        case reload
+    }
+
+    /// Incremental row updates without wiping CellHeightsCache (T24).
+    func applyItemsIncrementally(
+        _ data: [HistoryItem],
+        isRichText: Bool,
+        listMode: HistoryListMode,
+        mutation: RowMutation
+    ) {
+        let previous = historyListItems
+        self.isRichText = isRichText
+        self.listMode = listMode
+        applyPlainListAppearance()
+
+        switch mutation {
+        case .insertTop where data.count == previous.count + 1:
+            historyListItems = data
+            beginUpdates()
+            insertRows(at: IndexSet(integer: 0), withAnimation: [])
+            endUpdates()
+        case .delete(let id):
+            if let row = previous.firstIndex(where: { $0.fsId == id }), data.count == previous.count - 1 {
+                historyListItems = data
+                beginUpdates()
+                removeRows(at: IndexSet(integer: row), withAnimation: [])
+                endUpdates()
+                cellHeightsCache.removeCellHeight(forId: id)
+            } else {
+                historyListItems = data
+                super.reloadData()
+            }
+        case .move(let id):
+            if let from = previous.firstIndex(where: { $0.fsId == id }),
+               let to = data.firstIndex(where: { $0.fsId == id }),
+               from != to,
+               data.count == previous.count {
+                historyListItems = data
+                beginUpdates()
+                moveRow(at: from, to: to)
+                endUpdates()
+            } else {
+                historyListItems = data
+                super.reloadData()
+            }
+        default:
+            historyListItems = data
+            super.reloadData()
+        }
+        syncColumnWidthToScrollView()
+        remeasureVisibleRows()
+    }
 }
 
 extension HistoryTableView: NSTableViewDataSource {

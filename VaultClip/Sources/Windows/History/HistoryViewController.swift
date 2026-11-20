@@ -202,7 +202,6 @@ class HistoryViewController: NSViewController {
         if !searchBar.stringValue.isEmpty, baseItems.count > 0, results.value.items.isEmpty {
             searchBar.stringValue = ""
         }
-        historyListView.cellHeightsCache.clearCache()
         applyListFilter()
         resetSelected()
         alignHistoryListToScrollView()
@@ -233,25 +232,22 @@ class HistoryViewController: NSViewController {
     
     func onHistoryChange(_ history: [HistoryItem], change: History.Change) {
         updateSearchIndex(for: change, history: history)
-        if !searchBar.stringValue.isEmpty {
-            runSearch()
-        } else {
-            applyListFilter()
-        }
         switch change {
         case .insert(let i) where i == 0:
             if !searchBar.stringValue.isEmpty {
                 searchBar.stringValue = ""
-                applyListFilter()
             }
-            syncHistoryTableToResults()
-            if listMode.value == .history, searchBar.stringValue.isEmpty {
+            applyListFilter(mutation: .insertTop)
+            if listMode.value == .history {
                 selected.accept(0)
             }
         case .favoriteChanged(let item, _), .passwordChanged(let item, _):
             historyListView.cellHeightsCache.removeCellHeight(forId: item.fsId)
-            applyListFilter()
-            syncHistoryTableToResults()
+            if !searchBar.stringValue.isEmpty {
+                runSearch()
+            } else {
+                applyListFilter(mutation: .reload)
+            }
             let visible = itemsForActiveListMode(from: appState.history.items)
             if !visible.contains(where: { $0.fsId == item.fsId }) {
                 resetSelected()
@@ -260,10 +256,25 @@ class HistoryViewController: NSViewController {
             }
         case .pinnedLimitExceeded(let current, let max):
             itemCountLabel.stringValue = L10n.countPinnedLimit(current: current, max: max)
-        case .initial, .delete, .clear, .move, .itemLimitDecreased:
-            syncHistoryTableToResults()
         default:
-            break
+            if !searchBar.stringValue.isEmpty {
+                runSearch()
+            } else {
+                applyListFilter(mutation: rowMutation(for: change, history: history))
+            }
+        }
+    }
+
+    private func rowMutation(for change: History.Change, history: [HistoryItem]) -> HistoryTableView.RowMutation {
+        switch change {
+        case .insert(let index) where index == 0:
+            return .insertTop
+        case .delete(let deleted):
+            return .delete(deleted.fsId)
+        case .move(_, let to) where history.indices.contains(to):
+            return .move(history[to].fsId)
+        default:
+            return .reload
         }
     }
 
@@ -301,16 +312,16 @@ class HistoryViewController: NSViewController {
         }
     }
     
-    func applyListFilter() {
+    func applyListFilter(mutation: HistoryTableView.RowMutation = .reload) {
         let baseItems = itemsForActiveListMode(from: appState.history.items)
         // Do not rebuild a full-text engine here — SearchIndex updates incrementally / on demand (T22).
         results.accept(Results(items: baseItems, isSearchResult: false))
         updateEmptyListLabel(for: listMode.value, visible: baseItems.isEmpty)
-        syncHistoryTableToResults()
+        syncHistoryTableToResults(mutation: mutation)
     }
 
     /// Pushes `results` into the table; skip row layout while the panel is hidden (wrong window size at launch).
-    private func syncHistoryTableToResults() {
+    private func syncHistoryTableToResults(mutation: HistoryTableView.RowMutation = .reload) {
         guard isViewLoaded else { return }
         let current = results.value
         itemCountLabel.stringValue = countLabelText(for: current)
@@ -321,9 +332,17 @@ class HistoryViewController: NSViewController {
         )
         
         guard appState.isHistoryPanelShown.value else { return }
-        
-        historyListView.cellHeightsCache.clearCache()
-        historyListView.reloadData(historyPanel.items, isRichText: isRichText, listMode: listMode.value)
+
+        if current.isSearchResult || mutation == .reload {
+            historyListView.reloadData(historyPanel.items, isRichText: isRichText, listMode: listMode.value)
+        } else {
+            historyListView.applyItemsIncrementally(
+                historyPanel.items,
+                isRichText: isRichText,
+                listMode: listMode.value,
+                mutation: mutation
+            )
+        }
         historyListView.layoutSubtreeIfNeeded()
         PasteboardDiagnostics.log(
             "ui reload rows=\(current.items.count) search=\(current.isSearchResult) mode=\(listMode.value)"

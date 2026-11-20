@@ -1,58 +1,63 @@
 //
-//  CellHeightCache.swift
-//  VaultClip
+// CellHeightsCache — per-(cell, item, signature) heights keyed under layout context (T24).
 //
-//  Copyright (C) 2019 Matthew Davidson
-//  Copyright (C) 2026 Aleksey Karakuts <aleksey@karakuts.com>
+// Copyright (C) 2019 Matthew Davidson
+// Copyright (C) 2026 Aleksey Karakuts <aleksey@karakuts.com>
 //
-//  SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: GPL-3.0-or-later
 //
 import Foundation
 
 class CellHeightsCache {
-    
-    struct Context: Equatable {
+
+    struct LayoutContext: Equatable {
         var cellWidth: CGFloat
         var isRichText: Bool
-        var displaySignature: String
     }
-    
-    var caches: [String: Cache<CGFloat, UUID, Context>]
-    
-    
-    init() {
-        caches = [:]
+
+    private struct EntryKey: Hashable {
+        let cellIdentifier: String
+        let itemId: UUID
+        let displaySignature: String
     }
-    
-    func createCache(forCellIdentifier cellIdentifier: String) {
-        caches[cellIdentifier] = Cache()
+
+    private var layoutContext: LayoutContext?
+    private var heights: [EntryKey: CGFloat] = [:]
+
+    func cellHeight(
+        forId id: UUID,
+        withCellIdentifier cellIdentifier: String,
+        cellWidth: CGFloat,
+        isRichText: Bool,
+        displaySignature: String
+    ) -> CGFloat? {
+        let layout = LayoutContext(cellWidth: cellWidth, isRichText: isRichText)
+        guard layout == layoutContext else { return nil }
+        return heights[EntryKey(cellIdentifier: cellIdentifier, itemId: id, displaySignature: displaySignature)]
     }
-    
-    func cellHeight(forId id: UUID, withCellIdentifier cellIdentifier: String, cellWidth: CGFloat, isRichText: Bool, displaySignature: String) -> CGFloat? {
-        if !caches.keys.contains(cellIdentifier) {
-            createCache(forCellIdentifier: cellIdentifier)
+
+    func storeCellHeight(
+        _ height: CGFloat,
+        forId id: UUID,
+        withCellIdentifier cellIdentifier: String,
+        cellWidth: CGFloat,
+        isRichText: Bool,
+        displaySignature: String
+    ) {
+        let layout = LayoutContext(cellWidth: cellWidth, isRichText: isRichText)
+        if layoutContext != layout {
+            layoutContext = layout
+            heights.removeAll()
         }
-        
-        return caches[cellIdentifier]?.cellHeight(forId: id, withContext: Context(cellWidth: cellWidth, isRichText: isRichText, displaySignature: displaySignature))
+        heights[EntryKey(cellIdentifier: cellIdentifier, itemId: id, displaySignature: displaySignature)] = height
     }
-    
-    func storeCellHeight(_ height: CGFloat, forId id: UUID, withCellIdentifier cellIdentifier: String, cellWidth: CGFloat, isRichText: Bool, displaySignature: String) {
-        if !caches.keys.contains(cellIdentifier) {
-            createCache(forCellIdentifier: cellIdentifier)
-        }
-        
-        caches[cellIdentifier]?.storeCellHeight(height, forId: id, withContext: Context(cellWidth: cellWidth, isRichText: isRichText, displaySignature: displaySignature))
-    }
-    
+
     func removeCellHeight(forId id: UUID) {
-        for (k,_) in caches {
-            caches[k]?.removeCellHeight(forId: id)
-        }
+        heights = heights.filter { $0.key.itemId != id }
     }
-    
+
     func clearCache() {
-        for (k,_) in caches {
-            caches[k]?.clearCache()
-        }
+        heights.removeAll()
+        layoutContext = nil
     }
 }
