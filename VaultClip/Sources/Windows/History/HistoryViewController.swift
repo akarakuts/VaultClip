@@ -66,6 +66,7 @@ class HistoryViewController: NSViewController {
 
     private let panelKeyMonitor = PanelLocalKeyMonitor()
     private let commandPaletteOverlay = CommandPaletteOverlayView()
+    private let cheatSheetOverlay = CheatSheetOverlayView()
     private let embeddedPreview = EmbeddedPreviewView()
     private let previewDebouncer = PreviewUpdateDebouncer(scheduler: PreviewDispatchScheduler())
     private lazy var pendingDeletion = PendingDeletionQueue(
@@ -81,6 +82,7 @@ class HistoryViewController: NSViewController {
         applyPanelChromeMetrics()
         styleHistoryChrome()
         installCommandPaletteOverlay()
+        installCheatSheetOverlay()
         installEmbeddedPreview()
         pendingDeletion.onCommit = { [weak self] ids in
             guard let self else { return }
@@ -564,7 +566,7 @@ class HistoryViewController: NSViewController {
 
     private func performEscape() -> Bool {
         let state = EscapeStackState(
-            overlayVisible: !commandPaletteOverlay.isHidden,
+            overlayVisible: !commandPaletteOverlay.isHidden || !cheatSheetOverlay.isHidden,
             editorActive: false,
             editorHasChanges: false,
             editorDiscardArmed: false,
@@ -575,7 +577,11 @@ class HistoryViewController: NSViewController {
         )
         switch EscapeResolver.resolve(state) {
         case .dismissOverlay:
-            commandPaletteOverlay.dismiss()
+            if !commandPaletteOverlay.isHidden {
+                commandPaletteOverlay.dismiss()
+            } else {
+                cheatSheetOverlay.dismiss()
+            }
             return true
         case .clearSearch:
             searchBar.stringValue = ""
@@ -608,12 +614,36 @@ class HistoryViewController: NSViewController {
     }
 
     private func showCommandPalette() {
+        cheatSheetOverlay.dismiss()
         let ctx = PanelCommandContext(
             hasSelection: historyListView.selected != nil,
             selectionCount: historyListView.selected == nil ? 0 : 1,
             searchIsEmpty: searchBar.stringValue.isEmpty
         )
         commandPaletteOverlay.present(context: ctx)
+    }
+
+    private func installCheatSheetOverlay() {
+        cheatSheetOverlay.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(cheatSheetOverlay)
+        NSLayoutConstraint.activate([
+            cheatSheetOverlay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            cheatSheetOverlay.topAnchor.constraint(equalTo: view.topAnchor, constant: 56),
+            cheatSheetOverlay.widthAnchor.constraint(lessThanOrEqualToConstant: 480),
+            cheatSheetOverlay.heightAnchor.constraint(equalToConstant: 360)
+        ])
+        let width = cheatSheetOverlay.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24)
+        width.priority = .defaultHigh
+        width.isActive = true
+    }
+
+    private func showCheatSheet() {
+        commandPaletteOverlay.dismiss()
+        if cheatSheetOverlay.isHidden {
+            cheatSheetOverlay.present()
+        } else {
+            cheatSheetOverlay.dismiss()
+        }
     }
 
     @discardableResult
@@ -658,6 +688,8 @@ class HistoryViewController: NSViewController {
             }
         case .undoDelete:
             undoPendingDeletion()
+        case .cheatSheet:
+            showCheatSheet()
         case .closePanel:
             close()
         default:

@@ -290,6 +290,7 @@
 		VCPNL55212EB0B10004E6E63 /* ASCIICapableLayoutTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL55112EB0B10004E6E63 /* ASCIICapableLayoutTranslator.swift */; };
 		VCPNL56212EB0B10004E6E63 /* CommandPaletteOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL56112EB0B10004E6E63 /* CommandPaletteOverlayView.swift */; };
 		VCPNL57212EB0B10004E6E63 /* EmbeddedPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL57112EB0B10004E6E63 /* EmbeddedPreviewView.swift */; };
+		VCPNL58212EB0B10004E6E63 /* CheatSheetOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL58112EB0B10004E6E63 /* CheatSheetOverlayView.swift */; };
 		VCPNL54212EB0B10004E6E63 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL54112EB0B10004E6E63 /* SettingsStore.swift */; };
 		VCFST23212EB0B10004E6E63 /* PasswordPrivacySurfacesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST23112EB0B10004E6E63 /* PasswordPrivacySurfacesTests.swift */; };
 		VCFST24212EB0B10004E6E63 /* CommandPaletteModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST24112EB0B10004E6E63 /* CommandPaletteModelTests.swift */; };
@@ -619,6 +620,7 @@
 		VCPNL55112EB0B10004E6E63 /* ASCIICapableLayoutTranslator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASCIICapableLayoutTranslator.swift; sourceTree = "<group>"; };
 		VCPNL56112EB0B10004E6E63 /* CommandPaletteOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPaletteOverlayView.swift; sourceTree = "<group>"; };
 		VCPNL57112EB0B10004E6E63 /* EmbeddedPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddedPreviewView.swift; sourceTree = "<group>"; };
+		VCPNL58112EB0B10004E6E63 /* CheatSheetOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatSheetOverlayView.swift; sourceTree = "<group>"; };
 		VCPNL54112EB0B10004E6E63 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		VCFST23112EB0B10004E6E63 /* PasswordPrivacySurfacesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPrivacySurfacesTests.swift; sourceTree = "<group>"; };
 		VCFST24112EB0B10004E6E63 /* CommandPaletteModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPaletteModelTests.swift; sourceTree = "<group>"; };
@@ -743,6 +745,7 @@
 				34ACFBEA22EB0D6A004E6E63 /* HistoryViewController.swift */,
 				VCPNL56112EB0B10004E6E63 /* CommandPaletteOverlayView.swift */,
 				VCPNL57112EB0B10004E6E63 /* EmbeddedPreviewView.swift */,
+				VCPNL58112EB0B10004E6E63 /* CheatSheetOverlayView.swift */,
 				VCHVD00112EB0B10004E6E63 /* HistoryViewController+Delegates.swift */,
 				VCHPC00112EB0B10004E6E63 /* HistoryPanelChromeConfigurator.swift */,
 				VCPCH10112EB0B10004E6E63 /* PanelChromeController.swift */,
@@ -1548,6 +1551,7 @@
 				34ACFBEB22EB0D6A004E6E63 /* HistoryViewController.swift in Sources */,
 				VCPNL56212EB0B10004E6E63 /* CommandPaletteOverlayView.swift in Sources */,
 				VCPNL57212EB0B10004E6E63 /* EmbeddedPreviewView.swift in Sources */,
+				VCPNL58212EB0B10004E6E63 /* CheatSheetOverlayView.swift in Sources */,
 				VCHVD00212EB0B10004E6E63 /* HistoryViewController+Delegates.swift in Sources */,
 				VCHPC00212EB0B10004E6E63 /* HistoryPanelChromeConfigurator.swift in Sources */,
 				34E56483235E777E00E362CF /* NSTextCheckingResult+Groups.swift in Sources */,
