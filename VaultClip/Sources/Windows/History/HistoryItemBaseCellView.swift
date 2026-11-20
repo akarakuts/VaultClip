@@ -245,46 +245,86 @@ class HistoryItemBaseCellView: NSTableCellView {
         let location = convert(event.locationInWindow, from: nil)
         let row = table.row(at: location)
         guard row >= 0, row < table.historyListItems.count else { return }
+        // Finder-like: right-click selects the row first (U17).
+        if table.selected != row {
+            table.selectItem(row)
+        }
         displayedRow = row
         let item = table.historyListItems[row]
-        let favoriteTitle = item.isFavorite ? L10n.contextRemoveFromFavorites : L10n.contextAddToFavorites
-        let favoriteItem = NSMenuItem(title: favoriteTitle, action: #selector(contextToggleFavorite(_:)), keyEquivalent: "")
-        let deleteItem = NSMenuItem(
-            title: L10n.contextDelete,
-            action: #selector(contextDeleteItem(_:)),
-            keyEquivalent: Constants.statusItemMenu.deleteKeyEquivalent
-        )
-        deleteItem.keyEquivalentModifierMask = .control
-        
-        var menuItems: [NSMenuItem] = [favoriteItem]
+        let kind: ItemKind
         if item.isPassword {
-            if table.listMode == .passwords {
-                let copyLogin = NSMenuItem(title: L10n.contextCopyLogin, action: #selector(contextCopyPasswordLogin(_:)), keyEquivalent: "")
-                copyLogin.isEnabled = !item.passwordLogin.isEmpty
-                menuItems.append(copyLogin)
-                let copyURL = NSMenuItem(title: L10n.contextCopyURL, action: #selector(contextCopyPasswordURL(_:)), keyEquivalent: "")
-                copyURL.isEnabled = !item.passwordURL.isEmpty
-                menuItems.append(copyURL)
-                let openURL = NSMenuItem(title: L10n.contextOpenURL, action: #selector(contextOpenPasswordURL(_:)), keyEquivalent: "")
-                openURL.isEnabled = item.passwordOpenableURL != nil
-                menuItems.append(openURL)
-                let copyPassword = NSMenuItem(title: L10n.contextCopyPassword, action: #selector(contextCopyPasswordValue(_:)), keyEquivalent: "")
-                copyPassword.isEnabled = item.getPasswordValue() != nil
-                menuItems.append(copyPassword)
-                menuItems.append(NSMenuItem.separator())
-            }
-            menuItems.append(NSMenuItem(title: L10n.contextEdit, action: #selector(contextEditPasswordEntry(_:)), keyEquivalent: ""))
-            menuItems.append(NSMenuItem(title: L10n.contextRemoveFromPasswords, action: #selector(contextRemoveFromPasswords(_:)), keyEquivalent: ""))
+            kind = .password
+        } else if item.getColor() != nil {
+            kind = .color
+        } else if item.getImage() != nil {
+            kind = .image
         } else {
-            menuItems.append(NSMenuItem(title: L10n.contextSaveToPasswords, action: #selector(contextSaveToPasswords(_:)), keyEquivalent: ""))
+            kind = .text
         }
-        menuItems.append(NSMenuItem.separator())
-        menuItems.append(deleteItem)
-        
+        let model = ContextMenuBuilder.build(
+            kind: kind,
+            isPassword: item.isPassword,
+            isFavorite: item.isFavorite,
+            selectionCount: 1,
+            sourceAppName: item.sourceBundleId?.split(separator: ".").last.map(String.init)
+        )
         let menu = NSMenu(title: "Item")
-        menuItems.forEach { menu.addItem($0) }
-        menu.items.forEach { $0.target = self }
+        for (index, block) in model.sections.enumerated() {
+            if index > 0 { menu.addItem(.separator()) }
+            for entry in block.items where entry.isEnabled || entry.commandID == .toggleFavorite {
+                let title: String
+                switch entry.titleKey {
+                case "unfavorite": title = L10n.contextRemoveFromFavorites
+                case "copyLogin": title = L10n.contextCopyLogin
+                case "copyPassword": title = L10n.contextCopyPassword
+                case "copyURL": title = L10n.contextCopyURL
+                case "openURL": title = L10n.contextOpenURL
+                case "editPassword": title = L10n.contextEdit
+                case "removeFromPasswords": title = L10n.contextRemoveFromPasswords
+                case "saveToPasswords": title = L10n.contextSaveToPasswords
+                case "filterByApp":
+                    let name = item.sourceBundleId?.split(separator: ".").last.map(String.init) ?? ""
+                    title = "\(L10n.commandTitle(for: "command.filterApp")) «\(name)»"
+                default:
+                    if let id = entry.commandID {
+                        title = PanelCommandRegistry.command(id: id).title
+                    } else {
+                        title = L10n.commandTitle(for: entry.titleKey)
+                    }
+                }
+                let menuItem = NSMenuItem(title: title, action: selector(for: entry), keyEquivalent: "")
+                menuItem.isEnabled = entry.isEnabled || entry.commandID == .toggleFavorite
+                if let symbol = NSImage(systemSymbolName: entry.symbolName, accessibilityDescription: nil) {
+                    menuItem.image = symbol
+                }
+                if let id = entry.commandID,
+                   let chord = PanelCommandRegistry.command(id: id).bindings.first?.chord {
+                    menuItem.toolTip = chord.displayString
+                }
+                menuItem.target = self
+                menu.addItem(menuItem)
+            }
+        }
         NSMenu.popUpContextMenu(menu, with: event, for: self)
+    }
+
+    private func selector(for entry: ContextMenuItem) -> Selector {
+        switch entry.titleKey {
+        case "copyLogin": return #selector(contextCopyPasswordLogin(_:))
+        case "copyURL": return #selector(contextCopyPasswordURL(_:))
+        case "openURL": return #selector(contextOpenPasswordURL(_:))
+        case "copyPassword": return #selector(contextCopyPasswordValue(_:))
+        case "editPassword": return #selector(contextEditPasswordEntry(_:))
+        case "removeFromPasswords": return #selector(contextRemoveFromPasswords(_:))
+        case "saveToPasswords": return #selector(contextSaveToPasswords(_:))
+        case "unfavorite": return #selector(contextToggleFavorite(_:))
+        default: break
+        }
+        switch entry.commandID {
+        case .toggleFavorite: return #selector(contextToggleFavorite(_:))
+        case .delete: return #selector(contextDeleteItem(_:))
+        default: return #selector(contextToggleFavorite(_:))
+        }
     }
     
     @objc private func contextToggleFavorite(_ sender: NSMenuItem) {
