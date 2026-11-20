@@ -106,6 +106,34 @@ class HistoryPanel {
         paste(item: items[displayedIndex])
     }
 
+    /// ⌘C: put the item on the pasteboard without pasting or reordering; passwords go through the gate.
+    func copyToClipboard(item: HistoryItem) {
+        let perform = { [weak self] in
+            guard let self else { return }
+            item.pastesRichText = self.settings().pastesRichText
+            item.lastUsedAt = Date()
+            let changeCount = item.write(to: self.pasteboard)
+            HistoryPanel.markSelfWrite(changeCount)
+            self.history.noteClipboardItemId(item.fsId)
+            self.history.recordPasteboardChange(withCount: changeCount)
+            if item.isPassword {
+                PasswordClipboardClearer.shared.scheduleClear(afterWritingChangeCount: changeCount, pasteboard: self.pasteboard)
+            }
+        }
+        if item.isPassword {
+            PasswordAccessGate.shared.authorize { ok in
+                if ok { perform() }
+            }
+        } else {
+            perform()
+        }
+    }
+
+    /// Copies plain text (multi-select ⌘C) without pasting.
+    func copyText(_ text: String) {
+        copyStringToClipboard(text, concealed: false)
+    }
+
     /// Multi-paste joined text without reordering history; updates `lastUsedAt` (U16).
     func multiPasteJoined(_ text: String, items: [HistoryItem]) {
         let changeCount = PasteboardWriter.writeString(text, to: pasteboard, concealed: false)

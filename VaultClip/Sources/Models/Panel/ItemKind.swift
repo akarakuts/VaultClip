@@ -68,7 +68,8 @@ enum ItemKindClassifier {
 
     private static func typesContainsColor(_ types: Set<String>) -> Bool {
         types.contains("com.apple.cocoa.pasteboard.color")
-            || types.contains { $0.contains("color") && $0.contains("pasteboard") }
+            || types.contains("nscolorpboardtype")
+            || types.contains { $0.contains("color") && ($0.contains("pasteboard") || $0.contains("pboard")) }
     }
 
     private static func typesContainsImage(_ types: Set<String>) -> Bool {

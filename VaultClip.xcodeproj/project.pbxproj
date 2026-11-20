@@ -251,12 +251,15 @@
 		VCPNL29212EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */; };
 		VCPNL30212EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */; };
 		VCHRV10212EB0B10004E6E63 /* HistoryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCHRV10112EB0B10004E6E63 /* HistoryRowView.swift */; };
+		VCXAC0D884E1BD938DBA9A67 /* HistoryTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCXE57009C056918505414DF /* HistoryTableRowView.swift */; };
+		VCX82CB8B2ABB5329ACBE3C3 /* RowArtworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCX658D1C656156478362D21 /* RowArtworkProvider.swift */; };
 		VCPNL31212EB0B10004E6E63 /* ThumbnailMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL31112EB0B10004E6E63 /* ThumbnailMemoryCache.swift */; };
 		VCHRV20212EB0B10004E6E63 /* HistoryRowViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCHRV20112EB0B10004E6E63 /* HistoryRowViewTests.swift */; };
 		VCPNL32212EB0B10004E6E63 /* DateGrouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL32112EB0B10004E6E63 /* DateGrouping.swift */; };
 		VCLUA10212EB0B10004E6E63 /* LastUsedAtTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCLUA10112EB0B10004E6E63 /* LastUsedAtTests.swift */; };
 		VCPNL33212EB0B10004E6E63 /* FilterState.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL33112EB0B10004E6E63 /* FilterState.swift */; };
 		VCFST10212EB0B10004E6E63 /* FilterStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST10112EB0B10004E6E63 /* FilterStateTests.swift */; };
+		VCX0B851D3CB1803F9447F51 /* RowPresentationFormattingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCX5CBDE115D6DD40C8368E2 /* RowPresentationFormattingTests.swift */; };
 		VCPNL34212EB0B10004E6E63 /* MultiPasteComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL34112EB0B10004E6E63 /* MultiPasteComposer.swift */; };
 		VCPNL35212EB0B10004E6E63 /* PendingDeletionQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL35112EB0B10004E6E63 /* PendingDeletionQueue.swift */; };
 		VCFST11212EB0B10004E6E63 /* MultiPasteComposerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST11112EB0B10004E6E63 /* MultiPasteComposerTests.swift */; };
@@ -295,6 +298,12 @@
 		VCPNL57212EB0B10004E6E63 /* EmbeddedPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL57112EB0B10004E6E63 /* EmbeddedPreviewView.swift */; };
 		VCPNL58212EB0B10004E6E63 /* CheatSheetOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL58112EB0B10004E6E63 /* CheatSheetOverlayView.swift */; };
 		VCPNL59412EB0B10004E6E63 /* PanelFilterBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL59312EB0B10004E6E63 /* PanelFilterBarView.swift */; };
+		VCXC4B9479E958CDE3D8B791 /* PanelOverlayListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCX2C59FAEDCA633752850D3 /* PanelOverlayListView.swift */; };
+		VCX2C418A731BED705489270 /* PanelToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCX7F848BFA5254766FCFD6F /* PanelToastView.swift */; };
+		VCX5D91B48CA010F1EF28383 /* HistoryViewController+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCX2B17A5C6B132A83E7B70E /* HistoryViewController+Actions.swift */; };
+		VCX7653D94F9C8B469143269 /* HistoryViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCXED1AC7E2C3602750BC1EF /* HistoryViewController+Layout.swift */; };
+		VCX86522CF92FF8299B44085 /* HistoryTableView+ContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCXA5261370570C358906293 /* HistoryTableView+ContextMenu.swift */; };
+		VCX8FEFABC0CD405B84A0993 /* HistoryItemSummaryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCX39F1FCFEF78542D32387B /* HistoryItemSummaryBuilder.swift */; };
 		VCPNL60612EB0B10004E6E63 /* PanelEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL60512EB0B10004E6E63 /* PanelEmptyStateView.swift */; };
 		VCPNL54212EB0B10004E6E63 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL54112EB0B10004E6E63 /* SettingsStore.swift */; };
 		VCFST23212EB0B10004E6E63 /* PasswordPrivacySurfacesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST23112EB0B10004E6E63 /* PasswordPrivacySurfacesTests.swift */; };
@@ -586,12 +595,15 @@
 		VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStateModel.swift; sourceTree = "<group>"; };
 		VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelStatusBarPresenterTests.swift; sourceTree = "<group>"; };
 		VCHRV10112EB0B10004E6E63 /* HistoryRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRowView.swift; sourceTree = "<group>"; };
+		VCXE57009C056918505414DF /* HistoryTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableRowView.swift; sourceTree = "<group>"; };
+		VCX658D1C656156478362D21 /* RowArtworkProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowArtworkProvider.swift; sourceTree = "<group>"; };
 		VCPNL31112EB0B10004E6E63 /* ThumbnailMemoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailMemoryCache.swift; sourceTree = "<group>"; };
 		VCHRV20112EB0B10004E6E63 /* HistoryRowViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRowViewTests.swift; sourceTree = "<group>"; };
 		VCPNL32112EB0B10004E6E63 /* DateGrouping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateGrouping.swift; sourceTree = "<group>"; };
 		VCLUA10112EB0B10004E6E63 /* LastUsedAtTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastUsedAtTests.swift; sourceTree = "<group>"; };
 		VCPNL33112EB0B10004E6E63 /* FilterState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterState.swift; sourceTree = "<group>"; };
 		VCFST10112EB0B10004E6E63 /* FilterStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterStateTests.swift; sourceTree = "<group>"; };
+		VCX5CBDE115D6DD40C8368E2 /* RowPresentationFormattingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowPresentationFormattingTests.swift; sourceTree = "<group>"; };
 		VCPNL34112EB0B10004E6E63 /* MultiPasteComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiPasteComposer.swift; sourceTree = "<group>"; };
 		VCPNL35112EB0B10004E6E63 /* PendingDeletionQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingDeletionQueue.swift; sourceTree = "<group>"; };
 		VCFST11112EB0B10004E6E63 /* MultiPasteComposerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiPasteComposerTests.swift; sourceTree = "<group>"; };
@@ -630,6 +642,12 @@
 		VCPNL57112EB0B10004E6E63 /* EmbeddedPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddedPreviewView.swift; sourceTree = "<group>"; };
 		VCPNL58112EB0B10004E6E63 /* CheatSheetOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatSheetOverlayView.swift; sourceTree = "<group>"; };
 		VCPNL59312EB0B10004E6E63 /* PanelFilterBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelFilterBarView.swift; sourceTree = "<group>"; };
+		VCX2C59FAEDCA633752850D3 /* PanelOverlayListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelOverlayListView.swift; sourceTree = "<group>"; };
+		VCX7F848BFA5254766FCFD6F /* PanelToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelToastView.swift; sourceTree = "<group>"; };
+		VCX2B17A5C6B132A83E7B70E /* HistoryViewController+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryViewController+Actions.swift"; sourceTree = "<group>"; };
+		VCXED1AC7E2C3602750BC1EF /* HistoryViewController+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryViewController+Layout.swift"; sourceTree = "<group>"; };
+		VCXA5261370570C358906293 /* HistoryTableView+ContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryTableView+ContextMenu.swift"; sourceTree = "<group>"; };
+		VCX39F1FCFEF78542D32387B /* HistoryItemSummaryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryItemSummaryBuilder.swift; sourceTree = "<group>"; };
 		VCPNL60512EB0B10004E6E63 /* PanelEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStateView.swift; sourceTree = "<group>"; };
 		VCPNL54112EB0B10004E6E63 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		VCFST23112EB0B10004E6E63 /* PasswordPrivacySurfacesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPrivacySurfacesTests.swift; sourceTree = "<group>"; };
@@ -717,6 +735,8 @@
 				345BAE2D235005BB008ACB4C /* HistoryFileThumbnailCellView.swift */,
 				347D59A322F43B94005F6EA8 /* HistoryTextCellView.swift */,
 				VCHRV10112EB0B10004E6E63 /* HistoryRowView.swift */,
+				VCXE57009C056918505414DF /* HistoryTableRowView.swift */,
+				VCX658D1C656156478362D21 /* RowArtworkProvider.swift */,
 				34B5C43523582CCB005247EB /* HistoryTiffCellView.swift */,
 				B2C3D4E52123456789001 /* HistoryPdfCellView.swift */,
 			);
@@ -757,6 +777,12 @@
 				VCPNL57112EB0B10004E6E63 /* EmbeddedPreviewView.swift */,
 				VCPNL58112EB0B10004E6E63 /* CheatSheetOverlayView.swift */,
 				VCPNL59312EB0B10004E6E63 /* PanelFilterBarView.swift */,
+				VCX2C59FAEDCA633752850D3 /* PanelOverlayListView.swift */,
+				VCX7F848BFA5254766FCFD6F /* PanelToastView.swift */,
+				VCX2B17A5C6B132A83E7B70E /* HistoryViewController+Actions.swift */,
+				VCXED1AC7E2C3602750BC1EF /* HistoryViewController+Layout.swift */,
+				VCXA5261370570C358906293 /* HistoryTableView+ContextMenu.swift */,
+				VCX39F1FCFEF78542D32387B /* HistoryItemSummaryBuilder.swift */,
 				VCPNL60512EB0B10004E6E63 /* PanelEmptyStateView.swift */,
 				VCHVD00112EB0B10004E6E63 /* HistoryViewController+Delegates.swift */,
 				VCHPC00112EB0B10004E6E63 /* HistoryPanelChromeConfigurator.swift */,
@@ -1221,6 +1247,7 @@
 				VCHRV20112EB0B10004E6E63 /* HistoryRowViewTests.swift */,
 				VCLUA10112EB0B10004E6E63 /* LastUsedAtTests.swift */,
 				VCFST10112EB0B10004E6E63 /* FilterStateTests.swift */,
+				VCX5CBDE115D6DD40C8368E2 /* RowPresentationFormattingTests.swift */,
 				VCFST11112EB0B10004E6E63 /* MultiPasteComposerTests.swift */,
 				VCFST12112EB0B10004E6E63 /* PendingDeletionQueueTests.swift */,
 				VCFST13112EB0B10004E6E63 /* RowActionOverlayTests.swift */,
@@ -1568,6 +1595,12 @@
 				VCPNL57212EB0B10004E6E63 /* EmbeddedPreviewView.swift in Sources */,
 				VCPNL58212EB0B10004E6E63 /* CheatSheetOverlayView.swift in Sources */,
 				VCPNL59412EB0B10004E6E63 /* PanelFilterBarView.swift in Sources */,
+				VCXC4B9479E958CDE3D8B791 /* PanelOverlayListView.swift in Sources */,
+				VCX2C418A731BED705489270 /* PanelToastView.swift in Sources */,
+				VCX5D91B48CA010F1EF28383 /* HistoryViewController+Actions.swift in Sources */,
+				VCX7653D94F9C8B469143269 /* HistoryViewController+Layout.swift in Sources */,
+				VCX86522CF92FF8299B44085 /* HistoryTableView+ContextMenu.swift in Sources */,
+				VCX8FEFABC0CD405B84A0993 /* HistoryItemSummaryBuilder.swift in Sources */,
 				VCPNL60612EB0B10004E6E63 /* PanelEmptyStateView.swift in Sources */,
 				VCHVD00212EB0B10004E6E63 /* HistoryViewController+Delegates.swift in Sources */,
 				VCHPC00212EB0B10004E6E63 /* HistoryPanelChromeConfigurator.swift in Sources */,
@@ -1712,6 +1745,8 @@
 				VCPNL55212EB0B10004E6E63 /* ASCIICapableLayoutTranslator.swift in Sources */,
 				VCPNL54212EB0B10004E6E63 /* SettingsStore.swift in Sources */,
 				VCHRV10212EB0B10004E6E63 /* HistoryRowView.swift in Sources */,
+				VCXAC0D884E1BD938DBA9A67 /* HistoryTableRowView.swift in Sources */,
+				VCX82CB8B2ABB5329ACBE3C3 /* RowArtworkProvider.swift in Sources */,
 				VCPNL28212EB0B10004E6E63 /* PanelEmptyStateModel.swift in Sources */,
 				VCPNL27212EB0B10004E6E63 /* PanelStatusBarModel.swift in Sources */,
 				VCPNL28212EB0B10004E6E63 /* PanelEmptyStateModel.swift in Sources */,
@@ -1759,6 +1794,7 @@
 				VCHRV20212EB0B10004E6E63 /* HistoryRowViewTests.swift in Sources */,
 				VCLUA10212EB0B10004E6E63 /* LastUsedAtTests.swift in Sources */,
 				VCFST10212EB0B10004E6E63 /* FilterStateTests.swift in Sources */,
+				VCX0B851D3CB1803F9447F51 /* RowPresentationFormattingTests.swift in Sources */,
 				VCFST11212EB0B10004E6E63 /* MultiPasteComposerTests.swift in Sources */,
 				VCFST12212EB0B10004E6E63 /* PendingDeletionQueueTests.swift in Sources */,
 				VCFST13212EB0B10004E6E63 /* RowActionOverlayTests.swift in Sources */,

@@ -32,4 +32,15 @@ protocol HistoryTableViewDelegate {
     func historyTableView(_ historyTableView: HistoryTableView, openPasswordURLAt row: Int)
     
     func historyTableView(_ historyTableView: HistoryTableView, deleteItemAt row: Int)
+
+    /// Double-click / ⏎ on a row.
+    func historyTableView(_ historyTableView: HistoryTableView, pasteRowAt row: Int)
+
+    /// Hover overlay buttons (U15).
+    func historyTableView(_ historyTableView: HistoryTableView, performRowAction action: RowActionButtonID, at row: Int)
+
+    /// Registry-backed context menu entries (U17); selection already includes `row`.
+    func historyTableView(_ historyTableView: HistoryTableView, performCommand command: PanelCommandID, at row: Int)
+
+    func historyTableView(_ historyTableView: HistoryTableView, filterByAppAt row: Int)
 }

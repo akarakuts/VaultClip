@@ -306,6 +306,10 @@ enum L10n {
     static var command_filterApp: String { tr("command.filterApp") }
     static var command_clearFilters: String { tr("command.clearFilters") }
 
+    static var toastCopied: String { tr("toast.copied") }
+    static var toastUndo: String { tr("toast.undo") }
+    static func toastDeleted(_ count: Int) -> String { String(format: tr("toast.deleted"), count) }
+
     static var filterAllApps: String { tr("filter.allApps") }
     static var filterUnknownSource: String { tr("filter.unknownSource") }
     static var filterTypeAll: String { tr("filter.typeAll") }

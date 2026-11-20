@@ -80,7 +80,10 @@ class HistoryWindowController: NSWindowController {
             guard let screen else { return }
             self.panelChrome.applyChrome(for: position)
             let sizes = SettingsPersistence.current().panelSizes
-            self.window?.setFrame(position.getFrame(forScreen: screen, sizes: sizes), display: true)
+            let frame = position.getFrame(forScreen: screen, sizes: sizes)
+            // Content must never grow the panel past its computed frame (large preview images did).
+            self.window?.contentMaxSize = frame.size
+            self.window?.setFrame(frame, display: true)
             DispatchQueue.main.async {
                 (self.contentViewController as? HistoryViewController)?
                     .alignHistoryListAfterWindowFrameChange()

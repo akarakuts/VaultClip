@@ -11,10 +11,9 @@ final class PanelFilterBarView: NSView {
     var onTypeChange: ((TypeFilter) -> Void)?
     var onAppChange: ((String?) -> Void)?
 
-    private let typeScroll = NSScrollView(frame: .zero)
-    private let typeStack = NSStackView(frame: .zero)
+    private let typeControl = NSSegmentedControl()
     private let appButton = NSPopUpButton(frame: .zero, pullsDown: false)
-    private var typeButtons: [TypeFilter: NSButton] = [:]
+    private static let order: [TypeFilter] = [.all, .text, .link, .image, .file, .color]
     private var current = FilterState()
 
     override init(frame frameRect: NSRect) {
@@ -30,10 +29,7 @@ final class PanelFilterBarView: NSView {
 
     func apply(_ state: FilterState) {
         current = state
-        for (type, button) in typeButtons {
-            button.state = type == state.type ? .on : .off
-            button.contentTintColor = type == state.type ? .controlAccentColor : .secondaryLabelColor
-        }
+        typeControl.selectedSegment = Self.order.firstIndex(of: state.type) ?? 0
         updateAppTitle()
     }
 
@@ -64,65 +60,52 @@ final class PanelFilterBarView: NSView {
     }
 
     private func build() {
-        typeStack.orientation = .horizontal
-        typeStack.spacing = 4
-        typeStack.alignment = .centerY
-        typeStack.translatesAutoresizingMaskIntoConstraints = false
-        typeStack.setHuggingPriority(.defaultHigh, for: .horizontal)
-
-        let chips: [(TypeFilter, String)] = [
-            (.all, L10n.filterTypeAll),
-            (.text, L10n.filterTypeText),
-            (.link, L10n.filterTypeLinks),
-            (.image, L10n.filterTypeImages),
-            (.file, L10n.filterTypeFiles),
-            (.color, L10n.filterTypeColors)
+        // «Все» as text, the rest as SF Symbols with tooltips so six types fit a 460pt edge panel.
+        let titles: [(TypeFilter, String, String?)] = [
+            (.all, L10n.filterTypeAll, nil),
+            (.text, L10n.filterTypeText, "text.alignleft"),
+            (.link, L10n.filterTypeLinks, "link"),
+            (.image, L10n.filterTypeImages, "photo"),
+            (.file, L10n.filterTypeFiles, "doc"),
+            (.color, L10n.filterTypeColors, "paintpalette")
         ]
-        for (type, title) in chips {
-            let button = NSButton(title: title, target: self, action: #selector(typeTapped(_:)))
-            button.bezelStyle = .recessed
-            button.setButtonType(.onOff)
-            button.isBordered = true
-            button.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
-            button.tag = chips.firstIndex(where: { $0.0 == type }) ?? 0
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.heightAnchor.constraint(equalToConstant: 22).isActive = true
-            typeButtons[type] = button
-            typeStack.addArrangedSubview(button)
+        typeControl.segmentCount = titles.count
+        typeControl.trackingMode = .selectOne
+        typeControl.segmentStyle = .rounded
+        typeControl.controlSize = .small
+        typeControl.target = self
+        typeControl.action = #selector(typeChanged(_:))
+        for (index, entry) in titles.enumerated() {
+            if let symbol = entry.2 {
+                typeControl.setImage(NSImage(systemSymbolName: symbol, accessibilityDescription: entry.1), forSegment: index)
+                typeControl.setWidth(30, forSegment: index)
+            } else {
+                typeControl.setLabel(entry.1, forSegment: index)
+            }
+            typeControl.setToolTip(entry.1, forSegment: index)
         }
-
-        typeScroll.translatesAutoresizingMaskIntoConstraints = false
-        typeScroll.drawsBackground = false
-        typeScroll.hasHorizontalScroller = false
-        typeScroll.hasVerticalScroller = false
-        typeScroll.horizontalScrollElasticity = .none
-        typeScroll.documentView = typeStack
-        typeScroll.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        typeControl.translatesAutoresizingMaskIntoConstraints = false
+        typeControl.setContentHuggingPriority(.defaultHigh, for: .horizontal)
 
         appButton.translatesAutoresizingMaskIntoConstraints = false
+        appButton.controlSize = .small
         appButton.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
         appButton.target = self
         appButton.action = #selector(appPicked(_:))
         appButton.addItem(withTitle: L10n.filterAllApps)
-        appButton.controlSize = .small
+        appButton.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        appButton.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
-        let row = NSStackView(views: [typeScroll, appButton])
-        row.orientation = .horizontal
-        row.spacing = 8
-        row.alignment = .centerY
-        row.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(row)
-
+        addSubview(typeControl)
+        addSubview(appButton)
         NSLayoutConstraint.activate([
-            row.leadingAnchor.constraint(equalTo: leadingAnchor),
-            row.trailingAnchor.constraint(equalTo: trailingAnchor),
-            row.topAnchor.constraint(equalTo: topAnchor),
-            row.bottomAnchor.constraint(equalTo: bottomAnchor),
-            appButton.widthAnchor.constraint(lessThanOrEqualToConstant: 160),
-            typeScroll.widthAnchor.constraint(greaterThanOrEqualToConstant: 120)
+            typeControl.leadingAnchor.constraint(equalTo: leadingAnchor),
+            typeControl.centerYAnchor.constraint(equalTo: centerYAnchor),
+            appButton.leadingAnchor.constraint(equalTo: typeControl.trailingAnchor, constant: 8),
+            appButton.trailingAnchor.constraint(equalTo: trailingAnchor),
+            appButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            appButton.widthAnchor.constraint(lessThanOrEqualToConstant: 200)
         ])
-        typeScroll.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        appButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         apply(FilterState())
     }
 
@@ -134,10 +117,10 @@ final class PanelFilterBarView: NSView {
         }
     }
 
-    @objc private func typeTapped(_ sender: NSButton) {
-        let order: [TypeFilter] = [.all, .text, .link, .image, .file, .color]
-        guard sender.tag >= 0, sender.tag < order.count else { return }
-        onTypeChange?(order[sender.tag])
+    @objc private func typeChanged(_ sender: NSSegmentedControl) {
+        let index = sender.selectedSegment
+        guard index >= 0, index < Self.order.count else { return }
+        onTypeChange?(Self.order[index])
     }
 
     @objc private func appPicked(_ sender: NSPopUpButton) {

@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 //
 import Cocoa
+import Quartz
 
 extension HistoryViewController: NSTextFieldDelegate {
     func controlTextDidChange(_ obj: Notification) {
@@ -16,8 +17,12 @@ extension HistoryViewController: NSTextFieldDelegate {
 extension HistoryViewController: HistoryTableViewDelegate {
     func historyTableView(_ historyTableView: HistoryTableView, selectedDidChange selected: Int?) {
         syncSelectionModelFromTable()
-        self.selected.accept(selected)
+        // Multi-select keeps the cursor row; an empty user deselection keeps the last logical row.
+        if let selected, selected != self.selected.value, !selectionModel.isMulti {
+            self.selected.accept(selected)
+        }
         refreshSelectionChrome()
+        scheduleEmbeddedPreviewUpdate()
     }
 
     func historyTableView(_ historyTableView: HistoryTableView, didMoveItem from: Int, to: Int) {
@@ -79,7 +84,34 @@ extension HistoryViewController: HistoryTableViewDelegate {
     }
 
     func historyTableView(_ historyTableView: HistoryTableView, deleteItemAt row: Int) {
-        selected.accept(historyPanel.delete(displayedIndex: row))
+        performContextCommand(.delete, at: row)
+    }
+
+    func historyTableView(_ historyTableView: HistoryTableView, pasteRowAt row: Int) {
+        guard row >= 0, row < historyPanel.items.count else { return }
+        paste(selected: row)
+    }
+
+    func historyTableView(_ historyTableView: HistoryTableView, performRowAction action: RowActionButtonID, at row: Int) {
+        performRowAction(action, at: row)
+    }
+
+    func historyTableView(_ historyTableView: HistoryTableView, performCommand command: PanelCommandID, at row: Int) {
+        performContextCommand(command, at: row)
+    }
+
+    func historyTableView(_ historyTableView: HistoryTableView, filterByAppAt row: Int) {
+        filterToAppOfItem(at: row)
+    }
+}
+
+extension HistoryViewController: QLPreviewPanelDataSource {
+    func numberOfPreviewItems(in panel: QLPreviewPanel!) -> Int {
+        quickLookURL == nil ? 0 : 1
+    }
+
+    func previewPanel(_ panel: QLPreviewPanel!, previewItemAt index: Int) -> QLPreviewItem! {
+        quickLookURL as NSURL?
     }
 }
 

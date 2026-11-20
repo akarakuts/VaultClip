@@ -24,6 +24,8 @@ struct ItemSummary: Equatable {
     var passwordComment: String?
     var pdfPageCount: Int?
     var isRichText: Bool
+    /// Resolved app display name (Finder name); falls back to the bundle id tail.
+    var sourceAppName: String? = nil
 }
 
 struct RowPresentation: Equatable, Identifiable {
@@ -120,7 +122,9 @@ enum RowPresentationBuilder {
 
     static func subtitle(for summary: ItemSummary, locale: Locale, now: Date) -> String {
         var parts: [String] = []
-        if let bundle = summary.sourceBundleId, let name = bundle.split(separator: ".").last {
+        if let name = summary.sourceAppName, !name.isEmpty {
+            parts.append(name)
+        } else if let bundle = summary.sourceBundleId, let name = bundle.split(separator: ".").last {
             parts.append(String(name))
         }
         parts.append(relativeTime(from: summary.lastUsedAt, to: now, locale: locale))
@@ -162,15 +166,16 @@ enum RowPresentationBuilder {
             return localized("link", "ссылка", locale: locale)
         case .file(let count):
             return locale.language.languageCode?.identifier == "ru"
-                ? "\(count) файла"
-                : "\(count) files"
+                ? "\(count) \(russianPlural(count, one: "файл", few: "файла", many: "файлов"))"
+                : (count == 1 ? "1 file" : "\(count) files")
         case .richText:
             return "RTF"
         case .text:
             if summary.lineCount > 1 {
+                let n = summary.lineCount
                 return locale.language.languageCode?.identifier == "ru"
-                    ? "\(summary.lineCount) строк"
-                    : "\(summary.lineCount) lines"
+                    ? "\(n) \(russianPlural(n, one: "строка", few: "строки", many: "строк"))"
+                    : "\(n) lines"
             }
             if summary.charCount > 0 {
                 let formatted = NumberFormatter.localizedString(from: NSNumber(value: summary.charCount), number: .decimal)
@@ -184,11 +189,36 @@ enum RowPresentationBuilder {
         }
     }
 
-    private static func relativeTime(from date: Date, to now: Date, locale: Locale) -> String {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.locale = locale
-        formatter.unitsStyle = .abbreviated
-        return formatter.localizedString(for: date, relativeTo: now)
+    /// Compact age («5 мин», «2 ч», «3 дн.», then a short date) — never a signed offset.
+    static func relativeTime(from date: Date, to now: Date, locale: Locale) -> String {
+        let ru = locale.language.languageCode?.identifier == "ru"
+        let seconds = max(0, now.timeIntervalSince(date))
+        switch seconds {
+        case ..<60:
+            return ru ? "только что" : "now"
+        case ..<3600:
+            let m = Int(seconds / 60)
+            return ru ? "\(m) мин" : "\(m) min"
+        case ..<86_400:
+            let h = Int(seconds / 3600)
+            return ru ? "\(h) ч" : "\(h) h"
+        case ..<(7 * 86_400):
+            let d = Int(seconds / 86_400)
+            return ru ? "\(d) дн." : "\(d) d"
+        default:
+            let formatter = DateFormatter()
+            formatter.locale = locale
+            formatter.setLocalizedDateFormatFromTemplate("d MMM")
+            return formatter.string(from: date)
+        }
+    }
+
+    static func russianPlural(_ n: Int, one: String, few: String, many: String) -> String {
+        let mod10 = n % 10
+        let mod100 = n % 100
+        if mod10 == 1, mod100 != 11 { return one }
+        if (2...4).contains(mod10), !(12...14).contains(mod100) { return few }
+        return many
     }
 
     private static func localized(_ en: String, _ ru: String, locale: Locale) -> String {

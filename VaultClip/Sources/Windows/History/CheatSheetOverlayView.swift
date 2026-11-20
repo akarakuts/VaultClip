@@ -1,5 +1,5 @@
 //
-// CheatSheetOverlayView — ⌘/ overlay of registry shortcuts (U26).
+// CheatSheetOverlayView — ⌘/ overlay of registry shortcuts grouped by command group (U26).
 //
 // Copyright (C) 2026 Aleksey Karakuts <aleksey@karakuts.com>
 //
@@ -7,112 +7,57 @@
 //
 import AppKit
 
-final class CheatSheetOverlayView: NSView {
-    var onDismiss: (() -> Void)?
-    private let material = NSVisualEffectView()
-    private let searchField = NSSearchField()
-    private let table = NSTableView()
-    private let scroll = NSScrollView()
-    private var entries: [CheatSheetEntry] = []
-
+final class CheatSheetOverlayView: PanelOverlayListView {
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
-        setup()
+        configure()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setup()
+        configure()
     }
 
     func present() {
-        isHidden = false
-        searchField.stringValue = ""
-        reload("")
-        window?.makeFirstResponder(searchField)
+        presentOverlay()
         setAccessibilityIdentifier(Accessibility.identifiers.cheatSheet)
     }
 
-    func dismiss() {
-        isHidden = true
-        onDismiss?()
+    private func configure() {
+        placeholder = Self.ru ? "Найти сочетание…" : "Filter shortcuts…"
+        onQueryChange = { [weak self] query in self?.reload(query) }
+        onActivateRow = { _ in }
     }
 
     private func reload(_ query: String) {
-        entries = CheatSheetModel.entries(filter: query)
-        table.reloadData()
-    }
-
-    private func setup() {
-        wantsLayer = true
-        layer?.cornerRadius = PanelTheme.Radius.palette
-        layer?.masksToBounds = true
-        isHidden = true
-        material.material = .popover
-        material.blendingMode = .withinWindow
-        material.state = .active
-        material.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(material)
-        searchField.placeholderString = "Filter shortcuts…"
-        searchField.translatesAutoresizingMaskIntoConstraints = false
-        searchField.target = self
-        searchField.action = #selector(queryChanged)
-        addSubview(searchField)
-        table.headerView = nil
-        table.delegate = self
-        table.dataSource = self
-        table.rowHeight = 24
-        scroll.documentView = table
-        scroll.hasVerticalScroller = true
-        scroll.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(scroll)
-        NSLayoutConstraint.activate([
-            material.leadingAnchor.constraint(equalTo: leadingAnchor),
-            material.trailingAnchor.constraint(equalTo: trailingAnchor),
-            material.topAnchor.constraint(equalTo: topAnchor),
-            material.bottomAnchor.constraint(equalTo: bottomAnchor),
-            searchField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            searchField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            searchField.topAnchor.constraint(equalTo: topAnchor, constant: 12),
-            scroll.leadingAnchor.constraint(equalTo: leadingAnchor),
-            scroll.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scroll.topAnchor.constraint(equalTo: searchField.bottomAnchor, constant: 8),
-            scroll.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
-    }
-
-    @objc private func queryChanged() { reload(searchField.stringValue) }
-
-    override func keyDown(with event: NSEvent) {
-        if event.keyCode == 53 {
-            dismiss()
-            return
+        var display: [PanelOverlayRow] = []
+        var lastGroup: PanelCommandGroup?
+        let order: [PanelCommandGroup] = [.item, .view, .filter, .app, .window]
+        let entries = CheatSheetModel.entries(filter: query).enumerated().sorted {
+            let l = order.firstIndex(of: $0.element.group) ?? 99
+            let r = order.firstIndex(of: $1.element.group) ?? 99
+            return l == r ? $0.offset < $1.offset : l < r
+        }.map(\.element)
+        for entry in entries {
+            if entry.group != lastGroup {
+                display.append(PanelOverlayRow(title: Self.title(for: entry.group), symbolName: nil, shortcut: nil, isEnabled: false, isHeader: true))
+                lastGroup = entry.group
+            }
+            let symbol = PanelCommandRegistry.command(id: entry.id).symbolName
+            display.append(PanelOverlayRow(title: entry.title, symbolName: symbol, shortcut: entry.shortcut, isEnabled: true))
         }
-        super.keyDown(with: event)
+        setRows(display)
     }
-}
 
-extension CheatSheetOverlayView: NSTableViewDataSource, NSTableViewDelegate {
-    func numberOfRows(in tableView: NSTableView) -> Int { entries.count }
+    private static var ru: Bool { Locale.current.language.languageCode?.identifier == "ru" }
 
-    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let entry = entries[row]
-        let id = NSUserInterfaceItemIdentifier("CheatRow")
-        let cell = (tableView.makeView(withIdentifier: id, owner: nil) as? NSTableCellView) ?? {
-            let c = NSTableCellView()
-            c.identifier = id
-            let label = NSTextField(labelWithString: "")
-            label.translatesAutoresizingMaskIntoConstraints = false
-            c.addSubview(label)
-            c.textField = label
-            NSLayoutConstraint.activate([
-                label.leadingAnchor.constraint(equalTo: c.leadingAnchor, constant: 10),
-                label.trailingAnchor.constraint(equalTo: c.trailingAnchor, constant: -10),
-                label.centerYAnchor.constraint(equalTo: c.centerYAnchor)
-            ])
-            return c
-        }()
-        cell.textField?.stringValue = "\(entry.title)  \(entry.shortcut)"
-        return cell
+    private static func title(for group: PanelCommandGroup) -> String {
+        switch group {
+        case .item: return ru ? "Элемент и вставка" : "Item & paste"
+        case .view: return ru ? "Вид и навигация" : "View & navigation"
+        case .filter: return ru ? "Фильтры" : "Filters"
+        case .app: return ru ? "Приложение" : "App"
+        case .window: return ru ? "Окно" : "Window"
+        }
     }
 }

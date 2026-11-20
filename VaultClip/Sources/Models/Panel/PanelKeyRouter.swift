@@ -11,6 +11,11 @@ enum PanelKeyRoute: Equatable {
     case command(PanelCommandID)
     case passThrough
     case typeToSearch(String)
+
+    var commandID: PanelCommandID? {
+        if case .command(let id) = self { return id }
+        return nil
+    }
 }
 
 struct PanelKeyRouterContext: Equatable {

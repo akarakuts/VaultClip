@@ -15,9 +15,12 @@ final class HistoryRowView: NSTableCellView {
     private let subtitleLabel = NSTextField(labelWithString: "")
     private let shortcutLabel = NSTextField(labelWithString: "")
     private let accessoryView = NSImageView()
-    private let fadeView = NSView()
     private let actionsStack = NSStackView()
     private var actionButtons: [RowActionButtonID: NSButton] = [:]
+    private var textToAccessory: [NSLayoutConstraint] = []
+    private var textToActions: [NSLayoutConstraint] = []
+    private var isHovering = false
+    private var isRowSelected = false
     var onAction: ((RowActionButtonID) -> Void)?
 
     override init(frame frameRect: NSRect) {
@@ -32,23 +35,22 @@ final class HistoryRowView: NSTableCellView {
 
     func apply(
         presentation: RowPresentation,
+        artwork: NSImage?,
         shortcutNumber: Int?,
         textSize: TextSizePreference,
         isFavorite: Bool,
         isPassword: Bool,
-        tab: HistoryListMode = .history,
-        showsActions: Bool = false
+        tab: HistoryListMode = .history
     ) {
-        titleLabel.stringValue = presentation.title
+        titleLabel.stringValue = presentation.title.isEmpty ? " " : presentation.title
         subtitleLabel.stringValue = presentation.subtitle
         titleLabel.font = PanelTheme.titleFont(for: textSize)
         subtitleLabel.font = PanelTheme.subtitleFont(for: textSize)
         shortcutLabel.font = PanelTheme.shortcutFont(for: textSize)
         if let n = shortcutNumber {
-            shortcutLabel.stringValue = n == 0 ? "⌘0" : "⌘\(n)"
-            shortcutLabel.isHidden = showsActions
+            shortcutLabel.stringValue = "⌘\(n)"
         } else {
-            shortcutLabel.isHidden = true
+            shortcutLabel.stringValue = ""
         }
         if isPassword {
             accessoryView.image = NSImage(systemSymbolName: "lock.fill", accessibilityDescription: nil)
@@ -57,36 +59,46 @@ final class HistoryRowView: NSTableCellView {
             accessoryView.image = NSImage(systemSymbolName: "star.fill", accessibilityDescription: nil)
             accessoryView.isHidden = false
         } else {
+            accessoryView.image = nil
             accessoryView.isHidden = true
         }
-        leadingView.image = LeadingArtwork.image(for: presentation.kind, sourceBundleId: presentation.sourceBundleId)
+        leadingView.image = artwork
+            ?? LeadingArtwork.image(for: presentation.kind, sourceBundleId: presentation.sourceBundleId)
         toolTip = presentation.kind == .password ? nil : "\(presentation.title)\n\(presentation.subtitle)"
         setAccessibilityLabel(presentation.accessibilityLabel)
-        rebuildActions(
-            kind: presentation.kind,
-            isFavorite: isFavorite,
-            tab: isPassword ? .passwords : tab,
-            visible: showsActions
-        )
+        rebuildActions(kind: presentation.kind, isFavorite: isFavorite, tab: isPassword ? .passwords : tab)
+        updateActionVisibility()
     }
 
-    func setActionsVisible(_ visible: Bool) {
-        fadeView.isHidden = !visible
+    /// Driven by HistoryTableRowView so unemphasized selection still reveals actions.
+    func setRowSelected(_ selected: Bool) {
+        isRowSelected = selected
+        updateActionVisibility()
+    }
+
+    private func updateActionVisibility() {
+        let visible = (isHovering || isRowSelected) && !actionButtons.isEmpty
         actionsStack.isHidden = !visible
-        if visible {
-            shortcutLabel.isHidden = true
-        }
+        shortcutLabel.isHidden = visible || shortcutLabel.stringValue.isEmpty
+        accessoryView.alphaValue = visible ? 0 : 1
+        // Deactivate first so the two trailing bounds never coexist.
+        NSLayoutConstraint.deactivate(visible ? textToAccessory : textToActions)
+        NSLayoutConstraint.activate(visible ? textToActions : textToAccessory)
     }
 
     override var backgroundStyle: NSView.BackgroundStyle {
         didSet {
             let emphasized = backgroundStyle == .emphasized
             titleLabel.textColor = emphasized ? .alternateSelectedControlTextColor : .labelColor
-            subtitleLabel.textColor = emphasized ? .alternateSelectedControlTextColor : .secondaryLabelColor
-            shortcutLabel.textColor = emphasized ? .alternateSelectedControlTextColor : .tertiaryLabelColor
-            if emphasized {
-                setActionsVisible(true)
-            }
+            subtitleLabel.textColor = emphasized
+                ? NSColor.alternateSelectedControlTextColor.withAlphaComponent(0.8)
+                : .secondaryLabelColor
+            shortcutLabel.textColor = emphasized
+                ? NSColor.alternateSelectedControlTextColor.withAlphaComponent(0.8)
+                : .tertiaryLabelColor
+            let tint: NSColor = emphasized ? .alternateSelectedControlTextColor : .secondaryLabelColor
+            actionButtons.values.forEach { $0.contentTintColor = tint }
+            accessoryView.contentTintColor = emphasized ? .alternateSelectedControlTextColor : .systemYellow
         }
     }
 
@@ -95,23 +107,29 @@ final class HistoryRowView: NSTableCellView {
         trackingAreas.forEach(removeTrackingArea)
         addTrackingArea(NSTrackingArea(
             rect: bounds,
-            options: [.mouseEnteredAndExited, .activeInKeyWindow, .inVisibleRect],
+            options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect],
             owner: self,
             userInfo: nil
         ))
     }
 
     override func mouseEntered(with event: NSEvent) {
-        setActionsVisible(true)
+        isHovering = true
+        (superview as? HistoryTableRowView)?.isHovered = true
+        updateActionVisibility()
     }
 
     override func mouseExited(with event: NSEvent) {
-        if backgroundStyle != .emphasized {
-            setActionsVisible(false)
-            if !shortcutLabel.stringValue.isEmpty {
-                shortcutLabel.isHidden = false
-            }
-        }
+        isHovering = false
+        (superview as? HistoryTableRowView)?.isHovered = false
+        updateActionVisibility()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        isHovering = false
+        isRowSelected = false
+        onAction = nil
     }
 
     override func accessibilityCustomActions() -> [NSAccessibilityCustomAction]? {
@@ -124,25 +142,28 @@ final class HistoryRowView: NSTableCellView {
         }
     }
 
-    private func rebuildActions(kind: ItemKind, isFavorite: Bool, tab: HistoryListMode, visible: Bool) {
+    private func rebuildActions(kind: ItemKind, isFavorite: Bool, tab: HistoryListMode) {
         actionsStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
         actionButtons.removeAll()
-        let buttons = RowActionOverlay.buttons(kind: kind, isFavorite: isFavorite, tab: tab)
-        for spec in buttons {
-            let button = NSButton(image: NSImage(systemSymbolName: spec.symbolName, accessibilityDescription: nil) ?? NSImage(), target: self, action: #selector(actionClicked(_:)))
+        let config = NSImage.SymbolConfiguration(pointSize: 12, weight: .medium)
+        for spec in RowActionOverlay.buttons(kind: kind, isFavorite: isFavorite, tab: tab) {
+            let image = NSImage(systemSymbolName: spec.symbolName, accessibilityDescription: nil)?
+                .withSymbolConfiguration(config) ?? NSImage()
+            let button = NSButton(image: image, target: self, action: #selector(actionClicked(_:)))
             button.bezelStyle = .inline
             button.isBordered = false
             button.imagePosition = .imageOnly
+            button.contentTintColor = backgroundStyle == .emphasized ? .alternateSelectedControlTextColor : .secondaryLabelColor
             button.toolTip = RowActionOverlay.tooltip(for: spec)
             button.identifier = NSUserInterfaceItemIdentifier(spec.id.rawValue)
             button.setAccessibilityElement(false)
             button.refusesFirstResponder = true
+            button.translatesAutoresizingMaskIntoConstraints = false
             button.widthAnchor.constraint(equalToConstant: 24).isActive = true
             button.heightAnchor.constraint(equalToConstant: 24).isActive = true
             actionsStack.addArrangedSubview(button)
             actionButtons[spec.id] = button
         }
-        setActionsVisible(visible)
     }
 
     @objc private func actionClicked(_ sender: NSButton) {
@@ -155,52 +176,55 @@ final class HistoryRowView: NSTableCellView {
         identifier = Self.identifier
         leadingView.translatesAutoresizingMaskIntoConstraints = false
         leadingView.imageScaling = .scaleProportionallyUpOrDown
-        leadingView.wantsLayer = true
-        leadingView.layer?.cornerRadius = PanelTheme.Radius.thumbnail
 
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.lineBreakMode = .byTruncatingTail
+        titleLabel.maximumNumberOfLines = 1
+        titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.lineBreakMode = .byTruncatingTail
+        subtitleLabel.maximumNumberOfLines = 1
         subtitleLabel.textColor = .secondaryLabelColor
+        subtitleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         shortcutLabel.translatesAutoresizingMaskIntoConstraints = false
         shortcutLabel.textColor = .tertiaryLabelColor
+        shortcutLabel.alignment = .right
+        shortcutLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        shortcutLabel.setContentHuggingPriority(.required, for: .horizontal)
         accessoryView.translatesAutoresizingMaskIntoConstraints = false
-
-        fadeView.translatesAutoresizingMaskIntoConstraints = false
-        fadeView.wantsLayer = true
-        fadeView.layer?.backgroundColor = NSColor.controlBackgroundColor.withAlphaComponent(0.85).cgColor
-        fadeView.isHidden = true
+        accessoryView.contentTintColor = .systemYellow
 
         actionsStack.translatesAutoresizingMaskIntoConstraints = false
         actionsStack.orientation = .horizontal
-        actionsStack.spacing = 2
+        actionsStack.spacing = 0
         actionsStack.isHidden = true
+        actionsStack.setContentCompressionResistancePriority(.required, for: .horizontal)
 
-        addSubview(leadingView)
-        addSubview(titleLabel)
-        addSubview(subtitleLabel)
-        addSubview(shortcutLabel)
-        addSubview(accessoryView)
-        addSubview(fadeView)
-        addSubview(actionsStack)
+        [leadingView, titleLabel, subtitleLabel, shortcutLabel, accessoryView, actionsStack].forEach(addSubview)
+
+        let pad = PanelTheme.Spacing.sm + 2
+        // Title and subtitle each bound independently; tying subtitle.trailing to the title
+        // made Auto Layout split the width between them and truncate both early.
+        textToAccessory = [titleLabel, subtitleLabel].map {
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: accessoryView.leadingAnchor, constant: -6)
+        }
+        textToActions = [titleLabel, subtitleLabel].map {
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: actionsStack.leadingAnchor, constant: -6)
+        }
 
         NSLayoutConstraint.activate([
-            leadingView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: PanelTheme.Spacing.sm),
+            leadingView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: pad),
             leadingView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            leadingView.widthAnchor.constraint(equalToConstant: 28),
-            leadingView.heightAnchor.constraint(equalToConstant: 28),
+            leadingView.widthAnchor.constraint(equalToConstant: RowArtworkProvider.side),
+            leadingView.heightAnchor.constraint(equalToConstant: RowArtworkProvider.side),
 
-            titleLabel.leadingAnchor.constraint(equalTo: leadingView.trailingAnchor, constant: PanelTheme.Spacing.sm),
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 6),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: accessoryView.leadingAnchor, constant: -4),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingView.trailingAnchor, constant: PanelTheme.Spacing.sm + 2),
+            titleLabel.bottomAnchor.constraint(equalTo: centerYAnchor, constant: 1),
 
             subtitleLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
-            subtitleLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
-            subtitleLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -6),
+            subtitleLabel.topAnchor.constraint(equalTo: centerYAnchor, constant: 1),
 
-            shortcutLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -PanelTheme.Spacing.sm),
+            shortcutLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -pad),
             shortcutLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
 
             accessoryView.trailingAnchor.constraint(equalTo: shortcutLabel.leadingAnchor, constant: -6),
@@ -208,14 +232,9 @@ final class HistoryRowView: NSTableCellView {
             accessoryView.widthAnchor.constraint(equalToConstant: 12),
             accessoryView.heightAnchor.constraint(equalToConstant: 12),
 
-            actionsStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -PanelTheme.Spacing.sm),
-            actionsStack.centerYAnchor.constraint(equalTo: centerYAnchor),
-
-            fadeView.trailingAnchor.constraint(equalTo: actionsStack.leadingAnchor, constant: -4),
-            fadeView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            fadeView.widthAnchor.constraint(equalToConstant: 24),
-            fadeView.heightAnchor.constraint(equalToConstant: 28)
-        ])
+            actionsStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -(pad - 4)),
+            actionsStack.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ] + textToAccessory)
     }
 }
 
@@ -227,7 +246,7 @@ enum LeadingArtwork {
         case .color:
             return NSImage(systemSymbolName: "circle.fill", accessibilityDescription: nil)
         case .file:
-            return NSImage(systemSymbolName: "doc", accessibilityDescription: nil) // count ignored for icon
+            return NSImage(systemSymbolName: "doc", accessibilityDescription: nil)
         case .pdf:
             return NSImage(systemSymbolName: "doc.richtext", accessibilityDescription: nil)
         case .link:

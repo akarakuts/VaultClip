@@ -16,6 +16,7 @@ class HistoryTableView: NSTableView {
     
     var historyDelegate: HistoryTableViewDelegate?
     private var draggingContainsPassword = false
+    private(set) var isApplyingProgrammaticSelection = false
     
     var cellWidth: CGFloat {
         return tableColumns[0].width
@@ -38,7 +39,7 @@ class HistoryTableView: NSTableView {
     }
     
     private func commonInit() {
-        selectionHighlightStyle = .none
+        selectionHighlightStyle = .regular
         allowsMultipleSelection = true
         columnAutoresizingStyle = .noColumnAutoresizing
         applyPlainListAppearance()
@@ -46,13 +47,16 @@ class HistoryTableView: NSTableView {
         
         delegate = self
         dataSource = self
+        target = self
+        doubleAction = #selector(rowDoubleClicked(_:))
         
         registerForDraggedTypes([HistoryItem.historyItemIdType])
     }
     
-    /// Compact inset rows with fixed height from PanelTheme (U11).
+    /// Fixed-height rows; `.plain` so the single column never overflows the clip view
+    /// (`.inset` adds hidden side margins that cropped the ⌘N badge). Rounded selection lives in HistoryTableRowView.
     func applyPlainListAppearance() {
-        style = .inset
+        style = .plain
         rowSizeStyle = .custom
         intercellSpacing = .zero
         usesAutomaticRowHeights = false
@@ -109,13 +113,22 @@ class HistoryTableView: NSTableView {
     
     func selectItem(_ i: Int) {
         guard i >= 0, i < numberOfRows else { return }
-        let items = IndexSet(integer: i)
-        selectRowIndexes(items, byExtendingSelection: false)
+        performProgrammaticSelection {
+            selectRowIndexes(IndexSet(integer: i), byExtendingSelection: false)
+        }
         scrollRowToVisible(i)
     }
     
     func deselectItem(_ i: Int) {
-        deselectRow(i)
+        performProgrammaticSelection { deselectRow(i) }
+    }
+
+    /// Programmatic changes must not echo back through the delegate (feedback loop with `selected`).
+    func performProgrammaticSelection(_ change: () -> Void) {
+        let wasProgrammatic = isApplyingProgrammaticSelection
+        isApplyingProgrammaticSelection = true
+        change()
+        isApplyingProgrammaticSelection = wasProgrammatic
     }
     
     func reloadItem(_ i: Int) {
@@ -124,13 +137,11 @@ class HistoryTableView: NSTableView {
     }
     
     func redisplayVisible(historyListItems: [HistoryItem]) {
-        let vis = visibleRect
-        let range = rows(in: vis)
-        for row in range.location..<range.location+range.length {
-            guard row < historyListItems.count,
-                  let cell = view(atColumn: 0, row: row, makeIfNecessary: false) as? HistoryListItem else { continue }
-            cell.setupCell(withHistoryTableView: self, forHistoryItem: historyListItems[row], at: row)
-        }
+        let range = rows(in: visibleRect)
+        guard range.length > 0 else { return }
+        let upper = min(range.location + range.length, numberOfRows)
+        guard range.location < upper else { return }
+        reloadData(forRowIndexes: IndexSet(integersIn: range.location..<upper), columnIndexes: IndexSet(integer: 0))
     }
     
     func reloadData(_ data: [HistoryItem], isRichText: Bool, listMode: HistoryListMode) {
@@ -138,7 +149,7 @@ class HistoryTableView: NSTableView {
         self.isRichText = isRichText
         self.listMode = listMode
         applyPlainListAppearance()
-        super.reloadData()
+        performProgrammaticSelection { super.reloadData() }
         syncColumnWidthToScrollView()
         remeasureVisibleRows()
     }
@@ -161,6 +172,9 @@ class HistoryTableView: NSTableView {
         self.isRichText = isRichText
         self.listMode = listMode
         applyPlainListAppearance()
+        let wasProgrammatic = isApplyingProgrammaticSelection
+        isApplyingProgrammaticSelection = true
+        defer { isApplyingProgrammaticSelection = wasProgrammatic }
 
         switch mutation {
         case .insertTop where data.count == previous.count + 1:
@@ -211,35 +225,7 @@ extension HistoryTableView: NSTableViewDataSource {
         let historyItem = historyListItems[row]
         let cell = tableView.makeView(withIdentifier: HistoryRowView.identifier, owner: nil) as? HistoryRowView
             ?? HistoryRowView(frame: .zero)
-        let kind = ItemKindClassifier.classify(
-            .init(
-                isPassword: historyItem.isPassword,
-                typeIdentifiers: historyItem.types.map(\.rawValue),
-                plainText: historyItem.isPassword ? nil : historyItem.getPlainString(),
-                fileURLCount: historyItem.getFileUrl() == nil ? 0 : 1
-            )
-        )
-        let title = historyItem.isPassword
-            ? historyItem.passwordComment
-            : (historyItem.getPlainString() ?? "")
-        // Temporary presentation bridge until SearchIndex builds ItemSummary (U05/U11).
-        let summary = ItemSummary(
-            title: title,
-            charCount: title.count,
-            lineCount: max(1, title.split(whereSeparator: \.isNewline).count),
-            linkHost: nil,
-            fileNames: [],
-            imagePixelSize: nil,
-            imageFormat: nil,
-            colorHex: nil,
-            sourceBundleId: historyItem.sourceBundleId,
-            copiedAt: historyItem.copiedAt,
-            lastUsedAt: historyItem.copiedAt,
-            kind: kind,
-            passwordComment: historyItem.passwordComment,
-            pdfPageCount: nil,
-            isRichText: isRichText
-        )
+        let summary = HistoryItemSummaryBuilder.shared.summary(for: historyItem)
         let presentation = RowPresentationBuilder.presentation(
             id: historyItem.fsId,
             summary: summary,
@@ -249,28 +235,44 @@ extension HistoryTableView: NSTableViewDataSource {
         let shortcut: Int? = (1...9).contains(row + 1) ? row + 1 : (row == 9 ? 0 : nil)
         cell.apply(
             presentation: presentation,
+            artwork: RowArtworkProvider.image(for: historyItem, kind: summary.kind),
             shortcutNumber: shortcut,
             textSize: SettingsPersistence.current().panelTextSize,
             isFavorite: historyItem.isFavorite,
-            isPassword: historyItem.isPassword
+            isPassword: historyItem.isPassword,
+            tab: listMode
         )
+        let itemId = historyItem.fsId
+        cell.onAction = { [weak self] action in
+            guard let self, let current = self.historyListItems.firstIndex(where: { $0.fsId == itemId }) else { return }
+            self.historyDelegate?.historyTableView(self, performRowAction: action, at: current)
+        }
         return cell
+    }
+
+    func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
+        tableView.makeView(withIdentifier: HistoryTableRowView.identifier, owner: nil) as? HistoryTableRowView
+            ?? {
+                let view = HistoryTableRowView()
+                view.identifier = HistoryTableRowView.identifier
+                return view
+            }()
     }
     
     func tableViewSelectionIsChanging(_ notification: Notification) {
-        if let delegate = historyDelegate {
-            delegate.historyTableView(self, selectedDidChange: selected)
-        }
+        guard !isApplyingProgrammaticSelection else { return }
+        historyDelegate?.historyTableView(self, selectedDidChange: selected)
     }
 
     func tableViewSelectionDidChange(_ notification: Notification) {
-        if let delegate = historyDelegate {
-            delegate.historyTableView(self, selectedDidChange: selected)
-        }
+        guard !isApplyingProgrammaticSelection else { return }
+        historyDelegate?.historyTableView(self, selectedDidChange: selected)
     }
 
     func selectItems(_ indexes: IndexSet) {
-        selectRowIndexes(indexes, byExtendingSelection: false)
+        performProgrammaticSelection {
+            selectRowIndexes(indexes, byExtendingSelection: false)
+        }
         if let first = indexes.first {
             scrollRowToVisible(first)
         }

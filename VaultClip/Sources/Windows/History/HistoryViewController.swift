@@ -8,6 +8,7 @@
 //  SPDX-License-Identifier: GPL-3.0-or-later
 //
 import Cocoa
+import Quartz
 import HotKey
 import RxSwift
 import RxRelay
@@ -25,8 +26,8 @@ class HistoryViewController: NSViewController {
     private var injectedState: State?
     private var settingsProvider: (() -> Settings)?
 
-    private var appState: State { injectedState ?? AppEnvironment.shared.state }
-    private var appSettings: Settings { (settingsProvider ?? { SettingsPersistence.current() })() }
+    var appState: State { injectedState ?? AppEnvironment.shared.state }
+    var appSettings: Settings { (settingsProvider ?? { SettingsPersistence.current() })() }
 
     /// Called from `Controller.createHistoryWindowController` before the window loads.
     func configure(state: State, settings: @escaping () -> Settings = { SettingsPersistence.current() }) {
@@ -62,20 +63,29 @@ class HistoryViewController: NSViewController {
     let results = BehaviorRelay(value: Results(items: [], isSearchResult: false))
     let selected = BehaviorRelay<Int?>(value: nil)
     
-    private var emptyListLabel: NSTextField?
+    var emptyListLabel: NSTextField?
 
     private let panelKeyMonitor = PanelLocalKeyMonitor()
-    private let commandPaletteOverlay = CommandPaletteOverlayView()
-    private let cheatSheetOverlay = CheatSheetOverlayView()
-    private let embeddedPreview = EmbeddedPreviewView()
-    private let filterBar = PanelFilterBarView()
-    private let emptyStateHost = PanelEmptyStateHostView()
-    private var filterBarHeightConstraint: NSLayoutConstraint?
-    private var filterState = FilterState()
+    let commandPaletteOverlay = CommandPaletteOverlayView()
+    let cheatSheetOverlay = CheatSheetOverlayView()
+    let embeddedPreview = EmbeddedPreviewView()
+    let filterBar = PanelFilterBarView()
+    let emptyStateHost = PanelEmptyStateHostView()
+    var filterBarHeightConstraint: NSLayoutConstraint?
+    var filterState = FilterState()
     private var filterBarVisible: Bool { appSettings.showsFilterBarPreference }
-    private var selectionModel = SelectionModel()
-    private let previewDebouncer = PreviewUpdateDebouncer(scheduler: PreviewDispatchScheduler())
-    private lazy var pendingDeletion = PendingDeletionQueue(
+    var selectionModel = SelectionModel()
+    let footerHintsLabel = NSTextField(labelWithString: "")
+    let footerSeparator = NSBox()
+    let toastView = PanelToastView()
+    var previewConstraints: [NSLayoutConstraint] = []
+    var listBottomToFooter: NSLayoutConstraint?
+    var listTrailingToView: NSLayoutConstraint?
+    var currentPreviewAxis: PreviewSplitAxis?
+    var lastLayoutWidth: CGFloat = 0
+    var quickLookURL: URL?
+    let previewDebouncer = PreviewUpdateDebouncer(scheduler: PreviewDispatchScheduler())
+    lazy var pendingDeletion = PendingDeletionQueue(
         scheduler: PendingDeletionDispatchScheduler()
     )
     
@@ -87,11 +97,13 @@ class HistoryViewController: NSViewController {
         configurePanelLayout()
         applyPanelChromeMetrics()
         styleHistoryChrome()
+        installFilterBar()
+        installEmbeddedPreview()
+        installProgrammaticPanelLayout()
+        installEmptyStateHost()
+        installToast()
         installCommandPaletteOverlay()
         installCheatSheetOverlay()
-        installFilterBar()
-        installEmptyStateHost()
-        installEmbeddedPreview()
         pendingDeletion.onCommit = { [weak self] ids in
             guard let self else { return }
             let toDelete = self.appState.history.items.filter { ids.contains($0.fsId) }
@@ -168,9 +180,9 @@ class HistoryViewController: NSViewController {
                     self.syncEmbeddedPreviewVisibility()
                 } else {
                     self.panelKeyMonitor.stop()
-                    self.isPreviewShowing = false
-                    self.embeddedPreview.isHidden = true
-                    self.applyPreviewListInset()
+                    self.commandPaletteOverlay.dismiss()
+                    self.cheatSheetOverlay.dismiss()
+                    self.toastView.dismiss()
                     self.appState.previewHistoryItem.accept(nil)
                 }
             })
@@ -182,6 +194,22 @@ class HistoryViewController: NSViewController {
     deinit {
         historyUnsubscribe?()
     }
+
+    // MARK: - Quick Look (U21)
+
+    override func acceptsPreviewPanelControl(_ panel: QLPreviewPanel!) -> Bool {
+        quickLookURL != nil
+    }
+
+    override func beginPreviewPanelControl(_ panel: QLPreviewPanel!) {
+        panel.dataSource = self
+        panel.reloadData()
+    }
+
+    override func endPreviewPanelControl(_ panel: QLPreviewPanel!) {
+        panel.dataSource = nil
+        quickLookURL = nil
+    }
     
     override func viewWillAppear() {
         super.viewWillAppear()
@@ -192,7 +220,7 @@ class HistoryViewController: NSViewController {
     override func viewDidAppear() {
         super.viewDidAppear()
         alignHistoryListToScrollView()
-        applyPreviewListInset()
+        applyPreviewAxis()
         DispatchQueue.main.async { [weak self] in
             self?.alignHistoryListToScrollView()
             self?.refreshEmbeddedPreview()
@@ -201,6 +229,11 @@ class HistoryViewController: NSViewController {
     
     override func viewDidLayout() {
         super.viewDidLayout()
+        if abs(view.bounds.width - lastLayoutWidth) > 0.5 {
+            lastLayoutWidth = view.bounds.width
+            applyPreviewAxis()
+            refreshFooterHints()
+        }
         guard appState.isHistoryPanelShown.value else { return }
         historyListView.syncColumnWidthToScrollView()
     }
@@ -264,7 +297,7 @@ class HistoryViewController: NSViewController {
                 refreshHistoryItemDisplay(item)
             }
         case .pinnedLimitExceeded(let current, let max):
-            itemCountLabel.stringValue = L10n.countPinnedLimit(current: current, max: max)
+            showToast(L10n.countPinnedLimit(current: current, max: max))
         default:
             if !searchBar.stringValue.isEmpty {
                 runSearch()
@@ -365,6 +398,12 @@ class HistoryViewController: NSViewController {
             )
         }
         historyListView.layoutSubtreeIfNeeded()
+        // reloadData drops table selection while `selected` keeps its value (distinctUntilChanged
+        // then never re-fires), so push the logical selection back into the table.
+        if !selectionModel.isMulti, let row = selected.value, row >= 0, row < historyPanel.items.count {
+            historyListView.selectItem(row)
+        }
+        refreshFooterHints()
         PasteboardDiagnostics.log(
             "ui reload rows=\(current.items.count) search=\(current.isSearchResult) mode=\(listMode.value)"
         )
@@ -391,9 +430,6 @@ class HistoryViewController: NSViewController {
             }
             self.historyListView.reloadItem(selected)
             
-            if self.isPreviewShowing {
-                appState.previewHistoryItem.accept(self.historyPanel.items[selected])
-            }
         }
         historyListView.syncColumnWidthToScrollView()
     }
@@ -457,6 +493,9 @@ class HistoryViewController: NSViewController {
             selected.accept(nil)
         }
         refreshSelectionChrome()
+        showToast(L10n.toastDeleted(ids.count), actionTitle: L10n.toastUndo) { [weak self] in
+            self?.undoPendingDeletion()
+        }
     }
 
     func undoPendingDeletion() {
@@ -477,9 +516,7 @@ class HistoryViewController: NSViewController {
     
     func close(reason: PanelCloseReason = .userAction) {
         pendingDeletion.flushAll()
-        isPreviewShowing = false
-        embeddedPreview.isHidden = true
-        applyPreviewListInset()
+        embeddedPreview.endEditing()
         if appSettings.resetFiltersOnClose {
             clearFilters(resetSearch: true)
         }
@@ -489,18 +526,6 @@ class HistoryViewController: NSViewController {
         resetSelected()
     }
 
-    private func syncEmbeddedPreviewVisibility() {
-        // Overlay preview only when the panel is wide enough for a real side-by-side
-        // split; otherwise the list was left with a blank inset hole (U21).
-        let canShowSide = view.bounds.width >= PreviewLayout.sideBySideWidthThreshold
-        isPreviewShowing = appSettings.previewVisible && canShowSide
-        embeddedPreview.isHidden = !isPreviewShowing
-        applyPreviewListInset()
-        if isPreviewShowing {
-            refreshEmbeddedPreview()
-        }
-    }
-    
     func shortcutPressed(key: Int) {
         // ⌘1…⌘9 → items 1–9; ⌘0 → 10th (U20).
         guard let index = PanelNavigation.displayedIndex(
@@ -508,79 +533,6 @@ class HistoryViewController: NSViewController {
             visibleItemCount: historyPanel.items.count
         ) else { return }
         paste(selected: index)
-    }
-    
-    func togglePreview() {
-        isPreviewShowing.toggle()
-        SettingsPersistence.apply { $0.previewVisible = self.isPreviewShowing }
-        embeddedPreview.isHidden = !isPreviewShowing
-        applyPreviewListInset()
-        if isPreviewShowing {
-            refreshEmbeddedPreview()
-        }
-        // Floating preview window retired (U21); keep relay cleared.
-        appState.previewHistoryItem.accept(nil)
-    }
-
-    private func installEmbeddedPreview() {
-        isPreviewShowing = appSettings.previewVisible
-        embeddedPreview.translatesAutoresizingMaskIntoConstraints = false
-        embeddedPreview.isHidden = !isPreviewShowing
-        view.addSubview(embeddedPreview)
-        // Sit beside the list (not over search/filter chips); list gets a matching inset.
-        NSLayoutConstraint.activate([
-            embeddedPreview.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            embeddedPreview.topAnchor.constraint(equalTo: filterBar.bottomAnchor, constant: 4),
-            embeddedPreview.bottomAnchor.constraint(equalTo: itemCountLabel.topAnchor, constant: -4),
-            embeddedPreview.widthAnchor.constraint(equalToConstant: PreviewLayout.minPreviewWidth)
-        ])
-        embeddedPreview.onPaste = { [weak self] in self?.pasteSelected() }
-        embeddedPreview.onCopy = { [weak self] in
-            guard let self, let row = self.historyListView.selected,
-                  row >= 0, row < self.historyPanel.items.count else { return }
-            let item = self.historyPanel.items[row]
-            if let text = item.getPlainString() {
-                _ = PasteboardWriter.writeString(text, to: NSPasteboard.general, concealed: item.isPassword)
-            }
-        }
-        applyPreviewListInset()
-        selected.subscribe(onNext: { [weak self] _ in
-            self?.scheduleEmbeddedPreviewUpdate()
-        }).disposed(by: disposeBag)
-        DispatchQueue.main.async { [weak self] in
-            self?.refreshEmbeddedPreview()
-        }
-    }
-
-    /// Keep table content clear of the trailing preview pane (U21).
-    private func applyPreviewListInset() {
-        guard let scrollView = historyListView.enclosingScrollView else { return }
-        let inset: CGFloat = (isPreviewShowing && !embeddedPreview.isHidden)
-            ? PreviewLayout.minPreviewWidth
-            : 0
-        scrollView.contentInsets = NSEdgeInsets(top: 0, left: 0, bottom: 0, right: inset)
-        scrollView.scrollerInsets = NSEdgeInsets(top: 0, left: 0, bottom: 0, right: inset)
-        (scrollView.contentView as? HistoryListClipView)?.enforceDocumentWidth()
-        historyListView.syncColumnWidthToScrollView()
-        historyListView.needsLayout = true
-        scrollView.needsLayout = true
-    }
-
-    private func scheduleEmbeddedPreviewUpdate() {
-        guard isPreviewShowing else { return }
-        previewDebouncer.schedule { [weak self] _ in
-            DispatchQueue.main.async { self?.refreshEmbeddedPreview() }
-        }
-    }
-
-    private func refreshEmbeddedPreview() {
-        guard let row = historyListView.selected, row >= 0, row < historyPanel.items.count else {
-            embeddedPreview.showEmpty()
-            return
-        }
-        let item = historyPanel.items[row]
-        let text = item.getPlainString() ?? item.getPdfDisplayString() ?? ""
-        embeddedPreview.showText(text, isPassword: item.isPassword)
     }
     
     func focusSearchBar() {
@@ -610,7 +562,7 @@ class HistoryViewController: NSViewController {
             PanelKeyRouterContext(
                 searchIsEmpty: self?.searchBar.stringValue.isEmpty ?? true,
                 searchFieldOwnsEditingShortcuts: self?.searchBar.currentEditor() != nil,
-                canUndoDelete: false
+                canUndoDelete: !(self?.pendingDeletion.batches.isEmpty ?? true)
             )
         }
         panelKeyMonitor.onRoute = { [weak self] route, event in
@@ -625,6 +577,15 @@ class HistoryViewController: NSViewController {
 
     @discardableResult
     private func handlePanelKeyRoute(_ route: PanelKeyRoute, event: NSEvent) -> Bool {
+        // Overlays own ↑/↓/⏎/Esc and their search field; nothing reaches the list underneath.
+        for overlay in [commandPaletteOverlay, cheatSheetOverlay] as [PanelOverlayListView] where !overlay.isHidden {
+            if overlay.handleKey(event) { return true }
+            let mods = event.modifierFlags.intersection([.command, .control, .option])
+            if mods == .command, let id = route.commandID, [.commandPalette, .cheatSheet, .closePanel].contains(id) {
+                return performPanelCommand(id)
+            }
+            return false
+        }
         // Esc walks the stack; ⌘W closes immediately (same registry id).
         if event.keyCode == 53, event.modifierFlags.isDisjoint(with: [.command, .control, .option, .shift]) {
             return performEscape()
@@ -681,44 +642,48 @@ class HistoryViewController: NSViewController {
     }
 
     private func installCommandPaletteOverlay() {
-        commandPaletteOverlay.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(commandPaletteOverlay)
-        NSLayoutConstraint.activate([
-            commandPaletteOverlay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            commandPaletteOverlay.topAnchor.constraint(equalTo: view.topAnchor, constant: 56),
-            commandPaletteOverlay.widthAnchor.constraint(lessThanOrEqualToConstant: 440),
-            commandPaletteOverlay.heightAnchor.constraint(equalToConstant: 320)
-        ])
-        let width = commandPaletteOverlay.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24)
-        width.priority = .defaultHigh
-        width.isActive = true
+        installOverlay(commandPaletteOverlay, maxHeight: 360)
         commandPaletteOverlay.onSelect = { [weak self] id in
             _ = self?.performPanelCommand(id)
         }
+        commandPaletteOverlay.onDismiss = { [weak self] in self?.restorePanelFocus() }
+    }
+
+    /// Overlays sit under the search field, above tabs/list, and never exceed the panel.
+    private func installOverlay(_ overlay: PanelOverlayListView, maxHeight: CGFloat) {
+        view.addSubview(overlay)
+        let width = overlay.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -20)
+        width.priority = .defaultHigh
+        let height = overlay.heightAnchor.constraint(equalToConstant: maxHeight)
+        height.priority = .defaultHigh
+        NSLayoutConstraint.activate([
+            overlay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            overlay.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 6),
+            overlay.widthAnchor.constraint(lessThanOrEqualToConstant: 460),
+            overlay.bottomAnchor.constraint(lessThanOrEqualTo: footerSeparator.topAnchor, constant: -8),
+            width,
+            height
+        ])
+    }
+
+    private func restorePanelFocus() {
+        guard appState.isHistoryPanelShown.value else { return }
+        view.window?.makeFirstResponder(searchBar)
     }
 
     private func showCommandPalette() {
         cheatSheetOverlay.dismiss()
         let ctx = PanelCommandContext(
             hasSelection: historyListView.selected != nil,
-            selectionCount: historyListView.selected == nil ? 0 : 1,
+            selectionCount: max(selectionModel.count, historyListView.selected == nil ? 0 : 1),
             searchIsEmpty: searchBar.stringValue.isEmpty
         )
         commandPaletteOverlay.present(context: ctx)
     }
 
     private func installCheatSheetOverlay() {
-        cheatSheetOverlay.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(cheatSheetOverlay)
-        NSLayoutConstraint.activate([
-            cheatSheetOverlay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            cheatSheetOverlay.topAnchor.constraint(equalTo: view.topAnchor, constant: 56),
-            cheatSheetOverlay.widthAnchor.constraint(lessThanOrEqualToConstant: 480),
-            cheatSheetOverlay.heightAnchor.constraint(equalToConstant: 360)
-        ])
-        let width = cheatSheetOverlay.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24)
-        width.priority = .defaultHigh
-        width.isActive = true
+        installOverlay(cheatSheetOverlay, maxHeight: 420)
+        cheatSheetOverlay.onDismiss = { [weak self] in self?.restorePanelFocus() }
     }
 
     private func showCheatSheet() {
@@ -731,12 +696,26 @@ class HistoryViewController: NSViewController {
     }
 
     @discardableResult
-    private func performPanelCommand(_ id: PanelCommandID) -> Bool {
+    func performPanelCommand(_ id: PanelCommandID) -> Bool {
         switch id {
-        case .paste: pasteSelected()
+        case .paste:
+            if embeddedPreview.isEditing { pasteEditedPreviewText() } else { pasteSelected() }
         case .pastePlainText: pasteSelectedPlainText()
-        case .selectNext, .pageDown: goToNextItem()
-        case .selectPrevious, .pageUp: goToPreviousItem()
+        case .selectNext: goToNextItem()
+        case .selectPrevious: goToPreviousItem()
+        case .pageDown: movePage(direction: 1)
+        case .pageUp: movePage(direction: -1)
+        case .copy: copySelected()
+        case .toggleFavorite: toggleFavoriteSelected()
+        case .openLinkOrFile: openSelectedLinkOrFile()
+        case .revealInFinder: revealSelectedInFinder()
+        case .quickLook: toggleQuickLook()
+        case .editBeforePaste: beginEditBeforePaste()
+        case .pasteEdit: pasteEditedPreviewText()
+        case .saveEdit: pasteEditedPreviewText()
+        case .textSizeIncrease: changeTextSize(by: 1)
+        case .textSizeDecrease: changeTextSize(by: -1)
+        case .togglePanel: close()
         case .selectFirst:
             if !historyPanel.items.isEmpty { selected.accept(0) }
         case .selectLast:
@@ -850,16 +829,6 @@ class HistoryViewController: NSViewController {
     private func installFilterBar() {
         filterBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(filterBar)
-        // Under the tab bar — never between search and tabs (IB owns that gap).
-        let height = filterBar.heightAnchor.constraint(equalToConstant: 28)
-        filterBarHeightConstraint = height
-        NSLayoutConstraint.activate([
-            filterBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
-            filterBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
-            filterBar.topAnchor.constraint(equalTo: itemGroupScrollView.bottomAnchor, constant: 4),
-            height
-        ])
-        rewireListTopBelowFilterBar()
         filterBar.onTypeChange = { [weak self] type in
             self?.setTypeFilter(type)
         }
@@ -869,43 +838,19 @@ class HistoryViewController: NSViewController {
             self.filterBar.apply(self.filterState)
             self.scheduleSearch()
         }
-        updateFilterBarVisibility()
         listMode.subscribe(onNext: { [weak self] _ in
             self?.updateFilterBarVisibility()
             self?.scheduleSearch()
         }).disposed(by: disposeBag)
     }
 
-    /// IB pins the list to the tab bar; drop that and attach under the filter row instead.
-    private func rewireListTopBelowFilterBar() {
-        guard let scrollView = historyListView.enclosingScrollView else { return }
-        for constraint in view.constraints {
-            let pinsScrollTop =
-                (constraint.firstItem as AnyObject? === scrollView && constraint.firstAttribute == .top)
-                || (constraint.secondItem as AnyObject? === scrollView && constraint.secondAttribute == .top)
-            let involvesTabs =
-                (constraint.firstItem as AnyObject? === itemGroupScrollView)
-                || (constraint.secondItem as AnyObject? === itemGroupScrollView)
-            if pinsScrollTop && involvesTabs {
-                constraint.isActive = false
-            }
-        }
-        scrollView.topAnchor.constraint(equalTo: filterBar.bottomAnchor, constant: 4).isActive = true
-    }
-
-    private func updateFilterBarVisibility() {
-        let show = filterBarVisible && listMode.value != .passwords
-        filterBar.isHidden = !show
-        filterBarHeightConstraint?.constant = show ? 28 : 0
-    }
-
-    private func setTypeFilter(_ type: TypeFilter) {
+    func setTypeFilter(_ type: TypeFilter) {
         filterState.type = type
         filterBar.apply(filterState)
         scheduleSearch()
     }
 
-    private func clearFilters(resetSearch: Bool) {
+    func clearFilters(resetSearch: Bool) {
         filterState = FilterState()
         filterBar.apply(filterState)
         if resetSearch {
@@ -952,15 +897,8 @@ class HistoryViewController: NSViewController {
         }
     }
 
-    private func itemKind(for item: HistoryItem) -> ItemKind {
-        ItemKindClassifier.classify(
-            .init(
-                isPassword: item.isPassword,
-                typeIdentifiers: item.types.map(\.rawValue),
-                plainText: item.isPassword ? nil : item.getPlainString(),
-                fileURLCount: item.getFileUrl() == nil ? 0 : 1
-            )
-        )
+    func itemKind(for item: HistoryItem) -> ItemKind {
+        HistoryItemSummaryBuilder.shared.kind(for: item)
     }
 
     private func refreshFilterBarApps(from items: [HistoryItem]) {
@@ -995,7 +933,7 @@ class HistoryViewController: NSViewController {
         }
     }
     
-    private func paste(selected: Int) {
+    func paste(selected: Int) {
         self.close(reason: .paste)
         historyPanel.paste(displayedIndex: selected)
     }
@@ -1007,11 +945,13 @@ class HistoryViewController: NSViewController {
             guard items.indices.contains(idx) else { return nil }
             return items[idx].fsId
         }
-        selectionModel.replace(ordered: ids, anchor: ids.last)
+        let anchor = selectionModel.anchorId.flatMap { ids.contains($0) ? $0 : nil } ?? ids.first
+        selectionModel.replace(ordered: ids, anchor: anchor)
     }
 
     func refreshSelectionChrome() {
         itemCountLabel.stringValue = countLabelText(for: results.value)
+        refreshFooterHints()
     }
 
     private func collapseMultiSelectToAnchor() {
@@ -1042,19 +982,12 @@ class HistoryViewController: NSViewController {
     private func extendSelection(direction: Int) {
         let order = historyPanel.items.map(\.fsId)
         guard !order.isEmpty else { return }
-        let current = selectionModel.anchorId
-            ?? selectionModel.orderedIds.last
-            ?? historyListView.selected.flatMap { historyPanel.items.indices.contains($0) ? historyPanel.items[$0].fsId : nil }
-        guard let current,
-              let index = order.firstIndex(of: current) else {
-            if let first = order.first {
-                selectionModel.selectSingle(first)
-                historyListView.selectItem(0)
-                selected.accept(0)
-            }
-            return
+        // Grow from the moving cursor; the anchor stays where the range started.
+        let cursor = min(max(selected.value ?? 0, 0), order.count - 1)
+        if selectionModel.anchorId.map({ !order.contains($0) }) ?? true || selectionModel.count <= 1 {
+            selectionModel.selectSingle(order[cursor])
         }
-        let next = min(max(index + direction, 0), order.count - 1)
+        let next = min(max(cursor + direction, 0), order.count - 1)
         selectionModel.selectRange(to: order[next], visibleOrder: order)
         let selectedIndexes = IndexSet(selectionModel.orderedIds.compactMap { id in order.firstIndex(of: id) })
         historyListView.selectItems(selectedIndexes)
