@@ -72,37 +72,55 @@ class Controller {
             ClipStatusItem.applyPausedAppearance(to: button, isPaused: settings.isCapturePaused)
         }
         configureStatusItemClickMode(settings.statusItemClickMode)
+        appliedClickMode = settings.statusItemClickMode
         self.historyWindowController.loadWindow()
+        settingsObserver = NotificationCenter.default.addObserver(
+            forName: .vaultClipSettingsDidChange, object: nil, queue: .main
+        ) { [weak self] _ in
+            self?.applyStatusItemSettings()
+        }
     }
+
+    /// Settings window edits (click mode, pause) must reach the status item without a relaunch.
+    private func applyStatusItemSettings() {
+        let current = Settings.main
+        if current.statusItemClickMode != appliedClickMode {
+            appliedClickMode = current.statusItemClickMode
+            configureStatusItemClickMode(current.statusItemClickMode)
+        }
+        if let button = statusItem.button {
+            ClipStatusItem.applyPausedAppearance(to: button, isPaused: current.isCapturePaused)
+        }
+        if let menu = statusItem.menu {
+            Self.refreshCapturePausedMenu(menu)
+        }
+    }
+
+    private var appliedClickMode: StatusItemClickMode = .openPanel
+    private var settingsObserver: NSObjectProtocol?
 
     private func configureStatusItemClickMode(_ mode: StatusItemClickMode) {
         guard let button = statusItem.button else { return }
-        if StatusItemPresentation.leftClickOpensPanel(mode: mode) {
-            statusItem.menu = nil
-            button.sendAction(on: [.leftMouseUp, .rightMouseUp])
-            button.target = self
-            button.action = #selector(statusItemClicked(_:))
-        } else {
-            button.sendAction(on: [.leftMouseUp])
-            statusItem.menu = Self.createMenu(settings: Settings.main, state: state, target: self)
-        }
+        // Menu is always built on demand so recent items and pause state are current.
+        statusItem.menu = nil
+        button.sendAction(on: [.leftMouseUp, .rightMouseUp])
+        button.target = self
+        button.action = #selector(statusItemClicked(_:))
     }
 
     @objc private func statusItemClicked(_ sender: Any?) {
-        guard let event = NSApp.currentEvent else {
+        let event = NSApp.currentEvent
+        let wantsMenu = event?.type == .rightMouseUp
+            || event?.modifierFlags.contains(.control) == true
+            || event?.modifierFlags.contains(.option) == true
+            || !StatusItemPresentation.leftClickOpensPanel(mode: Settings.main.statusItemClickMode)
+        guard wantsMenu else {
             togglePopover()
             return
         }
-        if event.type == .rightMouseUp
-            || event.modifierFlags.contains(.control)
-            || event.modifierFlags.contains(.option) {
-            let menu = Self.createMenu(settings: Settings.main, state: state, target: self)
-            statusItem.menu = menu
-            statusItem.button?.performClick(nil)
-            statusItem.menu = nil
-            return
-        }
-        togglePopover()
+        statusItem.menu = Self.createMenu(settings: Settings.main, state: state, target: self)
+        statusItem.button?.performClick(nil)
+        statusItem.menu = nil
     }
     
     
@@ -146,6 +164,7 @@ class Controller {
                 .with(accessibilityIdentifier: Accessibility.identifiers.quitButton)
         )
         menu.autoenablesItems = false
+        Self.insertRecentItems(into: menu, settings: settings, state: state, target: target)
         
         Self.setMenuItemsTarget(target: target, menu: menu)
         Self.refreshCapturePausedMenu(menu)
@@ -229,6 +248,43 @@ class Controller {
         else {
             ClipError(.invalidPanelPosition, localizedDescription: "Received invalid panel position from \(sender)").log(with: ErrorLogger.general)
         }
+    }
+
+    /// Recent non-password items on top of the status menu (U28); click pastes like the panel.
+    private static func insertRecentItems(into menu: NSMenu, settings: Settings, state: State, target: AnyObject?) {
+        guard settings.showsRecentInMenu, settings.recentMenuCount > 0 else { return }
+        let source = state.history.items.prefix(50).filter { !$0.isPassword }
+        let rows = MenuBarModel.recentItems(
+            from: source.map { item in
+                let summary = HistoryItemSummaryBuilder.shared.summary(for: item)
+                return (id: item.fsId, kind: summary.kind, isPassword: item.isPassword,
+                        title: RowPresentationBuilder.title(for: summary, locale: .current))
+            },
+            limit: settings.recentMenuCount
+        )
+        guard !rows.isEmpty else { return }
+        var index = 0
+        let header = NSMenuItem(title: Locale.current.language.languageCode?.identifier == "ru" ? "Недавние" : "Recent", action: nil, keyEquivalent: "")
+        header.isEnabled = false
+        menu.insertItem(header, at: index)
+        index += 1
+        for row in rows {
+            let item = NSMenuItem(title: row.title.isEmpty ? " " : row.title, action: #selector(pasteRecentItem(_:)), keyEquivalent: row.shortcutDigit.map(String.init) ?? "")
+            item.keyEquivalentModifierMask = []
+            item.representedObject = row.id
+            item.target = target
+            item.isEnabled = true
+            menu.insertItem(item, at: index)
+            index += 1
+        }
+        menu.insertItem(.separator(), at: index)
+    }
+
+    @objc func pasteRecentItem(_ sender: NSMenuItem) {
+        guard let id = sender.representedObject as? UUID,
+              let item = state.history.items.first(where: { $0.fsId == id }),
+              let panel = historyWindowController.contentViewController as? HistoryViewController else { return }
+        panel.historyPanel.paste(item: item)
     }
 
     @objc func togglePopover() {

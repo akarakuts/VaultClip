@@ -12,6 +12,7 @@ protocol AppRouting: AnyObject {
     var welcomeWindowController: WelcomeWindowController { get }
     var helpWindowController: HelpWindowController { get }
     func togglePopover()
+    func showSettings()
 }
 
 extension Controller: AppRouting {}

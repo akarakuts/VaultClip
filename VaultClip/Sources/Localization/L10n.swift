@@ -58,23 +58,23 @@ enum L10n {
     // MARK: - Counts
 
     static func countItems(_ count: Int) -> String {
-        String(format: tr( "count.items"), count)
+        String.localizedStringWithFormat(tr("count.items"), count)
     }
 
     static func countMatches(_ count: Int) -> String {
-        String(format: tr( "count.matches"), count)
+        String.localizedStringWithFormat(tr("count.matches"), count)
     }
 
     static var countFavoriteOne: String { tr( "count.favorite_one") }
 
     static func countFavorites(_ count: Int) -> String {
-        String(format: tr( "count.favorites"), count)
+        String.localizedStringWithFormat(tr("count.favorites"), count)
     }
 
     static var countPasswordOne: String { tr( "count.password_one") }
 
     static func countPasswords(_ count: Int) -> String {
-        String(format: tr( "count.passwords"), count)
+        String.localizedStringWithFormat(tr("count.passwords"), count)
     }
 
     static func countPinnedLimit(current: Int, max: Int) -> String {

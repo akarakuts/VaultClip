@@ -177,11 +177,11 @@ struct SettingsPrivacyTab: View {
                 Toggle(L10n.menuPauseCapture, isOn: $store.isCapturePaused)
                 Toggle(SettingsUICopy.t("Require Touch ID / password", "Требовать Touch ID или пароль"), isOn: $store.requiresPasswordAuthentication)
                 Stepper(value: $store.passwordAuthGraceMinutes, in: 0...120) {
-                    Text("\(SettingsUICopy.t("Don't ask again for", "Не спрашивать повторно")): \(store.passwordAuthGraceMinutes) min")
+                    Text("\(SettingsUICopy.t("Don't ask again for", "Не спрашивать повторно")): \(store.passwordAuthGraceMinutes) \(SettingsUICopy.t("min", "мин"))")
                 }
                 Toggle(SettingsUICopy.t("Hide panel from screen capture", "Скрывать панель от записи экрана"), isOn: $store.hidesPanelFromScreenCapture)
             }
-            Section(L10n.settingsPrivacy) {
+            Section(SettingsUICopy.t("Excluded apps", "Исключённые приложения")) {
                 ForEach(store.excludedBundleIds, id: \.self) { id in
                     HStack {
                         Image(nsImage: SourceAppIconProvider.icon(forBundleId: id))
@@ -201,6 +201,13 @@ struct SettingsPrivacyTab: View {
                     }
                 }
                 Button(L10n.settingsPrivacyAdd) { chooseApp() }
+                DisclosureGroup(SettingsUICopy.t("Always excluded", "Всегда исключаются")) {
+                    ForEach(HistoryPasteboardPolicy.bundleIdDenylist.sorted(), id: \.self) { id in
+                        Text("\(SourceAppDisplayName.name(forBundleId: id)) — \(id)")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
             }
         }
         .formStyle(.grouped)
@@ -247,9 +254,12 @@ struct SettingsShortcutsTab: View {
                 if case .invalid(let message) = capturePhase {
                     Text(message).font(.callout).foregroundStyle(.red)
                 }
-                Text(L10n.settingsHotkeyHint)
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
+                Text(SettingsUICopy.t(
+                    "Click the field and press a shortcut. Esc cancels, ⌫ restores ⌘⇧V.",
+                    "Нажмите на поле и введите сочетание. Esc — отмена, ⌫ — вернуть ⌘⇧V."
+                ))
+                .font(.callout)
+                .foregroundStyle(.secondary)
             }
             Section(SettingsUICopy.t("Panel commands", "Команды панели")) {
                 ForEach(PanelCommandRegistry.all.prefix(24), id: \.id) { command in

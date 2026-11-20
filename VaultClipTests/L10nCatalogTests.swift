@@ -37,9 +37,19 @@ final class L10nCatalogTests: XCTestCase {
             let locs = try XCTUnwrap(entry["localizations"] as? [String: Any])
             for lang in ["en", "ru"] {
                 let loc = try XCTUnwrap(locs[lang] as? [String: Any], "\(key) missing \(lang)")
-                let unit = try XCTUnwrap(loc["stringUnit"] as? [String: Any])
-                XCTAssertEqual(unit["state"] as? String, "translated", "\(key) \(lang)")
-                XCTAssertFalse((unit["value"] as? String ?? "").isEmpty, "\(key) \(lang) empty")
+                // Plural keys carry one stringUnit per category instead of a single unit.
+                let units: [[String: Any]]
+                if let plural = (loc["variations"] as? [String: Any])?["plural"] as? [String: Any] {
+                    units = plural.values.compactMap { ($0 as? [String: Any])?["stringUnit"] as? [String: Any] }
+                    XCTAssertNotNil(plural["other"], "\(key) \(lang) plural lacks other")
+                } else {
+                    units = [try XCTUnwrap(loc["stringUnit"] as? [String: Any], "\(key) \(lang) no stringUnit")]
+                }
+                XCTAssertFalse(units.isEmpty, "\(key) \(lang)")
+                for unit in units {
+                    XCTAssertEqual(unit["state"] as? String, "translated", "\(key) \(lang)")
+                    XCTAssertFalse((unit["value"] as? String ?? "").isEmpty, "\(key) \(lang) empty")
+                }
             }
         }
     }

@@ -400,9 +400,19 @@ class HistoryViewController: NSViewController {
         historyListView.layoutSubtreeIfNeeded()
         // reloadData drops table selection while `selected` keeps its value (distinctUntilChanged
         // then never re-fires), so push the logical selection back into the table.
-        if !selectionModel.isMulti, let row = selected.value, row >= 0, row < historyPanel.items.count {
-            historyListView.selectItem(row)
+        if !selectionModel.isMulti {
+            let count = historyPanel.items.count
+            if let row = selected.value, row >= count {
+                selected.accept(count > 0 ? count - 1 : nil)
+            } else if selected.value == nil, count > 0 {
+                selected.accept(0)
+            }
+            if let row = selected.value, row >= 0, row < count {
+                historyListView.selectItem(row)
+            }
         }
+        // Same row index can now point at another item (filter/search), so always refresh.
+        scheduleEmbeddedPreviewUpdate()
         refreshFooterHints()
         PasteboardDiagnostics.log(
             "ui reload rows=\(current.items.count) search=\(current.isSearchResult) mode=\(listMode.value)"
@@ -748,7 +758,8 @@ class HistoryViewController: NSViewController {
         case .openSettings:
             close()
             AppActivation.activateFrontmostApplication()
-            NSApp.sendAction(#selector(Controller.showSettings), to: nil, from: nil)
+            // Controller is not in the responder chain, so a nil-target action never arrived.
+            AppEnvironment.shared.controller?.showSettings()
         case .commandPalette:
             if commandPaletteOverlay.isHidden {
                 showCommandPalette()

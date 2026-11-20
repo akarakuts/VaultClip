@@ -7,6 +7,11 @@
 //
 import Foundation
 
+extension Notification.Name {
+    /// Posted after every SettingsPersistence.apply so UI outside the panel (status item) can follow.
+    static let vaultClipSettingsDidChange = Notification.Name("VaultClipSettingsDidChange")
+}
+
 enum SettingsPersistence {
 
     static func current() -> Settings {
@@ -16,6 +21,7 @@ enum SettingsPersistence {
     }
 
     static func apply(_ mutate: (inout Settings) -> Void) {
+        defer { NotificationCenter.default.post(name: .vaultClipSettingsDidChange, object: nil) }
         if let env = AppEnvironment.shared {
             env.updateSettings(mutate)
             return
