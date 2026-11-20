@@ -38,8 +38,6 @@ class Controller {
     
     // Window Controllers
     let historyWindowController: HistoryWindowController
-    let previewWindowController: PreviewWindowController
-    
     lazy var welcomeWindowController: WelcomeWindowController = {
         return WelcomeWindowController.createWelcomeWindowController()
     }()
@@ -67,12 +65,7 @@ class Controller {
         // Create history window controller (load window so list UI subscribes before first copy).
         self.historyWindowController = Self.createHistoryWindowController(state: state, settings: settings, disposeBag: state.disposeBag)
 
-        // Create preview window controllers
-        self.previewWindowController = Self.createPreviewWindowController(
-            state: state,
-            previewItem: state.previewHistoryItem,
-            disposeBag: state.disposeBag
-        )
+        // Floating preview window removed (U21); embedded preview lives in HistoryViewController.
 
         self.statusItem.menu = Self.createMenu(settings: settings, state: state, target: self)
         if let button = self.statusItem.button {
@@ -227,19 +220,6 @@ class Controller {
             .disposed(by: disposeBag)
         return controller
     }
-    
-    static func createPreviewWindowController(
-        state: State,
-        previewItem: BehaviorRelay<HistoryItem?>,
-        disposeBag: DisposeBag
-    ) -> PreviewWindowController {
-        let controller = PreviewWindowController.create(state: state)
-        controller
-            .subscribeTo(previewItem: previewItem)
-            .disposed(by: disposeBag)
-        return controller
-    }
-    
     
     // MARK: - Methods
     @objc func panelPositionSelected(_ sender: NSMenuItem) {
