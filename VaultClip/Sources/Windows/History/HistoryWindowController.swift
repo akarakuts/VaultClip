@@ -18,6 +18,7 @@ class HistoryWindowController: NSWindowController {
     private weak var appState: State?
     private var oldApp: NSRunningApplication?
     private var deactivationObservers: [NSObjectProtocol] = []
+    let panelChrome = PanelChromeController()
 
     override func windowDidLoad() {
         super.windowDidLoad()
@@ -27,6 +28,9 @@ class HistoryWindowController: NSWindowController {
         window?.level = NSWindow.Level(NSWindow.Level.mainMenu.rawValue - 2)
         window?.setAccessibilityIdentifier(Accessibility.identifiers.historyWindow)
         window?.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        if let window, let content = window.contentView {
+            panelChrome.attach(to: window, contentRoot: content)
+        }
         startWatchingDeactivation()
     }
 
@@ -58,6 +62,7 @@ class HistoryWindowController: NSWindowController {
                     self.showWindow(nil)
                     self.window?.layoutIfNeeded()
                     self.window?.makeKey()
+                    self.panelChrome.animateShow()
                     AppActivation.activateFrontmostApplication()
                     (self.contentViewController as? HistoryViewController)?
                         .alignHistoryListAfterWindowFrameChange()
@@ -73,6 +78,7 @@ class HistoryWindowController: NSWindowController {
         Observable.combineLatest(position, screen).subscribe(onNext: {
             (position, screen) in
             guard let screen else { return }
+            self.panelChrome.applyChrome(for: position)
             self.window?.setFrame(position.getFrame(forScreen: screen), display: true)
             DispatchQueue.main.async {
                 (self.contentViewController as? HistoryViewController)?

@@ -243,6 +243,7 @@
 		VCPNL18212EB0B10004E6E63 /* RowPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL18112EB0B10004E6E63 /* RowPresentation.swift */; };
 		VCPNL19212EB0B10004E6E63 /* PanelPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL19112EB0B10004E6E63 /* PanelPresenter.swift */; };
 		VCPNL22212EB0B10004E6E63 /* PanelPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL22112EB0B10004E6E63 /* PanelPresenterTests.swift */; };
+		VCPCH10212EB0B10004E6E63 /* PanelChromeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPCH10112EB0B10004E6E63 /* PanelChromeController.swift */; };
 		F7A8B9CA1123456789001 /* HistoryItem+Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9C91123456789001 /* HistoryItem+Favorite.swift */; };
 		F7A8B9CC1123456789001 /* HistoryListMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9CB1123456789001 /* HistoryListMode.swift */; };
 		F7A8B9CE1123456789001 /* HistoryFavoritesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9CD1123456789001 /* HistoryFavoritesTests.swift */; };
@@ -508,6 +509,7 @@
 		VCPNL18112EB0B10004E6E63 /* RowPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowPresentation.swift; sourceTree = "<group>"; };
 		VCPNL19112EB0B10004E6E63 /* PanelPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelPresenter.swift; sourceTree = "<group>"; };
 		VCPNL22112EB0B10004E6E63 /* PanelPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelPresenterTests.swift; sourceTree = "<group>"; };
+		VCPCH10112EB0B10004E6E63 /* PanelChromeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelChromeController.swift; sourceTree = "<group>"; };
 		F7A8B9C91123456789001 /* HistoryItem+Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryItem+Favorite.swift"; sourceTree = "<group>"; };
 		F7A8B9CB1123456789001 /* HistoryListMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListMode.swift; sourceTree = "<group>"; };
 		F7A8B9CD1123456789001 /* HistoryFavoritesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFavoritesTests.swift; sourceTree = "<group>"; };
@@ -610,6 +612,7 @@
 				34ACFBEA22EB0D6A004E6E63 /* HistoryViewController.swift */,
 				VCHVD00112EB0B10004E6E63 /* HistoryViewController+Delegates.swift */,
 				VCHPC00112EB0B10004E6E63 /* HistoryPanelChromeConfigurator.swift */,
+				VCPCH10112EB0B10004E6E63 /* PanelChromeController.swift */,
 				34A11C9723693CFD00DA1B14 /* HorizontalButtonsView.swift */,
 				A1B2C3D31123456789001 /* HistoryTabBarView.swift */,
 				B2C3D4E61123456789001 /* PasswordCommentPrompt.swift */,
@@ -1413,6 +1416,7 @@
 				3423B1C3234DA3B700B40715 /* ClipStatusItem.swift in Sources */,
 				VCSIX10212EB0B10004E6E63 /* SearchIndex.swift in Sources */,
 				341D9D3C233ADE6E008A2BE6 /* HistoryWindowController.swift in Sources */,
+				VCPCH10212EB0B10004E6E63 /* PanelChromeController.swift in Sources */,
 				340D3CA72361957100C2B335 /* ObservableType+WithPrevious.swift in Sources */,
 				34D018EB232B4D70006259E1 /* WelcomeWindowController.swift in Sources */,
 				34CA01FE235D3AE700EB067C /* DataFileManager.swift in Sources */,

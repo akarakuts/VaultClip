@@ -70,10 +70,8 @@ enum HistoryPanelChromeConfigurator {
       constraint.constant = HistoryListTheme.metrics.tabBarHeight
     }
 
-    stylePanelTitleLabel(
-      in: root,
-      excluding: [searchBar, itemCountLabel, emptyListLabel].compactMap { $0 }
-    )
+    // Large "VaultClip" title removed — reclaim vertical space (U06).
+    hidePanelTitleLabel(in: root, excluding: [searchBar, itemCountLabel, emptyListLabel].compactMap { $0 })
   }
 
   static func styleHistoryChrome(
@@ -142,18 +140,17 @@ enum HistoryPanelChromeConfigurator {
     }
   }
 
-  private static func stylePanelTitleLabel(in root: NSView, excluding excluded: [NSTextField]) {
-    let size = HistoryListTheme.metrics.titleFontSize
-    let titleFont = NSFont(name: "RobotoMonoForPowerline-Medium", size: size)
-      ?? NSFont.systemFont(ofSize: size, weight: .medium)
-
+  private static func hidePanelTitleLabel(in root: NSView, excluding excluded: [NSTextField]) {
     for subview in root.subviews {
       if let field = subview as? NSTextField,
          !excluded.contains(where: { $0 === field }),
-         !field.isEditable {
-        field.font = titleFont
+         !field.isEditable,
+         field.stringValue.localizedCaseInsensitiveContains("VaultClip")
+          || field.stringValue.localizedCaseInsensitiveContains("Yippy") {
+        field.isHidden = true
+        field.stringValue = ""
       }
-      stylePanelTitleLabel(in: subview, excluding: excluded)
+      hidePanelTitleLabel(in: subview, excluding: excluded)
     }
   }
 }
