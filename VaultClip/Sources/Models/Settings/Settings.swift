@@ -57,7 +57,8 @@ struct Settings: Codable, DefaultStorable {
         pastesRichText: Bool,
         maxItemSizeMB: Int,
         requiresPasswordAuthentication: Bool,
-        passwordAuthGraceMinutes: Int
+        passwordAuthGraceMinutes: Int,
+        passwordClipboardClearSeconds: Int
     ) {
         self.panelPosition = panelPosition
         self.pasteboardChangeCount = pasteboardChangeCount
@@ -68,6 +69,7 @@ struct Settings: Codable, DefaultStorable {
         self.maxItemSizeMB = maxItemSizeMB
         self.requiresPasswordAuthentication = requiresPasswordAuthentication
         self.passwordAuthGraceMinutes = passwordAuthGraceMinutes
+        self.passwordClipboardClearSeconds = passwordClipboardClearSeconds
     }
     
     static let `default` = Settings(
@@ -79,7 +81,8 @@ struct Settings: Codable, DefaultStorable {
         pastesRichText: true,
         maxItemSizeMB: Constants.settings.maxItemSizeMBDefault,
         requiresPasswordAuthentication: true,
-        passwordAuthGraceMinutes: 5
+        passwordAuthGraceMinutes: 5,
+        passwordClipboardClearSeconds: 90
     )
     
     // MARK: - Settings
@@ -105,6 +108,9 @@ struct Settings: Codable, DefaultStorable {
     /// Minutes after a successful unlock when password actions skip re-auth; `0` = every time.
     var passwordAuthGraceMinutes: Int
 
+    /// Auto-clear password clipboard after N seconds; `0` disables (T30).
+    var passwordClipboardClearSeconds: Int
+
     enum CodingKeys: String, CodingKey {
         case panelPosition
         case pasteboardChangeCount
@@ -115,6 +121,7 @@ struct Settings: Codable, DefaultStorable {
         case maxItemSizeMB
         case requiresPasswordAuthentication
         case passwordAuthGraceMinutes
+        case passwordClipboardClearSeconds
     }
 
     init(from decoder: Decoder) throws {
@@ -144,6 +151,8 @@ struct Settings: Codable, DefaultStorable {
             ?? defaults.requiresPasswordAuthentication
         passwordAuthGraceMinutes = try container.decodeIfPresent(Int.self, forKey: .passwordAuthGraceMinutes)
             ?? defaults.passwordAuthGraceMinutes
+        passwordClipboardClearSeconds = try container.decodeIfPresent(Int.self, forKey: .passwordClipboardClearSeconds)
+            ?? defaults.passwordClipboardClearSeconds
     }
 
     func encode(to encoder: Encoder) throws {
@@ -157,6 +166,7 @@ struct Settings: Codable, DefaultStorable {
         try container.encode(maxItemSizeMB, forKey: .maxItemSizeMB)
         try container.encode(requiresPasswordAuthentication, forKey: .requiresPasswordAuthentication)
         try container.encode(passwordAuthGraceMinutes, forKey: .passwordAuthGraceMinutes)
+        try container.encode(passwordClipboardClearSeconds, forKey: .passwordClipboardClearSeconds)
     }
 
     // MARK: - State Binding Methods

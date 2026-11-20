@@ -50,6 +50,9 @@ class HistoryPanel {
             HistoryPanel.markSelfWrite(changeCount)
             self.history.noteClipboardItemId(item.fsId)
             self.history.recordPasteboardChange(withCount: changeCount)
+            if item.isPassword {
+                PasswordClipboardClearer.shared.scheduleClear(afterWritingChangeCount: changeCount, pasteboard: self.pasteboard)
+            }
             self.scheduleSimulatedPaste()
         }
         if item.isPassword {
@@ -184,14 +187,17 @@ class HistoryPanel {
         guard let password = item.getPasswordValue(), !password.isEmpty else { return }
         PasswordAccessGate.shared.authorize { [weak self] ok in
             guard ok, let self else { return }
-            self.copyStringToClipboard(password, concealed: true)
+            let changeCount = self.copyStringToClipboard(password, concealed: true)
+            PasswordClipboardClearer.shared.scheduleClear(afterWritingChangeCount: changeCount, pasteboard: self.pasteboard)
         }
     }
     
-    private func copyStringToClipboard(_ string: String, concealed: Bool) {
+    @discardableResult
+    private func copyStringToClipboard(_ string: String, concealed: Bool) -> Int {
         let changeCount = PasteboardWriter.writeString(string, to: pasteboard, concealed: concealed)
         HistoryPanel.markSelfWrite(changeCount)
         history.clearCurrentClipboardItemId()
         history.recordPasteboardChange(withCount: changeCount)
+        return changeCount
     }
 }

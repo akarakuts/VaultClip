@@ -50,6 +50,7 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 - **Minimum macOS version** raised to **12.0** (Xcode 27+ no longer builds against 10.15); always-true `#available` guards for 10.x–12 removed.
 - **Coverage gate** (`scripts/check-coverage.sh`) now enforces the **minimum** per-file line coverage across core Security/History files (threshold and `VAULTCLIP_COVERAGE_THRESHOLD` unchanged at 55%); structurally untestable files are excluded with reasons in the script header.
 - **CI** installs pinned SwiftLint **0.65.1** from the portable release asset instead of `brew install` (baseline parity with local linting) and checks `MARKETING_VERSION` consistency across build configurations.
+- **Password clipboard auto-clear** — optionally clears the pasteboard after copying/pasting a password if nothing else was copied (T30).
 - **Password access gate** — Touch ID / Mac password before revealing, copying, or pasting saved passwords, with a grace period (T29).
 - **History limit confirmation** — reducing max items asks before pruning unpinned rows (T28).
 - **Hot key validation** — rejects system and panel-scoped conflicts; fixes quote title and F-key list (T27).
