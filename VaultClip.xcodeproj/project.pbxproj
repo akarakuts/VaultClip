@@ -31,6 +31,7 @@
 		341D9D33233725DE008A2BE6 /* SpecialKeyChangedEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341D9D32233725DE008A2BE6 /* SpecialKeyChangedEventMonitor.swift */; };
 		341D9D3523373083008A2BE6 /* ClipHotKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341D9D3423373083008A2BE6 /* ClipHotKey.swift */; };
 		341D9D37233730A5008A2BE6 /* ClipHotKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341D9D36233730A5008A2BE6 /* ClipHotKeys.swift */; };
+		VCHKV10212EB0B10004E6E63 /* HotKeyValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCHKV10112EB0B10004E6E63 /* HotKeyValidator.swift */; };
 		341D9D3C233ADE6E008A2BE6 /* HistoryWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341D9D3B233ADE6E008A2BE6 /* HistoryWindowController.swift */; };
 		341D9D40233AE8A1008A2BE6 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341D9D3F233AE8A1008A2BE6 /* Helper.swift */; };
 		341D9D42233B48E4008A2BE6 /* Array+Functional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341D9D41233B48E4008A2BE6 /* Array+Functional.swift */; };
@@ -195,6 +196,7 @@
 		VCSIX10212EB0B10004E6E63 /* SearchIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCSIX10112EB0B10004E6E63 /* SearchIndex.swift */; };
 		34F1047D23542CCE00B65251 /* HistoryItem+HistoryListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F1047C23542CCE00B65251 /* HistoryItem+HistoryListItem.swift */; };
 		A1B2C3D41123456789001 /* SearchEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40123456789001 /* SearchEngineTests.swift */; };
+		VCHKT10212EB0B10004E6E63 /* HotKeyValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCHKT10112EB0B10004E6E63 /* HotKeyValidatorTests.swift */; };
 		VCMAX10212EB0B10004E6E63 /* MaxItemSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCMAX10112EB0B10004E6E63 /* MaxItemSizeTests.swift */; };
 		VCDIG20212EB0B10004E6E63 /* ContentDigestDedupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCDIG20112EB0B10004E6E63 /* ContentDigestDedupTests.swift */; };
 		VCCEL10212EB0B10004E6E63 /* CellHeightsCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCCEL10112EB0B10004E6E63 /* CellHeightsCacheTests.swift */; };
@@ -268,6 +270,7 @@
 		341D9D32233725DE008A2BE6 /* SpecialKeyChangedEventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialKeyChangedEventMonitor.swift; sourceTree = "<group>"; };
 		341D9D3423373083008A2BE6 /* ClipHotKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipHotKey.swift; sourceTree = "<group>"; };
 		341D9D36233730A5008A2BE6 /* ClipHotKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipHotKeys.swift; sourceTree = "<group>"; };
+		VCHKV10112EB0B10004E6E63 /* HotKeyValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKeyValidator.swift; sourceTree = "<group>"; };
 		341D9D3B233ADE6E008A2BE6 /* HistoryWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryWindowController.swift; sourceTree = "<group>"; };
 		341D9D3F233AE8A1008A2BE6 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		341D9D41233B48E4008A2BE6 /* Array+Functional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Functional.swift"; sourceTree = "<group>"; };
@@ -430,6 +433,7 @@
 		34F1047C23542CCE00B65251 /* HistoryItem+HistoryListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryItem+HistoryListItem.swift"; sourceTree = "<group>"; };
 		A1B2C3D31123456789001 /* HistoryTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTabBarView.swift; sourceTree = "<group>"; };
 		A1B2C3D40123456789001 /* SearchEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEngineTests.swift; sourceTree = "<group>"; };
+		VCHKT10112EB0B10004E6E63 /* HotKeyValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKeyValidatorTests.swift; sourceTree = "<group>"; };
 		VCMAX10112EB0B10004E6E63 /* MaxItemSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxItemSizeTests.swift; sourceTree = "<group>"; };
 		VCCEL10112EB0B10004E6E63 /* CellHeightsCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellHeightsCacheTests.swift; sourceTree = "<group>"; };
 		VCDIG20112EB0B10004E6E63 /* ContentDigestDedupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentDigestDedupTests.swift; sourceTree = "<group>"; };
@@ -773,6 +777,7 @@
 			children = (
 				341D9D3423373083008A2BE6 /* ClipHotKey.swift */,
 				341D9D36233730A5008A2BE6 /* ClipHotKeys.swift */,
+				VCHKV10112EB0B10004E6E63 /* HotKeyValidator.swift */,
 			);
 			path = ClipHotKey;
 			sourceTree = "<group>";
@@ -927,6 +932,7 @@
 				344EC47B235D9288006792FF /* HistoryItemTests.swift */,
 				F7A8B9CD1123456789001 /* HistoryFavoritesTests.swift */,
 				A1B2C3D40123456789001 /* SearchEngineTests.swift */,
+				VCHKT10112EB0B10004E6E63 /* HotKeyValidatorTests.swift */,
 				VCMAX10112EB0B10004E6E63 /* MaxItemSizeTests.swift */,
 				VCCEL10112EB0B10004E6E63 /* CellHeightsCacheTests.swift */,
 				VCDIG20112EB0B10004E6E63 /* ContentDigestDedupTests.swift */,
@@ -1253,6 +1259,7 @@
 				3496BAD92442A90000D110AE /* GeneralSettingsViewController.swift in Sources */,
 				345A900723ED422400A21334 /* CellHeightCache.swift in Sources */,
 				341D9D37233730A5008A2BE6 /* ClipHotKeys.swift in Sources */,
+				VCHKV10212EB0B10004E6E63 /* HotKeyValidator.swift in Sources */,
 				3474C14223472A1500232620 /* NSEdgeInset+Convenience.swift in Sources */,
 				34B2FD9522F98B1A0068D50A /* PanelPosition.swift in Sources */,
 				34A11C9823693CFD00DA1B14 /* HorizontalButtonsView.swift in Sources */,
@@ -1361,6 +1368,7 @@
 				344EC47C235D9288006792FF /* HistoryItemTests.swift in Sources */,
 				F7A8B9CE1123456789001 /* HistoryFavoritesTests.swift in Sources */,
 				A1B2C3D41123456789001 /* SearchEngineTests.swift in Sources */,
+				VCHKT10212EB0B10004E6E63 /* HotKeyValidatorTests.swift in Sources */,
 				VCMAX10212EB0B10004E6E63 /* MaxItemSizeTests.swift in Sources */,
 				VCCEL10212EB0B10004E6E63 /* CellHeightsCacheTests.swift in Sources */,
 				VCDIG20212EB0B10004E6E63 /* ContentDigestDedupTests.swift in Sources */,

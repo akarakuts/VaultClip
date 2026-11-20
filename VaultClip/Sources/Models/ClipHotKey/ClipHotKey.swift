@@ -45,7 +45,7 @@ class ClipHotKey {
     
     // MARK: - Private attributes
     
-    private var keyCombo: KeyCombo
+    private(set) var keyCombo: KeyCombo
     private var _hotKey: HotKey?
     private var _isPaused: Bool
     

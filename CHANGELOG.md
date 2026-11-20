@@ -50,6 +50,7 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 - **Minimum macOS version** raised to **12.0** (Xcode 27+ no longer builds against 10.15); always-true `#available` guards for 10.x–12 removed.
 - **Coverage gate** (`scripts/check-coverage.sh`) now enforces the **minimum** per-file line coverage across core Security/History files (threshold and `VAULTCLIP_COVERAGE_THRESHOLD` unchanged at 55%); structurally untestable files are excluded with reasons in the script header.
 - **CI** installs pinned SwiftLint **0.65.1** from the portable release asset instead of `brew install` (baseline parity with local linting) and checks `MARKETING_VERSION` consistency across build configurations.
+- **Hot key validation** — rejects system and panel-scoped conflicts; fixes quote title and F-key list (T27).
 - **Max item size** — Settings cap (default 50 MB, or unlimited) skips oversize clipboard captures (T26).
 - **Panel screen tracking** — drops the 5 Hz mouse-location poll; screen is refreshed when opening the panel and on display-parameter changes (T25).
 - **Cell height cache** — heights key on (cell, item, display signature) under a shared layout context; list updates avoid full cache clears (T24).

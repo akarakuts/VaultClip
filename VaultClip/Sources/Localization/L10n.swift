@@ -216,4 +216,8 @@ enum L10n {
     // MARK: - Hot key
 
     static var hotkeyUnknownKey: String { tr( "hotkey.unknown_key") }
+    static var hotkeyErrorNeedsModifier: String { tr("hotkey.error.needs_modifier") }
+    static var hotkeyErrorSystemShortcut: String { tr("hotkey.error.system_shortcut") }
+    static var hotkeyErrorPanelConflict: String { tr("hotkey.error.panel_conflict") }
+    static var hotkeyErrorInvalidKey: String { tr("hotkey.error.invalid_key") }
 }

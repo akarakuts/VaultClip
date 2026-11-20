@@ -28,13 +28,13 @@ class HotKeySettingsViewController: NSViewController {
         
         keyPressMonitor.isPaused = true
         keyPressMonitor.subscribeToKeyDown { (keys, modifiers) in
-            if let toggleHotKey = self.createToggleHotKey(keys: keys, modifiers: modifiers) {
+            switch self.createToggleHotKey(keys: keys, modifiers: modifiers) {
+            case .success(let toggleHotKey):
                 self.showNewToggleHotKey(toggleHotKey)
                 self.saveHotKeyButton.isEnabled = true
                 self.newToggleHotKey = toggleHotKey
-            }
-            else {
-                self.showSavedToggleHotKey()
+            case .failure(let error):
+                self.showValidationError(error)
                 self.saveHotKeyButton.isEnabled = false
                 self.newToggleHotKey = nil
             }
@@ -73,21 +73,17 @@ class HotKeySettingsViewController: NSViewController {
         showSavedToggleHotKey()
     }
     
-    func createToggleHotKey(keys: [Key], modifiers: NSEvent.ModifierFlags) -> KeyCombo? {
-        let modifiers = filterModifiers(modifiers)
+    func createToggleHotKey(keys: [Key], modifiers: NSEvent.ModifierFlags) -> Result<KeyCombo, HotKeyValidationError> {
         let keys = filterKeys(keys)
-        
         guard keys.count == 1 else {
-            return nil
+            return .failure(.invalidKey)
         }
-        
-        let key = keys[0]
-        
-        guard !modifiers.isEmpty || isFunctionKey(key: key) else {
-            return nil
-        }
-        
-        return KeyCombo(key: key, modifiers: modifiers)
+        return HotKeyValidator.validate(key: keys[0], modifiers: modifiers)
+    }
+
+    func showValidationError(_ error: HotKeyValidationError) {
+        hotkeyLabel.stringValue = error.localizedMessage
+        hotkeyLabel.textColor = NSColor.systemRed
     }
     
     func showSavedToggleHotKey() {
@@ -129,7 +125,7 @@ func filterModifiers(_ modifiers: NSEvent.ModifierFlags) -> NSEvent.ModifierFlag
 }
 
 func isFunctionKey(key: Key) -> Bool {
-    return [.f1, .f2, .f1, .f2, .f3, .f4, .f5, .f6, .f7, .f8, .f9, .f10, .f11, .f12].contains(key)
+    return [.f1, .f2, .f3, .f4, .f5, .f6, .f7, .f8, .f9, .f10, .f11, .f12].contains(key)
 }
 
 func filterKeys(_ keys: [Key]) -> [Key] {
@@ -193,7 +189,8 @@ func filterKeys(_ keys: [Key]) -> [Key] {
             .f11,
             .f12,
             .period,
-            .grave
+            .grave,
+            .space
         ].contains($0)
     }
 }
@@ -280,7 +277,7 @@ extension Key {
         case .j:
             return "J"
         case .quote:
-            return "\""
+            return "'"
         case .k:
             return "K"
         case .semicolon:

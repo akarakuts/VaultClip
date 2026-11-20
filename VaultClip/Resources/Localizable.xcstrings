@@ -28299,6 +28299,70 @@
           }
         }
       }
+    },
+    "hotkey.error.needs_modifier": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add ⌘, ⌃, or ⌥ (F-keys may stand alone)."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нужен ⌘, ⌃ или ⌥ (F-клавиши можно без модификаторов)."
+          }
+        }
+      }
+    },
+    "hotkey.error.system_shortcut": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This shortcut is reserved by the system."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Это сочетание занято системой."
+          }
+        }
+      }
+    },
+    "hotkey.error.panel_conflict": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This shortcut is used inside the history panel."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Это сочетание уже используется в панели истории."
+          }
+        }
+      }
+    },
+    "hotkey.error.invalid_key": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That key cannot be used for the toggle hot key."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Эту клавишу нельзя назначить на вызов панели."
+          }
+        }
+      }
     }
   },
   "version": "1.0"
