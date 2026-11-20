@@ -26,8 +26,21 @@ struct Settings: Codable, DefaultStorable {
         shared = settings
     }
 
+    static let corruptBackupKey = "settings.corrupt-backup"
+
     static func loadPersisted() -> Settings {
-        read(forKey: "settings") ?? .default
+        let defaults = UserDefaults.standard
+        guard let data = defaults.data(forKey: "settings") else {
+            return .default
+        }
+        do {
+            return try JSONDecoder().decode(Settings.self, from: data)
+        } catch {
+            defaults.set(data, forKey: corruptBackupKey)
+            ClipWarning(localizedDescription: "Settings JSON could not be decoded; using defaults and keeping a corrupt backup.")
+                .log(with: WarningLogger.general)
+            return .default
+        }
     }
 
     static var main: Settings {
@@ -73,8 +86,49 @@ struct Settings: Codable, DefaultStorable {
     var showsRichText: Bool
     
     var pastesRichText: Bool
-    
-    
+
+    enum CodingKeys: String, CodingKey {
+        case panelPosition
+        case pasteboardChangeCount
+        case toggleHotKey
+        case maxHistory
+        case showsRichText
+        case pastesRichText
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let defaults = Settings.default
+
+        if let raw = try container.decodeIfPresent(Int.self, forKey: .panelPosition),
+           let position = PanelPosition(rawValue: raw) {
+            panelPosition = position
+        } else {
+            panelPosition = defaults.panelPosition
+        }
+
+        pasteboardChangeCount = try container.decodeIfPresent(Int.self, forKey: .pasteboardChangeCount)
+            ?? defaults.pasteboardChangeCount
+        toggleHotKey = try container.decodeIfPresent(KeyCombo.self, forKey: .toggleHotKey)
+            ?? defaults.toggleHotKey
+        maxHistory = try container.decodeIfPresent(Int.self, forKey: .maxHistory)
+            ?? defaults.maxHistory
+        showsRichText = try container.decodeIfPresent(Bool.self, forKey: .showsRichText)
+            ?? defaults.showsRichText
+        pastesRichText = try container.decodeIfPresent(Bool.self, forKey: .pastesRichText)
+            ?? defaults.pastesRichText
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(panelPosition, forKey: .panelPosition)
+        try container.encode(pasteboardChangeCount, forKey: .pasteboardChangeCount)
+        try container.encode(toggleHotKey, forKey: .toggleHotKey)
+        try container.encode(maxHistory, forKey: .maxHistory)
+        try container.encode(showsRichText, forKey: .showsRichText)
+        try container.encode(pastesRichText, forKey: .pastesRichText)
+    }
+
     // MARK: - State Binding Methods
     
     func bindPanelPositionTo(state: BehaviorRelay<PanelPosition>) -> Disposable {

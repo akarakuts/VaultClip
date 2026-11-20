@@ -29,6 +29,7 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 
 ### Changed
 
+- **Settings decode** — missing fields fall back to defaults; corrupt JSON is backed up under `settings.corrupt-backup` (T17).
 - **Log rotation** — error/warning logs always rotate above 2 MB; new log files are created with mode 0600; Logger writes on a serial queue (T16).
 - **Clipboard clear on delete** — pasteboard is cleared only when the deleted item is the current clipboard contents (T15).
 - **Order write race** — on-queue order snapshots update pending state synchronously so a later main-thread save cannot lose to a stale delete/insert flush (T14).
