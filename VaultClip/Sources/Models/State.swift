@@ -50,13 +50,6 @@ class State {
     
     var disposeBag: DisposeBag
 
-    /// Retained so the mouse-position poller can be stopped with the state (P9.1).
-    private var mousePositionTimer: Timer?
-
-    deinit {
-        mousePositionTimer?.invalidate()
-    }
-    
     // History
     var historyCache: HistoryCache
     var history: History
@@ -124,7 +117,7 @@ class State {
         }
 
         Self.monitorPastesRichText(state: self)
-        Self.monitorMousePosition(state: self)
+        Self.monitorScreenParameters(state: self)
     }
     
     // MARK: - Constructor Helpers
@@ -148,17 +141,23 @@ class State {
         // copies it onto each HistoryItem just before writing the pasteboard.
     }
     
-    static func monitorMousePosition(state: State) {
-        // Weak capture + retained handle so the timer stops with the state object.
-        let timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { [weak state] _ in
-            guard let state else { return }
-            let currentScreen = getCurrentScreen(forMouseLocation: NSEvent.mouseLocation)
-            if currentScreen != state.currentScreen.value {
-                state.currentScreen.accept(currentScreen)
-            }
+    /// Refresh the panel's target screen just before opening (replaces the 5 Hz mouse poll — T25).
+    func refreshCurrentScreenFromMouse() {
+        let screen = Self.getCurrentScreen(forMouseLocation: NSEvent.mouseLocation)
+        if screen != currentScreen.value {
+            currentScreen.accept(screen)
         }
-        timer.tolerance = 0.05
-        state.mousePositionTimer = timer
+    }
+
+    static func monitorScreenParameters(state: State) {
+        NotificationCenter.default.addObserver(
+            forName: NSApplication.didChangeScreenParametersNotification,
+            object: nil,
+            queue: .main
+        ) { [weak state] _ in
+            guard let state else { return }
+            state.refreshCurrentScreenFromMouse()
+        }
     }
 
     /// Nil only when the system reports no screens at all (rare display teardown races).

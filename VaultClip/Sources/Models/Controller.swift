@@ -213,7 +213,11 @@ class Controller {
     }
 
     @objc func togglePopover() {
-        state.isHistoryPanelShown.accept(!state.isHistoryPanelShown.value)
+        let willShow = !state.isHistoryPanelShown.value
+        if willShow {
+            state.refreshCurrentScreenFromMouse()
+        }
+        state.isHistoryPanelShown.accept(willShow)
     }
     
     @objc func deleteSelectedClicked() {
