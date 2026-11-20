@@ -148,8 +148,19 @@ class HistoryPanel {
 
     /// Multi-paste discrete file/image items without reordering (U16).
     func multiPasteDiscrete(_ items: [HistoryItem]) {
+        guard writeDiscreteItems(items) else { return }
+        scheduleSimulatedPaste()
+    }
+
+    /// ⌘C for several images/files — pasteboard only, no simulated paste.
+    func copyItems(_ items: [HistoryItem]) {
+        _ = writeDiscreteItems(items)
+    }
+
+    @discardableResult
+    private func writeDiscreteItems(_ items: [HistoryItem]) -> Bool {
         let writers = items.filter { !$0.isPassword }
-        guard !writers.isEmpty else { return }
+        guard !writers.isEmpty else { return false }
         _ = pasteboard.prepareForNewContents(with: [])
         pasteboard.writeObjects(writers)
         let changeCount = pasteboard.changeCount
@@ -159,7 +170,7 @@ class HistoryPanel {
         for item in writers {
             item.lastUsedAt = now
         }
-        scheduleSimulatedPaste()
+        return true
     }
     
     /// Simulates ⌘V in the previously focused app after the history panel closes.

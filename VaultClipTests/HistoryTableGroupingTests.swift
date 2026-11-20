@@ -1,6 +1,7 @@
 //
 // HistoryTableGroupingTests — date headers and row↔item mapping in the history table (U12).
 //
+import AppKit
 import XCTest
 @testable import VaultClip
 
@@ -39,5 +40,22 @@ final class HistoryTableGroupingTests: XCTestCase {
         XCTAssertEqual(table.row(forItemIndex: 2), 2)
         XCTAssertEqual(table.itemIndex(forRow: 1), 1)
         XCTAssertNil(table.itemIndex(forRow: 3))
+    }
+
+    func testSelectItemsMapsThroughDateHeaders() {
+        let now = Date()
+        let table = HistoryTableView(frame: .zero)
+        let list = items(agesInHours: [0, 0.5, 30], now: now)
+        table.historyListItems = list
+        table.groupsByDate = true
+        table.rebuildDisplayRows(now: now)
+        // Need a column for selectRowIndexes to stick in AppKit.
+        if table.tableColumns.isEmpty {
+            table.addTableColumn(NSTableColumn(identifier: NSUserInterfaceItemIdentifier("main")))
+        }
+        table.reloadData()
+        table.selectItems(IndexSet(integersIn: 0..<list.count))
+        XCTAssertEqual(table.selectedItemIndexes.count, list.count)
+        XCTAssertFalse(table.selectedRowIndexes.contains(0), "header row must stay unselected")
     }
 }

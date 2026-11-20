@@ -33,6 +33,12 @@ final class PanelFilterBarView: NSView {
         updateAppTitle()
     }
 
+    /// ⌥⌘A — open the app popup menu (not just focus the bar).
+    func openAppMenu() {
+        window?.makeFirstResponder(appButton)
+        appButton.performClick(nil)
+    }
+
     func reloadApps(from items: [(bundleId: String?, displayName: String)], selectedQuery: String?) {
         let agg = AppFilterAggregator.aggregate(items: items)
         appButton.removeAllItems()

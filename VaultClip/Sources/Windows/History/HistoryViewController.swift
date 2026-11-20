@@ -22,6 +22,7 @@ struct Results {
 class HistoryViewController: NSViewController {
     
     private var historyUnsubscribe: (() -> Void)?
+    private var settingsObserver: NSObjectProtocol?
 
     private var injectedState: State?
     private var settingsProvider: (() -> Settings)?
@@ -191,10 +192,35 @@ class HistoryViewController: NSViewController {
             .disposed(by: disposeBag)
         
         searchBar.resignFirstResponder()
+
+        settingsObserver = NotificationCenter.default.addObserver(
+            forName: .vaultClipSettingsDidChange, object: nil, queue: .main
+        ) { [weak self] _ in
+            self?.applySettingsFromStore()
+        }
+    }
+
+    /// Settings window edits must refresh the open panel (filter bar, grouping, preview, chrome).
+    private func applySettingsFromStore() {
+        guard isViewLoaded else { return }
+        isRichText = appSettings.showsRichText
+        historyListView.groupsByDate = appSettings.groupHistoryByDate
+        updateFilterBarVisibility()
+        syncEmbeddedPreviewVisibility()
+        applyPanelChromeMetrics()
+        applyListFilter()
+        if isPreviewShowing {
+            scheduleEmbeddedPreviewUpdate()
+        }
+        refreshFooterHints()
+        refreshSelectionChrome()
     }
     
     deinit {
         historyUnsubscribe?()
+        if let settingsObserver {
+            NotificationCenter.default.removeObserver(settingsObserver)
+        }
     }
 
     // MARK: - Quick Look (U21)
@@ -366,7 +392,8 @@ class HistoryViewController: NSViewController {
         let filtered = applyTypeAndAppFilters(to: baseItems)
         // Do not rebuild a full-text engine here — SearchIndex updates incrementally / on demand (T22).
         let isFiltered = filterState.isActive || !searchBar.stringValue.isEmpty
-        results.accept(Results(items: filtered, isSearchResult: isFiltered && filtered.count != baseItems.count))
+        // Any active filter/query is a search result — including when every tab item still matches.
+        results.accept(Results(items: filtered, isSearchResult: isFiltered))
         updateEmptyListLabel(for: listMode.value, visible: filtered.isEmpty)
         syncHistoryTableToResults(mutation: mutation)
         refreshFilterBarApps(from: baseItems)
@@ -720,7 +747,10 @@ class HistoryViewController: NSViewController {
         let ctx = PanelCommandContext(
             hasSelection: historyListView.selected != nil,
             selectionCount: max(selectionModel.count, historyListView.selected == nil ? 0 : 1),
-            searchIsEmpty: searchBar.stringValue.isEmpty
+            searchIsEmpty: searchBar.stringValue.isEmpty,
+            canUndoDelete: !pendingDeletion.batches.isEmpty,
+            isPasswordTab: listMode.value == .passwords,
+            previewVisible: isPreviewShowing
         )
         commandPaletteOverlay.present(context: ctx)
     }
@@ -756,7 +786,7 @@ class HistoryViewController: NSViewController {
         case .quickLook: toggleQuickLook()
         case .editBeforePaste: beginEditBeforePaste()
         case .pasteEdit: pasteEditedPreviewText()
-        case .saveEdit: pasteEditedPreviewText()
+        case .saveEdit: saveEditedPreviewText()
         case .textSizeIncrease: changeTextSize(by: 1)
         case .textSizeDecrease: changeTextSize(by: -1)
         case .togglePanel: close()
@@ -823,7 +853,7 @@ class HistoryViewController: NSViewController {
         case .closePanel:
             close()
         default:
-            break
+            return false
         }
         return true
     }
@@ -908,8 +938,8 @@ class HistoryViewController: NSViewController {
 
     private func showAppFilterMenu() {
         updateFilterBarVisibility()
-        // Focus app popup so ⌥⌘A opens the source list (U14).
-        filterBar.window?.makeFirstResponder(filterBar)
+        // ⌥⌘A: open the app popup, not just focus the filter bar (U14).
+        filterBar.openAppMenu()
     }
 
     private func promoteCompletedSearchTokens() {
@@ -1046,6 +1076,14 @@ class HistoryViewController: NSViewController {
         let items = selectionModel.orderedIds.compactMap { id in historyPanel.items.first(where: { $0.fsId == id }) }
         guard !items.isEmpty else { return }
         let separator = MultiPasteSeparator(rawValue: appSettings.multiPasteSeparator) ?? .newline
+        if plainTextOnly {
+            // Shift+Return: strip RTF/HTML even when the composer already had plain strings.
+            let plains = items.compactMap { HistoryPanel.plainTextForPaste(from: $0) }
+            guard !plains.isEmpty else { return }
+            close(reason: .paste)
+            historyPanel.multiPasteJoined(plains.joined(separator: separator.value), items: items)
+            return
+        }
         let composeItems = items.map { item in
             MultiPasteComposer.Item(
                 kind: itemKind(for: item),
@@ -1061,8 +1099,7 @@ class HistoryViewController: NSViewController {
         close(reason: .paste)
         switch result.payload {
         case .joinedText(let text):
-            let body = plainTextOnly ? text : text
-            historyPanel.multiPasteJoined(body, items: items)
+            historyPanel.multiPasteJoined(text, items: items)
         case .discreteItems:
             historyPanel.multiPasteDiscrete(items)
         case .none:

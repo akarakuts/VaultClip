@@ -21,6 +21,7 @@ class HistoryWindowController: NSWindowController {
     private weak var appState: State?
     private var oldApp: NSRunningApplication?
     private var deactivationObservers: [NSObjectProtocol] = []
+    private var settingsObserver: NSObjectProtocol?
     let panelChrome = PanelChromeController()
 
     override func windowDidLoad() {
@@ -35,11 +36,27 @@ class HistoryWindowController: NSWindowController {
             panelChrome.attach(to: window, contentRoot: content)
         }
         startWatchingDeactivation()
+        settingsObserver = NotificationCenter.default.addObserver(
+            forName: .vaultClipSettingsDidChange, object: nil, queue: .main
+        ) { [weak self] _ in
+            guard let self else { return }
+            // Width/height sliders and screen-capture privacy while the panel stays open.
+            self.applyLastFrame()
+            self.window?.sharingType = SettingsPersistence.current().hidesPanelFromScreenCapture ? .none : .readOnly
+            if let position = self.lastPosition {
+                self.panelChrome.applyChrome(for: position)
+            }
+            (self.contentViewController as? HistoryViewController)?
+                .alignHistoryListAfterWindowFrameChange()
+        }
     }
 
     deinit {
         for observer in deactivationObservers {
             NotificationCenter.default.removeObserver(observer)
+        }
+        if let settingsObserver {
+            NotificationCenter.default.removeObserver(settingsObserver)
         }
     }
 

@@ -142,11 +142,14 @@ extension HistoryViewController {
             previewVisible: isPreviewShowing && !historyPanel.items.isEmpty,
             listFraction: nil
         ))?.axis
-        // Explicit placement from Settings wins over the automatic width rule.
+        // Explicit placement wins over automatic — except trailing on a narrow edge panel
+        // (min list + preview > 480pt), which would crush the list; fall back to bottom.
         if axis != nil {
             switch appSettings.previewPlacement {
             case .automatic: break
-            case .trailing: axis = .horizontal
+            case .trailing:
+                let fitsSideBySide = width >= PreviewLayout.sideBySideWidthThreshold
+                axis = fitsSideBySide ? .horizontal : .vertical
             case .bottom: axis = .vertical
             }
         }

@@ -336,11 +336,13 @@ extension HistoryTableView: NSTableViewDataSource {
         historyDelegate?.historyTableView(self, selectedDidChange: selected)
     }
 
+    /// Selects by **item** indexes (not table rows). Maps through headers when grouped by date.
     func selectItems(_ indexes: IndexSet) {
+        let rows = IndexSet(indexes.compactMap { row(forItemIndex: $0) })
         performProgrammaticSelection {
-            selectRowIndexes(indexes, byExtendingSelection: false)
+            selectRowIndexes(rows, byExtendingSelection: false)
         }
-        if let first = indexes.first {
+        if let first = rows.first {
             scrollRowToVisible(first)
         }
     }

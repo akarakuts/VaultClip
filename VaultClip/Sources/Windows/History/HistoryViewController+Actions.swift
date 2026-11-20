@@ -30,9 +30,15 @@ extension HistoryViewController {
             items: items.map { MultiPasteComposer.Item(kind: itemKind(for: $0), text: $0.getPlainString(), isPassword: $0.isPassword) },
             separator: separator
         )
-        if case .joinedText(let text) = result.payload {
+        switch result.payload {
+        case .joinedText(let text):
             historyPanel.copyText(text)
             showToast(L10n.toastCopied)
+        case .discreteItems:
+            historyPanel.copyItems(items)
+            showToast(L10n.toastCopied)
+        case .none:
+            break
         }
     }
 
@@ -105,6 +111,17 @@ extension HistoryViewController {
         embeddedPreview.endEditing()
         close(reason: .paste)
         historyPanel.multiPasteJoined(text, items: [item])
+    }
+
+    /// ⌘S in the editor: write edited text to the pasteboard without simulating paste.
+    func saveEditedPreviewText() {
+        guard embeddedPreview.isEditing else { return }
+        let text = embeddedPreview.editedText
+        embeddedPreview.endEditing()
+        historyPanel.copyText(text)
+        showToast(L10n.toastCopied)
+        refreshFooterHints()
+        refreshSelectionChrome()
     }
 
     func changeTextSize(by delta: Int) {
