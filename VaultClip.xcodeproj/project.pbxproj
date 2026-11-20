@@ -260,6 +260,10 @@
 		VCLUA10212EB0B10004E6E63 /* LastUsedAtTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCLUA10112EB0B10004E6E63 /* LastUsedAtTests.swift */; };
 		VCPNL33212EB0B10004E6E63 /* FilterState.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL33112EB0B10004E6E63 /* FilterState.swift */; };
 		VCFST10212EB0B10004E6E63 /* FilterStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST10112EB0B10004E6E63 /* FilterStateTests.swift */; };
+		VCPNL34212EB0B10004E6E63 /* MultiPasteComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL34112EB0B10004E6E63 /* MultiPasteComposer.swift */; };
+		VCPNL35212EB0B10004E6E63 /* PendingDeletionQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL35112EB0B10004E6E63 /* PendingDeletionQueue.swift */; };
+		VCFST11212EB0B10004E6E63 /* MultiPasteComposerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST11112EB0B10004E6E63 /* MultiPasteComposerTests.swift */; };
+		VCFST12212EB0B10004E6E63 /* PendingDeletionQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST12112EB0B10004E6E63 /* PendingDeletionQueueTests.swift */; };
 		VCPNL27212EB0B10004E6E63 /* PanelStatusBarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */; };
 		VCPNL28212EB0B10004E6E63 /* PanelEmptyStateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */; };
 		VCPNL29212EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */; };
@@ -544,6 +548,10 @@
 		VCLUA10112EB0B10004E6E63 /* LastUsedAtTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastUsedAtTests.swift; sourceTree = "<group>"; };
 		VCPNL33112EB0B10004E6E63 /* FilterState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterState.swift; sourceTree = "<group>"; };
 		VCFST10112EB0B10004E6E63 /* FilterStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterStateTests.swift; sourceTree = "<group>"; };
+		VCPNL34112EB0B10004E6E63 /* MultiPasteComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiPasteComposer.swift; sourceTree = "<group>"; };
+		VCPNL35112EB0B10004E6E63 /* PendingDeletionQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingDeletionQueue.swift; sourceTree = "<group>"; };
+		VCFST11112EB0B10004E6E63 /* MultiPasteComposerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiPasteComposerTests.swift; sourceTree = "<group>"; };
+		VCFST12112EB0B10004E6E63 /* PendingDeletionQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingDeletionQueueTests.swift; sourceTree = "<group>"; };
 		VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStatePresenterTests.swift; sourceTree = "<group>"; };
 		VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelStatusBarModel.swift; sourceTree = "<group>"; };
 		VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelEmptyStateModel.swift; sourceTree = "<group>"; };
@@ -948,6 +956,8 @@
 				VCPNL31112EB0B10004E6E63 /* ThumbnailMemoryCache.swift */,
 				VCPNL32112EB0B10004E6E63 /* DateGrouping.swift */,
 				VCPNL33112EB0B10004E6E63 /* FilterState.swift */,
+				VCPNL34112EB0B10004E6E63 /* MultiPasteComposer.swift */,
+				VCPNL35112EB0B10004E6E63 /* PendingDeletionQueue.swift */,
 				VCPNL27112EB0B10004E6E63 /* PanelStatusBarModel.swift */,
 				VCPNL28112EB0B10004E6E63 /* PanelEmptyStateModel.swift */,
 			);
@@ -1094,6 +1104,8 @@
 				VCHRV20112EB0B10004E6E63 /* HistoryRowViewTests.swift */,
 				VCLUA10112EB0B10004E6E63 /* LastUsedAtTests.swift */,
 				VCFST10112EB0B10004E6E63 /* FilterStateTests.swift */,
+				VCFST11112EB0B10004E6E63 /* MultiPasteComposerTests.swift */,
+				VCFST12112EB0B10004E6E63 /* PendingDeletionQueueTests.swift */,
 				VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */,
 				VCPNL29112EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift */,
 				VCPNL30112EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift */,
@@ -1533,6 +1545,8 @@
 				VCPNL31212EB0B10004E6E63 /* ThumbnailMemoryCache.swift in Sources */,
 				VCPNL32212EB0B10004E6E63 /* DateGrouping.swift in Sources */,
 				VCPNL33212EB0B10004E6E63 /* FilterState.swift in Sources */,
+				VCPNL34212EB0B10004E6E63 /* MultiPasteComposer.swift in Sources */,
+				VCPNL35212EB0B10004E6E63 /* PendingDeletionQueue.swift in Sources */,
 				VCHRV10212EB0B10004E6E63 /* HistoryRowView.swift in Sources */,
 				VCPNL28212EB0B10004E6E63 /* PanelEmptyStateModel.swift in Sources */,
 				VCPNL27212EB0B10004E6E63 /* PanelStatusBarModel.swift in Sources */,
@@ -1581,6 +1595,8 @@
 				VCHRV20212EB0B10004E6E63 /* HistoryRowViewTests.swift in Sources */,
 				VCLUA10212EB0B10004E6E63 /* LastUsedAtTests.swift in Sources */,
 				VCFST10212EB0B10004E6E63 /* FilterStateTests.swift in Sources */,
+				VCFST11212EB0B10004E6E63 /* MultiPasteComposerTests.swift in Sources */,
+				VCFST12212EB0B10004E6E63 /* PendingDeletionQueueTests.swift in Sources */,
 				VCPNL30212EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift in Sources */,
 				VCPNL29212EB0B10004E6E63 /* PanelStatusBarPresenterTests.swift in Sources */,
 				VCPNL30212EB0B10004E6E63 /* PanelEmptyStatePresenterTests.swift in Sources */,
