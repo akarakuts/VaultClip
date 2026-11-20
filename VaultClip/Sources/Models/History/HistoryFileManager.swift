@@ -542,6 +542,7 @@ class HistoryFileManager {
         dispatchQueue.async {
             // A stale pending snapshot would resurrect cleared items into the order file.
             self.flushPendingOrder()
+            QuickLookTempStore.shared.removeAll()
 
             // Delete the old history
             do {

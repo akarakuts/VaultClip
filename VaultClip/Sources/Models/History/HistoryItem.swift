@@ -348,37 +348,28 @@ class HistoryItem: NSObject {
         NSWorkspace.shared.icon(forFileType: "com.adobe.pdf")
     }
     
+    /// True when Quick Look can show this item (file URL or PDF pasteboard data) — no temp write.
+    var hasQuickLookPreview: Bool {
+        getFileUrl() != nil || pdfData() != nil
+    }
+
     /// File URL for Quick Look — existing files or a short-lived temp copy of PDF data.
-    func quickLookPreviewURL() -> URL? {
+    func makeQuickLookPreviewURL(store: QuickLookTempStore = .shared) -> URL? {
         if let fileUrl = getFileUrl() {
             return fileUrl
         }
         guard let data = pdfData() else { return nil }
-        let directory = Self.quickLookCacheDirectory
-        try? SecureStorageHelper.ensureSecureDirectory(at: directory)
-        let url = directory.appendingPathComponent("\(fsId.uuidString).pdf")
-        if !FileManager.default.fileExists(atPath: url.path) {
-            try? data.write(
-                to: url,
-                options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]
-            )
-        }
-        return url
+        return try? store.url(for: fsId, data: data)
     }
-    
-    static func removeQuickLookCache(for id: UUID) {
-        let url = quickLookCacheDirectory.appendingPathComponent("\(id.uuidString).pdf")
-        try? FileManager.default.removeItem(at: url)
+
+    static func removeQuickLookCache(for id: UUID, store: QuickLookTempStore = .shared) {
+        store.remove(id: id)
     }
     
     private static let pdfPasteboardTypes: [NSPasteboard.PasteboardType] = [
         .pdf,
         NSPasteboard.PasteboardType(rawValue: "com.adobe.pdf"),
     ]
-    
-    private static var quickLookCacheDirectory: URL {
-        FileManager.default.temporaryDirectory.appendingPathComponent("VaultClip-QL", isDirectory: true)
-    }
     
     func getFileIcon() -> NSImage? {
         guard let url = getFileUrl() else { return nil }

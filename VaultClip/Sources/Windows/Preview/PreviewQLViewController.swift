@@ -63,7 +63,7 @@ extension PreviewQLViewController: QLPreviewPanelDelegate, QLPreviewPanelDataSou
     
     func previewPanel(_ panel: QLPreviewPanel!, previewItemAt index: Int) -> QLPreviewItem! {
         guard let historyItem = previewItem else { return nil }
-        return historyItem.quickLookPreviewURL() as QLPreviewItem?
+        return historyItem.makeQuickLookPreviewURL() as QLPreviewItem?
     }
     
     override func beginPreviewPanelControl(_ panel: QLPreviewPanel!) {

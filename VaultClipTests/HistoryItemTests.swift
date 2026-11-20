@@ -241,12 +241,28 @@ class HistoryItemTests: XCTestCase {
         XCTAssertTrue(item.getTableViewItemType() == HistoryPdfCellView.self)
     }
     
-    func testQuickLookPreviewURLWritesTempPdf() {
+    func testHasQuickLookPreviewDoesNotWriteTemp() {
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("VaultClip-QL-probe-\(UUID().uuidString)", isDirectory: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
         let item = HistoryItem(
             unsavedData: [.pdf: Self.minimalPdfData],
             cache: cache
         )
-        let previewURL = item.quickLookPreviewURL()
+        XCTAssertTrue(item.hasQuickLookPreview)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: directory.path))
+    }
+
+    func testMakeQuickLookPreviewURLWritesTempPdf() {
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("VaultClip-QL-item-\(UUID().uuidString)", isDirectory: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let store = QuickLookTempStore(directory: directory)
+        let item = HistoryItem(
+            unsavedData: [.pdf: Self.minimalPdfData],
+            cache: cache
+        )
+        let previewURL = item.makeQuickLookPreviewURL(store: store)
         XCTAssertNotNil(previewURL)
         XCTAssertEqual(previewURL?.pathExtension, "pdf")
         XCTAssertTrue(FileManager.default.fileExists(atPath: previewURL!.path))

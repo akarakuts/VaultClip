@@ -41,32 +41,36 @@ class PreviewWindowController: NSWindowController {
     
     func subscribeTo(previewItem: BehaviorRelay<HistoryItem?>) -> Disposable {
         return previewItem
-            .subscribe(onNext: {
-                self.previewItem = $0
-                if let item = $0 {
+            .subscribe(onNext: { [weak self] next in
+                guard let self else { return }
+                if let previous = self.previewItem, previous.fsId != next?.fsId {
+                    QuickLookTempStore.shared.remove(id: previous.fsId)
+                }
+                if next == nil, let previous = self.previewItem {
+                    QuickLookTempStore.shared.remove(id: previous.fsId)
+                }
+                self.previewItem = next
+                if let item = next {
                     self.showWindow(nil)
                     self.updateController(forItem: item)
-                }
-                else {
+                } else {
                     self.close()
                 }
             })
     }
-    
+
     func updateController(forItem item: HistoryItem) {
         let controller = self.getViewController(forItem: item)
         self.contentViewController = controller
         window?.setFrame(controller.configureView(forItem: item), display: true)
     }
-    
+
     func getViewController(forItem item: HistoryItem) -> PreviewViewController {
-        if item.quickLookPreviewURL() != nil {
+        if item.hasQuickLookPreview {
             return previewQLViewController
-        }
-        else if item.hasRasterImage() {
+        } else if item.hasRasterImage() {
             return previewImageViewController
-        }
-        else {
+        } else {
             return previewTextViewController
         }
     }

@@ -29,6 +29,7 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 
 ### Changed
 
+- **Quick Look temp cleanup** — decrypted PDF previews live in a 0700/0600 temp store and are removed on preview close, clear-all, launch, and quit (T07).
 - **Close panel on deactivate** — history panel closes when another app becomes active; modal prompts suspend that behavior (T06).
 - **Panel-scoped hot keys** — ⌘\ and other panel shortcuts register only while the history panel is open (T05).
 - **Test isolation** — XCTest host and UI-test mode use a temporary `StorageRoot` (never `~/Library/Application Support/com.karakuts.VaultClip`); UI-testing helpers and mocks are DEBUG-only and absent from Release.

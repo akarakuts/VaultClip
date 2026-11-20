@@ -45,6 +45,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         checkBuildFlags()
         checkLaunchArgs()
         LogStorage.secureAtLaunch()
+        QuickLookTempStore.shared.removeAll()
         AppDataMigrator.migrateIfNeeded()
         EncryptionKeyBootstrap.prepareAtLaunch()
         let environment = AppEnvironment.bootstrap()
@@ -60,6 +61,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
+        QuickLookTempStore.shared.removeAll()
         // Drain coalesced order writes before the process dies (bounded wait).
         HistoryFileManager.default.flushHistoryOrderSync(timeout: 1.5)
         #if DEBUG
