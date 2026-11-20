@@ -75,8 +75,41 @@ class Controller {
         )
 
         self.statusItem.menu = Self.createMenu(settings: settings, state: state, target: self)
-        self.statusItem.button?.alphaValue = settings.isCapturePaused ? 0.4 : 1.0
+        if let button = self.statusItem.button {
+            ClipStatusItem.applyPausedAppearance(to: button, isPaused: settings.isCapturePaused)
+        }
+        configureStatusItemClickMode(settings.statusItemClickMode)
         self.historyWindowController.loadWindow()
+    }
+
+    private func configureStatusItemClickMode(_ mode: StatusItemClickMode) {
+        guard let button = statusItem.button else { return }
+        if StatusItemPresentation.leftClickOpensPanel(mode: mode) {
+            statusItem.menu = nil
+            button.sendAction(on: [.leftMouseUp, .rightMouseUp])
+            button.target = self
+            button.action = #selector(statusItemClicked(_:))
+        } else {
+            button.sendAction(on: [.leftMouseUp])
+            statusItem.menu = Self.createMenu(settings: Settings.main, state: state, target: self)
+        }
+    }
+
+    @objc private func statusItemClicked(_ sender: Any?) {
+        guard let event = NSApp.currentEvent else {
+            togglePopover()
+            return
+        }
+        if event.type == .rightMouseUp
+            || event.modifierFlags.contains(.control)
+            || event.modifierFlags.contains(.option) {
+            let menu = Self.createMenu(settings: Settings.main, state: state, target: self)
+            statusItem.menu = menu
+            statusItem.button?.performClick(nil)
+            statusItem.menu = nil
+            return
+        }
+        togglePopover()
     }
     
     
@@ -105,14 +138,7 @@ class Controller {
             .with(menuItem: NSMenuItem(title: L10n.menuPauseCapture, action: #selector(toggleCapturePaused), keyEquivalent: "")
                 .with(tag: StatusMenuTag.pauseCapture.rawValue)
             )
-            .with(menuItem: NSMenuItem(title: L10n.menuLaunchAtLogin, action: #selector(launchAtLogin), keyEquivalent: "")
-                .with(tag: StatusMenuTag.launchAtLogin.rawValue)
-                .with(accessibilityIdentifier: Accessibility.identifiers.launchAtLoginButton)
-            )
-            .with(menuItem: NSMenuItem(title: L10n.menuDeleteSelected, action: #selector(deleteSelectedClicked), keyEquivalent: Constants.statusItemMenu.deleteKeyEquivalent)
-                .with(tag: StatusMenuTag.deleteSelected.rawValue)
-                .with(state: .off)
-            )
+            // Launch-at-login and delete-selected moved to Settings (U28).
             .with(menuItem: NSMenuItem(title: L10n.menuClearHistory, action: #selector(clearHistoryClicked), keyEquivalent: "")
                 .with(tag: StatusMenuTag.clearHistory.rawValue)
             )
@@ -236,7 +262,9 @@ class Controller {
     @objc func toggleCapturePaused() {
         let paused = !Settings.main.isCapturePaused
         SettingsPersistence.apply { $0.isCapturePaused = paused }
-        statusItem.button?.alphaValue = paused ? 0.4 : 1.0
+        if let button = statusItem.button {
+            ClipStatusItem.applyPausedAppearance(to: button, isPaused: paused)
+        }
         if let menu = statusItem.menu {
             Self.refreshCapturePausedMenu(menu)
         }
