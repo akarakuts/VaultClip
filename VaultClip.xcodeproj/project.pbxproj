@@ -239,6 +239,10 @@
 		VCPNL15212EB0B10004E6E63 /* EscapeResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL15112EB0B10004E6E63 /* EscapeResolver.swift */; };
 		VCPNL16212EB0B10004E6E63 /* PanelLocalKeyMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL16112EB0B10004E6E63 /* PanelLocalKeyMonitor.swift */; };
 		VCPNL21212EB0B10004E6E63 /* PanelKeyRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL21112EB0B10004E6E63 /* PanelKeyRouterTests.swift */; };
+		VCPNL17212EB0B10004E6E63 /* ItemKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL17112EB0B10004E6E63 /* ItemKind.swift */; };
+		VCPNL18212EB0B10004E6E63 /* RowPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL18112EB0B10004E6E63 /* RowPresentation.swift */; };
+		VCPNL19212EB0B10004E6E63 /* PanelPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL19112EB0B10004E6E63 /* PanelPresenter.swift */; };
+		VCPNL22212EB0B10004E6E63 /* PanelPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL22112EB0B10004E6E63 /* PanelPresenterTests.swift */; };
 		F7A8B9CA1123456789001 /* HistoryItem+Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9C91123456789001 /* HistoryItem+Favorite.swift */; };
 		F7A8B9CC1123456789001 /* HistoryListMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9CB1123456789001 /* HistoryListMode.swift */; };
 		F7A8B9CE1123456789001 /* HistoryFavoritesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9CD1123456789001 /* HistoryFavoritesTests.swift */; };
@@ -500,6 +504,10 @@
 		VCPNL15112EB0B10004E6E63 /* EscapeResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EscapeResolver.swift; sourceTree = "<group>"; };
 		VCPNL16112EB0B10004E6E63 /* PanelLocalKeyMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelLocalKeyMonitor.swift; sourceTree = "<group>"; };
 		VCPNL21112EB0B10004E6E63 /* PanelKeyRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelKeyRouterTests.swift; sourceTree = "<group>"; };
+		VCPNL17112EB0B10004E6E63 /* ItemKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemKind.swift; sourceTree = "<group>"; };
+		VCPNL18112EB0B10004E6E63 /* RowPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowPresentation.swift; sourceTree = "<group>"; };
+		VCPNL19112EB0B10004E6E63 /* PanelPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelPresenter.swift; sourceTree = "<group>"; };
+		VCPNL22112EB0B10004E6E63 /* PanelPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelPresenterTests.swift; sourceTree = "<group>"; };
 		F7A8B9C91123456789001 /* HistoryItem+Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryItem+Favorite.swift"; sourceTree = "<group>"; };
 		F7A8B9CB1123456789001 /* HistoryListMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListMode.swift; sourceTree = "<group>"; };
 		F7A8B9CD1123456789001 /* HistoryFavoritesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFavoritesTests.swift; sourceTree = "<group>"; };
@@ -885,6 +893,9 @@
 				VCPNL14112EB0B10004E6E63 /* PanelKeyRouter.swift */,
 				VCPNL15112EB0B10004E6E63 /* EscapeResolver.swift */,
 				VCPNL16112EB0B10004E6E63 /* PanelLocalKeyMonitor.swift */,
+				VCPNL17112EB0B10004E6E63 /* ItemKind.swift */,
+				VCPNL18112EB0B10004E6E63 /* RowPresentation.swift */,
+				VCPNL19112EB0B10004E6E63 /* PanelPresenter.swift */,
 			);
 			path = Panel;
 			sourceTree = "<group>";
@@ -1022,6 +1033,7 @@
 				VCPTH20112EB0B10004E6E63 /* PanelThemeTests.swift */,
 				VCPNL20112EB0B10004E6E63 /* PanelCommandRegistryTests.swift */,
 				VCPNL21112EB0B10004E6E63 /* PanelKeyRouterTests.swift */,
+				VCPNL22112EB0B10004E6E63 /* PanelPresenterTests.swift */,
 				VCDIG20112EB0B10004E6E63 /* ContentDigestDedupTests.swift */,
 				34ACFBD322EB0B11004E6E63 /* Info.plist */,
 				349F794D235C5759000CA5B9 /* Mocks */,
@@ -1448,6 +1460,9 @@
 				VCPNL14212EB0B10004E6E63 /* PanelKeyRouter.swift in Sources */,
 				VCPNL15212EB0B10004E6E63 /* EscapeResolver.swift in Sources */,
 				VCPNL16212EB0B10004E6E63 /* PanelLocalKeyMonitor.swift in Sources */,
+				VCPNL17212EB0B10004E6E63 /* ItemKind.swift in Sources */,
+				VCPNL18212EB0B10004E6E63 /* RowPresentation.swift in Sources */,
+				VCPNL19212EB0B10004E6E63 /* PanelPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1484,6 +1499,7 @@
 				VCPTH20212EB0B10004E6E63 /* PanelThemeTests.swift in Sources */,
 				VCPNL20212EB0B10004E6E63 /* PanelCommandRegistryTests.swift in Sources */,
 				VCPNL21212EB0B10004E6E63 /* PanelKeyRouterTests.swift in Sources */,
+				VCPNL22212EB0B10004E6E63 /* PanelPresenterTests.swift in Sources */,
 				VCDIG20212EB0B10004E6E63 /* ContentDigestDedupTests.swift in Sources */,
 				349F7944235C24D4000CA5B9 /* HistoryFileManagerTests.swift in Sources */,
 				349F794A235C5722000CA5B9 /* WarningLoggerMock.swift in Sources */,

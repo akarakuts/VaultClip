@@ -304,7 +304,9 @@ class HistoryViewController: NSViewController {
         guard isViewLoaded else { return }
         let current = results.value
         itemCountLabel.stringValue = countLabelText(for: current)
-        historyPanel = HistoryPanel(history: appState.history, items: current.items)
+        // Keep a single HistoryPanel instance; only refresh items (U05 / T38 debt).
+        historyPanel.items = current.items
+
         updateEmptyListLabel(
             for: listMode.value,
             visible: !current.isSearchResult && current.items.isEmpty
@@ -461,7 +463,7 @@ class HistoryViewController: NSViewController {
     @discardableResult
     private func handlePanelKeyRoute(_ route: PanelKeyRoute, event: NSEvent) -> Bool {
         // Esc walks the stack; ⌘W closes immediately (same registry id).
-        if event.keyCode == 53, event.modifierFlags.intersection([.command, .control, .option, .shift]).isEmpty {
+        if event.keyCode == 53, event.modifierFlags.isDisjoint(with: [.command, .control, .option, .shift]) {
             return performEscape()
         }
         switch route {
