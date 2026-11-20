@@ -131,7 +131,7 @@ class HistoryViewController: NSViewController {
         ClipHotKeys.upArrow.onLong(goToPreviousItem)
         ClipHotKeys.pageUp.onDown(goToPreviousItem)
         ClipHotKeys.pageUp.onLong(goToPreviousItem)
-        ClipHotKeys.escape.onDown(close)
+        ClipHotKeys.escape.onDown { self.close() }
         ClipHotKeys.return.onDown(pasteSelected)
         ClipHotKeys.ctrlAltCmdLeftArrow.onDown { self.appState.panelPosition.accept(.left) }
         ClipHotKeys.ctrlAltCmdRightArrow.onDown { self.appState.panelPosition.accept(.right) }
@@ -157,8 +157,13 @@ class HistoryViewController: NSViewController {
         
         appState.isHistoryPanelShown
             .distinctUntilChanged()
-            .subscribe(onNext: { shown in
+            .subscribe(onNext: { [weak self] shown in
                 ClipHotKeys.setPanelHotKeysActive(shown)
+                // Deactivation closes via the relay without calling close() — clear preview here.
+                if !shown {
+                    self?.isPreviewShowing = false
+                    self?.appState.previewHistoryItem.accept(nil)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -365,8 +370,9 @@ class HistoryViewController: NSViewController {
         listMode.accept(listMode.value.next())
     }
     
-    func close() {
+    func close(reason: PanelCloseReason = .userAction) {
         isPreviewShowing = false
+        appState.panelCloseReason = reason
         appState.isHistoryPanelShown.accept(false)
         appState.previewHistoryItem.accept(nil)
         resetSelected()
@@ -442,7 +448,7 @@ class HistoryViewController: NSViewController {
     }
     
     private func paste(selected: Int) {
-        self.close()
+        self.close(reason: .paste)
         historyPanel.paste(displayedIndex: selected)
     }
     

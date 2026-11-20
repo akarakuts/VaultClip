@@ -16,7 +16,10 @@ class Alerter {
     
     func show(_ alertable: Alertable) {
         DispatchQueue.main.async {
-            alertable.createAlert().runModal()
+            // Suspend panel auto-close so resign-active from the alert does not hide history (T06).
+            PanelFocusGuard.withSuspended {
+                alertable.createAlert().runModal()
+            }
         }
     }
 }

@@ -13,30 +13,47 @@ import RxSwift
 import RxRelay
 
 class HistoryWindowController: NSWindowController {
-    
+
+    private var shownToggle: BehaviorRelay<Bool>?
+    private weak var appState: State?
+    private var oldApp: NSRunningApplication?
+    private var deactivationObservers: [NSObjectProtocol] = []
+
     override func windowDidLoad() {
         super.windowDidLoad()
-        
+
+        // Relay is the source of truth — do not let AppKit auto-hide without updating state.
+        window?.hidesOnDeactivate = false
         window?.level = NSWindow.Level(NSWindow.Level.mainMenu.rawValue - 2)
         window?.setAccessibilityIdentifier(Accessibility.identifiers.historyWindow)
         window?.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        startWatchingDeactivation()
     }
-    
+
+    deinit {
+        for observer in deactivationObservers {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
+
     static func createHistoryWindowController() -> HistoryWindowController {
         return NSStoryboard.instantiateOrTerminate(identifier: "HistoryWindowController")
     }
-    
-    private var oldApp: NSRunningApplication?
-    
-    func subscribeTo(toggle: BehaviorRelay<Bool>) -> Disposable {
+
+    func subscribeTo(toggle: BehaviorRelay<Bool>, state: State) -> Disposable {
+        shownToggle = toggle
+        appState = state
         return toggle
-            .subscribe(onNext: {
-                [] in
-                if !$0 {
+            .subscribe(onNext: { [weak self] shown in
+                guard let self else { return }
+                if !shown {
                     self.close()
-                    AppActivation.activate(self.oldApp)
-                }
-                else {
+                    let reason = state.panelCloseReason
+                    if PanelVisibilityPolicy.shouldRestoreFocus(reason: reason) {
+                        AppActivation.activate(self.oldApp)
+                    }
+                    state.panelCloseReason = .userAction
+                } else {
                     self.oldApp = NSWorkspace.shared.frontmostApplication
                     self.showWindow(nil)
                     self.window?.layoutIfNeeded()
@@ -62,5 +79,39 @@ class HistoryWindowController: NSWindowController {
                     .alignHistoryListAfterWindowFrameChange()
             }
         })
+    }
+
+    // MARK: - Deactivation
+
+    private func startWatchingDeactivation() {
+        let center = NotificationCenter.default
+        deactivationObservers.append(center.addObserver(
+            forName: NSApplication.didResignActiveNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.closeForAppDeactivationIfNeeded()
+        })
+        deactivationObservers.append(NSWorkspace.shared.notificationCenter.addObserver(
+            forName: NSWorkspace.didActivateApplicationNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] note in
+            guard let app = note.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else { return }
+            if app.bundleIdentifier != Bundle.main.bundleIdentifier {
+                self?.closeForAppDeactivationIfNeeded()
+            }
+        })
+    }
+
+    private func closeForAppDeactivationIfNeeded() {
+        guard let toggle = shownToggle, let state = appState else { return }
+        guard PanelVisibilityPolicy.shouldClose(
+            reason: .appDeactivated,
+            isShown: toggle.value,
+            isSuspended: PanelFocusGuard.isSuspended
+        ) else { return }
+        state.panelCloseReason = .appDeactivated
+        toggle.accept(false)
     }
 }

@@ -185,7 +185,7 @@ class Controller {
         (controller.contentViewController as? HistoryViewController)?
             .configure(state: state, settings: settings)
         controller
-            .subscribeTo(toggle: state.isHistoryPanelShown)
+            .subscribeTo(toggle: state.isHistoryPanelShown, state: state)
             .disposed(by: disposeBag)
         controller
             .subscribeFrameTo(position: state.panelPosition.asObservable(), screen: state.currentScreen.asObservable())
@@ -223,15 +223,17 @@ class Controller {
     }
     
     @objc func clearHistoryClicked() {
-        let alert = NSAlert()
-        alert.messageText = L10n.alertClearHistoryTitle
-        alert.informativeText = L10n.alertClearHistoryMessage
-        alert.alertStyle = .warning
-        alert.addButton(withTitle: L10n.menuClearHistory)
-        alert.addButton(withTitle: L10n.menuClearAll)
-        alert.addButton(withTitle: L10n.commonCancel)
-        
-        switch alert.runModal() {
+        let response = PanelFocusGuard.withSuspended { () -> NSApplication.ModalResponse in
+            let alert = NSAlert()
+            alert.messageText = L10n.alertClearHistoryTitle
+            alert.informativeText = L10n.alertClearHistoryMessage
+            alert.alertStyle = .warning
+            alert.addButton(withTitle: L10n.menuClearHistory)
+            alert.addButton(withTitle: L10n.menuClearAll)
+            alert.addButton(withTitle: L10n.commonCancel)
+            return alert.runModal()
+        }
+        switch response {
         case .alertFirstButtonReturn:
             state.history.clear(nonFavoritesOnly: true)
         case .alertSecondButtonReturn:

@@ -32,6 +32,9 @@ class State {
     // MARK: - Attributes
     // RxSwift
     var isHistoryPanelShown: BehaviorRelay<Bool>
+
+    /// Set before accepting `false` on `isHistoryPanelShown`; read by HistoryWindowController for focus restore.
+    var panelCloseReason: PanelCloseReason = .userAction
     
     var panelPosition: BehaviorRelay<PanelPosition>
 
