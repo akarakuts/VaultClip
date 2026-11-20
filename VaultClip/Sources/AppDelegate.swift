@@ -86,6 +86,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             for sub in vc.view.subviews {
                 lines.append("sub \(type(of: sub)) frame=\(sub.frame) fit=\(sub.fittingSize) hidden=\(sub.isHidden)")
             }
+            lines.append("window min=\(String(describing: vc.view.window?.minSize)) max=\(String(describing: vc.view.window?.maxSize)) contentMax=\(String(describing: vc.view.window?.contentMaxSize))")
+            for constraint in vc.view.constraintsAffectingLayout(for: .horizontal) where constraint.priority.rawValue > 500 {
+                lines.append("h \(constraint)")
+            }
             try? lines.joined(separator: "\n").write(toFile: "/tmp/vc-ui-dump.txt", atomically: true, encoding: .utf8)
         }
         if let menuRow {

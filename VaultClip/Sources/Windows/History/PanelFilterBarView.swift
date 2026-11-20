@@ -101,11 +101,15 @@ final class PanelFilterBarView: NSView {
         NSLayoutConstraint.activate([
             typeControl.leadingAnchor.constraint(equalTo: leadingAnchor),
             typeControl.centerYAnchor.constraint(equalTo: centerYAnchor),
-            appButton.leadingAnchor.constraint(equalTo: typeControl.trailingAnchor, constant: 8),
+            // Flexible gap: a rigid chain capped the whole panel at ~420pt wide (top/bottom positions).
+            appButton.leadingAnchor.constraint(greaterThanOrEqualTo: typeControl.trailingAnchor, constant: 8),
             appButton.trailingAnchor.constraint(equalTo: trailingAnchor),
             appButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-            appButton.widthAnchor.constraint(lessThanOrEqualToConstant: 200)
+            appButton.widthAnchor.constraint(lessThanOrEqualToConstant: 220)
         ])
+        let fill = appButton.leadingAnchor.constraint(equalTo: typeControl.trailingAnchor, constant: 8)
+        fill.priority = .dragThatCannotResizeWindow
+        fill.isActive = true
         apply(FilterState())
     }
 

@@ -168,7 +168,7 @@ extension HistoryViewController {
             listBottom.isActive = true
             listTrailing.isActive = false
             let preferred = embeddedPreview.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5)
-            preferred.priority = .defaultHigh
+            preferred.priority = .dragThatCannotResizeWindow
             previewConstraints = [
                 scrollView.trailingAnchor.constraint(equalTo: embeddedPreview.leadingAnchor, constant: -6),
                 embeddedPreview.topAnchor.constraint(equalTo: scrollView.topAnchor),
@@ -182,7 +182,7 @@ extension HistoryViewController {
             listBottom.isActive = false
             listTrailing.isActive = true
             let preferred = embeddedPreview.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.36)
-            preferred.priority = .defaultHigh
+            preferred.priority = .dragThatCannotResizeWindow
             previewConstraints = [
                 scrollView.bottomAnchor.constraint(equalTo: embeddedPreview.topAnchor, constant: -6),
                 embeddedPreview.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: inset),

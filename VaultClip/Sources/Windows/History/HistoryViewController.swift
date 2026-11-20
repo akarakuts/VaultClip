@@ -672,10 +672,11 @@ class HistoryViewController: NSViewController {
     /// Overlays sit under the search field, above tabs/list, and never exceed the panel.
     private func installOverlay(_ overlay: PanelOverlayListView, maxHeight: CGFloat) {
         view.addSubview(overlay)
+        // Below window-size priority (500): hidden overlays must never resize the panel.
         let width = overlay.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -20)
-        width.priority = .defaultHigh
+        width.priority = .dragThatCannotResizeWindow
         let height = overlay.heightAnchor.constraint(equalToConstant: maxHeight)
-        height.priority = .defaultHigh
+        height.priority = .dragThatCannotResizeWindow
         NSLayoutConstraint.activate([
             overlay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             overlay.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 6),

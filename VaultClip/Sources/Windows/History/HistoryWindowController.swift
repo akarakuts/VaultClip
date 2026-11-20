@@ -15,7 +15,7 @@ import RxRelay
 class HistoryWindowController: NSWindowController {
 
     private var lastPosition: PanelPosition?
-    private weak var lastScreen: NSScreen?
+    private var lastScreen: NSScreen?
 
     private var shownToggle: BehaviorRelay<Bool>?
     private weak var appState: State?
