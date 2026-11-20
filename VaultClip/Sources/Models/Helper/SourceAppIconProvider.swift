@@ -9,6 +9,7 @@
 //
 import AppKit
 import Foundation
+import UniformTypeIdentifiers
 
 enum SourceAppIconProvider {
     
@@ -41,6 +42,6 @@ enum SourceAppIconProvider {
     }
     
     private static let unknownAppIcon: NSImage = {
-        NSWorkspace.shared.icon(forFileType: "com.apple.application-bundle")
+        NSWorkspace.shared.icon(for: .applicationBundle)
     }()
 }

@@ -2,7 +2,7 @@
 
 [![Release](https://img.shields.io/github/v/release/akarakuts/VaultClip)](https://github.com/akarakuts/VaultClip/releases)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
-[![macOS](https://img.shields.io/badge/macOS-12%2B-000000?logo=apple)](https://github.com/akarakuts/VaultClip)
+[![macOS](https://img.shields.io/badge/macOS-14%2B-000000?logo=apple)](https://github.com/akarakuts/VaultClip)
 
 **Your clipboard, finally under control.** VaultClip is a macOS clipboard history manager: instant access to past copies, favorites at your fingertips, passwords kept apart from the main stream — all **encrypted on disk**, with no cloud and no subscriptions.
 
@@ -176,7 +176,7 @@ Apple does **not** offer a free **Developer ID** certificate. Open source does n
 
 ### Quick build (personal use, free)
 
-Requirements: **Xcode**, **macOS 12+** (Swift Package Manager resolves dependencies at build time).
+Requirements: **Xcode**, **macOS 14+** (Swift Package Manager resolves dependencies at build time).
 
 ```bash
 git clone https://github.com/akarakuts/VaultClip.git
@@ -322,7 +322,7 @@ Ideas, bugs, and pull requests are welcome: [issues](https://github.com/akarakut
 
 **GNU General Public License v3.0 or later** (GPL-3.0-or-later). See [LICENSE](LICENSE).
 
-Fork of [Yippy](https://github.com/mattDavo/Yippy) (Matthew Davidson), originally MIT. GPLv3 applies to VaultClip as a whole. Third-party code (RxSwift, HotKey, vendored Default and LoginServiceKit) remains under its respective licenses.
+Fork of [Yippy](https://github.com/mattDavo/Yippy) (Matthew Davidson), originally MIT. GPLv3 applies to VaultClip as a whole. Third-party code (RxSwift, HotKey, vendored Default) remains under its respective licenses.
 
 ---
 

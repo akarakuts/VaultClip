@@ -2,7 +2,7 @@
 
 [![Release](https://img.shields.io/github/v/release/akarakuts/VaultClip)](https://github.com/akarakuts/VaultClip/releases)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
-[![macOS](https://img.shields.io/badge/macOS-12%2B-000000?logo=apple)](https://github.com/akarakuts/VaultClip)
+[![macOS](https://img.shields.io/badge/macOS-14%2B-000000?logo=apple)](https://github.com/akarakuts/VaultClip)
 
 **Ваш буфер обмена, наконец, под контролем.** VaultClip — менеджер истории копирования для macOS: мгновенный доступ к прошлым вставкам, избранное под рукой, пароли отдельно от общего потока — и всё это **зашифровано на диске**, без облака и без подписок.
 
@@ -176,7 +176,7 @@ VaultClip проектируется как **локальное хранили�
 
 ### Быстрая сборка (для себя, бесплатно)
 
-Нужно: **Xcode**, **macOS 12+** (зависимости подтягиваются через Swift Package Manager при сборке).
+Нужно: **Xcode**, **macOS 14+** (зависимости подтягиваются через Swift Package Manager при сборке).
 
 ```bash
 git clone https://github.com/akarakuts/VaultClip.git
@@ -322,7 +322,7 @@ VaultClip — **активный форк с открытым кодом** (GPLv
 
 **GNU General Public License v3.0 или новее** (GPL-3.0-or-later). Текст — в [LICENSE](LICENSE).
 
-Форк [Yippy](https://github.com/mattDavo/Yippy) (Matthew Davidson), изначально MIT. К VaultClip в целом применяется GPLv3. Сторонний код (RxSwift, HotKey, вендоренные Default и LoginServiceKit) — под своими лицензиями.
+Форк [Yippy](https://github.com/mattDavo/Yippy) (Matthew Davidson), изначально MIT. К VaultClip в целом применяется GPLv3. Сторонний код (RxSwift, HotKey, вендоренный Default) — под своими лицензиями.
 
 ---
 

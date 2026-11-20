@@ -29,8 +29,9 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 
 ### Changed
 
+- **Minimum macOS version** — **14.0**; launch-at-login is SMAppService-only; legacy `LSSharedFileList` / LoginServiceKit path removed (U01).
 - **HistoryCache I/O** — decrypt loads run outside the cache lock; empty LRU usage no longer traps (T21).
-- **Launch at login (macOS 13+)** — uses SMAppService only, with an approval alert and Settings deep-link; LSSharedFileList remains for macOS 12 (T20).
+- **Launch at login** — SMAppService with an approval alert and Settings deep-link (T20; macOS 12 path removed in U01).
 - **Layout-aware paste** — ⌘V simulation resolves the “v” keycode for the current keyboard layout (T19).
 - **Aggregated alerts** — error modals coalesce to at most one every 30 s with a count and log-folder action (T18).
 - **Settings decode** — missing fields fall back to defaults; corrupt JSON is backed up under `settings.corrupt-backup` (T17).

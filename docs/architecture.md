@@ -1,11 +1,12 @@
 # VaultClip architecture (macOS)
 
-**Version:** 2.3.1 (review-fixes branch)  
+**Version:** 2.3.1 (ui-redesign branch)  
+**Minimum macOS:** 14.0  
 **Contact:** [aleksey@karakuts.com](mailto:aleksey@karakuts.com)
 
 ## Overview
 
-VaultClip is a menu-bar clipboard manager for macOS. The app monitors `NSPasteboard`, persists encrypted history on disk, and exposes a floating history panel with search, favorites, and password vault tabs.
+VaultClip is a menu-bar clipboard manager for macOS 14+. The app monitors `NSPasteboard`, persists encrypted history on disk, and exposes a floating history panel with search, favorites, and password vault tabs.
 
 ```
 AppDelegate

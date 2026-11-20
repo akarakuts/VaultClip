@@ -234,7 +234,6 @@
 		VCDEF00022EB0C10004E6E63 /* Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCDEF00012EB0C10004E6E63 /* Default.swift */; };
 		VCDEF00042EB0C10004E6E63 /* DefaultStorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCDEF00032EB0C10004E6E63 /* DefaultStorable.swift */; };
 		VCDEF00062EB0C10004E6E63 /* UserDefaults+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCDEF00052EB0C10004E6E63 /* UserDefaults+Codable.swift */; };
-		VCLOG00022EB0C10004E6E63 /* LoginServiceKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCLOG00012EB0C10004E6E63 /* LoginServiceKit.swift */; };
 		VCSPM00112EB0C10004E6E63 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = VCSPM00102EB0C10004E6E63 /* RxSwift */; };
 		VCSPM00212EB0C10004E6E63 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = VCSPM00202EB0C10004E6E63 /* RxCocoa */; };
 		VCSPM00312EB0C10004E6E63 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = VCSPM00302EB0C10004E6E63 /* RxRelay */; };
@@ -490,7 +489,6 @@
 		VCDEF00012EB0C10004E6E63 /* Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Default.swift; sourceTree = "<group>"; };
 		VCDEF00032EB0C10004E6E63 /* DefaultStorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultStorable.swift; sourceTree = "<group>"; };
 		VCDEF00052EB0C10004E6E63 /* UserDefaults+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Codable.swift"; sourceTree = "<group>"; };
-		VCLOG00012EB0C10004E6E63 /* LoginServiceKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginServiceKit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -641,7 +639,6 @@
 		34268120233EE7F900BA226A /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				VCLOG00012EB0C10004E6E63 /* LoginServiceKit.swift */,
 				341D9D3F233AE8A1008A2BE6 /* Helper.swift */,
 				34AAA101000000000000000F /* LaunchAtLoginHelper.swift */,
 				VCINST0012EB0D10004E6E63 /* SingleInstanceGuard.swift */,
@@ -1260,7 +1257,6 @@
 				VCDEF00022EB0C10004E6E63 /* Default.swift in Sources */,
 				VCDEF00042EB0C10004E6E63 /* DefaultStorable.swift in Sources */,
 				VCDEF00062EB0C10004E6E63 /* UserDefaults+Codable.swift in Sources */,
-				VCLOG00022EB0C10004E6E63 /* LoginServiceKit.swift in Sources */,
 				34010D2A234AB3F100C1218D /* HistoryWindow.swift in Sources */,
 				341D9D292337251B008A2BE6 /* KeyActionHandler.swift in Sources */,
 				3423B1C1234D8AFF00B40715 /* HistoryItem.swift in Sources */,
@@ -1576,7 +1572,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1632,7 +1628,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
@@ -1658,7 +1654,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 2.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
@@ -1684,7 +1680,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 2.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
@@ -1827,7 +1823,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1854,7 +1850,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 2.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip.Beta;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
@@ -1951,7 +1947,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
@@ -1977,7 +1973,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 2.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip.Beta;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
@@ -2080,7 +2076,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2107,7 +2103,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 2.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClipXCTest;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
