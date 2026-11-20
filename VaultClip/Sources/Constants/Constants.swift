@@ -56,7 +56,7 @@ struct Constants {
         }
         
         static var appSupport: URL {
-            return applicationSupport.appendingPathComponent(AppIdentity.bundleIdentifier, isDirectory: true)
+            applicationSupport.appendingPathComponent(AppIdentity.bundleIdentifier, isDirectory: true)
         }
 
         static var legacyAppSupport: URL {
@@ -84,7 +84,7 @@ struct Constants {
         }
 
         static var quarantine: URL {
-            return appSupport.appendingPathComponent("quarantine", isDirectory: true)
+            appSupport.appendingPathComponent("quarantine", isDirectory: true)
         }
     }
     

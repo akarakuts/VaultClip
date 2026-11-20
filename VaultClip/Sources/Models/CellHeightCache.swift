@@ -40,11 +40,9 @@ class CellHeightsCache {
         _ height: CGFloat,
         forId id: UUID,
         withCellIdentifier cellIdentifier: String,
-        cellWidth: CGFloat,
-        isRichText: Bool,
+        layout: LayoutContext,
         displaySignature: String
     ) {
-        let layout = LayoutContext(cellWidth: cellWidth, isRichText: isRichText)
         if layoutContext != layout {
             layoutContext = layout
             heights.removeAll()

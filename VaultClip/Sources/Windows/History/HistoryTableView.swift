@@ -328,7 +328,13 @@ extension HistoryTableView: NSTableViewDelegate {
         
         let height = historyItem.getTableViewItemType().getItemHeight(withHistoryTableView: historyTableView, forHistoryItem: historyItem)
         
-        cellHeightsCache.storeCellHeight(height, forId: historyItem.fsId, withCellIdentifier: itemType.identifier.rawValue, cellWidth: cellWidth, isRichText: isRichText, displaySignature: displaySignature)
+        cellHeightsCache.storeCellHeight(
+            height,
+            forId: historyItem.fsId,
+            withCellIdentifier: itemType.identifier.rawValue,
+            layout: .init(cellWidth: cellWidth, isRichText: isRichText),
+            displaySignature: displaySignature
+        )
         
         return height
     }

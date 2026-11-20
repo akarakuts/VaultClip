@@ -133,7 +133,7 @@ func filterModifiers(_ modifiers: NSEvent.ModifierFlags) -> NSEvent.ModifierFlag
 }
 
 func isFunctionKey(key: Key) -> Bool {
-    return [.f1, .f2, .f3, .f4, .f5, .f6, .f7, .f8, .f9, .f10, .f11, .f12].contains(key)
+    [.f1, .f2, .f3, .f4, .f5, .f6, .f7, .f8, .f9, .f10, .f11, .f12].contains(key)
 }
 
 func filterKeys(_ keys: [Key]) -> [Key] {

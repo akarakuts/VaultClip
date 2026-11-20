@@ -12,8 +12,9 @@ final class CellHeightsCacheTests: XCTestCase {
     func testDifferentDisplaySignaturesKeepSeparateHeights() {
         let cache = CellHeightsCache()
         let id = UUID()
-        cache.storeCellHeight(40, forId: id, withCellIdentifier: "password", cellWidth: 300, isRichText: false, displaySignature: "alice")
-        cache.storeCellHeight(80, forId: id, withCellIdentifier: "password", cellWidth: 300, isRichText: false, displaySignature: "bob")
+        let layout = CellHeightsCache.LayoutContext(cellWidth: 300, isRichText: false)
+        cache.storeCellHeight(40, forId: id, withCellIdentifier: "password", layout: layout, displaySignature: "alice")
+        cache.storeCellHeight(80, forId: id, withCellIdentifier: "password", layout: layout, displaySignature: "bob")
 
         XCTAssertEqual(
             cache.cellHeight(forId: id, withCellIdentifier: "password", cellWidth: 300, isRichText: false, displaySignature: "alice"),

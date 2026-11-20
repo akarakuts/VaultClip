@@ -26,7 +26,7 @@ enum PasswordEntryPrompt {
         initialURL: String = ""
     ) -> PasswordEntryFields? {
         // Keep the history panel open while the modal sheet is up (T06).
-        return PanelFocusGuard.withSuspended {
+        PanelFocusGuard.withSuspended {
             let alert = NSAlert()
             alert.messageText = title
             alert.informativeText = message

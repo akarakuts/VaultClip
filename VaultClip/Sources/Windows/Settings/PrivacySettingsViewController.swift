@@ -45,7 +45,7 @@ final class PrivacySettingsViewController: NSViewController, NSTableViewDataSour
             addButton.leadingAnchor.constraint(equalTo: scroll.leadingAnchor),
             addButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16),
             removeButton.leadingAnchor.constraint(equalTo: addButton.trailingAnchor, constant: 8),
-            removeButton.centerYAnchor.constraint(equalTo: addButton.centerYAnchor),
+            removeButton.centerYAnchor.constraint(equalTo: addButton.centerYAnchor)
         ])
     }
 
@@ -70,7 +70,7 @@ final class PrivacySettingsViewController: NSViewController, NSTableViewDataSour
             icon.heightAnchor.constraint(equalToConstant: 20),
             label.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 8),
             label.centerYAnchor.constraint(equalTo: cell.centerYAnchor),
-            label.trailingAnchor.constraint(lessThanOrEqualTo: cell.trailingAnchor, constant: -4),
+            label.trailingAnchor.constraint(lessThanOrEqualTo: cell.trailingAnchor, constant: -4)
         ])
         return cell
     }

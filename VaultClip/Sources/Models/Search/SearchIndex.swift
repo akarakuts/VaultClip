@@ -96,11 +96,9 @@ enum SearchRanker {
     static func isSubsequence(_ needle: String, of haystack: String) -> Bool {
         guard !needle.isEmpty else { return true }
         var n = needle.startIndex
-        for ch in haystack {
-            if ch == needle[n] {
-                n = needle.index(after: n)
-                if n == needle.endIndex { return true }
-            }
+        for ch in haystack where ch == needle[n] {
+            n = needle.index(after: n)
+            if n == needle.endIndex { return true }
         }
         return false
     }

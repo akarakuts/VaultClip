@@ -48,7 +48,7 @@ struct ClipHotKeys {
             `return`, shiftReturn, escape, downArrow, upArrow, pageDown, pageUp,
             ctrlAltCmdLeftArrow, ctrlAltCmdRightArrow, ctrlAltCmdDownArrow, ctrlAltCmdUpArrow,
             ctrlDelete, ctrlSpace, cmdBackslash, ctrlLeftBracket, ctrlRightBracket,
-            cmd0, cmd1, cmd2, cmd3, cmd4, cmd5, cmd6, cmd7, cmd8, cmd9,
+            cmd0, cmd1, cmd2, cmd3, cmd4, cmd5, cmd6, cmd7, cmd8, cmd9
         ]
     }
 
