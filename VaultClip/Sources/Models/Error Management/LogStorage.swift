@@ -15,20 +15,21 @@ enum LogStorage {
     static let rotationThresholdBytes = 2_000_000
     static let rotatedTailBytes = 256_000
 
-    private static let knownLogURLs: [URL] = [
-        Constants.urls.errorLog,
-        Constants.urls.warningLog,
-        Constants.urls.pasteboardDebugLog
-    ]
-
-    /// Called once at launch: logs never stay world-readable; diagnostics rotate only while enabled.
+    /// Called once at launch: error/warning always rotate; pasteboard-debug only while diagnostics are on.
     static func secureAtLaunch() {
-        secureAndPruneLogs(at: knownLogURLs) { url in
-            url == Constants.urls.pasteboardDebugLog && PasteboardDiagnostics.isEnabled
+        // Resolve URLs at call time — StorageRoot.override may redirect Application Support.
+        let errorLog = Constants.urls.errorLog
+        let warningLog = Constants.urls.warningLog
+        let debugLog = Constants.urls.pasteboardDebugLog
+        secureAndPruneLogs(at: [errorLog, warningLog, debugLog]) { url in
+            if url == debugLog {
+                return PasteboardDiagnostics.isEnabled
+            }
+            return url == errorLog || url == warningLog
         }
     }
 
-    /// Applies 0600 to existing log files and trims over-grown diagnostics logs.
+    /// Applies 0600 to existing log files and trims over-grown logs when `shouldRotate` allows.
     static func secureAndPruneLogs(
         at urls: [URL],
         shouldRotate: (URL) -> Bool = { _ in true },
@@ -48,7 +49,23 @@ enum LogStorage {
         guard let size = (try? fileManager.attributesOfItem(atPath: url.path))?[.size] as? Int,
               size > rotationThresholdBytes else { return }
         guard let data = try? Data(contentsOf: url) else { return }
-        let tail = data.suffix(rotatedTailBytes)
-        try? Data(tail).write(to: url, options: .atomic)
+        let tail = Data(data.suffix(rotatedTailBytes))
+        fileManager.createFile(
+            atPath: url.path,
+            contents: tail,
+            attributes: [.posixPermissions: NSNumber(value: logFilePermissions)]
+        )
+    }
+
+    /// Creates a new empty log file with owner-only permissions when missing.
+    static func ensureLogFileExists(at url: URL, fileManager: FileManager = .default) {
+        guard !fileManager.fileExists(atPath: url.path) else { return }
+        let parent = url.deletingLastPathComponent()
+        try? fileManager.createDirectory(at: parent, withIntermediateDirectories: true)
+        fileManager.createFile(
+            atPath: url.path,
+            contents: Data(),
+            attributes: [.posixPermissions: NSNumber(value: logFilePermissions)]
+        )
     }
 }

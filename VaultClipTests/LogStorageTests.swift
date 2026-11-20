@@ -77,4 +77,27 @@ final class LogStorageTests: XCTestCase {
         XCTAssertGreaterThan(size, LogStorage.rotatedTailBytes)
         XCTAssertEqual(try fileMode(of: log), LogStorage.logFilePermissions)
     }
+
+    func testEnsureLogFileExistsCreatesOwnerOnlyFile() throws {
+        let log = directory.appendingPathComponent("fresh.log")
+        LogStorage.ensureLogFileExists(at: log)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: log.path))
+        XCTAssertEqual(try fileMode(of: log), LogStorage.logFilePermissions)
+    }
+
+    func testSecureAtLaunchRotatesOversizedErrorLogUnderOverrideRoot() throws {
+        let previous = StorageRoot.override
+        StorageRoot.override = directory
+        defer { StorageRoot.override = previous }
+
+        try FileManager.default.createDirectory(at: Constants.urls.appSupport, withIntermediateDirectories: true)
+        try Data(repeating: 0x43, count: LogStorage.rotationThresholdBytes + 2_048)
+            .write(to: Constants.urls.errorLog)
+
+        LogStorage.secureAtLaunch()
+
+        let trimmed = try Data(contentsOf: Constants.urls.errorLog)
+        XCTAssertEqual(trimmed.count, LogStorage.rotatedTailBytes)
+        XCTAssertEqual(try fileMode(of: Constants.urls.errorLog), LogStorage.logFilePermissions)
+    }
 }

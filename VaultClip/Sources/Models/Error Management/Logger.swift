@@ -11,41 +11,56 @@ import Foundation
 import Cocoa
 
 class Logger {
-    
+
     var url: URL
-    
+    private let queue = DispatchQueue(label: "VaultClip.Logger")
+    private var writesSinceRotationCheck = 0
+
     init(url: URL) {
         self.url = url
     }
 
     func logLine(_ message: String) {
         let timestamp = Timestamp()
-        do {
-            try "[\(timestamp)] \(message)".appendLine(toURL: url)
-        } catch {
-            #if DEBUG
-            print("Failed to log:", message)
-            #endif
+        let line = "[\(timestamp)] \(message)"
+        queue.async {
+            do {
+                try line.appendLine(toURL: self.url)
+                self.checkRotationIfNeeded()
+            } catch {
+                #if DEBUG
+                print("Failed to log:", message)
+                #endif
+            }
         }
         #if DEBUG
         print("[\(timestamp)]", message)
         #endif
     }
-    
+
     func log(_ loggable: Loggable) {
         let timestamp = Timestamp()
-        do {
-            try "[\(timestamp)] \(loggable.logFileDescription)".appendLine(toURL: url)
-        }
-        catch {
-            // Not much we can do
-            #if DEBUG
-            print("Failed to log:")
-            #endif
+        let line = "[\(timestamp)] \(loggable.logFileDescription)"
+        queue.async {
+            do {
+                try line.appendLine(toURL: self.url)
+                self.checkRotationIfNeeded()
+            } catch {
+                #if DEBUG
+                print("Failed to log:")
+                #endif
+            }
         }
         #if DEBUG
         print("[\(timestamp)]", loggable.consoleDescription)
         #endif
+    }
+
+    private func checkRotationIfNeeded() {
+        writesSinceRotationCheck += 1
+        guard writesSinceRotationCheck >= 100 else { return }
+        writesSinceRotationCheck = 0
+        LogStorage.rotateIfNeeded(at: url)
     }
 }
 
@@ -61,7 +76,6 @@ extension String {
     }
 }
 
-// https://stackoverflow.com/a/40687742
 extension Data {
     func append(fileURL: URL) throws {
         if let fileHandle = FileHandle(forWritingAtPath: fileURL.path) {
@@ -70,42 +84,47 @@ extension Data {
             }
             fileHandle.seekToEndOfFile()
             fileHandle.write(self)
-        }
-        else {
+        } else {
             var isDirectory: ObjCBool = false
-            let url = fileURL.deletingLastPathComponent()
-            
-            // Directory doesn't exist
-            if !FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory) {
-                try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+            let directory = fileURL.deletingLastPathComponent()
+
+            if !FileManager.default.fileExists(atPath: directory.path, isDirectory: &isDirectory) {
+                try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+            } else if !isDirectory.boolValue {
+                try FileManager.default.removeItem(at: directory)
+                try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
             }
-            // Path exists but it's not a directory
-            else if !isDirectory.boolValue {
-                try FileManager.default.removeItem(at: url)
-                try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+            LogStorage.ensureLogFileExists(at: fileURL)
+            if let fileHandle = FileHandle(forWritingAtPath: fileURL.path) {
+                defer { fileHandle.closeFile() }
+                fileHandle.seekToEndOfFile()
+                fileHandle.write(self)
+            } else {
+                try write(to: fileURL, options: .atomic)
+                try? FileManager.default.setAttributes(
+                    [.posixPermissions: NSNumber(value: LogStorage.logFilePermissions)],
+                    ofItemAtPath: fileURL.path
+                )
             }
-            // Directory is already set up.
-            // Now write the file
-            try write(to: fileURL, options: .atomic)
         }
     }
 }
 
 /// https://stackoverflow.com/a/51198997
 class Timestamp: CustomStringConvertible {
-    
+
     var date: Date
-    
+
     init(date: Date = Date()) {
         self.date = date
     }
-    
+
     static var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
         return formatter
     }()
-    
+
     var description: String {
         return Self.dateFormatter.string(from: date)
     }
