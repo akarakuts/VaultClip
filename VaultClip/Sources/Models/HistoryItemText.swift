@@ -154,8 +154,8 @@ struct HistoryItemText {
         }
         let urlString = item.passwordURL.trimmingCharacters(in: .whitespacesAndNewlines)
         if !urlString.isEmpty {
-            if let url = URL(string: urlString) {
-                lines.append((urlString, urlStringAttributes(for: url)))
+            if let url = HistoryItem.openableHTTPURL(from: urlString) {
+                lines.append((url.absoluteString, urlStringAttributes(for: url)))
             } else {
                 lines.append((urlString, passwordLoginAttributes))
             }

@@ -18,18 +18,26 @@ extension HistoryItem {
     
     static let passwordMarker = "1"
     
-    /// URL for "Open in Browser" when the stored string is valid.
+    /// http(s) URL for "Open in Browser"; other schemes stay plain text (T11).
     var passwordOpenableURL: URL? {
-        let trimmed = passwordURL.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return nil }
-        return URL(string: trimmed)
+        Self.openableHTTPURL(from: passwordURL)
     }
-    
+
     /// Trims and adds https:// when the user omits a scheme.
     static func normalizePasswordURL(_ raw: String) -> String {
         let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return "" }
         if trimmed.contains("://") { return trimmed }
         return "https://\(trimmed)"
+    }
+
+    /// Only `http` / `https` (bare hosts get `https://`).
+    static func openableHTTPURL(from raw: String) -> URL? {
+        let normalized = normalizePasswordURL(raw)
+        guard !normalized.isEmpty, let url = URL(string: normalized) else { return nil }
+        guard let scheme = url.scheme?.lowercased(), scheme == "http" || scheme == "https" else {
+            return nil
+        }
+        return url
     }
 }
