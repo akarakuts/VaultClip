@@ -53,7 +53,10 @@ enum StorageRoot {
 
     #if DEBUG
     static var override: URL?
+    /// `--storage-root` preview launches must not copy the user's live clipboard into demo history.
+    static var suppressesCapture = false
     #else
     static var override: URL? { nil }
+    static var suppressesCapture: Bool { false }
     #endif
 }

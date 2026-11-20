@@ -526,7 +526,7 @@ extension History: PasteboardMonitorDelegate {
             return
         }
 
-        if Settings.main.isCapturePaused {
+        if Settings.main.isCapturePaused || StorageRoot.suppressesCapture {
             PasteboardDiagnostics.log("skipped capture paused")
             currentClipboardItemId = nil
             recordPasteboardChange(withCount: pasteboard.changeCount)

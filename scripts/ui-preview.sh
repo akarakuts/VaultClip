@@ -1,37 +1,41 @@
 #!/usr/bin/env bash
-# ui-preview.sh — build XCTest host and optionally capture panel screenshots (U36).
-# Only uses the XCTest bundle id; never touches production Application Support.
+# ui-preview.sh — build the XCTest-config app, seed demo history in /tmp and open the panel (U36).
+# Uses bundle id com.karakuts.VaultClipXCTest + --storage-root; never touches production Application Support.
 set -eu
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="/tmp/vc-ui"
+STORE="/tmp/vc-ui-root"
 SHOTS="/tmp/vc-ui-shots"
+BID="com.karakuts.VaultClipXCTest"
 mkdir -p "$OUT" "$SHOTS"
 cd "$ROOT"
 
-xcodebuild \
-  -scheme "VaultClip XCTest" \
-  -configuration Debug \
-  -derivedDataPath "$OUT" \
-  -destination 'platform=macOS' \
-  build-for-testing
+if [ "${SKIP_BUILD:-0}" != "1" ]; then
+  xcodebuild \
+    -project VaultClip.xcodeproj \
+    -scheme VaultClip \
+    -configuration XCTest \
+    -derivedDataPath "$OUT" \
+    -destination 'platform=macOS' \
+    CODE_SIGN_IDENTITY="-" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO \
+    build >/tmp/vc-ui-build.log 2>&1 || { tail -30 /tmp/vc-ui-build.log; exit 1; }
+fi
 
-APP="$(find "$OUT" -path '*/VaultClip.app' -type d | head -1)"
+APP="$(find "$OUT/Build/Products" -maxdepth 2 -name 'VaultClip.app' -type d | head -1)"
 if [ -z "$APP" ]; then
   echo "error: VaultClip.app not found under $OUT" >&2
   exit 1
 fi
-BID="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP/Contents/Info.plist")"
-if [ "$BID" != "com.karakuts.VaultClipXCTest" ]; then
-  echo "error: refusing non-XCTest bundle id: $BID" >&2
+ACTUAL="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP/Contents/Info.plist")"
+if [ "$ACTUAL" != "$BID" ]; then
+  echo "error: refusing non-XCTest bundle id: $ACTUAL" >&2
   exit 1
 fi
 
-ARGS=(--uitesting --demo-items=40 --open-panel --panel-position=right --appearance=light --text-size=m)
-open -n "$APP" --args "${ARGS[@]}"
-sleep 3
-# Screen Recording entitlement may be missing — mark manual if capture fails.
-if ! screencapture -x "$SHOTS/panel-right-light-m.png" 2>/dev/null; then
-  echo "requires manual check: Screen Recording not available for screencapture"
-fi
-pkill -f "$APP" >/dev/null 2>&1 || true
-echo "ui-preview done; shots in $SHOTS"
+pkill -f "$APP/Contents/MacOS/" >/dev/null 2>&1 || true
+rm -rf "$STORE"
+VAULTCLIP_SEED_APP_SUPPORT="$STORE/$BID" swift "$ROOT/scripts/seed-demo-history.swift"
+
+open -n "$APP" --args --storage-root="$STORE" --open-panel "$@"
+echo "ui-preview running: $APP (storage $STORE)"
+echo "stop: pkill -f '$APP/Contents/MacOS/'"

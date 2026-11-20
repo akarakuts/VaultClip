@@ -5,8 +5,14 @@ import AppKit
 import Foundation
 
 let bundleId = "com.karakuts.VaultClip"
-let appSupport = FileManager.default.homeDirectoryForCurrentUser
-    .appendingPathComponent("Library/Application Support/\(bundleId)", isDirectory: true)
+// VAULTCLIP_SEED_APP_SUPPORT targets an isolated bundle folder (ui-preview.sh); default is production.
+let appSupport: URL = {
+    if let override = ProcessInfo.processInfo.environment["VAULTCLIP_SEED_APP_SUPPORT"], !override.isEmpty {
+        return URL(fileURLWithPath: override, isDirectory: true)
+    }
+    return FileManager.default.homeDirectoryForCurrentUser
+        .appendingPathComponent("Library/Application Support/\(bundleId)", isDirectory: true)
+}()
 let historyRoot = appSupport.appendingPathComponent("history", isDirectory: true)
 let orderURL = historyRoot.appendingPathComponent("order.xml")
 let repoRoot = URL(fileURLWithPath: CommandLine.arguments[0])
@@ -23,7 +29,7 @@ struct DemoItem {
     let isPassword: Bool
     let passwordComment: String
     let passwordLogin: String
-    let passwordURL: String = ""
+    var passwordURL: String = ""
 }
 
 func sanitizedFileName(for type: String) -> String {
@@ -197,7 +203,7 @@ func buildDemoItems() throws -> [DemoItem] {
             copiedAt: ago(26),
             sourceBundleId: "com.apple.systempreferences",
             payloads: [
-                "NSColorPboardType": makeColorData(red: 0.18, green: 0.52, blue: 0.96) ?? Data(),
+                "com.apple.cocoa.pasteboard.color": makeColorData(red: 0.18, green: 0.52, blue: 0.96) ?? Data(),
             ],
             isFavorite: false, isPassword: false, passwordComment: "", passwordLogin: "", passwordURL: ""
         ),
