@@ -29,9 +29,7 @@ enum LaunchAtLoginHelper {
 
     static func isEnabled() -> Bool {
         if #available(macOS 13.0, *) {
-            if SMAppService.mainApp.status == .enabled {
-                return true
-            }
+            return SMAppService.mainApp.status == .enabled
         }
         return LoginServiceKit.isExistLoginItems(at: canonicalAppPath())
     }
@@ -49,30 +47,16 @@ enum LaunchAtLoginHelper {
     @discardableResult
     static func disable() -> Bool {
         if !isEnabled() { return true }
-        var success = true
         if #available(macOS 13.0, *) {
-            if SMAppService.mainApp.status == .enabled {
-                do {
-                    try SMAppService.mainApp.unregister()
-                } catch {
-                    success = false
-                }
+            do {
+                try SMAppService.mainApp.unregister()
+                return SMAppService.mainApp.status != .enabled
+            } catch {
+                return false
             }
         }
         pruneStaleLoginItems(keeping: "")
-        if !LoginServiceKit.removeLoginItems(at: canonicalAppPath()) {
-            success = false
-        }
-        return success
-    }
-
-    /// Drops login entries that point at old DMG paths or duplicate VaultClip.app copies.
-    static func reconcile(wantsLaunchAtLogin: Bool) {
-        if wantsLaunchAtLogin {
-            _ = enable()
-        } else {
-            _ = disable()
-        }
+        return LoginServiceKit.removeLoginItems(at: canonicalAppPath())
     }
 
     static func warnIfRunningFromTransientLocation() {
@@ -91,33 +75,52 @@ enum LaunchAtLoginHelper {
         }
     }
 
-  // MARK: - SMAppService (macOS 13+)
+    // MARK: - SMAppService (macOS 13+)
 
     @available(macOS 13.0, *)
     private static func enableWithSMAppService() -> Bool {
-        removeAllLegacyLoginItems()
         guard SMAppService.mainApp.status != .enabled else { return true }
         do {
             try SMAppService.mainApp.register()
-            return SMAppService.mainApp.status == .enabled
         } catch {
-            pruneStaleLoginItems(keeping: canonicalAppPath())
-            return LoginServiceKit.addLoginItems(at: canonicalAppPath())
+            // Fall through to status check / approval alert.
+        }
+        switch SMAppService.mainApp.status {
+        case .enabled:
+            return true
+        case .requiresApproval:
+            presentRequiresApprovalAlert()
+            return false
+        default:
+            return false
         }
     }
 
     @available(macOS 13.0, *)
-    private static func removeAllLegacyLoginItems() {
-        pruneStaleLoginItems(keeping: "")
-        _ = LoginServiceKit.removeLoginItems(at: canonicalAppPath())
-        _ = LoginServiceKit.removeLoginItems(at: Bundle.main.bundlePath)
+    private static func presentRequiresApprovalAlert() {
+        DispatchQueue.main.async {
+            PanelFocusGuard.withSuspended {
+                let alert = NSAlert()
+                alert.alertStyle = .informational
+                alert.messageText = L10n.launchAtLoginNeedsApprovalTitle
+                alert.informativeText = L10n.launchAtLoginNeedsApprovalBody
+                alert.addButton(withTitle: L10n.launchAtLoginOpenSettings)
+                alert.addButton(withTitle: L10n.commonCancel)
+                if alert.runModal() == .alertFirstButtonReturn {
+                    SMAppService.openSystemSettingsLoginItems()
+                }
+            }
+        }
     }
 
     private static func isTransientInstallPath(_ path: String) -> Bool {
         path.hasPrefix("/Volumes/") || path.contains("/private/var/folders/") || path.contains("/.Trash/")
     }
 
+    // MARK: - Legacy LSSharedFileList (macOS 12)
+
     private static func pruneStaleLoginItems(keeping canonical: String) {
+        if #available(macOS 13.0, *) { return }
         let keep = (canonical as NSString).standardizingPath
         for path in loginItemPaths() {
             let normalized = (path as NSString).standardizingPath
@@ -129,6 +132,7 @@ enum LaunchAtLoginHelper {
     }
 
     private static func loginItemPaths() -> [String] {
+        if #available(macOS 13.0, *) { return [] }
         guard let sharedFileList = LSSharedFileListCreate(nil, kLSSharedFileListSessionLoginItems.takeRetainedValue(), nil) else {
             return []
         }

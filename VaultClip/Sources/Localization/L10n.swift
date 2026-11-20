@@ -201,6 +201,9 @@ enum L10n {
     static func alertErrorsAggregated(count: Int, lastMessage: String) -> String {
         String(format: tr("alert.errors.aggregated"), locale: .current, arguments: [count, lastMessage])
     }
+    static var launchAtLoginNeedsApprovalTitle: String { tr("launch_at_login.needs_approval.title") }
+    static var launchAtLoginNeedsApprovalBody: String { tr("launch_at_login.needs_approval.body") }
+    static var launchAtLoginOpenSettings: String { tr("launch_at_login.open_settings") }
 
     // MARK: - Hot key
 

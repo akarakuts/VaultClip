@@ -10,6 +10,7 @@
 import Foundation
 import Cocoa
 import Quartz
+import UniformTypeIdentifiers
 
 /// Interface for an item that was on the pasteboard
 class HistoryItem: NSObject {
@@ -352,7 +353,7 @@ class HistoryItem: NSObject {
     }
     
     func getPdfIcon() -> NSImage {
-        NSWorkspace.shared.icon(forFileType: "com.adobe.pdf")
+        NSWorkspace.shared.icon(for: .pdf)
     }
     
     /// True when Quick Look can show this item (file URL or PDF pasteboard data) — no temp write.

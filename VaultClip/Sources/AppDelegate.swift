@@ -53,11 +53,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         environment.attachController(controller)
 
         if !AppIdentity.isRunningUnitTests {
-            LaunchAtLoginHelper.reconcile(wantsLaunchAtLogin: environment.state.launchAtLogin.value)
             LaunchAtLoginHelper.warnIfRunningFromTransientLocation()
             showWelcomeIfNeeded()
             setupHotKey()
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(refreshLaunchAtLoginOnActivate),
+                name: NSApplication.didBecomeActiveNotification,
+                object: nil
+            )
         }
+    }
+
+    @objc private func refreshLaunchAtLoginOnActivate() {
+        guard let state = AppEnvironment.shared?.state else { return }
+        state.launchAtLogin.accept(LaunchAtLoginHelper.isEnabled())
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

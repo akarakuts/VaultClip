@@ -28171,6 +28171,54 @@
           }
         }
       }
+    },
+    "launch_at_login.needs_approval.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow VaultClip in Login Items"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Разрешите VaultClip в объектах входа"
+          }
+        }
+      }
+    },
+    "launch_at_login.needs_approval.body": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS requires your approval before VaultClip can open at login. Open Login Items settings to allow it."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS требует вашего разрешения, чтобы VaultClip открывался при входе. Откройте настройки объектов входа и разрешите приложение."
+          }
+        }
+      }
+    },
+    "launch_at_login.open_settings": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Login Items"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Открыть объекты входа"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
