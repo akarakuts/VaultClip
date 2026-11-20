@@ -490,10 +490,9 @@ class HistoryViewController: NSViewController {
     }
 
     private func syncEmbeddedPreviewVisibility() {
-        // Side overlay needs list+preview minimums; narrower edge panels stay list-only
-        // until a real NSSplitView lands (U21).
-        let minSideWidth = PreviewLayout.minListWidth + PreviewLayout.minPreviewWidth
-        let canShowSide = view.bounds.width >= minSideWidth
+        // Overlay preview only when the panel is wide enough for a real side-by-side
+        // split; otherwise the list was left with a blank inset hole (U21).
+        let canShowSide = view.bounds.width >= PreviewLayout.sideBySideWidthThreshold
         isPreviewShowing = appSettings.previewVisible && canShowSide
         embeddedPreview.isHidden = !isPreviewShowing
         applyPreviewListInset()
