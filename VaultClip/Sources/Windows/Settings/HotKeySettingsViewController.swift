@@ -19,6 +19,12 @@ class HotKeySettingsViewController: NSViewController {
     var keyPressMonitor = KeyPressMonitor()
     
     var newToggleHotKey: KeyCombo?
+
+    private var injectedState: State?
+
+    func configure(state: State) {
+        injectedState = state
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

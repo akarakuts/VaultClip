@@ -11,6 +11,16 @@ import Foundation
 import Cocoa
 
 class SettingsTabViewController: NSTabViewController {
+
+    private var injectedState: State?
+
+    func configure(state: State) {
+        injectedState = state
+        for item in tabViewItems {
+            (item.viewController as? GeneralSettingsViewController)?.configure(state: state)
+            (item.viewController as? HotKeySettingsViewController)?.configure(state: state)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +35,10 @@ class SettingsTabViewController: NSTabViewController {
         privacyItem.label = L10n.settingsPrivacy
         privacyItem.image = NSImage(systemSymbolName: "hand.raised", accessibilityDescription: nil)
         addTabViewItem(privacyItem)
+
+        if let state = injectedState {
+            configure(state: state)
+        }
     }
     
     override func viewWillAppear() {

@@ -68,7 +68,11 @@ class Controller {
         self.historyWindowController = Self.createHistoryWindowController(state: state, settings: settings, disposeBag: state.disposeBag)
 
         // Create preview window controllers
-        self.previewWindowController = Self.createPreviewWindowController(previewItem: state.previewHistoryItem, disposeBag: state.disposeBag)
+        self.previewWindowController = Self.createPreviewWindowController(
+            state: state,
+            previewItem: state.previewHistoryItem,
+            disposeBag: state.disposeBag
+        )
 
         self.statusItem.menu = Self.createMenu(settings: settings, state: state, target: self)
         self.statusItem.button?.alphaValue = settings.isCapturePaused ? 0.4 : 1.0
@@ -188,7 +192,7 @@ class Controller {
     static func createHistoryWindowController(state: State, settings: Settings, disposeBag: DisposeBag) -> HistoryWindowController {
         let controller = HistoryWindowController.createHistoryWindowController()
         (controller.contentViewController as? HistoryViewController)?
-            .configure(state: state, settings: settings)
+            .configure(state: state, settings: { SettingsPersistence.current() })
         controller
             .subscribeTo(toggle: state.isHistoryPanelShown, state: state)
             .disposed(by: disposeBag)
@@ -198,8 +202,12 @@ class Controller {
         return controller
     }
     
-    static func createPreviewWindowController(previewItem: BehaviorRelay<HistoryItem?>, disposeBag: DisposeBag) -> PreviewWindowController {
-        let controller = PreviewWindowController.create()
+    static func createPreviewWindowController(
+        state: State,
+        previewItem: BehaviorRelay<HistoryItem?>,
+        disposeBag: DisposeBag
+    ) -> PreviewWindowController {
+        let controller = PreviewWindowController.create(state: state)
         controller
             .subscribeTo(previewItem: previewItem)
             .disposed(by: disposeBag)
@@ -276,6 +284,8 @@ class Controller {
     }
     
     @objc func showSettings() {
+        (settingsWindowController.contentViewController as? SettingsTabViewController)?
+            .configure(state: state)
         showWindowIfNeeded(settingsWindowController)
     }
 

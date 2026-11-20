@@ -26,7 +26,7 @@ class PreviewWindowController: NSWindowController {
         return NSStoryboard.instantiateOrTerminate(identifier: T.sceneIdentifier)
     }
 
-    static func create() -> PreviewWindowController {
+    static func create(state: State = AppEnvironment.shared.state) -> PreviewWindowController {
         let window = NSWindow(contentRect: .zero, styleMask: .borderless, backing: .buffered, defer: true)
         window.level = NSWindow.Level(NSWindow.Level.mainMenu.rawValue - 1)
         window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
@@ -34,7 +34,7 @@ class PreviewWindowController: NSWindowController {
         window.backgroundColor = .clear
         let previewWC = PreviewWindowController(window: window)
         
-        AppEnvironment.shared.state.showsRichText.distinctUntilChanged().subscribe(onNext: previewWC.onShowsRichText).disposed(by: previewWC.disposeBag)
+        state.showsRichText.distinctUntilChanged().subscribe(onNext: previewWC.onShowsRichText).disposed(by: previewWC.disposeBag)
         
         return previewWC
     }

@@ -17,6 +17,7 @@ class HistoryPanel {
 
     let pasteboard: NSPasteboard
     private let settings: () -> Settings
+    private let isPanelShown: () -> Bool
 
     /// Change counts produced by VaultClip's own paste actions (P8.3): the monitor skips
     /// them even when the source app is unknown/denylisted, instead of re-inserting.
@@ -31,12 +32,14 @@ class HistoryPanel {
         history: History,
         items: [HistoryItem],
         pasteboard: NSPasteboard = .general,
-        settings: @escaping () -> Settings = { SettingsPersistence.current() }
+        settings: @escaping () -> Settings = { SettingsPersistence.current() },
+        isPanelShown: @escaping () -> Bool = { AppEnvironment.shared.state.isHistoryPanelShown.value }
     ) {
         self.history = history
         self.items = items
         self.pasteboard = pasteboard
         self.settings = settings
+        self.isPanelShown = isPanelShown
     }
 
     func paste(item: HistoryItem, plainTextOnly: Bool = false) {
@@ -111,7 +114,7 @@ class HistoryPanel {
     private func performSimulatedPaste(startedAt: Date) {
         let elapsed = Date().timeIntervalSince(startedAt)
 
-        if AppEnvironment.shared.state.isHistoryPanelShown.value {
+        if isPanelShown() {
             if elapsed < 2 {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                     self.performSimulatedPaste(startedAt: startedAt)

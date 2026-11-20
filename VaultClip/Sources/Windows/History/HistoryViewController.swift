@@ -23,15 +23,15 @@ class HistoryViewController: NSViewController {
     private var historyUnsubscribe: (() -> Void)?
 
     private var injectedState: State?
-    private var injectedSettings: Settings?
+    private var settingsProvider: (() -> Settings)?
 
     private var appState: State { injectedState ?? AppEnvironment.shared.state }
-    private var appSettings: Settings { injectedSettings ?? AppEnvironment.shared.settings }
+    private var appSettings: Settings { (settingsProvider ?? { SettingsPersistence.current() })() }
 
     /// Called from `Controller.createHistoryWindowController` before the window loads.
-    func configure(state: State, settings: Settings) {
+    func configure(state: State, settings: @escaping () -> Settings = { SettingsPersistence.current() }) {
         injectedState = state
-        injectedSettings = settings
+        settingsProvider = settings
     }
     
     @IBOutlet var historyListView: HistoryTableView!
@@ -41,7 +41,12 @@ class HistoryViewController: NSViewController {
     
     @IBOutlet var searchBar: NSTextField!
     
-    lazy var historyPanel = HistoryPanel(history: appState.history, items: [])
+    lazy var historyPanel = HistoryPanel(
+        history: appState.history,
+        items: [],
+        settings: { [weak self] in self?.appSettings ?? SettingsPersistence.current() },
+        isPanelShown: { [weak self] in self?.appState.isHistoryPanelShown.value ?? false }
+    )
     
     let searchIndex = SearchIndex()
     private var searchDebounceWork: DispatchWorkItem?

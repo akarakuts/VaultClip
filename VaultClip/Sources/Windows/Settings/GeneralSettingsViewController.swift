@@ -22,6 +22,13 @@ class GeneralSettingsViewController: NSViewController {
     private var maxItemSizeLabel: NSTextField!
     
     private var disposeBag = DisposeBag()
+    private var injectedState: State?
+
+    private var appState: State { injectedState ?? AppEnvironment.shared.state }
+
+    func configure(state: State) {
+        injectedState = state
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,7 +82,7 @@ class GeneralSettingsViewController: NSViewController {
             maxHistoryItemsPopUpButton.addItem(withTitle: "\(val)")
         }
         
-        AppEnvironment.shared.state.history.maxItems.subscribe(onNext: onMaxHistoryItems).disposed(by: disposeBag)
+        appState.history.maxItems.subscribe(onNext: onMaxHistoryItems).disposed(by: disposeBag)
         
         maxHistoryItemsPopUpButton.target = self
         maxHistoryItemsPopUpButton.action = #selector(onMaxItemsSelected)
@@ -162,14 +169,14 @@ class GeneralSettingsViewController: NSViewController {
     }
 
     private func setupShowsRichTextButton() {
-        AppEnvironment.shared.state.showsRichText.subscribe(onNext: onShowsRichText).disposed(by: disposeBag)
+        appState.showsRichText.subscribe(onNext: onShowsRichText).disposed(by: disposeBag)
         
         showsRichTextButton.target = self
         showsRichTextButton.action = #selector(onShowsRichTextButtonClicked)
     }
     
     private func setupPastesRichTextButton() {
-        AppEnvironment.shared.state.pastesRichText.subscribe(onNext: onPastesRichText).disposed(by: disposeBag)
+        appState.pastesRichText.subscribe(onNext: onPastesRichText).disposed(by: disposeBag)
         
         pastesRichTextButton.target = self
         pastesRichTextButton.action = #selector(onPastesRichTextButtonClicked)
@@ -195,7 +202,7 @@ class GeneralSettingsViewController: NSViewController {
     // MARK: Handle Actions
     
     @objc private func onMaxItemsSelected() {
-        let history = AppEnvironment.shared.state.history
+        let history = appState.history
         let selected = Constants.settings.maxHistoryItemsOptions[maxHistoryItemsPopUpButton.indexOfSelectedItem]
         let pruneCount = history.itemsToPrune(forNewMax: selected)
         if pruneCount > 0 {
@@ -263,14 +270,14 @@ class GeneralSettingsViewController: NSViewController {
         let options = [0, 1, 7, 30, 90]
         guard options.indices.contains(sender.indexOfSelectedItem) else { return }
         SettingsPersistence.apply { $0.retentionDays = options[sender.indexOfSelectedItem] }
-        AppEnvironment.shared.state.history.purgeExpiredItems()
+        appState.history.purgeExpiredItems()
     }
     
     @objc private func onShowsRichTextButtonClicked() {
-        AppEnvironment.shared.state.showsRichText.accept(showsRichTextButton.state == .on)
+        appState.showsRichText.accept(showsRichTextButton.state == .on)
     }
     
     @objc private func onPastesRichTextButtonClicked() {
-        AppEnvironment.shared.state.pastesRichText.accept(pastesRichTextButton.state == .on)
+        appState.pastesRichText.accept(pastesRichTextButton.state == .on)
     }
 }
