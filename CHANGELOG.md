@@ -29,6 +29,7 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 
 ### Changed
 
+- **Quick paste numbering** — ⌘1…⌘9 paste visible rows 1–9; ⌘0 pastes the tenth (was first). PanelPresenter shortcut badges match (U20).
 - **Minimum macOS version** — **14.0**; launch-at-login is SMAppService-only; legacy `LSSharedFileList` / LoginServiceKit path removed (U01).
 - **History retention** — age is measured by `lastUsedAt` (falls back to `copiedAt` when missing); paste/promote refreshes `lastUsedAt` (U12).
 - **HistoryCache I/O** — decrypt loads run outside the cache lock; empty LRU usage no longer traps (T21).

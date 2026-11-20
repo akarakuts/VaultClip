@@ -406,7 +406,12 @@ class HistoryViewController: NSViewController {
     }
     
     func shortcutPressed(key: Int) {
-        paste(selected: key)
+        // ⌘1…⌘9 → items 1–9; ⌘0 → 10th (U20).
+        guard let index = PanelNavigation.displayedIndex(
+            forQuickPasteKey: key,
+            visibleItemCount: historyPanel.items.count
+        ) else { return }
+        paste(selected: index)
     }
     
     func togglePreview() {
