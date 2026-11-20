@@ -207,12 +207,6 @@ struct Settings: Codable, DefaultStorable {
         }
     }
 
-    func bindPasteboardChangeCountTo(state: Observable<Int>) -> Disposable {
-        return state.bind { x in
-            SettingsPersistence.apply { $0.pasteboardChangeCount = x }
-        }
-    }
-
     func bindMaxHistoryTo(state: Observable<Int>) -> Disposable {
         return state.bind { x in
             SettingsPersistence.apply { $0.maxHistory = x }

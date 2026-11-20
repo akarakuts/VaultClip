@@ -559,36 +559,6 @@ class HistoryFileManager {
         }
     }
     
-    func reduce(oldHistory: [HistoryItem], toSize size: Int, completionHandler handler: ((Bool) -> Void)? = nil) {
-        if oldHistory.count <= size {
-            callHandler(handler, withVal: true)
-            return
-        }
-        
-        dispatchQueue.async {
-            let newHistory = Array(oldHistory.prefix(size))
-
-            var allSucceeded = true
-            for item in oldHistory.suffix(from: size) {
-                HistoryItem.removeQuickLookCache(for: item.fsId)
-                do {
-                    try self.fileManager.removeItem(at: self.getUrl(forItemWithId: item.fsId))
-                }
-                catch {
-                    allSucceeded = false
-                    let historyError = ClipError(.historyItemDeleteFailed, localizedDescription: "Failed to delete item due to error: \(error.localizedDescription)")
-                    historyError.log(with: self.errorLogger)
-                    historyError.show(with: self.alerter)
-                }
-            }
-
-            // Update order
-            self.enqueueOrderWriteOnQueue(history: newHistory, immediate: true, handler: { wroteOrder in
-                self.callHandler(handler, withVal: wroteOrder && allSucceeded)
-            })
-        }
-    }
-    
     func moveItem(newHistory: [HistoryItem], from: Int, to: Int, completionHandler: ((Bool) -> Void)? = nil) {
         saveHistoryOrder(history: newHistory, completionHandler: completionHandler)
     }

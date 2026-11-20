@@ -405,16 +405,6 @@ class HistoryItem: NSObject {
         return NSColor(from: pasteboard)
     }
     
-    private func isStringLink(string: String) -> Bool {
-        let types: NSTextCheckingResult.CheckingType = [.link]
-        guard let detector = try? NSDataDetector(types: types.rawValue), !string.isEmpty else { return false }
-        return detector.numberOfMatches(
-            in: string,
-            options: NSRegularExpression.MatchingOptions(rawValue: 0),
-            range: NSMakeRange(0, string.count)
-        ) > 0
-    }
-    
     private let richTextPasteboardTypes = [
         NSPasteboard.PasteboardType.rtf.rawValue,
         NSPasteboard.PasteboardType.html.rawValue,

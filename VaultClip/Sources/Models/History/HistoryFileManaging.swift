@@ -16,7 +16,6 @@ protocol HistoryFileManaging: AnyObject {
     func insertItem(_ item: HistoryItem, historyOrder: [HistoryItem], completionHandler: ((Bool) -> Void)?)
     func deleteItem(newHistory: [HistoryItem], deleted: HistoryItem, completionHandler: ((Bool) -> Void)?)
     func deleteItems(_ deletedItems: [HistoryItem], historyOrder: [HistoryItem], completionHandler: ((Bool) -> Void)?)
-    func reduce(oldHistory: [HistoryItem], toSize size: Int, completionHandler: ((Bool) -> Void)?)
     func moveItem(newHistory: [HistoryItem], from: Int, to: Int, completionHandler: ((Bool) -> Void)?)
     func clearHistory(completionHandler: ((Bool) -> Void)?)
     func setFavorite(_ isFavorite: Bool, for item: HistoryItem, completionHandler: ((Bool) -> Void)?)

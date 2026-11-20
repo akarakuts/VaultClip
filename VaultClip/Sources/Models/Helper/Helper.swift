@@ -44,10 +44,3 @@ class Helper {
         AccessControlHelper.notifyPasteBlockedIfNeeded()
     }
 }
-
-
-
-
-
-
-

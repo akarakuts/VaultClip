@@ -23,6 +23,7 @@ class Accessibility {
         static let quitButton = "quitButton"
         static let helpButton = "helpButton"
         static let aboutButton = "aboutButton"
+        static let preferencesButton = "preferencesButton"
         static let welcomeAllowAccessButton = "welcomeAllowAccessButton"
         
         static let positionButton = "positionButton"

@@ -116,7 +116,6 @@ class State {
             }
         }
 
-        Self.monitorPastesRichText(state: self)
         Self.monitorScreenParameters(state: self)
         Self.scheduleHistoryRetention(state: self)
     }
@@ -147,11 +146,6 @@ class State {
         settings.bindMaxHistoryTo(state: state.history.maxItems).disposed(by: disposeBag)
         settings.bindShowsRichTextTo(state: state.showsRichText.asObservable()).disposed(by: disposeBag)
         settings.bindPastesRichTextTo(state: state.pastesRichText.asObservable()).disposed(by: disposeBag)
-    }
-    
-    static func monitorPastesRichText(state: State) {
-        // Per-item migration (D5): the relay still persists the preference; the paste path
-        // copies it onto each HistoryItem just before writing the pasteboard.
     }
     
     /// Refresh the panel's target screen just before opening (replaces the 5 Hz mouse poll — T25).

@@ -91,7 +91,7 @@ class Controller {
             .with(menuItem: NSMenuItem.separator())
             .with(menuItem: NSMenuItem(title: L10n.menuPreferences, action: #selector(showSettings), keyEquivalent: "")
                 .with(tag: StatusMenuTag.preferences.rawValue)
-                .with(accessibilityIdentifier: "")
+                .with(accessibilityIdentifier: Accessibility.identifiers.preferencesButton)
             )
             .with(menuItem: NSMenuItem.separator())
             .with(menuItem: NSMenuItem(title: L10n.menuToggleWindow, action: #selector(togglePopover), keyEquivalent: "V")

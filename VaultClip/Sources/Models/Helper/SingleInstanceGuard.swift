@@ -64,6 +64,6 @@ enum SingleInstanceGuard {
         let duplicates = NSWorkspace.shared.runningApplications.filter {
             $0.bundleIdentifier == bundleID && $0.processIdentifier != pid
         }
-        duplicates.first?.activate(options: [.activateIgnoringOtherApps, .activateAllWindows])
+        AppActivation.activate(duplicates.first)
     }
 }

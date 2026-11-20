@@ -70,9 +70,7 @@ class SettingsTests: XCTestCase {
         Settings.main.bindPanelPositionTo(state: panelPosition).disposed(by: disposeBag)
         panelPosition.accept(.bottom)
         
-        let pasteboardChangeCount = BehaviorRelay<Int>(value: -1)
-        Settings.main.bindPasteboardChangeCountTo(state: pasteboardChangeCount.asObservable()).disposed(by: disposeBag)
-        pasteboardChangeCount.accept(42)
+        SettingsPersistence.apply { $0.pasteboardChangeCount = 42 }
         
         // 3. Check that the settings have been saved
         XCTAssertEqual(Settings.main.panelPosition, .bottom)
