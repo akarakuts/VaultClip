@@ -45,8 +45,11 @@ struct SettingsGeneralTab: View {
             get: { SMAppService.mainApp.status == .enabled },
             set: { enabled in
                 do {
-                    if enabled { try SMAppService.mainApp.register() }
-                    else { try SMAppService.mainApp.unregister() }
+                    if enabled {
+                        try SMAppService.mainApp.register()
+                    } else {
+                        try SMAppService.mainApp.unregister()
+                    }
                 } catch {
                     PasteboardDiagnostics.log("launch-at-login: \(error)")
                 }

@@ -54,7 +54,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         StorageRoot.suppressesCapture = true
     }
 
-    /// `--panel-command=<PanelCommandID>` (repeatable), `--context-menu-row=N` and `--dump-layout`
+    /// `--panel-command=<PanelCommandID>` (repeatable), `--search=`, `--context-menu-row=N` and `--dump-layout`
     /// drive UI states for screenshots (scripts/ui-preview.sh).
     private func schedulePreviewPanelScript() {
         let args = CommandLine.arguments
@@ -66,6 +66,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             .flatMap { Int($0.dropFirst("--context-menu-row=".count)) }
         func panel() -> HistoryViewController? {
             AppEnvironment.shared.controller?.historyWindowController.contentViewController as? HistoryViewController
+        }
+        if let query = args.first(where: { $0.hasPrefix("--search=") }).map({ String($0.dropFirst("--search=".count)) }) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) {
+                guard let vc = panel() else { return }
+                vc.searchBar.stringValue = query
+                vc.scheduleSearch()
+            }
         }
         for (index, command) in commands.enumerated() {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5 + Double(index) * 0.5) {

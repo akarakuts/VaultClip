@@ -84,6 +84,7 @@ class HistoryViewController: NSViewController {
     var currentPreviewAxis: PreviewSplitAxis?
     var lastLayoutWidth: CGFloat = 0
     var quickLookURL: URL?
+    var otherTabSearchHit: (tab: HistoryListMode, count: Int)?
     let previewDebouncer = PreviewUpdateDebouncer(scheduler: PreviewDispatchScheduler())
     lazy var pendingDeletion = PendingDeletionQueue(
         scheduler: PendingDeletionDispatchScheduler()
@@ -385,10 +386,8 @@ class HistoryViewController: NSViewController {
         // Keep a single HistoryPanel instance; only refresh items (U05 / T38 debt).
         historyPanel.items = current.items
 
-        updateEmptyListLabel(
-            for: listMode.value,
-            visible: !current.isSearchResult && current.items.isEmpty
-        )
+        updateEmptyListLabel(for: listMode.value, visible: current.items.isEmpty)
+        applyPreviewAxis()
         
         guard appState.isHistoryPanelShown.value else { return }
         // Headers only for the chronological History tab; search/filter results are ranked.
@@ -835,8 +834,10 @@ class HistoryViewController: NSViewController {
                 guard self.searchBar.stringValue == query else { return }
                 let byId = Dictionary(uniqueKeysWithValues: baseItems.map { ($0.fsId, $0) })
                 let filtered = ids.compactMap { byId[$0] }
+                self.otherTabSearchHit = nil
                 self.results.accept(Results(items: filtered, isSearchResult: true))
                 self.syncHistoryTableToResults()
+                if filtered.isEmpty { self.countOtherTabHits(query: query) }
             }
         }
         // Lazy full build on first non-empty query; later updates are incremental (T22).
@@ -1108,6 +1109,24 @@ class HistoryViewController: NSViewController {
         }
     }
     
+    /// History ↔ Favorites are disjoint, so a miss here may be a hit next door (U10).
+    private func countOtherTabHits(query: String) {
+        let other: HistoryListMode
+        switch listMode.value {
+        case .history: other = .favorites
+        case .favorites: other = .history
+        case .passwords: return
+        }
+        let items = appState.history.items.filter { other == .favorites ? $0.isFavorite : (!$0.isFavorite && !$0.isPassword) }
+        guard !items.isEmpty else { return }
+        let copiedAt = Dictionary(uniqueKeysWithValues: items.map { ($0.fsId, $0.copiedAt) })
+        searchIndex.search(query: query, visibleIds: items.map(\.fsId), copiedAt: copiedAt) { [weak self] ids in
+            guard let self, self.searchBar.stringValue == query, self.results.value.items.isEmpty, !ids.isEmpty else { return }
+            self.otherTabSearchHit = (other, ids.count)
+            self.updateEmptyListLabel(for: self.listMode.value, visible: true)
+        }
+    }
+
     private func updateEmptyListLabel(for mode: HistoryListMode, visible: Bool) {
         emptyListLabel?.isHidden = true
         let isSearch = results.value.isSearchResult || filterState.isActive || !searchBar.stringValue.isEmpty
@@ -1130,12 +1149,16 @@ class HistoryViewController: NSViewController {
             isLoading: !appState.isHistoryLoaded,
             isCapturePaused: appSettings.isCapturePaused,
             filtersActive: filterState.isActive,
-            otherTabHitCount: nil,
-            otherTab: nil
+            otherTabHitCount: visible ? otherTabSearchHit?.count : nil,
+            otherTab: visible ? otherTabSearchHit?.tab : nil
         )
         emptyStateHost.onPrimary = { [weak self] in
             guard let self else { return }
-            if self.filterState.isActive || !self.searchBar.stringValue.isEmpty {
+            if let hit = self.otherTabSearchHit {
+                // Keep the query; the tab switch re-runs the search there.
+                self.otherTabSearchHit = nil
+                self.listMode.accept(hit.tab)
+            } else if self.filterState.isActive || !self.searchBar.stringValue.isEmpty {
                 self.clearFilters(resetSearch: true)
             } else if self.appSettings.isCapturePaused {
                 SettingsPersistence.apply { $0.isCapturePaused = false }

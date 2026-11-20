@@ -183,7 +183,7 @@ class HistoryTableView: NSTableView {
     
     func reloadItem(_ i: Int) {
         guard let row = row(forItemIndex: i), row < numberOfRows else { return }
-        reloadData(forRowIndexes: IndexSet(arrayLiteral: row), columnIndexes: IndexSet(arrayLiteral: 0))
+        reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: 0))
         syncColumnWidthToScrollView()
     }
     

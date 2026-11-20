@@ -33,6 +33,7 @@ final class HistoryRowView: NSTableCellView {
         setup()
     }
 
+    // swiftlint:disable:next function_parameter_count
     func apply(
         presentation: RowPresentation,
         artwork: NSImage?,

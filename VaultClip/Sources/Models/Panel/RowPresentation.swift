@@ -25,7 +25,7 @@ struct ItemSummary: Equatable {
     var pdfPageCount: Int?
     var isRichText: Bool
     /// Resolved app display name (Finder name); falls back to the bundle id tail.
-    var sourceAppName: String? = nil
+    var sourceAppName: String?
 }
 
 struct RowPresentation: Equatable, Identifiable {

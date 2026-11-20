@@ -34,7 +34,10 @@ fi
 
 pkill -f "$APP/Contents/MacOS/" >/dev/null 2>&1 || true
 rm -rf "$STORE"
-VAULTCLIP_SEED_APP_SUPPORT="$STORE/$BID" swift "$ROOT/scripts/seed-demo-history.swift"
+# EMPTY=1 checks the empty-history state.
+if [ "${EMPTY:-0}" != "1" ]; then
+  VAULTCLIP_SEED_APP_SUPPORT="$STORE/$BID" swift "$ROOT/scripts/seed-demo-history.swift"
+fi
 
 open -n "$APP" --args --storage-root="$STORE" --open-panel "$@"
 echo "ui-preview running: $APP (storage $STORE)"

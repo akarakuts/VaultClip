@@ -138,7 +138,8 @@ extension HistoryViewController {
             panelWidth: width,
             panelHeight: view.bounds.height,
             position: appState.panelPosition.value,
-            previewVisible: isPreviewShowing,
+            // Nothing to preview → give the space to the empty state.
+            previewVisible: isPreviewShowing && !historyPanel.items.isEmpty,
             listFraction: nil
         ))?.axis
         // Explicit placement from Settings wins over the automatic width rule.
