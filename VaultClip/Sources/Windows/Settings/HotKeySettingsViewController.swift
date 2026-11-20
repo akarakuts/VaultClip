@@ -45,10 +45,12 @@ class HotKeySettingsViewController: NSViewController {
         saveHotKeyButton.title = L10n.commonSave
         for subview in view.subviews {
             if let field = subview as? NSTextField, field !== hotkeyLabel,
-               field.stringValue.contains("Hold down the keys") {
-                field.stringValue = L10n.settingsHotkeyHint
+               field.stringValue.contains("Hold down the keys") || field.accessibilityIdentifier() == "settings.hotkeyHint" {
+                field.setAccessibilityIdentifier("settings.hotkeyHint")
             }
         }
+        (view.descendantView(withAccessibilityIdentifier: "settings.hotkeyHint") as? NSTextField)?
+            .stringValue = L10n.settingsHotkeyHint
     }
 
     override func viewDidAppear() {

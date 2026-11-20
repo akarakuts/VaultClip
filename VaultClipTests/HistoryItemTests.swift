@@ -214,19 +214,19 @@ class HistoryItemTests: XCTestCase {
         let pngItem = HistoryItem(unsavedData: [.png: pngData], cache: cache)
         XCTAssertTrue(pngItem.hasRasterImage())
         XCTAssertNotNil(pngItem.getImage())
-        XCTAssertEqual(pngItem.getRasterImageDisplayString(), "Image (PNG)")
+        XCTAssertEqual(pngItem.getRasterImageDisplayString(), L10n.imageTyped("PNG"))
         XCTAssertTrue(pngItem.getTableViewItemType() == HistoryTiffCellView.self)
         
         let jpegType = NSPasteboard.PasteboardType("public.jpeg")
         let jpegItem = HistoryItem(unsavedData: [jpegType: pngData], cache: cache)
         XCTAssertTrue(jpegItem.hasRasterImage())
         XCTAssertNotNil(jpegItem.getImage())
-        XCTAssertEqual(jpegItem.getRasterImageDisplayString(), "Image (JPEG)")
+        XCTAssertEqual(jpegItem.getRasterImageDisplayString(), L10n.imageTyped("JPEG"))
         
         let gifType = NSPasteboard.PasteboardType("com.compuserve.gif")
         let gifItem = HistoryItem(unsavedData: [gifType: pngData], cache: cache)
         XCTAssertTrue(gifItem.hasRasterImage())
-        XCTAssertEqual(gifItem.getRasterImageDisplayString(), "Image (GIF)")
+        XCTAssertEqual(gifItem.getRasterImageDisplayString(), L10n.imageTyped("GIF"))
     }
     
     func testGetPdfDisplayString() {
@@ -236,8 +236,9 @@ class HistoryItemTests: XCTestCase {
             cache: cache
         )
         XCTAssertNotNil(item.getPdf())
-        XCTAssertEqual(item.getPdfDisplayString(), "PDF document (1 page)")
-        XCTAssertEqual(HistoryItemText.getString(forItem: item), "PDF document (1 page)")
+        let expected = L10n.pdfTitled(L10n.pdfDocument, L10n.pdfPageOne)
+        XCTAssertEqual(item.getPdfDisplayString(), expected)
+        XCTAssertEqual(HistoryItemText.getString(forItem: item), expected)
         XCTAssertTrue(item.getTableViewItemType() == HistoryPdfCellView.self)
     }
     

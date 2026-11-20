@@ -352,12 +352,12 @@ class HistoryItem: NSObject {
     func getPdfDisplayString() -> String? {
         guard getFileUrl() == nil, let document = getPdf() else { return nil }
         let pages = document.pageCount
-        let pageSuffix = pages == 1 ? "1 page" : "\(pages) pages"
+        let pageSuffix = pages == 1 ? L10n.pdfPageOne : L10n.pdfPageOther(pages)
         if let title = document.documentAttributes?[PDFDocumentAttribute.titleAttribute] as? String,
            !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            return pages > 0 ? "\(title) (\(pageSuffix))" : title
+            return pages > 0 ? L10n.pdfTitled(title, pageSuffix) : title
         }
-        return pages > 0 ? "PDF document (\(pageSuffix))" : "PDF document"
+        return pages > 0 ? L10n.pdfTitled(L10n.pdfDocument, pageSuffix) : L10n.pdfDocument
     }
     
     func getPdfIcon() -> NSImage {

@@ -223,6 +223,14 @@ enum L10n {
     }
     static var searchLabelPDF: String { tr("search.label.pdf") }
     static var searchLabelImage: String { tr("search.label.image") }
+    static var pdfDocument: String { tr("pdf.document") }
+    static var pdfPageOne: String { tr("pdf.page.one") }
+    static func pdfPageOther(_ count: Int) -> String { String(format: tr("pdf.page.other"), count) }
+    static func pdfTitled(_ title: String, _ pages: String) -> String {
+        String(format: tr("pdf.titled"), title, pages)
+    }
+    static var imageGeneric: String { tr("image.generic") }
+    static func imageTyped(_ type: String) -> String { String(format: tr("image.typed"), type) }
     static var settingsMaxItemSizeLabel: String { tr("settings.max_item_size.label") }
     static var settingsMaxItemSizeUnlimited: String { tr("settings.max_item_size.unlimited") }
     static func settingsMaxItemSizeMB(_ mb: Int) -> String {

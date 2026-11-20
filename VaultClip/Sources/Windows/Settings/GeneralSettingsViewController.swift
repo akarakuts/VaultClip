@@ -38,28 +38,35 @@ class GeneralSettingsViewController: NSViewController {
     // MARK: Setup view
 
     private func localizeUI() {
+        // Tag storyboard labels once, then localize by accessibility identifier (T35).
         for subview in view.subviews {
             if let field = subview as? NSTextField {
-                switch field.stringValue {
-                case "Maximum number of items saved:":
-                    field.stringValue = L10n.settingsMaxItemsLabel
-                case "Rich text:":
-                    field.stringValue = L10n.settingsRichTextLabel
-                default:
-                    break
+                if field.stringValue == "Maximum number of items saved:" {
+                    field.setAccessibilityIdentifier("settings.maxItemsLabel")
+                } else if field.stringValue == "Rich text:" {
+                    field.setAccessibilityIdentifier("settings.richTextLabel")
                 }
             }
             if let button = subview as? NSButton {
-                switch button.title {
-                case "Shows rich text":
-                    button.title = L10n.settingsShowsRichText
-                case "Pastes rich text":
-                    button.title = L10n.settingsPastesRichText
-                default:
-                    break
+                if button.title == "Shows rich text" {
+                    button.setAccessibilityIdentifier("settings.showsRichText")
+                } else if button.title == "Pastes rich text" {
+                    button.setAccessibilityIdentifier("settings.pastesRichText")
                 }
             }
         }
+        (view.descendantView(withAccessibilityIdentifier: "settings.maxItemsLabel") as? NSTextField)?
+            .stringValue = L10n.settingsMaxItemsLabel
+        (view.descendantView(withAccessibilityIdentifier: "settings.richTextLabel") as? NSTextField)?
+            .stringValue = L10n.settingsRichTextLabel
+        (view.descendantView(withAccessibilityIdentifier: "settings.showsRichText") as? NSButton)?
+            .title = L10n.settingsShowsRichText
+        (view.descendantView(withAccessibilityIdentifier: "settings.pastesRichText") as? NSButton)?
+            .title = L10n.settingsPastesRichText
+        showsRichTextButton?.setAccessibilityIdentifier("settings.showsRichText")
+        pastesRichTextButton?.setAccessibilityIdentifier("settings.pastesRichText")
+        showsRichTextButton?.title = L10n.settingsShowsRichText
+        pastesRichTextButton?.title = L10n.settingsPastesRichText
     }
     
     private func setupMaxHistoryItemsPopUpButton() {

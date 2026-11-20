@@ -71,9 +71,9 @@ extension HistoryItem {
     func getRasterImageDisplayString() -> String? {
         guard hasRasterImage() else { return nil }
         if let type = Self.allRasterCaptureTypes.first(where: { types.contains($0) }) {
-            return "Image (\(Self.displayName(for: type)))"
+            return L10n.imageTyped(Self.displayName(for: type))
         }
-        return "Image"
+        return L10n.imageGeneric
     }
     
     /// Reads raster bytes from a pasteboard item when generic type iteration misses them.

@@ -58,7 +58,7 @@ class HistoryPdfCellView: HistoryItemBaseCellView, HistoryListItem {
     func setupCell(withHistoryTableView historyTableView: HistoryTableView, forHistoryItem historyItem: HistoryItem, at i: Int) {
         iconView.image = historyItem.getPdfIcon()
         setupShortcutTextView(at: i, historyItem: historyItem)
-        let label = historyItem.getPdfDisplayString() ?? "PDF document"
+        let label = historyItem.getPdfDisplayString() ?? L10n.pdfDocument
         let displayText = HistoryItemText.appendPasswordCommentIfNeeded(
             to: formatPdfDisplay(label),
             for: historyItem,
@@ -76,7 +76,7 @@ class HistoryPdfCellView: HistoryItemBaseCellView, HistoryListItem {
     
     static func getItemHeight(withHistoryTableView historyTableView: HistoryTableView, forHistoryItem historyItem: HistoryItem) -> CGFloat {
         let cellWidth = floor(historyTableView.cellWidth)
-        let label = historyItem.getPdfDisplayString() ?? "PDF document"
+        let label = historyItem.getPdfDisplayString() ?? L10n.pdfDocument
         let textViewHeight = labelHeight(withCellWidth: cellWidth, forHistoryItem: historyItem, listMode: historyTableView.listMode, label: label)
         let minCellHeight = iconSize.height + contentViewInsets.yTotal + iconViewPadding.yTotal
         return ceil(max(textViewHeight + contentViewInsets.yTotal, minCellHeight))
