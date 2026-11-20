@@ -240,12 +240,17 @@ class HistoryViewController: NSViewController {
 
     /// Clears stale search / height cache and reloads when the panel becomes visible.
     private func refreshHistoryListOnPanelOpen() {
+        // Open policy (U20): History tab unless «reopen last tab», first (or second) row selected.
+        if !appSettings.reopenLastTab, listMode.value != .history {
+            listMode.accept(.history)
+        }
         let baseItems = itemsForActiveListMode(from: appState.history.items)
         if !searchBar.stringValue.isEmpty, baseItems.count > 0, results.value.items.isEmpty {
             searchBar.stringValue = ""
         }
+        updateFilterBarVisibility()
         applyListFilter()
-        resetSelected()
+        resetSelected(preferSecond: appSettings.selectSecondItem)
         alignHistoryListToScrollView()
     }
     
@@ -263,11 +268,11 @@ class HistoryViewController: NSViewController {
         historyListView.remeasureVisibleRows()
     }
     
-    func resetSelected() {
-        if historyPanel.items.count > 0 {
-            selected.accept(0)
-        }
-        else {
+    func resetSelected(preferSecond: Bool = false) {
+        let count = historyPanel.items.count
+        if count > 0 {
+            selected.accept(preferSecond && count > 1 ? 1 : 0)
+        } else {
             selected.accept(nil)
         }
     }
@@ -386,6 +391,10 @@ class HistoryViewController: NSViewController {
         )
         
         guard appState.isHistoryPanelShown.value else { return }
+        // Headers only for the chronological History tab; search/filter results are ranked.
+        historyListView.groupsByDate = appSettings.groupHistoryByDate
+            && listMode.value == .history
+            && !current.isSearchResult
 
         if current.isSearchResult || mutation == .reload {
             historyListView.reloadData(historyPanel.items, isRichText: isRichText, listMode: listMode.value)
@@ -424,7 +433,9 @@ class HistoryViewController: NSViewController {
         historyListView.cellHeightsCache.removeCellHeight(forId: item.fsId)
         let visibleItems = itemsForActiveListMode(from: appState.history.items)
         guard let row = visibleItems.firstIndex(where: { $0.fsId == item.fsId }) else { return }
-        historyListView.noteHeightOfRows(withIndexesChanged: IndexSet(integer: row))
+        if let tableRow = historyListView.row(forItemIndex: row) {
+            historyListView.noteHeightOfRows(withIndexesChanged: IndexSet(integer: tableRow))
+        }
         historyListView.reloadItem(row)
     }
     
@@ -951,7 +962,7 @@ class HistoryViewController: NSViewController {
     
     func syncSelectionModelFromTable() {
         let items = historyPanel.items
-        let indexes = historyListView.selectedRowIndexes.sorted()
+        let indexes = historyListView.selectedItemIndexes.sorted()
         let ids = indexes.compactMap { idx -> UUID? in
             guard items.indices.contains(idx) else { return nil }
             return items[idx].fsId

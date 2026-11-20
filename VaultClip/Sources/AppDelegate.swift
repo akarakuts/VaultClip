@@ -83,9 +83,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         if let menuRow {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3 + Double(commands.count) * 0.5) {
-                guard let table = panel()?.historyListView, menuRow < table.numberOfRows else { return }
-                table.selectRowIndexes(IndexSet(integer: menuRow), byExtendingSelection: false)
-                let rect = table.rect(ofRow: menuRow)
+                guard let table = panel()?.historyListView, let tableRow = table.row(forItemIndex: menuRow) else { return }
+                table.selectRowIndexes(IndexSet(integer: tableRow), byExtendingSelection: false)
+                let rect = table.rect(ofRow: tableRow)
                 table.buildContextMenu(for: menuRow)
                     .popUp(positioning: nil, at: NSPoint(x: rect.midX, y: rect.midY), in: table)
             }

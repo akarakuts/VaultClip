@@ -9,20 +9,19 @@ import AppKit
 
 extension HistoryTableView {
     @objc func rowDoubleClicked(_ sender: Any?) {
-        let row = clickedRow
-        guard row >= 0, row < historyListItems.count else { return }
-        historyDelegate?.historyTableView(self, pasteRowAt: row)
+        guard let index = itemIndex(forRow: clickedRow) else { return }
+        historyDelegate?.historyTableView(self, pasteRowAt: index)
     }
 
     override func menu(for event: NSEvent) -> NSMenu? {
         let point = convert(event.locationInWindow, from: nil)
-        let row = self.row(at: point)
-        guard row >= 0, row < historyListItems.count else { return nil }
+        let tableRow = self.row(at: point)
+        guard let index = itemIndex(forRow: tableRow) else { return nil }
         // Finder rule: right-click outside the selection selects that row first.
-        if !selectedRowIndexes.contains(row) {
-            selectRowIndexes(IndexSet(integer: row), byExtendingSelection: false)
+        if !selectedRowIndexes.contains(tableRow) {
+            selectRowIndexes(IndexSet(integer: tableRow), byExtendingSelection: false)
         }
-        return buildContextMenu(for: row)
+        return buildContextMenu(for: index)
     }
 
     func buildContextMenu(for row: Int) -> NSMenu {
@@ -33,7 +32,7 @@ extension HistoryTableView {
             kind: kind,
             isPassword: item.isPassword,
             isFavorite: item.isFavorite,
-            selectionCount: max(1, selectedRowIndexes.count),
+            selectionCount: max(1, selectedItemIndexes.count),
             sourceAppName: appName
         )
         let menu = NSMenu(title: "Item")

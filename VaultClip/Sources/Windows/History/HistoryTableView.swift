@@ -27,6 +27,53 @@ class HistoryTableView: NSTableView {
     var isRichText: Bool = true
     
     var listMode: HistoryListMode = .history
+
+    /// Date headers between items (U12); rows ≠ item indexes while this is on.
+    var groupsByDate = false
+    enum DisplayRow: Equatable {
+        case header(String)
+        case item(Int)
+    }
+    private(set) var displayRows: [DisplayRow] = []
+    private var rowForItem: [Int] = []
+
+    /// Rebuilds header placement; buckets use lastUsedAt like retention.
+    func rebuildDisplayRows(now: Date = Date()) {
+        var rows: [DisplayRow] = []
+        var map: [Int] = []
+        var lastBucket: DateGroupBucket?
+        let calendar = Calendar.current
+        for (index, item) in historyListItems.enumerated() {
+            if groupsByDate {
+                let bucket = DateGrouping.bucket(for: item.lastUsedAt, now: now, calendar: calendar)
+                if bucket != lastBucket {
+                    rows.append(.header(DateGrouping.title(for: bucket, now: now, calendar: calendar, locale: .current)))
+                    lastBucket = bucket
+                }
+            }
+            map.append(rows.count)
+            rows.append(.item(index))
+        }
+        displayRows = rows
+        rowForItem = map
+    }
+
+    // Ungrouped lists map 1:1 (also during incremental insert/remove, before the rebuild).
+    func itemIndex(forRow row: Int) -> Int? {
+        guard groupsByDate else { return row >= 0 && row < historyListItems.count ? row : nil }
+        guard displayRows.indices.contains(row), case .item(let index) = displayRows[row] else { return nil }
+        return index
+    }
+
+    func row(forItemIndex index: Int) -> Int? {
+        guard groupsByDate else { return index >= 0 && index < historyListItems.count ? index : nil }
+        return rowForItem.indices.contains(index) ? rowForItem[index] : nil
+    }
+
+    /// Selected item indexes in list order (headers excluded).
+    var selectedItemIndexes: IndexSet {
+        IndexSet(selectedRowIndexes.compactMap { itemIndex(forRow: $0) })
+    }
     
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -107,20 +154,23 @@ class HistoryTableView: NSTableView {
         redisplayVisible(historyListItems: historyListItems)
     }
     
+    /// First selected item index (not table row).
     var selected: Int? {
-        return self.selectedRowIndexes.first
+        selectedItemIndexes.first
     }
     
     func selectItem(_ i: Int) {
-        guard i >= 0, i < numberOfRows else { return }
+        guard let row = row(forItemIndex: i), row < numberOfRows else { return }
         performProgrammaticSelection {
-            selectRowIndexes(IndexSet(integer: i), byExtendingSelection: false)
+            selectRowIndexes(IndexSet(integer: row), byExtendingSelection: false)
         }
-        scrollRowToVisible(i)
+        // Keep the group header visible above the first item.
+        scrollRowToVisible(i == 0 ? 0 : row)
     }
     
     func deselectItem(_ i: Int) {
-        performProgrammaticSelection { deselectRow(i) }
+        guard let row = row(forItemIndex: i) else { return }
+        performProgrammaticSelection { deselectRow(row) }
     }
 
     /// Programmatic changes must not echo back through the delegate (feedback loop with `selected`).
@@ -132,7 +182,8 @@ class HistoryTableView: NSTableView {
     }
     
     func reloadItem(_ i: Int) {
-        reloadData(forRowIndexes: IndexSet(arrayLiteral: i), columnIndexes: IndexSet(arrayLiteral: 0))
+        guard let row = row(forItemIndex: i), row < numberOfRows else { return }
+        reloadData(forRowIndexes: IndexSet(arrayLiteral: row), columnIndexes: IndexSet(arrayLiteral: 0))
         syncColumnWidthToScrollView()
     }
     
@@ -148,6 +199,7 @@ class HistoryTableView: NSTableView {
         historyListItems = data
         self.isRichText = isRichText
         self.listMode = listMode
+        rebuildDisplayRows()
         applyPlainListAppearance()
         performProgrammaticSelection { super.reloadData() }
         syncColumnWidthToScrollView()
@@ -175,6 +227,14 @@ class HistoryTableView: NSTableView {
         let wasProgrammatic = isApplyingProgrammaticSelection
         isApplyingProgrammaticSelection = true
         defer { isApplyingProgrammaticSelection = wasProgrammatic }
+        if groupsByDate {
+            historyListItems = data
+            rebuildDisplayRows()
+            super.reloadData()
+            syncColumnWidthToScrollView()
+            return
+        }
+        defer { rebuildDisplayRows() }
 
         switch mutation {
         case .insertTop where data.count == previous.count + 1:
@@ -218,11 +278,17 @@ class HistoryTableView: NSTableView {
 extension HistoryTableView: NSTableViewDataSource {
     
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return historyListItems.count
+        groupsByDate ? displayRows.count : historyListItems.count
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let historyItem = historyListItems[row]
+        if displayRows.indices.contains(row), case .header(let title) = displayRows[row] {
+            return makeGroupHeader(title)
+        }
+        guard let itemRow = itemIndex(forRow: row) else { return nil }
+        let isRowSelected = selectedRowIndexes.contains(row)
+        let historyItem = historyListItems[itemRow]
+        let row = itemRow
         let cell = tableView.makeView(withIdentifier: HistoryRowView.identifier, owner: nil) as? HistoryRowView
             ?? HistoryRowView(frame: .zero)
         let summary = HistoryItemSummaryBuilder.shared.summary(for: historyItem)
@@ -242,6 +308,7 @@ extension HistoryTableView: NSTableViewDataSource {
             isPassword: historyItem.isPassword,
             tab: listMode
         )
+        cell.setRowSelected(isRowSelected)
         let itemId = historyItem.fsId
         cell.onAction = { [weak self] action in
             guard let self, let current = self.historyListItems.firstIndex(where: { $0.fsId == itemId }) else { return }
@@ -281,13 +348,46 @@ extension HistoryTableView: NSTableViewDataSource {
     func tableViewColumnDidResize(_ notification: Notification) {
         NSAnimationContext.beginGrouping()
         NSAnimationContext.current.duration = 0
-        noteHeightOfRows(withIndexesChanged: IndexSet(integersIn: 0..<historyListItems.count))
+        noteHeightOfRows(withIndexesChanged: IndexSet(integersIn: 0..<numberOfRows))
         NSAnimationContext.endGrouping()
         redisplayVisible(historyListItems: historyListItems)
     }
     
     func tableView(_ tableView: NSTableView, pasteboardWriterForRow row: Int) -> NSPasteboardWriting? {
-        return historyListItems[row]
+        guard let index = itemIndex(forRow: row) else { return nil }
+        return historyListItems[index]
+    }
+
+    func tableView(_ tableView: NSTableView, isGroupRow row: Int) -> Bool {
+        guard groupsByDate, displayRows.indices.contains(row), case .header = displayRows[row] else { return false }
+        return true
+    }
+
+    func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
+        !self.tableView(tableView, isGroupRow: row)
+    }
+
+    private func makeGroupHeader(_ title: String) -> NSView {
+        let id = NSUserInterfaceItemIdentifier("HistoryGroupHeader")
+        let cell = (makeView(withIdentifier: id, owner: nil) as? NSTableCellView) ?? {
+            let cell = NSTableCellView()
+            cell.identifier = id
+            let label = NSTextField(labelWithString: "")
+            label.font = .systemFont(ofSize: NSFont.smallSystemFontSize, weight: .semibold)
+            label.textColor = .secondaryLabelColor
+            label.translatesAutoresizingMaskIntoConstraints = false
+            cell.addSubview(label)
+            cell.textField = label
+            NSLayoutConstraint.activate([
+                label.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: PanelTheme.Spacing.sm + 2),
+                label.bottomAnchor.constraint(equalTo: cell.bottomAnchor, constant: -3)
+            ])
+            cell.setAccessibilityRole(.staticText)
+            return cell
+        }()
+        cell.textField?.stringValue = title
+        cell.setAccessibilityLabel(title)
+        return cell
     }
     
     func tableView(_ tableView: NSTableView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forRowIndexes rowIndexes: IndexSet) {
@@ -304,6 +404,8 @@ extension HistoryTableView: NSTableViewDataSource {
     }
     
     func tableView(_ tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableView.DropOperation) -> NSDragOperation {
+        // Reordering across date headers has no stable meaning.
+        if groupsByDate { return [] }
         if dropOperation == .above {
             return .move
         }
@@ -361,7 +463,8 @@ extension HistoryTableView: NSTableViewDataSource {
 extension HistoryTableView: NSTableViewDelegate {
     
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        PanelTheme.rowHeight(for: SettingsPersistence.current().panelTextSize)
+        if self.tableView(tableView, isGroupRow: row) { return 24 }
+        return PanelTheme.rowHeight(for: SettingsPersistence.current().panelTextSize)
     }
     
 }

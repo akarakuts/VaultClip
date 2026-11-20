@@ -14,6 +14,9 @@ import RxRelay
 
 class HistoryWindowController: NSWindowController {
 
+    private var lastPosition: PanelPosition?
+    private weak var lastScreen: NSScreen?
+
     private var shownToggle: BehaviorRelay<Bool>?
     private weak var appState: State?
     private var oldApp: NSRunningApplication?
@@ -59,6 +62,9 @@ class HistoryWindowController: NSWindowController {
                     state.panelCloseReason = .userAction
                 } else {
                     self.oldApp = NSWorkspace.shared.frontmostApplication
+                    // Size sliders and screen-capture privacy apply on every open, not only on position change.
+                    self.applyLastFrame()
+                    self.window?.sharingType = SettingsPersistence.current().hidesPanelFromScreenCapture ? .none : .readOnly
                     self.showWindow(nil)
                     self.window?.layoutIfNeeded()
                     self.window?.makeKey()
@@ -74,16 +80,22 @@ class HistoryWindowController: NSWindowController {
             })
     }
 
+    private func applyLastFrame() {
+        guard let position = lastPosition, let screen = lastScreen else { return }
+        let frame = position.getFrame(forScreen: screen, sizes: SettingsPersistence.current().panelSizes)
+        // Content must never grow the panel past its computed frame (large preview images did).
+        window?.contentMaxSize = frame.size
+        window?.setFrame(frame, display: true)
+    }
+
     func subscribeFrameTo(position: Observable<PanelPosition>, screen: Observable<NSScreen?>) -> Disposable {
         Observable.combineLatest(position, screen).subscribe(onNext: {
             (position, screen) in
             guard let screen else { return }
             self.panelChrome.applyChrome(for: position)
-            let sizes = SettingsPersistence.current().panelSizes
-            let frame = position.getFrame(forScreen: screen, sizes: sizes)
-            // Content must never grow the panel past its computed frame (large preview images did).
-            self.window?.contentMaxSize = frame.size
-            self.window?.setFrame(frame, display: true)
+            self.lastPosition = position
+            self.lastScreen = screen
+            self.applyLastFrame()
             DispatchQueue.main.async {
                 (self.contentViewController as? HistoryViewController)?
                     .alignHistoryListAfterWindowFrameChange()

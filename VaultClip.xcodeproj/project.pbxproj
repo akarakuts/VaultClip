@@ -259,6 +259,7 @@
 		VCLUA10212EB0B10004E6E63 /* LastUsedAtTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCLUA10112EB0B10004E6E63 /* LastUsedAtTests.swift */; };
 		VCPNL33212EB0B10004E6E63 /* FilterState.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL33112EB0B10004E6E63 /* FilterState.swift */; };
 		VCFST10212EB0B10004E6E63 /* FilterStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCFST10112EB0B10004E6E63 /* FilterStateTests.swift */; };
+		VCX2D5AA5E67B89040AEA34E /* HistoryTableGroupingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCX32CBF4362A5C94DDC0F8F /* HistoryTableGroupingTests.swift */; };
 		VCX0B851D3CB1803F9447F51 /* RowPresentationFormattingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCX5CBDE115D6DD40C8368E2 /* RowPresentationFormattingTests.swift */; };
 		VCPNL34212EB0B10004E6E63 /* MultiPasteComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL34112EB0B10004E6E63 /* MultiPasteComposer.swift */; };
 		VCPNL35212EB0B10004E6E63 /* PendingDeletionQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = VCPNL35112EB0B10004E6E63 /* PendingDeletionQueue.swift */; };
@@ -603,6 +604,7 @@
 		VCLUA10112EB0B10004E6E63 /* LastUsedAtTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastUsedAtTests.swift; sourceTree = "<group>"; };
 		VCPNL33112EB0B10004E6E63 /* FilterState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterState.swift; sourceTree = "<group>"; };
 		VCFST10112EB0B10004E6E63 /* FilterStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterStateTests.swift; sourceTree = "<group>"; };
+		VCX32CBF4362A5C94DDC0F8F /* HistoryTableGroupingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableGroupingTests.swift; sourceTree = "<group>"; };
 		VCX5CBDE115D6DD40C8368E2 /* RowPresentationFormattingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowPresentationFormattingTests.swift; sourceTree = "<group>"; };
 		VCPNL34112EB0B10004E6E63 /* MultiPasteComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiPasteComposer.swift; sourceTree = "<group>"; };
 		VCPNL35112EB0B10004E6E63 /* PendingDeletionQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingDeletionQueue.swift; sourceTree = "<group>"; };
@@ -1247,6 +1249,7 @@
 				VCHRV20112EB0B10004E6E63 /* HistoryRowViewTests.swift */,
 				VCLUA10112EB0B10004E6E63 /* LastUsedAtTests.swift */,
 				VCFST10112EB0B10004E6E63 /* FilterStateTests.swift */,
+				VCX32CBF4362A5C94DDC0F8F /* HistoryTableGroupingTests.swift */,
 				VCX5CBDE115D6DD40C8368E2 /* RowPresentationFormattingTests.swift */,
 				VCFST11112EB0B10004E6E63 /* MultiPasteComposerTests.swift */,
 				VCFST12112EB0B10004E6E63 /* PendingDeletionQueueTests.swift */,
@@ -1794,6 +1797,7 @@
 				VCHRV20212EB0B10004E6E63 /* HistoryRowViewTests.swift in Sources */,
 				VCLUA10212EB0B10004E6E63 /* LastUsedAtTests.swift in Sources */,
 				VCFST10212EB0B10004E6E63 /* FilterStateTests.swift in Sources */,
+				VCX2D5AA5E67B89040AEA34E /* HistoryTableGroupingTests.swift in Sources */,
 				VCX0B851D3CB1803F9447F51 /* RowPresentationFormattingTests.swift in Sources */,
 				VCFST11212EB0B10004E6E63 /* MultiPasteComposerTests.swift in Sources */,
 				VCFST12212EB0B10004E6E63 /* PendingDeletionQueueTests.swift in Sources */,

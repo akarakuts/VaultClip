@@ -12,7 +12,7 @@ extension HistoryViewController {
 
     /// Selection in list order; falls back to the focused row.
     var selectedHistoryItems: [HistoryItem] {
-        let rows = historyListView.selectedRowIndexes.filter { $0 < historyPanel.items.count }
+        let rows = historyListView.selectedItemIndexes.filter { $0 < historyPanel.items.count }
         if !rows.isEmpty { return rows.map { historyPanel.items[$0] } }
         return selectedHistoryItem.map { [$0] } ?? []
     }
@@ -143,7 +143,7 @@ extension HistoryViewController {
 
     func performRowAction(_ action: RowActionButtonID, at row: Int) {
         guard row >= 0, row < historyPanel.items.count else { return }
-        if !historyListView.selectedRowIndexes.contains(row) {
+        if !historyListView.selectedItemIndexes.contains(row) {
             historyListView.selectItem(row)
             selected.accept(row)
         }
@@ -160,7 +160,7 @@ extension HistoryViewController {
 
     func performContextCommand(_ command: PanelCommandID, at row: Int) {
         guard row >= 0, row < historyPanel.items.count else { return }
-        if !historyListView.selectedRowIndexes.contains(row) {
+        if !historyListView.selectedItemIndexes.contains(row) {
             historyListView.selectItem(row)
         }
         selected.accept(historyListView.selected ?? row)

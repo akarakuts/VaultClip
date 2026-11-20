@@ -134,13 +134,21 @@ extension HistoryViewController {
               let listBottom = listBottomToFooter,
               let listTrailing = listTrailingToView else { return }
         let width = view.bounds.width > 0 ? view.bounds.width : 480
-        let axis = PreviewLayout.layout(PreviewLayoutInput(
+        var axis = PreviewLayout.layout(PreviewLayoutInput(
             panelWidth: width,
             panelHeight: view.bounds.height,
             position: appState.panelPosition.value,
             previewVisible: isPreviewShowing,
             listFraction: nil
         ))?.axis
+        // Explicit placement from Settings wins over the automatic width rule.
+        if axis != nil {
+            switch appSettings.previewPlacement {
+            case .automatic: break
+            case .trailing: axis = .horizontal
+            case .bottom: axis = .vertical
+            }
+        }
         let wasHidden = embeddedPreview.isHidden
         guard axis != currentPreviewAxis || previewConstraints.isEmpty && axis != nil else {
             embeddedPreview.isHidden = axis == nil
