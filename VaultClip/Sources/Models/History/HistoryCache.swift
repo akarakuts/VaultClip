@@ -92,10 +92,7 @@ class HistoryCache {
     func unregisterItem(withId id: UUID) {
         accessQueue.sync(flags: .barrier) {
             if let data = self.cachedData.removeValue(forKey: id) {
-                for (_, bytes) in data {
-                    var mutable = bytes
-                    SecureStorageHelper.zeroize(&mutable)
-                }
+                // CoW copies — zeroize would not scrub the cached buffer (T12).
                 self._currentCacheSize -= data.reduce(0, { $0 + $1.value.count })
                 self.usage.removeAll(where: { $0.id == id })
             }
@@ -122,12 +119,11 @@ class HistoryCache {
     private func removeLRU() {
         let removed = usage.removeFirst()
         guard var bucket = cachedData[removed.id],
-              var bytes = bucket.removeValue(forKey: removed.type) else {
+              let bytes = bucket.removeValue(forKey: removed.type) else {
             ClipError(.cacheDataNotFound, localizedDescription: "Error: Didn't find data with type \(removed.type.rawValue) for item with id \(removed.id.uuidString) to remove from the cache.")
                 .log(with: errorLogger)
             return
         }
-        SecureStorageHelper.zeroize(&bytes)
         cachedData[removed.id] = bucket.isEmpty ? nil : bucket
         if bucket.isEmpty {
             cachedData.removeValue(forKey: removed.id)

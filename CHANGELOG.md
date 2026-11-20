@@ -29,6 +29,7 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 
 ### Changed
 
+- **Cache zeroize** — removed ineffective CoW `zeroize` calls from HistoryCache (T12).
 - **Password URL schemes** — only http/https password links are openable or clickable (T11).
 - **Legacy plaintext migration** — history load re-encrypts leftover open files and successful legacy App Support merges move the old folder to Trash (T10).
 - **Beta storage isolation** — Beta uses its own Application Support / Keychain / instance.lock via `AppIdentity.bundleIdentifier`; first Beta launch starts with an empty history (T09).
