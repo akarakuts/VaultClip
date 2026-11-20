@@ -11,6 +11,14 @@ enum PerformanceBudget {
     /// Hard CI limit for 5k synthetic present/filter (ms).
     static let presentFilterLimitMs: Double = 200
 
+    /// TSan inflates timings several×; keep the non-TSan budget honest.
+    static var effectivePresentFilterLimitMs: Double {
+        #if THREAD_SANITIZER
+        return presentFilterLimitMs * 5
+        #else
+        return presentFilterLimitMs
+        #endif
+    }
     static func measureMs(_ work: () -> Void) -> Double {
         let start = CFAbsoluteTimeGetCurrent()
         work()

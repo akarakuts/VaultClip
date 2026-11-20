@@ -183,7 +183,7 @@ final class PanelPresenterTests: XCTestCase {
         let start = CFAbsoluteTimeGetCurrent()
         _ = PanelPresenter.present(input)
         let elapsed = (CFAbsoluteTimeGetCurrent() - start) * 1000
-        XCTAssertLessThan(elapsed, 200, "presenter took \(elapsed) ms")
+        XCTAssertLessThan(elapsed, PerformanceBudget.effectivePresentFilterLimitMs, "presenter took \(elapsed) ms")
     }
 
     func testClassifierEdgeCasesAndCache() {

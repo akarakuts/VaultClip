@@ -22,6 +22,6 @@ final class PerformanceBudgetTests: XCTestCase {
                 locale: Locale(identifier: "en_US")
             ))
         }
-        XCTAssertLessThan(ms, PerformanceBudget.presentFilterLimitMs, "present 5k took \(ms) ms")
+        XCTAssertLessThan(ms, PerformanceBudget.effectivePresentFilterLimitMs, "present 5k took \(ms) ms")
     }
 }
