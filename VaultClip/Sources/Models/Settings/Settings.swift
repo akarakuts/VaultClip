@@ -68,7 +68,18 @@ struct Settings: Codable, DefaultStorable {
         panelEdgeHeight: Double,
         panelCenterWidth: Double,
         panelCenterHeight: Double,
-        groupHistoryByDate: Bool
+        groupHistoryByDate: Bool,
+        statusItemClickMode: StatusItemClickMode,
+        showsRecentInMenu: Bool,
+        recentMenuCount: Int,
+        previewVisible: Bool,
+        resetFiltersOnClose: Bool,
+        reopenLastTab: Bool,
+        selectSecondItem: Bool,
+        hidesPanelFromScreenCapture: Bool,
+        multiPasteSeparator: String,
+        usesMonospacedContentFont: Bool,
+        capturePausedUntil: Date?
     ) {
         self.panelPosition = panelPosition
         self.pasteboardChangeCount = pasteboardChangeCount
@@ -89,6 +100,17 @@ struct Settings: Codable, DefaultStorable {
         self.panelCenterWidth = panelCenterWidth
         self.panelCenterHeight = panelCenterHeight
         self.groupHistoryByDate = groupHistoryByDate
+        self.statusItemClickMode = statusItemClickMode
+        self.showsRecentInMenu = showsRecentInMenu
+        self.recentMenuCount = recentMenuCount
+        self.previewVisible = previewVisible
+        self.resetFiltersOnClose = resetFiltersOnClose
+        self.reopenLastTab = reopenLastTab
+        self.selectSecondItem = selectSecondItem
+        self.hidesPanelFromScreenCapture = hidesPanelFromScreenCapture
+        self.multiPasteSeparator = multiPasteSeparator
+        self.usesMonospacedContentFont = usesMonospacedContentFont
+        self.capturePausedUntil = capturePausedUntil
     }
     
     static let `default` = Settings(
@@ -110,7 +132,18 @@ struct Settings: Codable, DefaultStorable {
         panelEdgeHeight: 360,
         panelCenterWidth: 0,
         panelCenterHeight: 0,
-        groupHistoryByDate: true
+        groupHistoryByDate: true,
+        statusItemClickMode: .openPanel,
+        showsRecentInMenu: true,
+        recentMenuCount: 5,
+        previewVisible: true,
+        resetFiltersOnClose: true,
+        reopenLastTab: false,
+        selectSecondItem: false,
+        hidesPanelFromScreenCapture: false,
+        multiPasteSeparator: "newline",
+        usesMonospacedContentFont: false,
+        capturePausedUntil: nil
     )
     
     // MARK: - Settings
@@ -160,6 +193,28 @@ struct Settings: Codable, DefaultStorable {
     /// Group History tab by lastUsedAt buckets (U12); on by default.
     var groupHistoryByDate: Bool
 
+    /// Menu-bar icon click behavior (U27).
+    var statusItemClickMode: StatusItemClickMode
+    /// Show recent non-password items in status menu (U28).
+    var showsRecentInMenu: Bool
+    var recentMenuCount: Int
+    /// Embedded preview visible by default (U21).
+    var previewVisible: Bool
+    /// Reset search/filters when panel closes (U20).
+    var resetFiltersOnClose: Bool
+    /// Reopen last tab instead of History (U20).
+    var reopenLastTab: Bool
+    /// Select second item on open (U20).
+    var selectSecondItem: Bool
+    /// Hide panel from screen capture (U23); off by default.
+    var hidesPanelFromScreenCapture: Bool
+    /// Multi-paste separator raw value (U16).
+    var multiPasteSeparator: String
+    /// Monospace content font in preview (U30).
+    var usesMonospacedContentFont: Bool
+    /// Soft pause end date (U28); nil when not time-limited.
+    var capturePausedUntil: Date?
+
     var panelSizes: PanelSizeState {
         PanelSizeState(
             edgeWidth: CGFloat(panelEdgeWidth),
@@ -189,6 +244,17 @@ struct Settings: Codable, DefaultStorable {
         case panelCenterWidth
         case panelCenterHeight
         case groupHistoryByDate
+        case statusItemClickMode
+        case showsRecentInMenu
+        case recentMenuCount
+        case previewVisible
+        case resetFiltersOnClose
+        case reopenLastTab
+        case selectSecondItem
+        case hidesPanelFromScreenCapture
+        case multiPasteSeparator
+        case usesMonospacedContentFont
+        case capturePausedUntil
     }
 
     init(from decoder: Decoder) throws {
@@ -250,6 +316,28 @@ struct Settings: Codable, DefaultStorable {
         }
         groupHistoryByDate = try container.decodeIfPresent(Bool.self, forKey: .groupHistoryByDate)
             ?? defaults.groupHistoryByDate
+        statusItemClickMode = try container.decodeIfPresent(StatusItemClickMode.self, forKey: .statusItemClickMode)
+            ?? defaults.statusItemClickMode
+        showsRecentInMenu = try container.decodeIfPresent(Bool.self, forKey: .showsRecentInMenu)
+            ?? defaults.showsRecentInMenu
+        recentMenuCount = try container.decodeIfPresent(Int.self, forKey: .recentMenuCount)
+            ?? defaults.recentMenuCount
+        previewVisible = try container.decodeIfPresent(Bool.self, forKey: .previewVisible)
+            ?? defaults.previewVisible
+        resetFiltersOnClose = try container.decodeIfPresent(Bool.self, forKey: .resetFiltersOnClose)
+            ?? defaults.resetFiltersOnClose
+        reopenLastTab = try container.decodeIfPresent(Bool.self, forKey: .reopenLastTab)
+            ?? defaults.reopenLastTab
+        selectSecondItem = try container.decodeIfPresent(Bool.self, forKey: .selectSecondItem)
+            ?? defaults.selectSecondItem
+        hidesPanelFromScreenCapture = try container.decodeIfPresent(Bool.self, forKey: .hidesPanelFromScreenCapture)
+            ?? defaults.hidesPanelFromScreenCapture
+        multiPasteSeparator = try container.decodeIfPresent(String.self, forKey: .multiPasteSeparator)
+            ?? defaults.multiPasteSeparator
+        usesMonospacedContentFont = try container.decodeIfPresent(Bool.self, forKey: .usesMonospacedContentFont)
+            ?? defaults.usesMonospacedContentFont
+        capturePausedUntil = try container.decodeIfPresent(Date.self, forKey: .capturePausedUntil)
+            ?? defaults.capturePausedUntil
     }
 
     func encode(to encoder: Encoder) throws {
@@ -273,6 +361,17 @@ struct Settings: Codable, DefaultStorable {
         try container.encode(panelCenterWidth, forKey: .panelCenterWidth)
         try container.encode(panelCenterHeight, forKey: .panelCenterHeight)
         try container.encode(groupHistoryByDate, forKey: .groupHistoryByDate)
+        try container.encode(statusItemClickMode, forKey: .statusItemClickMode)
+        try container.encode(showsRecentInMenu, forKey: .showsRecentInMenu)
+        try container.encode(recentMenuCount, forKey: .recentMenuCount)
+        try container.encode(previewVisible, forKey: .previewVisible)
+        try container.encode(resetFiltersOnClose, forKey: .resetFiltersOnClose)
+        try container.encode(reopenLastTab, forKey: .reopenLastTab)
+        try container.encode(selectSecondItem, forKey: .selectSecondItem)
+        try container.encode(hidesPanelFromScreenCapture, forKey: .hidesPanelFromScreenCapture)
+        try container.encode(multiPasteSeparator, forKey: .multiPasteSeparator)
+        try container.encode(usesMonospacedContentFont, forKey: .usesMonospacedContentFont)
+        try container.encodeIfPresent(capturePausedUntil, forKey: .capturePausedUntil)
     }
 
     // MARK: - State Binding Methods
