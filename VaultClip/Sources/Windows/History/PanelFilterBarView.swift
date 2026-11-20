@@ -13,7 +13,7 @@ final class PanelFilterBarView: NSView {
 
     private let typeScroll = NSScrollView(frame: .zero)
     private let typeStack = NSStackView(frame: .zero)
-    private let appButton = NSPopUpButton(frame: .zero, pullsDown: true)
+    private let appButton = NSPopUpButton(frame: .zero, pullsDown: false)
     private var typeButtons: [TypeFilter: NSButton] = [:]
     private var current = FilterState()
 
@@ -32,6 +32,7 @@ final class PanelFilterBarView: NSView {
         current = state
         for (type, button) in typeButtons {
             button.state = type == state.type ? .on : .off
+            button.contentTintColor = type == state.type ? .controlAccentColor : .secondaryLabelColor
         }
         updateAppTitle()
     }
@@ -64,9 +65,10 @@ final class PanelFilterBarView: NSView {
 
     private func build() {
         typeStack.orientation = .horizontal
-        typeStack.spacing = 6
+        typeStack.spacing = 4
         typeStack.alignment = .centerY
         typeStack.translatesAutoresizingMaskIntoConstraints = false
+        typeStack.setHuggingPriority(.defaultHigh, for: .horizontal)
 
         let chips: [(TypeFilter, String)] = [
             (.all, L10n.filterTypeAll),
@@ -78,27 +80,31 @@ final class PanelFilterBarView: NSView {
         ]
         for (type, title) in chips {
             let button = NSButton(title: title, target: self, action: #selector(typeTapped(_:)))
-            button.bezelStyle = .rounded
+            button.bezelStyle = .recessed
             button.setButtonType(.onOff)
+            button.isBordered = true
+            button.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
             button.tag = chips.firstIndex(where: { $0.0 == type }) ?? 0
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.heightAnchor.constraint(equalToConstant: 24).isActive = true
+            button.heightAnchor.constraint(equalToConstant: 22).isActive = true
             typeButtons[type] = button
             typeStack.addArrangedSubview(button)
         }
 
         typeScroll.translatesAutoresizingMaskIntoConstraints = false
         typeScroll.drawsBackground = false
-        typeScroll.hasHorizontalScroller = true
+        typeScroll.hasHorizontalScroller = false
         typeScroll.hasVerticalScroller = false
-        typeScroll.horizontalScrollElasticity = .allowed
+        typeScroll.horizontalScrollElasticity = .none
         typeScroll.documentView = typeStack
-        typeScroll.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        typeScroll.heightAnchor.constraint(equalToConstant: 24).isActive = true
 
         appButton.translatesAutoresizingMaskIntoConstraints = false
+        appButton.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
         appButton.target = self
         appButton.action = #selector(appPicked(_:))
         appButton.addItem(withTitle: L10n.filterAllApps)
+        appButton.controlSize = .small
 
         let row = NSStackView(views: [typeScroll, appButton])
         row.orientation = .horizontal
@@ -112,7 +118,7 @@ final class PanelFilterBarView: NSView {
             row.trailingAnchor.constraint(equalTo: trailingAnchor),
             row.topAnchor.constraint(equalTo: topAnchor),
             row.bottomAnchor.constraint(equalTo: bottomAnchor),
-            appButton.widthAnchor.constraint(lessThanOrEqualToConstant: 180),
+            appButton.widthAnchor.constraint(lessThanOrEqualToConstant: 160),
             typeScroll.widthAnchor.constraint(greaterThanOrEqualToConstant: 120)
         ])
         typeScroll.setContentHuggingPriority(.defaultLow, for: .horizontal)

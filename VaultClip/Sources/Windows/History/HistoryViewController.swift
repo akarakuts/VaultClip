@@ -70,6 +70,7 @@ class HistoryViewController: NSViewController {
     private let embeddedPreview = EmbeddedPreviewView()
     private let filterBar = PanelFilterBarView()
     private let emptyStateHost = PanelEmptyStateHostView()
+    private var filterBarHeightConstraint: NSLayoutConstraint?
     private var filterState = FilterState()
     private var filterBarVisible: Bool { appSettings.showsFilterBarPreference }
     private var selectionModel = SelectionModel()
@@ -489,7 +490,11 @@ class HistoryViewController: NSViewController {
     }
 
     private func syncEmbeddedPreviewVisibility() {
-        isPreviewShowing = appSettings.previewVisible
+        // Side overlay needs list+preview minimums; narrower edge panels stay list-only
+        // until a real NSSplitView lands (U21).
+        let minSideWidth = PreviewLayout.minListWidth + PreviewLayout.minPreviewWidth
+        let canShowSide = view.bounds.width >= minSideWidth
+        isPreviewShowing = appSettings.previewVisible && canShowSide
         embeddedPreview.isHidden = !isPreviewShowing
         applyPreviewListInset()
         if isPreviewShowing {
@@ -551,14 +556,15 @@ class HistoryViewController: NSViewController {
     /// Keep table content clear of the trailing preview pane (U21).
     private func applyPreviewListInset() {
         guard let scrollView = historyListView.enclosingScrollView else { return }
-        let inset = isPreviewShowing ? PreviewLayout.minPreviewWidth : 0
-        var content = scrollView.contentInsets
-        content.right = inset
-        scrollView.contentInsets = content
-        var scroller = scrollView.scrollerInsets
-        scroller.right = inset
-        scrollView.scrollerInsets = scroller
+        let inset: CGFloat = (isPreviewShowing && !embeddedPreview.isHidden)
+            ? PreviewLayout.minPreviewWidth
+            : 0
+        scrollView.contentInsets = NSEdgeInsets(top: 0, left: 0, bottom: 0, right: inset)
+        scrollView.scrollerInsets = NSEdgeInsets(top: 0, left: 0, bottom: 0, right: inset)
+        (scrollView.contentView as? HistoryListClipView)?.enforceDocumentWidth()
         historyListView.syncColumnWidthToScrollView()
+        historyListView.needsLayout = true
+        scrollView.needsLayout = true
     }
 
     private func scheduleEmbeddedPreviewUpdate() {
@@ -845,12 +851,16 @@ class HistoryViewController: NSViewController {
     private func installFilterBar() {
         filterBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(filterBar)
+        // Under the tab bar — never between search and tabs (IB owns that gap).
+        let height = filterBar.heightAnchor.constraint(equalToConstant: 28)
+        filterBarHeightConstraint = height
         NSLayoutConstraint.activate([
             filterBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             filterBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
-            filterBar.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 4),
-            filterBar.heightAnchor.constraint(equalToConstant: 28)
+            filterBar.topAnchor.constraint(equalTo: itemGroupScrollView.bottomAnchor, constant: 4),
+            height
         ])
+        rewireListTopBelowFilterBar()
         filterBar.onTypeChange = { [weak self] type in
             self?.setTypeFilter(type)
         }
@@ -867,9 +877,27 @@ class HistoryViewController: NSViewController {
         }).disposed(by: disposeBag)
     }
 
+    /// IB pins the list to the tab bar; drop that and attach under the filter row instead.
+    private func rewireListTopBelowFilterBar() {
+        guard let scrollView = historyListView.enclosingScrollView else { return }
+        for constraint in view.constraints {
+            let pinsScrollTop =
+                (constraint.firstItem as AnyObject? === scrollView && constraint.firstAttribute == .top)
+                || (constraint.secondItem as AnyObject? === scrollView && constraint.secondAttribute == .top)
+            let involvesTabs =
+                (constraint.firstItem as AnyObject? === itemGroupScrollView)
+                || (constraint.secondItem as AnyObject? === itemGroupScrollView)
+            if pinsScrollTop && involvesTabs {
+                constraint.isActive = false
+            }
+        }
+        scrollView.topAnchor.constraint(equalTo: filterBar.bottomAnchor, constant: 4).isActive = true
+    }
+
     private func updateFilterBarVisibility() {
         let show = filterBarVisible && listMode.value != .passwords
         filterBar.isHidden = !show
+        filterBarHeightConstraint?.constant = show ? 28 : 0
     }
 
     private func setTypeFilter(_ type: TypeFilter) {

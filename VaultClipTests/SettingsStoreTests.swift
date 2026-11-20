@@ -9,7 +9,7 @@ final class SettingsStoreTests: XCTestCase {
     func testApplyAndDefaults() {
         let store = SettingsStore(settings: .default)
         XCTAssertEqual(store.statusItemClickMode, .openPanel)
-        XCTAssertTrue(store.previewVisible)
+        XCTAssertFalse(store.previewVisible)
         store.statusItemClickMode = .openMenu
         XCTAssertEqual(store.statusItemClickMode, .openMenu)
         store.recentMenuCount = 10

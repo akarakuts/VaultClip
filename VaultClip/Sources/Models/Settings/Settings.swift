@@ -142,7 +142,7 @@ struct Settings: Codable, DefaultStorable {
         statusItemClickMode: .openPanel,
         showsRecentInMenu: true,
         recentMenuCount: 5,
-        previewVisible: true,
+        previewVisible: false,
         resetFiltersOnClose: true,
         reopenLastTab: false,
         selectSecondItem: false,
