@@ -155,30 +155,12 @@ class HistoryViewController: NSViewController {
         ClipHotKeys.cmd8.onDown { self.shortcutPressed(key: 8) }
         ClipHotKeys.cmd9.onDown { self.shortcutPressed(key: 9) }
         
-        bindHotKeyToHistoryWindow(ClipHotKeys.downArrow, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.upArrow, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.return, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.escape, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.pageDown, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.pageUp, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.ctrlAltCmdLeftArrow, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.ctrlAltCmdRightArrow, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.ctrlAltCmdDownArrow, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.ctrlAltCmdUpArrow, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.cmd0, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.cmd1, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.cmd2, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.cmd3, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.cmd4, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.cmd5, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.cmd6, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.cmd7, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.cmd8, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.cmd9, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.ctrlDelete, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.ctrlSpace, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.ctrlLeftBracket, disposeBag: disposeBag)
-        bindHotKeyToHistoryWindow(ClipHotKeys.ctrlRightBracket, disposeBag: disposeBag)
+        appState.isHistoryPanelShown
+            .distinctUntilChanged()
+            .subscribe(onNext: { shown in
+                ClipHotKeys.setPanelHotKeysActive(shown)
+            })
+            .disposed(by: disposeBag)
         
         searchBar.resignFirstResponder()
     }
@@ -355,15 +337,6 @@ class HistoryViewController: NSViewController {
         historyListView.reloadData(historyPanel.items, isRichText: isRichText, listMode: listMode.value)
     }
     
-    func bindHotKeyToHistoryWindow(_ hotKey: ClipHotKey, disposeBag: DisposeBag) {
-        appState.isHistoryPanelShown
-            .distinctUntilChanged()
-            .subscribe(onNext: { [] in
-                hotKey.isPaused = !$0
-            })
-            .disposed(by: disposeBag)
-    }
-    
     func goToNextItem() {
         incrementSelected()
     }
@@ -415,7 +388,8 @@ class HistoryViewController: NSViewController {
     }
     
     func focusSearchBar() {
-        NSApp.activate(ignoringOtherApps: true)
+        guard appState.isHistoryPanelShown.value else { return }
+        AppActivation.activateFrontmostApplication()
         self.searchBar.becomeFirstResponder()
     }
     

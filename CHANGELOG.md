@@ -29,6 +29,7 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 
 ### Changed
 
+- **Panel-scoped hot keys** — ⌘\ and other panel shortcuts register only while the history panel is open (T05).
 - **Test isolation** — XCTest host and UI-test mode use a temporary `StorageRoot` (never `~/Library/Application Support/com.karakuts.VaultClip`); UI-testing helpers and mocks are DEBUG-only and absent from Release.
 - **Minimum macOS version** raised to **12.0** (Xcode 27+ no longer builds against 10.15); always-true `#available` guards for 10.x–12 removed.
 - **Coverage gate** (`scripts/check-coverage.sh`) now enforces the **minimum** per-file line coverage across core Security/History files (threshold and `VAULTCLIP_COVERAGE_THRESHOLD` unchanged at 55%); structurally untestable files are excluded with reasons in the script header.
