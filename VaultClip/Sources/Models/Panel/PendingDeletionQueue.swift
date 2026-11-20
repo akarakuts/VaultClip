@@ -40,6 +40,20 @@ final class ImmediateTestScheduler: PendingDeletionScheduling {
     }
 }
 
+final class PendingDeletionDispatchScheduler: PendingDeletionScheduling {
+    private var workItems: [UUID: DispatchWorkItem] = [:]
+    func schedule(after delay: TimeInterval, execute: @escaping () -> Void) -> UUID {
+        let id = UUID()
+        let work = DispatchWorkItem(block: execute)
+        workItems[id] = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: work)
+        return id
+    }
+    func cancel(_ token: UUID) {
+        workItems.removeValue(forKey: token)?.cancel()
+    }
+}
+
 final class PendingDeletionQueue {
     static let undoWindow: TimeInterval = 8
 

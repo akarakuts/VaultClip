@@ -68,6 +68,9 @@ class HistoryViewController: NSViewController {
     private let commandPaletteOverlay = CommandPaletteOverlayView()
     private let embeddedPreview = EmbeddedPreviewView()
     private let previewDebouncer = PreviewUpdateDebouncer(scheduler: PreviewDispatchScheduler())
+    private lazy var pendingDeletion = PendingDeletionQueue(
+        scheduler: PendingDeletionDispatchScheduler()
+    )
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,6 +82,14 @@ class HistoryViewController: NSViewController {
         styleHistoryChrome()
         installCommandPaletteOverlay()
         installEmbeddedPreview()
+        pendingDeletion.onCommit = { [weak self] ids in
+            guard let self else { return }
+            let toDelete = self.appState.history.items.filter { ids.contains($0.fsId) }
+            for item in toDelete {
+                _ = self.historyPanel.delete(item: item)
+            }
+            self.applyListFilter()
+        }
         searchBar.placeholderString = L10n.searchPlaceholder
         historyListView.historyDelegate = self
         
@@ -389,8 +400,27 @@ class HistoryViewController: NSViewController {
     }
     
     func deleteSelected() {
-        if let row = self.historyListView.selected {
-            self.selected.accept(historyPanel.delete(displayedIndex: row))
+        guard let row = historyListView.selected,
+              row >= 0, row < historyPanel.items.count else { return }
+        let item = historyPanel.items[row]
+        pendingDeletion.enqueue(itemIds: [item.fsId], originalIndexes: [row])
+        // Soft-hide: filter pending ids out of the table until commit/undo.
+        let hidden = pendingDeletion.hiddenItemIds
+        let visible = results.value.items.filter { !hidden.contains($0.fsId) }
+        results.accept(Results(items: visible, isSearchResult: results.value.isSearchResult))
+        syncHistoryTableToResults(mutation: .reload)
+        if !visible.isEmpty {
+            selected.accept(min(row, visible.count - 1))
+        } else {
+            selected.accept(nil)
+        }
+    }
+
+    func undoPendingDeletion() {
+        guard let batch = pendingDeletion.undoLast() else { return }
+        applyListFilter()
+        if let index = batch.originalIndexes.first {
+            selected.accept(min(index, max(0, historyPanel.items.count - 1)))
         }
     }
     
@@ -403,6 +433,7 @@ class HistoryViewController: NSViewController {
     }
     
     func close(reason: PanelCloseReason = .userAction) {
+        pendingDeletion.flushAll()
         isPreviewShowing = false
         appState.panelCloseReason = reason
         appState.isHistoryPanelShown.accept(false)
@@ -625,6 +656,8 @@ class HistoryViewController: NSViewController {
             } else {
                 commandPaletteOverlay.dismiss()
             }
+        case .undoDelete:
+            undoPendingDeletion()
         case .closePanel:
             close()
         default:
