@@ -60,9 +60,11 @@ final class PanelChromeController {
 
         let floating = position.isFloating
         let kind: PanelTheme.PanelMaterialKind = floating ? .floating : .edge
-        effectView.material = PanelTheme.visualEffectMaterial(for: kind)
+        let style = PanelChromeStyleResolver.currentStyle(kind: kind)
+        window.appearance = style.windowAppearance
+        effectView.material = style.material(for: kind)
 
-        if PanelTheme.prefersSolidBackground {
+        if style.usesSolidBackground {
             effectView.isHidden = true
             contentView.wantsLayer = true
             contentView.layer?.backgroundColor = PanelTheme.solidBackgroundColor.cgColor
@@ -88,13 +90,15 @@ final class PanelChromeController {
     func animateShow(fromEdge offset: CGFloat = PanelTheme.showSlideOffset, completion: (() -> Void)? = nil) {
         guard let window else { completion?(); return }
         let durations = PanelTheme.motionDurations()
+        // Reduce Motion: fade only — no slide flight across the screen.
+        let slide = NSWorkspace.shared.accessibilityDisplayShouldReduceMotion ? 0 : offset
         let end = window.frame
         var start = end
         switch position {
-        case .left: start.origin.x -= offset
-        case .right: start.origin.x += offset
-        case .top: start.origin.y += offset
-        case .bottom: start.origin.y -= offset
+        case .left: start.origin.x -= slide
+        case .right: start.origin.x += slide
+        case .top: start.origin.y += slide
+        case .bottom: start.origin.y -= slide
         default: break
         }
         window.alphaValue = 0

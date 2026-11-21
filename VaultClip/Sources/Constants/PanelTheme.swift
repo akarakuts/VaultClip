@@ -109,10 +109,7 @@ enum PanelTheme {
     }
 
     static func visualEffectMaterial(for kind: PanelMaterialKind) -> NSVisualEffectView.Material {
-        switch kind {
-        case .edge: return .sidebar
-        case .floating: return .popover
-        }
+        PanelChromeStyleResolver.currentStyle(kind: kind).material(for: kind)
     }
 
     static var visualEffectBlendingMode: NSVisualEffectView.BlendingMode { .behindWindow }

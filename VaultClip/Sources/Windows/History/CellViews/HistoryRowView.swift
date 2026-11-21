@@ -187,10 +187,12 @@ final class HistoryRowView: NSTableCellView {
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.lineBreakMode = .byTruncatingTail
         subtitleLabel.maximumNumberOfLines = 1
-        subtitleLabel.textColor = .secondaryLabelColor
+        // Increase Contrast: secondary/tertiary can wash out on translucent chrome.
+        let highContrast = NSWorkspace.shared.accessibilityDisplayShouldIncreaseContrast
+        subtitleLabel.textColor = highContrast ? .labelColor : .secondaryLabelColor
         subtitleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         shortcutLabel.translatesAutoresizingMaskIntoConstraints = false
-        shortcutLabel.textColor = .tertiaryLabelColor
+        shortcutLabel.textColor = highContrast ? .secondaryLabelColor : .tertiaryLabelColor
         shortcutLabel.alignment = .right
         shortcutLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         shortcutLabel.setContentHuggingPriority(.required, for: .horizontal)

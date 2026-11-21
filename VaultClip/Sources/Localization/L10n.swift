@@ -102,6 +102,7 @@ enum L10n {
         String(format: tr("empty.no_results.other_tab"), count, tab)
     }
     static var emptyClearFilters: String { tr("empty.clear_filters") }
+    static var searchClear: String { tr("search.clear") }
     static var emptyGo: String { tr("empty.go") }
 
     /// Shown in the history list while the encrypted store loads on launch.
@@ -123,6 +124,9 @@ enum L10n {
         String(format: tr("hint.paste_count"), count)
     }
     static var hintClearSelection: String { tr("hint.clear_selection") }
+    /// Single click selects; double-click pastes (same as ⏎).
+    static var hintDoubleClickPaste: String { tr("hint.double_click_paste") }
+    static var hintMultiPasteOrder: String { tr("hint.multi_paste_order") }
     static var hintPasteEdit: String { tr("hint.paste_edit") }
     static var hintSaveEdit: String { tr("hint.save_edit") }
     static var hintCancel: String { tr("hint.cancel") }
@@ -404,6 +408,13 @@ enum L10n {
     static var settingsTabHistory: String { tr("settings.tab.history") }
     static var settingsWidth: String { tr("settings.width") }
     static var settingsHeight: String { tr("settings.height") }
+    static var settingsPanelAppearance: String { tr("settings.panel_appearance") }
+    static var settingsPanelAppearanceSystem: String { tr("settings.panel_appearance.system") }
+    static var settingsPanelAppearanceLight: String { tr("settings.panel_appearance.light") }
+    static var settingsPanelAppearanceDark: String { tr("settings.panel_appearance.dark") }
+    static var settingsPanelAppearanceLiquidGlass: String { tr("settings.panel_appearance.liquid_glass") }
+    static var settingsPanelAppearanceFootnote: String { tr("settings.panel_appearance.footnote") }
+    static var settingsPanelAppearanceLiquidGlassFallback: String { tr("settings.panel_appearance.liquid_glass_fallback") }
     static var settingsTextSize: String { tr("settings.text_size") }
     static var settingsMonospaced: String { tr("settings.monospaced") }
     static var settingsGroupByDate: String { tr("settings.group_by_date") }

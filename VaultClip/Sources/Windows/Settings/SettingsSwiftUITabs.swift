@@ -78,6 +78,24 @@ struct SettingsPanelTab: View {
                 }
             }
             Section {
+                Picker(L10n.settingsPanelAppearance, selection: $store.panelAppearance) {
+                    ForEach(PanelAppearance.allCases, id: \.self) { theme in
+                        Text(theme.settingsTitle).tag(theme)
+                    }
+                }
+                .pickerStyle(.menu)
+                .accessibilityIdentifier(Accessibility.identifiers.settingsPanelAppearancePicker)
+                Text(L10n.settingsPanelAppearanceFootnote)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                if store.panelAppearance == .liquidGlass,
+                   !PanelChromeStyleResolver.liquidGlassMaterialIsPublicOnRunningOS {
+                    Text(L10n.settingsPanelAppearanceLiquidGlassFallback)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            Section {
                 Picker(L10n.settingsTextSize, selection: $store.panelTextSize) {
                     ForEach(TextSizePreference.allCases, id: \.self) { size in
                         Text(size.rawValue.uppercased()).tag(size)

@@ -10,6 +10,7 @@ import Quartz
 
 extension HistoryViewController: NSTextFieldDelegate {
     func controlTextDidChange(_ obj: Notification) {
+        syncSearchClearButton()
         scheduleSearch()
     }
 }

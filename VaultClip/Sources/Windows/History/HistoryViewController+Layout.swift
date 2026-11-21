@@ -11,7 +11,8 @@ extension HistoryViewController {
 
     // ── Layout ──
 
-    /// Storyboard constraints fought the programmatic filter/preview/footer rows; own the column here.
+    /// Column constraints owned here (U08). IB search/tabs stay as views; PanelHeaderView not swapped
+    /// yet — Settings already opens via programmatic `SettingsWindowController` only.
     func installProgrammaticPanelLayout() {
         guard let scrollView = historyListView.enclosingScrollView else { return }
         footerSeparator.boxType = .separator
@@ -25,7 +26,8 @@ extension HistoryViewController {
         itemCountLabel.textColor = .secondaryLabelColor
         itemCountLabel.alignment = .left
         itemCountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        for sub in [footerSeparator, footerHintsLabel] as [NSView] where sub.superview == nil {
+        configureFooterClearFiltersButton()
+        for sub in [footerSeparator, footerHintsLabel, footerClearFiltersButton] as [NSView] where sub.superview == nil {
             view.addSubview(sub)
         }
 
@@ -53,10 +55,13 @@ extension HistoryViewController {
         listBottomToFooter = listBottom
         listTrailingToView = listTrailing
 
+        configureSearchClearButton()
+        let searchTrailing = searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset)
+        searchBarTrailingConstraint = searchTrailing
         NSLayoutConstraint.activate([
             searchBar.topAnchor.constraint(equalTo: view.topAnchor, constant: PanelChrome.Metrics.headerTopInset),
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: inset),
-            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset),
+            searchTrailing,
 
             itemGroupScrollView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 8),
             itemGroupScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: inset),
@@ -80,12 +85,81 @@ extension HistoryViewController {
             itemCountLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: inset),
             itemCountLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -6),
 
+            footerClearFiltersButton.leadingAnchor.constraint(
+                equalTo: itemCountLabel.trailingAnchor, constant: 8
+            ),
+            footerClearFiltersButton.centerYAnchor.constraint(equalTo: itemCountLabel.centerYAnchor),
+            footerClearFiltersButton.heightAnchor.constraint(lessThanOrEqualToConstant: 22),
+
             footerHintsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset),
             footerHintsLabel.centerYAnchor.constraint(equalTo: itemCountLabel.centerYAnchor),
-            footerHintsLabel.leadingAnchor.constraint(greaterThanOrEqualTo: itemCountLabel.trailingAnchor, constant: 12)
+            footerHintsLabel.leadingAnchor.constraint(
+                greaterThanOrEqualTo: footerClearFiltersButton.trailingAnchor, constant: 8
+            )
         ])
         updateFilterBarVisibility()
+        updateFooterClearFiltersButton()
+        syncSearchClearButton()
         applyPreviewAxis()
+    }
+
+    private func configureSearchClearButton() {
+        searchClearButton.bezelStyle = .inline
+        searchClearButton.isBordered = false
+        searchClearButton.image = NSImage(systemSymbolName: "xmark.circle.fill", accessibilityDescription: L10n.searchClear)
+        searchClearButton.imageScaling = .scaleProportionallyDown
+        searchClearButton.contentTintColor = .secondaryLabelColor
+        searchClearButton.target = self
+        searchClearButton.action = #selector(searchClearTapped)
+        searchClearButton.toolTip = L10n.searchClear
+        searchClearButton.setAccessibilityLabel(L10n.searchClear)
+        searchClearButton.setAccessibilityIdentifier(Accessibility.identifiers.searchClearButton)
+        searchClearButton.translatesAutoresizingMaskIntoConstraints = false
+        searchClearButton.isHidden = true
+        view.addSubview(searchClearButton)
+        NSLayoutConstraint.activate([
+            searchClearButton.centerYAnchor.constraint(equalTo: searchBar.centerYAnchor),
+            searchClearButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -PanelChrome.Metrics.panelContentInset),
+            searchClearButton.widthAnchor.constraint(equalToConstant: 16),
+            searchClearButton.heightAnchor.constraint(equalToConstant: 16)
+        ])
+    }
+
+    @objc private func searchClearTapped() {
+        searchBar.stringValue = ""
+        syncSearchClearButton()
+        applyListFilter()
+        view.window?.makeFirstResponder(searchBar)
+    }
+
+    func syncSearchClearButton() {
+        let show = !searchBar.stringValue.isEmpty
+        searchClearButton.isHidden = !show
+        let inset = PanelChrome.Metrics.panelContentInset
+        searchBarTrailingConstraint?.constant = show ? -(inset + 22) : -inset
+    }
+
+    private func configureFooterClearFiltersButton() {
+        footerClearFiltersButton.bezelStyle = .roundRect
+        footerClearFiltersButton.controlSize = .small
+        footerClearFiltersButton.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
+        footerClearFiltersButton.title = L10n.command_clearFilters
+        footerClearFiltersButton.target = self
+        footerClearFiltersButton.action = #selector(footerClearFiltersTapped)
+        footerClearFiltersButton.setAccessibilityLabel(L10n.command_clearFilters)
+        footerClearFiltersButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        footerClearFiltersButton.isHidden = true
+    }
+
+    @objc private func footerClearFiltersTapped() {
+        // applyListFilter (via clearFilters) refreshes the counter; hints refresh below.
+        clearFilters(resetSearch: false)
+    }
+
+    func updateFooterClearFiltersButton() {
+        let show = filterState.isActive && listMode.value != .passwords
+        footerClearFiltersButton.isHidden = !show
+        footerClearFiltersButton.title = L10n.command_clearFilters
     }
 
     func updateFilterBarVisibility() {
@@ -341,6 +415,7 @@ extension HistoryViewController {
             filterSummary: filterState.summaryLabel
         )
         footerHintsLabel.stringValue = PanelStatusBarPresenter.hints(for: input).joined(separator: "  ·  ")
+        updateFooterClearFiltersButton()
     }
 
     // ── Toasts (U09/U18) ──

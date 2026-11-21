@@ -69,14 +69,15 @@ enum PanelStatusBarPresenter {
         var all: [String]
         switch input.hintContext {
         case .list:
-            // With an active filter, surface clear early — width trim drops the tail.
+            // Click selects; ⏎ / 2× click paste. Clear filters is a footer button, not only text.
             if input.filterSummary != nil {
-                all = [L10n.hintPaste, L10n.command_clearFilters, L10n.hintKeys]
+                all = [L10n.hintPaste, L10n.hintDoubleClickPaste, L10n.hintKeys]
             } else {
-                all = [L10n.hintPaste, L10n.hintActions, L10n.hintKeys]
+                all = [L10n.hintPaste, L10n.hintDoubleClickPaste, L10n.hintKeys]
             }
         case .multiSelect(let count):
-            all = [L10n.hintPasteCount(count), L10n.hintClearSelection]
+            // Paste uses list order + separator from Settings → Paste.
+            all = [L10n.hintPasteCount(count), L10n.hintMultiPasteOrder, L10n.hintClearSelection]
         case .editor:
             all = [L10n.hintPasteEdit, L10n.hintSaveEdit, L10n.hintCancel]
         }

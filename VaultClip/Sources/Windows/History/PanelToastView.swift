@@ -16,7 +16,6 @@ final class PanelToastView: NSVisualEffectView {
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         translatesAutoresizingMaskIntoConstraints = false
-        material = .hudWindow
         blendingMode = .withinWindow
         state = .active
         wantsLayer = true
@@ -46,6 +45,12 @@ final class PanelToastView: NSVisualEffectView {
             stack.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             stack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
         ])
+        syncPanelOverlayChrome()
+    }
+
+    func syncPanelOverlayChrome() {
+        let style = PanelChromeStyleResolver.currentStyle(kind: .floating)
+        material = style.usesSolidBackground ? .contentBackground : style.toastMaterial
     }
 
     required init?(coder: NSCoder) {

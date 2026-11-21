@@ -77,6 +77,11 @@ class HistoryViewController: NSViewController {
     private var filterBarVisible: Bool { appSettings.showsFilterBarPreference }
     var selectionModel = SelectionModel()
     let footerHintsLabel = NSTextField(labelWithString: "")
+    /// Visible only while type/app filters are active — text hints alone are not clickable.
+    let footerClearFiltersButton = NSButton(title: "", target: nil, action: nil)
+    /// Trailing × on the search field while a query is typed.
+    let searchClearButton = NSButton()
+    var searchBarTrailingConstraint: NSLayoutConstraint?
     let footerSeparator = NSBox()
     let toastView = PanelToastView()
     var previewConstraints: [NSLayoutConstraint] = []
@@ -224,6 +229,13 @@ class HistoryViewController: NSViewController {
         }
         refreshFooterHints()
         refreshSelectionChrome()
+        applyPanelOverlayChrome()
+    }
+
+    private func applyPanelOverlayChrome() {
+        toastView.syncPanelOverlayChrome()
+        commandPaletteOverlay.syncPanelOverlayChrome()
+        cheatSheetOverlay.syncPanelOverlayChrome()
     }
     
     deinit {
@@ -401,6 +413,7 @@ class HistoryViewController: NSViewController {
         let baseItems = itemsForActiveListMode(from: appState.history.items)
         let filtered = applyTypeAndAppFilters(to: baseItems)
         // Do not rebuild a full-text engine here — SearchIndex updates incrementally / on demand (T22).
+        syncSearchClearButton()
         let isFiltered = filterState.isActive || !searchBar.stringValue.isEmpty
         // Any active filter/query is a search result — including when every tab item still matches.
         results.accept(Results(items: filtered, isSearchResult: isFiltered))
@@ -716,6 +729,7 @@ class HistoryViewController: NSViewController {
             return true
         case .clearSearch:
             searchBar.stringValue = ""
+            syncSearchClearButton()
             applyListFilter()
             return true
         case .clearFilters:
@@ -944,6 +958,7 @@ class HistoryViewController: NSViewController {
         filterState.type = type
         filterBar.apply(filterState)
         scheduleSearch()
+        refreshFooterHints()
     }
 
     func clearFilters(resetSearch: Bool) {
@@ -953,6 +968,7 @@ class HistoryViewController: NSViewController {
             searchBar.stringValue = ""
         }
         applyListFilter()
+        refreshFooterHints()
     }
 
     private func showAppFilterMenu() {

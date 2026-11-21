@@ -25,6 +25,7 @@ class SettingsWindowController: NSWindowController {
         window.title = L10n.menuPreferences
         window.titleVisibility = .visible
         window.isReleasedWhenClosed = false
+        window.setAccessibilityIdentifier(Accessibility.identifiers.settingsWindow)
         window.center()
         self.init(window: window)
         window.contentViewController = tabs

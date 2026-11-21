@@ -64,6 +64,7 @@ struct Settings: Codable, DefaultStorable {
         excludedBundleIds: [String],
         retentionDays: Int,
         panelTextSize: TextSizePreference,
+        panelAppearance: PanelAppearance,
         panelEdgeWidth: Double,
         panelEdgeHeight: Double,
         panelCenterWidth: Double,
@@ -98,6 +99,7 @@ struct Settings: Codable, DefaultStorable {
         self.excludedBundleIds = excludedBundleIds
         self.retentionDays = retentionDays
         self.panelTextSize = panelTextSize
+        self.panelAppearance = panelAppearance
         self.panelEdgeWidth = panelEdgeWidth
         self.panelEdgeHeight = panelEdgeHeight
         self.panelCenterWidth = panelCenterWidth
@@ -134,6 +136,7 @@ struct Settings: Codable, DefaultStorable {
         excludedBundleIds: [],
         retentionDays: 0,
         panelTextSize: .m,
+        panelAppearance: .system,
         panelEdgeWidth: 480,
         panelEdgeHeight: 360,
         panelCenterWidth: 0,
@@ -192,6 +195,9 @@ struct Settings: Codable, DefaultStorable {
 
     /// Compact / default / large / extra-large panel row typography (U02).
     var panelTextSize: TextSizePreference
+
+    /// Panel chrome theme: system, light, dark, or liquid glass.
+    var panelAppearance: PanelAppearance
 
     /// Edge panel width/height and center size (0 = 60% of visible) (U07).
     var panelEdgeWidth: Double
@@ -254,6 +260,7 @@ struct Settings: Codable, DefaultStorable {
         case excludedBundleIds
         case retentionDays
         case panelTextSize
+        case panelAppearance
         case panelEdgeWidth
         case panelEdgeHeight
         case panelCenterWidth
@@ -316,6 +323,8 @@ struct Settings: Codable, DefaultStorable {
             ?? defaults.retentionDays
         panelTextSize = try container.decodeIfPresent(TextSizePreference.self, forKey: .panelTextSize)
             ?? defaults.panelTextSize
+        panelAppearance = try container.decodeIfPresent(PanelAppearance.self, forKey: .panelAppearance)
+            ?? defaults.panelAppearance
         panelEdgeWidth = try container.decodeIfPresent(Double.self, forKey: .panelEdgeWidth)
             ?? defaults.panelEdgeWidth
         panelEdgeHeight = try container.decodeIfPresent(Double.self, forKey: .panelEdgeHeight)
@@ -380,6 +389,7 @@ struct Settings: Codable, DefaultStorable {
         try container.encode(excludedBundleIds, forKey: .excludedBundleIds)
         try container.encode(retentionDays, forKey: .retentionDays)
         try container.encode(panelTextSize, forKey: .panelTextSize)
+        try container.encode(panelAppearance, forKey: .panelAppearance)
         try container.encode(panelEdgeWidth, forKey: .panelEdgeWidth)
         try container.encode(panelEdgeHeight, forKey: .panelEdgeHeight)
         try container.encode(panelCenterWidth, forKey: .panelCenterWidth)

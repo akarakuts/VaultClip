@@ -86871,6 +86871,2398 @@
           }
         }
       }
+    },
+    "hint.double_click_paste": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2× click Paste"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2× клик — вставить"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "bg": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "ca": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "cs": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "en-IN": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "es-US": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "hr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "kk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "lt": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "lv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "sk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "sl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "te": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        },
+        "zh-HK": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "2× click Paste"
+          }
+        }
+      }
+    },
+    "hint.multi_paste_order": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "List order"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Порядок списка"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "bg": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "ca": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "cs": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "en-IN": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "es-US": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "hr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "kk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "lt": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "lv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "sk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "sl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "te": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        },
+        "zh-HK": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "List order"
+          }
+        }
+      }
+    },
+    "settings.panel_appearance": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appearance"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Оформление"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "bg": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "ca": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "cs": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "hr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "sk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Appearance"
+          }
+        }
+      }
+    },
+    "settings.panel_appearance.system": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Системная"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "bg": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "ca": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "cs": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "hr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "sk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System"
+          }
+        }
+      }
+    },
+    "settings.panel_appearance.light": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Светлая"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "bg": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "ca": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "cs": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "hr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "sk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Light"
+          }
+        }
+      }
+    },
+    "settings.panel_appearance.dark": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dark"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тёмная"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "bg": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "ca": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "cs": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "hr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "sk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dark"
+          }
+        }
+      }
+    },
+    "settings.panel_appearance.liquid_glass": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liquid Glass"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liquid Glass"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "bg": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "ca": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "cs": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "hr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "sk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liquid Glass"
+          }
+        }
+      }
+    },
+    "settings.panel_appearance.footnote": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Системная тема следует светлой/тёмной macOS. Параметр «Уменьшить прозрачность» в Универсальном доступе включает сплошной фон панели вместо размытия."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "bg": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "ca": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "cs": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "hr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "sk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "System follows macOS light/dark. Reduce Transparency in Accessibility uses a solid panel background instead of vibrancy."
+          }
+        }
+      }
+    },
+    "settings.panel_appearance.liquid_glass_fallback": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "На этой версии macOS тема Liquid Glass использует стандартный HUD-материал вместо стекла."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "bg": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "ca": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "cs": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "hr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "sk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "On this macOS version, Liquid Glass uses the standard HUD vibrancy material."
+          }
+        }
+      }
+    },
+    "search.clear": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear search"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Очистить поиск"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "bg": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "ca": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "cs": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "en-IN": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "es-US": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "hr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "kk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "lt": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "lv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "sk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "sl": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "te": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "zh-HK": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Clear search"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

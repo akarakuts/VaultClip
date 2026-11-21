@@ -6,6 +6,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); ver
 
 When you ship a release, move items from **Unreleased** into a dated version section.
 
+**Русский:** [CHANGELOG.ru.md](CHANGELOG.ru.md)
+
 ---
 
 ## [Unreleased]
@@ -14,6 +16,8 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 
 - UI redesign branch `ui-redesign-2026-11` (U00–U37): native panel chrome, fixed-height rows, type/app filters + search tokens, date groups, row actions, multi-select + multi-paste, undoable delete, embedded preview, ⌘K palette / ⌘/ cheat sheet, status-item click modes, SwiftUI SettingsStore tabs, empty states.
 - Shortcuts: ⌘1…⌘9 / ⌘0 (10th), ⌘F search, ⌘Y/Space preview (no ⌃Space), ⌘K palette, ⌘/ cheat sheet.
+- Panel appearance: System, Light, Dark, or Liquid Glass (HUD vibrancy until a public glass material exists). Reduce Transparency still forces a solid background.
+- Search query can be cleared from the field or from an empty result; active type/app filters reset from a footer button.
 - Retention (T34) uses `lastUsedAt` when present.
 
 ### Added
@@ -182,4 +186,4 @@ For tags and binaries from before the history reset, see [GitHub Releases](https
 
 ## Maintenance
 
-Update this file **together with** user-visible changes in `README.md` / `README.ru.md` (features, install steps, security, shortcuts). README stays the product guide; **CHANGELOG** is the version-by-version delta.
+Update this file **together with** `CHANGELOG.ru.md` and user-visible changes in `README.md` / `README.ru.md` (features, install steps, security, shortcuts). README stays the product guide; **CHANGELOG** is the version-by-version delta.

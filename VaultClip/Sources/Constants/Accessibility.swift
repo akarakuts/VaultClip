@@ -43,6 +43,7 @@ class Accessibility {
         
         static let historyTableView = "historyTableView"
         static let historySearchField = "historySearchField"
+        static let searchClearButton = "searchClearButton"
         static let historyItemTextView = "HistoryItemTextView"
         static let favoriteButton = "favoriteButton"
         static let passwordButton = "passwordButton"
@@ -58,5 +59,7 @@ class Accessibility {
         static let commandPalette = "commandPalette"
         static let cheatSheet = "cheatSheet"
         static let statusItemPaused = "statusItemPaused"
+        static let settingsWindow = "settingsWindow"
+        static let settingsPanelAppearancePicker = "settings.panelAppearance"
     }
 }

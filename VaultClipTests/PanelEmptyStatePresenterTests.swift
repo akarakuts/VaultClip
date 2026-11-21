@@ -52,6 +52,18 @@ final class PanelEmptyStatePresenterTests: XCTestCase {
         XCTAssertEqual(model?.title, L10n.emptyNoResultsTitle("foo"))
     }
 
+    func testNoResultsQueryOffersClearSearch() {
+        let model = PanelEmptyStatePresenter.present(
+            kind: .noResults(query: "zzz"),
+            isLoading: false,
+            isCapturePaused: false,
+            filtersActive: false,
+            otherTabHitCount: nil,
+            otherTab: nil
+        )
+        XCTAssertEqual(model?.primaryButtonTitle, L10n.searchClear)
+    }
+
     func testPausedOffersResume() {
         let model = PanelEmptyStatePresenter.present(
             kind: .history, isLoading: false, isCapturePaused: true,

@@ -66,7 +66,13 @@ enum PanelEmptyStatePresenter {
             )
         case .noResults(let query):
             var description = ""
-            var button: String? = filtersActive ? L10n.emptyClearFilters : nil
+            // Query-only miss still needs a click: Esc is easy to miss with a mouse.
+            var button: String?
+            if filtersActive {
+                button = L10n.emptyClearFilters
+            } else if !query.isEmpty {
+                button = L10n.searchClear
+            }
             if let count = otherTabHitCount, let tab = otherTab, count > 0 {
                 let tabName: String
                 switch tab {

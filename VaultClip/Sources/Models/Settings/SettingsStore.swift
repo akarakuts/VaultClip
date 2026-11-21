@@ -59,6 +59,11 @@ final class SettingsStore {
         set { apply { $0.panelTextSize = newValue } }
     }
 
+    var panelAppearance: PanelAppearance {
+        get { settings.panelAppearance }
+        set { apply { $0.panelAppearance = newValue } }
+    }
+
     var groupHistoryByDate: Bool {
         get { settings.groupHistoryByDate }
         set { apply { $0.groupHistoryByDate = newValue } }

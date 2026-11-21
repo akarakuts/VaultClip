@@ -57,7 +57,7 @@ final class PanelStatusBarPresenterTests: XCTestCase {
         )
     }
 
-    func testListHintsOfferClearFiltersWhenActive() {
+    func testListHintsDocumentClickPolicy() {
         let input = PanelStatusBarInput(
             totalCount: 1, visibleCount: 1, isSearch: false, selectedCount: 0,
             isLoading: false, hintContext: .list, availableWidth: 500, showKeyHints: true,
@@ -65,6 +65,18 @@ final class PanelStatusBarPresenterTests: XCTestCase {
         )
         let hints = PanelStatusBarPresenter.hints(for: input)
         XCTAssertEqual(hints.count, 3)
-        XCTAssertEqual(hints[1], L10n.command_clearFilters)
+        XCTAssertEqual(hints[0], L10n.hintPaste)
+        XCTAssertEqual(hints[1], L10n.hintDoubleClickPaste)
+    }
+
+    func testMultiSelectHintsIncludeOrder() {
+        let input = PanelStatusBarInput(
+            totalCount: 5, visibleCount: 5, isSearch: false, selectedCount: 3,
+            isLoading: false, hintContext: .multiSelect(count: 3), availableWidth: 500,
+            showKeyHints: true, locale: .current
+        )
+        let hints = PanelStatusBarPresenter.hints(for: input)
+        XCTAssertEqual(hints.first, L10n.hintPasteCount(3))
+        XCTAssertTrue(hints.contains(L10n.hintMultiPasteOrder))
     }
 }

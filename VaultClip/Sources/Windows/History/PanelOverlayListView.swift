@@ -83,7 +83,6 @@ class PanelOverlayListView: NSView, NSTableViewDataSource, NSTableViewDelegate, 
         layer?.borderColor = NSColor.separatorColor.cgColor
         isHidden = true
 
-        material.material = .popover
         material.blendingMode = .withinWindow
         material.state = .active
         material.translatesAutoresizingMaskIntoConstraints = false
@@ -128,6 +127,12 @@ class PanelOverlayListView: NSView, NSTableViewDataSource, NSTableViewDelegate, 
             scroll.topAnchor.constraint(equalTo: searchField.bottomAnchor, constant: 6),
             scroll.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -6)
         ])
+        syncPanelOverlayChrome()
+    }
+
+    func syncPanelOverlayChrome() {
+        let style = PanelChromeStyleResolver.currentStyle(kind: .floating)
+        material.material = style.usesSolidBackground ? .contentBackground : style.overlayListMaterial
     }
 
     override func updateLayer() {
