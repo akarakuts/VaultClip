@@ -85,9 +85,79 @@ enum L10n {
 
     static var emptyFavorites: String { tr( "empty.favorites") }
     static var emptyPasswords: String { tr( "empty.passwords") }
+    static var emptyHistoryTitle: String { tr("empty.history.title") }
+    static var emptyHistoryBody: String { tr("empty.history.body") }
+    static var emptyHistoryPausedTitle: String { tr("empty.history.paused_title") }
+    static var emptyHistoryPausedBody: String { tr("empty.history.paused_body") }
+    static var emptyHistoryResume: String { tr("empty.history.resume") }
+    static var emptyFavoritesTitle: String { tr("empty.favorites.title") }
+    static var emptyFavoritesBody: String { tr("empty.favorites.body") }
+    static var emptyPasswordsTitle: String { tr("empty.passwords.title") }
+    static var emptyPasswordsBodyManagers: String { tr("empty.passwords.body_managers") }
+    static var emptyPasswordsBodySave: String { tr("empty.passwords.body_save") }
+    static func emptyNoResultsTitle(_ query: String) -> String {
+        String(format: tr("empty.no_results.title"), query)
+    }
+    static func emptyNoResultsOtherTab(count: Int, tab: String) -> String {
+        String(format: tr("empty.no_results.other_tab"), count, tab)
+    }
+    static var emptyClearFilters: String { tr("empty.clear_filters") }
+    static var emptyGo: String { tr("empty.go") }
 
     /// Shown in the history list while the encrypted store loads on launch.
     static var historyLoading: String { tr( "history.loading") }
+
+    // MARK: - Status bar
+
+    static var statusLoading: String { tr("status.loading") }
+    static func statusFoundOf(visible: Int, total: Int) -> String {
+        String(format: tr("status.found_of"), visible, total)
+    }
+    static func statusSelected(_ count: Int) -> String {
+        String(format: tr("status.selected"), count)
+    }
+    static var hintPaste: String { tr("hint.paste") }
+    static var hintActions: String { tr("hint.actions") }
+    static var hintKeys: String { tr("hint.keys") }
+    static func hintPasteCount(_ count: Int) -> String {
+        String(format: tr("hint.paste_count"), count)
+    }
+    static var hintClearSelection: String { tr("hint.clear_selection") }
+    static var hintPasteEdit: String { tr("hint.paste_edit") }
+    static var hintSaveEdit: String { tr("hint.save_edit") }
+    static var hintCancel: String { tr("hint.cancel") }
+
+    // MARK: - Preview
+
+    static var previewNothingSelected: String { tr("preview.nothing_selected") }
+    static var previewKindText: String { tr("preview.kind.text") }
+    static var previewKindImage: String { tr("preview.kind.image") }
+    static var previewKindColor: String { tr("preview.kind.color") }
+    static var previewKindLink: String { tr("preview.kind.link") }
+    static var previewKindPassword: String { tr("preview.kind.password") }
+    static func previewKindFiles(_ count: Int) -> String {
+        String(format: tr("preview.kind.files"), count)
+    }
+    static func previewChars(_ count: Int) -> String {
+        String(format: tr("preview.chars"), count)
+    }
+    static var previewFileMissing: String { tr("preview.file_missing") }
+    static var previewLogin: String { tr("preview.login") }
+    static var previewOpen: String { tr("preview.open") }
+    static var previewCancelEdit: String { tr("preview.cancel_edit") }
+    static var previewPasteEdit: String { tr("preview.paste_edit") }
+    static func previewMetaApp(_ name: String) -> String {
+        String(format: tr("preview.meta.app"), name)
+    }
+    static func previewMetaCopied(_ relative: String) -> String {
+        String(format: tr("preview.meta.copied"), relative)
+    }
+    static func previewMetaUsed(_ relative: String) -> String {
+        String(format: tr("preview.meta.used"), relative)
+    }
+    static func previewMetaSize(_ size: String) -> String {
+        String(format: tr("preview.meta.size"), size)
+    }
 
     // MARK: - Password prompts
 
@@ -112,6 +182,9 @@ enum L10n {
     // MARK: - Search
 
     static var searchPlaceholder: String { tr( "search.placeholder") }
+    static var searchPlaceholderPasswords: String { tr("search.placeholder.passwords") }
+    static var searchTooltip: String { tr("search.tooltip") }
+    static var searchTooltipPasswords: String { tr("search.tooltip.passwords") }
 
     // MARK: - Accessibility alerts
 
@@ -308,7 +381,102 @@ enum L10n {
 
     static var toastCopied: String { tr("toast.copied") }
     static var toastUndo: String { tr("toast.undo") }
+    /// Esc once while the inline editor is dirty — next Esc discards.
+    static var toastEditDiscardArmed: String { tr("toast.edit_discard_armed") }
+    static var a11yHeaderFilter: String { tr("a11y.header_filter") }
+    static var a11yHeaderPreview: String { tr("a11y.header_preview") }
+    static var a11yHeaderMore: String { tr("a11y.header_more") }
     static func toastDeleted(_ count: Int) -> String { String(format: tr("toast.deleted"), count) }
+    static func toastClipboardClearsIn(_ seconds: Int) -> String {
+        String(format: tr("toast.clipboard_clears_in"), seconds)
+    }
+
+    // MARK: - Settings UI (SwiftUI tabs)
+
+    static var settingsLaunchAtLoginHint: String { tr("settings.launch_at_login_hint") }
+    static var settingsStatusClick: String { tr("settings.status_click") }
+    static var settingsStatusClickPanel: String { tr("settings.status_click.panel") }
+    static var settingsStatusClickMenu: String { tr("settings.status_click.menu") }
+    static var settingsShowRecentMenu: String { tr("settings.show_recent_menu") }
+    static func settingsRecentCount(_ n: Int) -> String { String(format: tr("settings.recent_count"), n) }
+    static var settingsTabPanel: String { tr("settings.tab.panel") }
+    static var settingsTabPaste: String { tr("settings.tab.paste") }
+    static var settingsTabHistory: String { tr("settings.tab.history") }
+    static var settingsWidth: String { tr("settings.width") }
+    static var settingsHeight: String { tr("settings.height") }
+    static var settingsTextSize: String { tr("settings.text_size") }
+    static var settingsMonospaced: String { tr("settings.monospaced") }
+    static var settingsGroupByDate: String { tr("settings.group_by_date") }
+    static var settingsShowFilterBar: String { tr("settings.show_filter_bar") }
+    static var settingsShowKeyHints: String { tr("settings.show_key_hints") }
+    static var settingsShowPreview: String { tr("settings.show_preview") }
+    static var settingsPreviewPlacement: String { tr("settings.preview_placement") }
+    static var settingsPreviewAutomatic: String { tr("settings.preview.automatic") }
+    static var settingsPreviewTrailing: String { tr("settings.preview.trailing") }
+    static var settingsPreviewBottom: String { tr("settings.preview.bottom") }
+    static var settingsResetFiltersOnClose: String { tr("settings.reset_filters_on_close") }
+    static var settingsReopenLastTab: String { tr("settings.reopen_last_tab") }
+    static var settingsSelectSecondItem: String { tr("settings.select_second_item") }
+    static var settingsMultiPasteSeparator: String { tr("settings.multi_paste_separator") }
+    static var settingsSepNewline: String { tr("settings.sep.newline") }
+    static var settingsSepBlankLine: String { tr("settings.sep.blank_line") }
+    static var settingsSepSpace: String { tr("settings.sep.space") }
+    static var settingsSepComma: String { tr("settings.sep.comma") }
+    static var settingsSepTab: String { tr("settings.sep.tab") }
+    static var settingsClearClipboardAfterPassword: String { tr("settings.clear_clipboard_after_password") }
+    static var settingsOff: String { tr("settings.off") }
+    static func settingsDeleteOlderThan(_ days: String) -> String {
+        String(format: tr("settings.delete_older_than"), days)
+    }
+    static var settingsRetentionLastUsedHint: String { tr("settings.retention_last_used_hint") }
+    static var settingsRequireAuth: String { tr("settings.require_auth") }
+    static func settingsAuthGrace(_ minutes: Int) -> String {
+        String(format: tr("settings.auth_grace"), minutes)
+    }
+    static var settingsAuthGraceHint: String { tr("settings.auth_grace_hint") }
+    static var settingsHideFromCapture: String { tr("settings.hide_from_capture") }
+    static var settingsHideFromCaptureHint: String { tr("settings.hide_from_capture_hint") }
+    static var settingsExcludedApps: String { tr("settings.excluded_apps") }
+    static var settingsExcludedAppsHint: String { tr("settings.excluded_apps_hint") }
+    static var settingsAlwaysExcluded: String { tr("settings.always_excluded") }
+    static var settingsHotkeyListHint: String { tr("settings.hotkey_list_hint") }
+    static var settingsHotkeyPress: String { tr("settings.hotkey_press") }
+    static var settingsHotkeyCaptureHint: String { tr("settings.hotkey_capture_hint") }
+    static var settingsPanelCommands: String { tr("settings.panel_commands") }
+    static var settingsMin: String { tr("settings.min") }
+
+    static var cheatFilterPlaceholder: String { tr("cheat.filter_placeholder") }
+    static var cheatGroupItem: String { tr("cheat.group.item") }
+    static var cheatGroupView: String { tr("cheat.group.view") }
+    static var cheatGroupFilter: String { tr("cheat.group.filter") }
+    static var cheatGroupApp: String { tr("cheat.group.app") }
+    static var cheatGroupWindow: String { tr("cheat.group.window") }
+    static var paletteFilterPlaceholder: String { tr("palette.filter_placeholder") }
+    static var paletteGroupSelection: String { tr("palette.group.selection") }
+    static var paletteGroupView: String { tr("palette.group.view") }
+    static var paletteGroupFilters: String { tr("palette.group.filters") }
+    static var paletteGroupApp: String { tr("palette.group.app") }
+    static var dateToday: String { tr("date.today") }
+    static var dateYesterday: String { tr("date.yesterday") }
+    static var dateLast7: String { tr("date.last7") }
+    static var dateLast30: String { tr("date.last30") }
+    static var relativeJustNow: String { tr("relative.just_now") }
+    static func relativeMinutes(_ m: Int) -> String { String(format: tr("relative.minutes"), m) }
+    static func relativeHours(_ h: Int) -> String { String(format: tr("relative.hours"), h) }
+    static func relativeDays(_ d: Int) -> String { String(format: tr("relative.days"), d) }
+    static var rowKindPassword: String { tr("row.kind.password") }
+    static var rowKindFile: String { tr("row.kind.file") }
+    static var rowKindImage: String { tr("row.kind.image") }
+    static var rowMetaLink: String { tr("row.meta.link") }
+    static func rowMetaFile(_ count: Int) -> String {
+        String(format: tr(count == 1 ? "row.meta.file_one" : "row.meta.file_other"), count)
+    }
+    static func rowMetaLines(_ count: Int) -> String { String(format: tr("row.meta.lines"), count) }
+    static func rowMetaChars(_ formatted: String) -> String {
+        String(format: tr("row.meta.chars"), formatted)
+    }
+    static func rowAndMore(_ count: Int) -> String { String(format: tr("row.and_more"), count) }
+    static func rowPdfPages(_ count: Int) -> String { String(format: tr("row.pdf_pages"), count) }
 
     static var filterAllApps: String { tr("filter.allApps") }
     static var filterUnknownSource: String { tr("filter.unknownSource") }

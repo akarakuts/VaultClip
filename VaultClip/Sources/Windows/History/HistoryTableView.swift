@@ -357,6 +357,7 @@ extension HistoryTableView: NSTableViewDataSource {
     
     func tableView(_ tableView: NSTableView, pasteboardWriterForRow row: Int) -> NSPasteboardWriting? {
         guard let index = itemIndex(forRow: row) else { return nil }
+        // HistoryItem.writableTypes refuses password content for external drops (U19).
         return historyListItems[index]
     }
 

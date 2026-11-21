@@ -17,21 +17,18 @@ struct SettingsGeneralTab: View {
         Form {
             Section {
                 Toggle(L10n.menuLaunchAtLogin, isOn: launchAtLoginBinding)
-                Text(SettingsUICopy.t(
-                    "Requires approval in System Settings on some macOS versions.",
-                    "На некоторых версиях macOS нужно разрешение в Системных настройках."
-                ))
+                Text(L10n.settingsLaunchAtLoginHint)
                 .font(.callout)
                 .foregroundStyle(.secondary)
             }
             Section {
-                Picker(SettingsUICopy.t("Menu bar icon click", "Клик по значку"), selection: $store.statusItemClickMode) {
-                    Text(SettingsUICopy.t("Open panel", "Открыть панель")).tag(StatusItemClickMode.openPanel)
-                    Text(SettingsUICopy.t("Open menu", "Открыть меню")).tag(StatusItemClickMode.openMenu)
+                Picker(L10n.settingsStatusClick, selection: $store.statusItemClickMode) {
+                    Text(L10n.settingsStatusClickPanel).tag(StatusItemClickMode.openPanel)
+                    Text(L10n.settingsStatusClickMenu).tag(StatusItemClickMode.openMenu)
                 }
-                Toggle(SettingsUICopy.t("Show recent in menu", "Недавние в меню"), isOn: $store.showsRecentInMenu)
+                Toggle(L10n.settingsShowRecentMenu, isOn: $store.showsRecentInMenu)
                 Stepper(value: $store.recentMenuCount, in: 1...15) {
-                    Text("\(SettingsUICopy.t("Recent count", "Количество")): \(store.recentMenuCount)")
+                    Text(L10n.settingsRecentCount(store.recentMenuCount))
                 }
             }
         }
@@ -70,38 +67,38 @@ struct SettingsPanelTab: View {
                     }
                 }
                 HStack {
-                    Text(SettingsUICopy.t("Width", "Ширина"))
+                    Text(L10n.settingsWidth)
                     Slider(value: $store.panelEdgeWidth, in: 320...900, step: 10)
                     Text("\(Int(store.panelEdgeWidth))").monospacedDigit().frame(width: 40, alignment: .trailing)
                 }
                 HStack {
-                    Text(SettingsUICopy.t("Height", "Высота"))
+                    Text(L10n.settingsHeight)
                     Slider(value: $store.panelEdgeHeight, in: 240...900, step: 10)
                     Text("\(Int(store.panelEdgeHeight))").monospacedDigit().frame(width: 40, alignment: .trailing)
                 }
             }
             Section {
-                Picker(SettingsUICopy.t("Text size", "Размер текста"), selection: $store.panelTextSize) {
+                Picker(L10n.settingsTextSize, selection: $store.panelTextSize) {
                     ForEach(TextSizePreference.allCases, id: \.self) { size in
                         Text(size.rawValue.uppercased()).tag(size)
                     }
                 }
                 .pickerStyle(.segmented)
-                Toggle(SettingsUICopy.t("Monospaced content", "Моноширинный шрифт"), isOn: $store.usesMonospacedContentFont)
-                Toggle(SettingsUICopy.t("Group by date", "Группировать по дате"), isOn: $store.groupHistoryByDate)
-                Toggle(SettingsUICopy.t("Show filter bar", "Показывать панель фильтров"), isOn: $store.showsFilterBarPreference)
-                Toggle(SettingsUICopy.t("Show key hints", "Показывать подсказки клавиш"), isOn: $store.showKeyHints)
+                Toggle(L10n.settingsMonospaced, isOn: $store.usesMonospacedContentFont)
+                Toggle(L10n.settingsGroupByDate, isOn: $store.groupHistoryByDate)
+                Toggle(L10n.settingsShowFilterBar, isOn: $store.showsFilterBarPreference)
+                Toggle(L10n.settingsShowKeyHints, isOn: $store.showKeyHints)
             }
             Section {
-                Toggle(SettingsUICopy.t("Show preview", "Показывать превью"), isOn: $store.previewVisible)
-                Picker(SettingsUICopy.t("Preview placement", "Расположение превью"), selection: $store.previewPlacement) {
-                    Text(SettingsUICopy.t("Automatic", "Авто")).tag(PreviewPlacement.automatic)
-                    Text(SettingsUICopy.t("Trailing", "Справа")).tag(PreviewPlacement.trailing)
-                    Text(SettingsUICopy.t("Bottom", "Снизу")).tag(PreviewPlacement.bottom)
+                Toggle(L10n.settingsShowPreview, isOn: $store.previewVisible)
+                Picker(L10n.settingsPreviewPlacement, selection: $store.previewPlacement) {
+                    Text(L10n.settingsPreviewAutomatic).tag(PreviewPlacement.automatic)
+                    Text(L10n.settingsPreviewTrailing).tag(PreviewPlacement.trailing)
+                    Text(L10n.settingsPreviewBottom).tag(PreviewPlacement.bottom)
                 }
-                Toggle(SettingsUICopy.t("Reset filters on close", "Сбрасывать фильтры при закрытии"), isOn: $store.resetFiltersOnClose)
-                Toggle(SettingsUICopy.t("Reopen last tab", "Открывать последнюю вкладку"), isOn: $store.reopenLastTab)
-                Toggle(SettingsUICopy.t("Select second item", "Выделять второй элемент"), isOn: $store.selectSecondItem)
+                Toggle(L10n.settingsResetFiltersOnClose, isOn: $store.resetFiltersOnClose)
+                Toggle(L10n.settingsReopenLastTab, isOn: $store.reopenLastTab)
+                Toggle(L10n.settingsSelectSecondItem, isOn: $store.selectSecondItem)
             }
         }
         .formStyle(.grouped)
@@ -118,15 +115,15 @@ struct SettingsPasteTab: View {
             Section {
                 Toggle(L10n.settingsPastesRichText, isOn: $store.pastesRichText)
                 Toggle(L10n.settingsShowsRichText, isOn: $store.showsRichText)
-                Picker(SettingsUICopy.t("Multi-paste separator", "Разделитель для нескольких"), selection: $store.multiPasteSeparator) {
-                    Text(SettingsUICopy.t("Newline", "Перевод строки")).tag(MultiPasteSeparator.newline)
-                    Text(SettingsUICopy.t("Blank line", "Пустая строка")).tag(MultiPasteSeparator.blankLine)
-                    Text(SettingsUICopy.t("Space", "Пробел")).tag(MultiPasteSeparator.space)
-                    Text(SettingsUICopy.t("Comma", "Запятая")).tag(MultiPasteSeparator.comma)
-                    Text(SettingsUICopy.t("Tab", "Табуляция")).tag(MultiPasteSeparator.tab)
+                Picker(L10n.settingsMultiPasteSeparator, selection: $store.multiPasteSeparator) {
+                    Text(L10n.settingsSepNewline).tag(MultiPasteSeparator.newline)
+                    Text(L10n.settingsSepBlankLine).tag(MultiPasteSeparator.blankLine)
+                    Text(L10n.settingsSepSpace).tag(MultiPasteSeparator.space)
+                    Text(L10n.settingsSepComma).tag(MultiPasteSeparator.comma)
+                    Text(L10n.settingsSepTab).tag(MultiPasteSeparator.tab)
                 }
-                Picker(SettingsUICopy.t("Clear clipboard after password", "Очищать буфер после пароля"), selection: $store.passwordClipboardClearSeconds) {
-                    Text(SettingsUICopy.t("Off", "Выкл")).tag(0)
+                Picker(L10n.settingsClearClipboardAfterPassword, selection: $store.passwordClipboardClearSeconds) {
+                    Text(L10n.settingsOff).tag(0)
                     Text("30").tag(30)
                     Text("60").tag(60)
                     Text("90").tag(90)
@@ -149,18 +146,13 @@ struct SettingsHistoryTab: View {
                     Text("\(L10n.settingsMaxItemsLabel) \(store.maxHistory)")
                 }
                 Stepper(value: $store.maxItemSizeMB, in: 1...100) {
-                    Text("\(SettingsUICopy.t("Max item size", "Макс. размер элемента")): \(store.maxItemSizeMB) MB")
+                    Text(L10n.settingsMaxItemSizeMB(store.maxItemSizeMB))
                 }
                 Stepper(value: $store.retentionDays, in: 0...365) {
-                    let days = store.retentionDays == 0
-                        ? SettingsUICopy.t("Off", "Выкл")
-                        : "\(store.retentionDays)"
-                    Text("\(SettingsUICopy.t("Delete older than", "Удалять старше")): \(days)")
+                    let days = store.retentionDays == 0 ? L10n.settingsOff : "\(store.retentionDays)"
+                    Text(L10n.settingsDeleteOlderThan(days))
                 }
-                Text(SettingsUICopy.t(
-                    "Retention uses last used time.",
-                    "Срок хранения считается по последнему использованию."
-                ))
+                Text(L10n.settingsRetentionLastUsedHint)
                 .font(.callout)
                 .foregroundStyle(.secondary)
             }
@@ -178,13 +170,22 @@ struct SettingsPrivacyTab: View {
         Form {
             Section {
                 Toggle(L10n.menuPauseCapture, isOn: $store.isCapturePaused)
-                Toggle(SettingsUICopy.t("Require Touch ID / password", "Требовать Touch ID или пароль"), isOn: $store.requiresPasswordAuthentication)
+                Toggle(L10n.settingsRequireAuth, isOn: $store.requiresPasswordAuthentication)
                 Stepper(value: $store.passwordAuthGraceMinutes, in: 0...120) {
-                    Text("\(SettingsUICopy.t("Don't ask again for", "Не спрашивать повторно")): \(store.passwordAuthGraceMinutes) \(SettingsUICopy.t("min", "мин"))")
+                    Text(L10n.settingsAuthGrace(store.passwordAuthGraceMinutes))
                 }
-                Toggle(SettingsUICopy.t("Hide panel from screen capture", "Скрывать панель от записи экрана"), isOn: $store.hidesPanelFromScreenCapture)
+                Text(L10n.settingsAuthGraceHint)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                Toggle(L10n.settingsHideFromCapture, isOn: $store.hidesPanelFromScreenCapture)
+                Text(L10n.settingsHideFromCaptureHint)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
             }
-            Section(SettingsUICopy.t("Excluded apps", "Исключённые приложения")) {
+            Section(L10n.settingsExcludedApps) {
+                Text(L10n.settingsExcludedAppsHint)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
                 ForEach(store.excludedBundleIds, id: \.self) { id in
                     HStack {
                         Image(nsImage: SourceAppIconProvider.icon(forBundleId: id))
@@ -201,10 +202,11 @@ struct SettingsPrivacyTab: View {
                             Image(systemName: "minus.circle")
                         }
                         .buttonStyle(.borderless)
+                        .accessibilityLabel(L10n.settingsPrivacyRemove)
                     }
                 }
                 Button(L10n.settingsPrivacyAdd) { chooseApp() }
-                DisclosureGroup(SettingsUICopy.t("Always excluded", "Всегда исключаются")) {
+                DisclosureGroup(L10n.settingsAlwaysExcluded) {
                     ForEach(HistoryPasteboardPolicy.bundleIdDenylist.sorted(), id: \.self) { id in
                         Text("\(SourceAppDisplayName.name(forBundleId: id)) — \(id)")
                             .font(.caption)
@@ -251,20 +253,20 @@ struct SettingsShortcutsTab: View {
                         .background(RoundedRectangle(cornerRadius: 6).fill(Color(nsColor: .controlBackgroundColor)))
                         .onTapGesture {
                             capturePhase = .listening
-                            label = SettingsUICopy.t("Press shortcut…", "Нажмите сочетание…")
+                            label = L10n.settingsHotkeyPress
                         }
                 }
                 if case .invalid(let message) = capturePhase {
                     Text(message).font(.callout).foregroundStyle(.red)
                 }
-                Text(SettingsUICopy.t(
-                    "Click the field and press a shortcut. Esc cancels, ⌫ restores ⌘⇧V.",
-                    "Нажмите на поле и введите сочетание. Esc — отмена, ⌫ — вернуть ⌘⇧V."
-                ))
+                Text(L10n.settingsHotkeyCaptureHint)
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                Text(L10n.settingsHotkeyListHint)
                 .font(.callout)
                 .foregroundStyle(.secondary)
             }
-            Section(SettingsUICopy.t("Panel commands", "Команды панели")) {
+            Section(L10n.settingsPanelCommands) {
                 ForEach(PanelCommandRegistry.all.prefix(24), id: \.id) { command in
                     HStack {
                         Text(command.title)

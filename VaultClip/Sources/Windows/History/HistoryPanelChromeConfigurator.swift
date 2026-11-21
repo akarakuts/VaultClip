@@ -39,6 +39,7 @@ enum HistoryPanelChromeConfigurator {
     (scrollView.contentView as? HistoryListClipView)?.enforceDocumentWidth()
   }
 
+  /// Fonts/heights only. Column constraints are owned by `installProgrammaticPanelLayout` (U08).
   static func applyChromeMetrics(
     root: NSView,
     historyListView: HistoryTableView,
@@ -47,22 +48,7 @@ enum HistoryPanelChromeConfigurator {
     itemCountLabel: NSTextField,
     emptyListLabel: NSTextField?
   ) {
-    guard let scrollView = historyListView.enclosingScrollView else { return }
-
-    func visit(_ view: NSView) {
-      for constraint in view.constraints {
-        applyChromeMetric(
-          to: constraint,
-          scrollView: scrollView,
-          searchBar: searchBar,
-          itemGroupScrollView: itemGroupScrollView,
-          itemCountLabel: itemCountLabel
-        )
-      }
-      view.subviews.forEach(visit)
-    }
-    visit(root)
-
+    _ = historyListView
     for constraint in searchBar.constraints where constraint.firstAttribute == .height {
       constraint.constant = PanelChrome.Metrics.searchBarHeight
     }
@@ -95,50 +81,6 @@ enum HistoryPanelChromeConfigurator {
   }
 
   // MARK: - Private
-
-  private static func applyChromeMetric(
-    to constraint: NSLayoutConstraint,
-    scrollView: NSScrollView,
-    searchBar: NSTextField,
-    itemGroupScrollView: HistoryTabBarView,
-    itemCountLabel: NSTextField
-  ) {
-    let leadingItems: [NSObject] = [searchBar, scrollView, itemGroupScrollView]
-    let trailingItems: [NSObject] = [searchBar, scrollView, itemGroupScrollView, itemCountLabel]
-
-    if constraint.firstAttribute == .leading,
-       let first = constraint.firstItem as? NSObject,
-       leadingItems.contains(where: { $0 === first }) {
-      constraint.constant = PanelChrome.Metrics.panelContentInset
-    }
-    if constraint.firstAttribute == .trailing,
-       let second = constraint.secondItem as? NSObject,
-       trailingItems.contains(where: { $0 === second }) {
-      constraint.constant = PanelChrome.Metrics.panelContentInset
-    }
-    if constraint.firstItem as? NSObject === searchBar,
-       constraint.firstAttribute == .top,
-       constraint.secondItem is NSTextField {
-      constraint.constant = PanelChrome.Metrics.titleToSearchSpacing
-    }
-    if constraint.firstItem as? NSObject === itemGroupScrollView,
-       constraint.firstAttribute == .top,
-       constraint.secondItem as? NSObject === searchBar {
-      constraint.constant = PanelChrome.Metrics.searchToTabsSpacing
-    }
-    if constraint.firstItem as? NSObject === scrollView,
-       constraint.firstAttribute == .top,
-       constraint.secondItem as? NSObject === itemGroupScrollView {
-      constraint.constant = PanelChrome.Metrics.tabsToListSpacing
-    }
-    if constraint.firstAttribute == .top,
-       constraint.secondItem == nil,
-       let first = constraint.firstItem as? NSTextField,
-       first !== searchBar,
-       first !== itemCountLabel {
-      constraint.constant = PanelChrome.Metrics.headerTopInset
-    }
-  }
 
   private static func hidePanelTitleLabel(in root: NSView, excluding excluded: [NSTextField]) {
     for subview in root.subviews {

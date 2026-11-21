@@ -8,11 +8,11 @@
 import AppKit
 
 enum EmbeddedPreviewContent {
-    case text(String, monospaced: Bool)
-    case link(host: String, url: String)
+    case text(String, monospaced: Bool, caption: String)
+    case link(host: String, url: String, caption: String)
     case image(NSImage, caption: String)
     case color(NSColor, caption: String)
-    case files([URL])
+    case files([URL], caption: String)
     case password(comment: String, login: String, url: String)
 }
 
@@ -57,7 +57,7 @@ final class EmbeddedPreviewView: NSView {
         headerLabel.stringValue = ""
         captionLabel.stringValue = ""
         placeholder.isHidden = false
-        placeholder.stringValue = Self.ru ? "Нет выделенного элемента" : "Nothing selected"
+        placeholder.stringValue = L10n.previewNothingSelected
         actions.isHidden = true
     }
 
@@ -70,50 +70,60 @@ final class EmbeddedPreviewView: NSView {
         copyButton.isHidden = false
         textView.font = .systemFont(ofSize: 13)
         switch content {
-        case .text(let text, let monospaced):
-            headerLabel.stringValue = Self.ru ? "Текст" : "Text"
+        case .text(let text, let monospaced, let caption):
+            headerLabel.stringValue = L10n.previewKindText
             showBody(text, font: monospaced
                 ? .monospacedSystemFont(ofSize: 12, weight: .regular)
                 : .systemFont(ofSize: 13))
-            captionLabel.stringValue = Self.ru ? "\(text.count) симв." : "\(text.count) chars"
+            captionLabel.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
+            captionLabel.maximumNumberOfLines = 4
+            captionLabel.stringValue = caption
             editButton.isHidden = false
-        case .link(let host, let url):
+        case .link(let host, let url, let caption):
             headerLabel.stringValue = host
             showBody(url, font: .systemFont(ofSize: 13))
-            captionLabel.stringValue = Self.ru ? "Ссылка" : "Link"
+            captionLabel.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
+            captionLabel.maximumNumberOfLines = 4
+            captionLabel.stringValue = caption
             openButton.isHidden = false
             editButton.isHidden = false
         case .image(let image, let caption):
-            headerLabel.stringValue = Self.ru ? "Изображение" : "Image"
+            headerLabel.stringValue = L10n.previewKindImage
             setVisible(text: false, image: true, swatch: false)
             imageView.image = image
+            captionLabel.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
+            captionLabel.maximumNumberOfLines = 2
             captionLabel.stringValue = caption
         case .color(let color, let caption):
-            headerLabel.stringValue = Self.ru ? "Цвет" : "Color"
+            headerLabel.stringValue = L10n.previewKindColor
+            // Swatch + HEX/RGB/HSL so the person can tell the color without pasting.
             setVisible(text: false, image: false, swatch: true)
             swatch.layer?.backgroundColor = color.cgColor
+            captionLabel.maximumNumberOfLines = 6
             captionLabel.stringValue = caption
-        case .files(let urls):
+            captionLabel.font = .monospacedSystemFont(ofSize: NSFont.smallSystemFontSize, weight: .regular)
+        case .files(let urls, let caption):
             headerLabel.stringValue = urls.count == 1
                 ? urls[0].lastPathComponent
-                : (Self.ru ? "Файлы: \(urls.count)" : "\(urls.count) files")
+                : L10n.previewKindFiles(urls.count)
             let paths = urls.map { ($0.path as NSString).abbreviatingWithTildeInPath }.joined(separator: "\n")
             showBody(paths, font: .systemFont(ofSize: 12))
             let exists = urls.allSatisfy { FileManager.default.fileExists(atPath: $0.path) }
-            captionLabel.stringValue = exists ? "" : (Self.ru ? "Файл перемещён или удалён" : "File moved or deleted")
+            captionLabel.maximumNumberOfLines = 4
+            captionLabel.stringValue = exists ? caption : L10n.previewFileMissing
             openButton.isHidden = !exists
         case .password(let comment, let login, let url):
-            headerLabel.stringValue = comment.isEmpty ? (Self.ru ? "Пароль" : "Password") : comment
+            headerLabel.stringValue = comment.isEmpty ? L10n.previewKindPassword : comment
             var lines: [String] = []
-            if !login.isEmpty { lines.append("\(Self.ru ? "Логин" : "Login"): \(login)") }
+            if !login.isEmpty { lines.append("\(L10n.previewLogin): \(login)") }
             if !url.isEmpty { lines.append("URL: \(url)") }
-            lines.append("\(Self.ru ? "Пароль" : "Password"): ••••••••")
+            lines.append("\(L10n.previewKindPassword): ••••••••")
             showBody(lines.joined(separator: "\n"), font: .systemFont(ofSize: 13))
             captionLabel.stringValue = ""
         }
     }
 
-    /// Inline editor; ⏎ / Paste then pastes `editedText` (U24).
+    /// Inline editor; ⌘⏎ pastes `editedText` (U24).
     func beginEditing() {
         guard !scroll.isHidden, !isEditing else { return }
         isEditing = true
@@ -124,15 +134,21 @@ final class EmbeddedPreviewView: NSView {
         textView.backgroundColor = .textBackgroundColor
         window?.makeFirstResponder(textView)
         textView.selectAll(nil)
-        editButton.title = Self.ru ? "Отменить" : "Cancel"
-        pasteButton.title = Self.ru ? "Вставить ⌘⏎" : "Paste ⌘⏎"
+        editButton.title = L10n.previewCancelEdit
+        // Same verb as the registry command so the button matches the cheat sheet.
+        pasteButton.title = L10n.command_pasteEdit
         copyButton.isHidden = true
     }
 
-    func endEditing() {
+    /// - Parameter keepText: after ⌘S keep the edited body; Esc discard restores `originalText`.
+    func endEditing(keepText: Bool = false) {
         guard isEditing else { return }
         isEditing = false
-        textView.string = originalText
+        if keepText {
+            originalText = textView.string
+        } else {
+            textView.string = originalText
+        }
         textView.isEditable = false
         textView.drawsBackground = false
         editButton.title = L10n.command_editBeforePaste
@@ -155,8 +171,6 @@ final class EmbeddedPreviewView: NSView {
         swatch.isHidden = !showSwatch
     }
 
-    private static var ru: Bool { Locale.current.language.languageCode?.identifier == "ru" }
-
     private func setup() {
         wantsLayer = true
         layer?.cornerRadius = 8
@@ -168,6 +182,7 @@ final class EmbeddedPreviewView: NSView {
         captionLabel.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
         captionLabel.textColor = .secondaryLabelColor
         captionLabel.lineBreakMode = .byTruncatingTail
+        captionLabel.maximumNumberOfLines = 2
         placeholder.textColor = .secondaryLabelColor
         placeholder.alignment = .center
 
@@ -205,7 +220,7 @@ final class EmbeddedPreviewView: NSView {
         configure(pasteButton, title: L10n.command_paste, action: #selector(pasteTapped))
         configure(copyButton, title: L10n.command_copy, action: #selector(copyTapped))
         configure(editButton, title: L10n.command_editBeforePaste, action: #selector(editTapped))
-        configure(openButton, title: Self.ru ? "Открыть" : "Open", action: #selector(openTapped))
+        configure(openButton, title: L10n.previewOpen, action: #selector(openTapped))
         actions.orientation = .horizontal
         actions.spacing = 6
         [pasteButton, copyButton, openButton, editButton].forEach { actions.addArrangedSubview($0) }

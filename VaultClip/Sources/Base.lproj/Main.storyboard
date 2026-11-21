@@ -1111,6 +1111,8 @@ https://github.com/akarakuts/VaultClip</string>
                     </view>
                     <connections>
                         <outlet property="allowAccessButton" destination="2gX-zW-UTr" id="VAt-Qb-xrU"/>
+                        <outlet property="titleLabel" destination="0bn-y0-I1O" id="vc-title-out"/>
+                        <outlet property="bodyLabel" destination="ili-Q1-k3U" id="vc-body-out"/>
                     </connections>
                 </viewController>
                 <customObject id="hCL-ss-Nie" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

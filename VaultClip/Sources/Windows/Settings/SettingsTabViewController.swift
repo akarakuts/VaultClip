@@ -29,9 +29,9 @@ class SettingsTabViewController: NSTabViewController {
         isBuildingTabs = true
 
         addHosting(SettingsGeneralTab(store: store), title: L10n.settingsGeneral, symbol: "gearshape")
-        addHosting(SettingsPanelTab(store: store), title: SettingsUICopy.t("Panel", "Панель"), symbol: "macwindow")
-        addHosting(SettingsPasteTab(store: store), title: SettingsUICopy.t("Paste", "Вставка"), symbol: "doc.on.clipboard")
-        addHosting(SettingsHistoryTab(store: store), title: SettingsUICopy.t("History", "История"), symbol: "clock.arrow.circlepath")
+        addHosting(SettingsPanelTab(store: store), title: L10n.settingsTabPanel, symbol: "macwindow")
+        addHosting(SettingsPasteTab(store: store), title: L10n.settingsTabPaste, symbol: "doc.on.clipboard")
+        addHosting(SettingsHistoryTab(store: store), title: L10n.settingsTabHistory, symbol: "clock.arrow.circlepath")
         addHosting(SettingsPrivacyTab(store: store), title: L10n.settingsPrivacy, symbol: "hand.raised")
         addHosting(SettingsShortcutsTab(store: store), title: L10n.settingsHotKey, symbol: "keyboard")
 
@@ -82,8 +82,3 @@ class SettingsTabViewController: NSTabViewController {
     }
 }
 
-/// Shared with SettingsSwiftUITabs for bilingual labels outside L10n catalog.
-enum SettingsUICopy {
-    static var ru: Bool { Locale.current.language.languageCode?.identifier == "ru" }
-    static func t(_ en: String, _ ru: String) -> String { Self.ru ? ru : en }
-}

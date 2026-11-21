@@ -51,4 +51,13 @@ final class FilterStateTests: XCTestCase {
         XCTAssertFalse(state.matches(kind: .image, sourceBundleId: "com.apple.Safari", appDisplayName: "Safari"))
         XCTAssertFalse(state.matches(kind: .text, sourceBundleId: "com.google.Chrome", appDisplayName: "Chrome"))
     }
+
+    func testSummaryLabel() {
+        XCTAssertNil(FilterState().summaryLabel)
+        XCTAssertEqual(
+            FilterState(type: .text, appQuery: "Safari").summaryLabel,
+            "\(L10n.filterTypeText) · Safari"
+        )
+        XCTAssertEqual(FilterState(type: .image, appQuery: nil).summaryLabel, L10n.filterTypeImages)
+    }
 }

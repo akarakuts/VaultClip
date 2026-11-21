@@ -22,14 +22,13 @@ enum PanelHeaderPresenter {
         filtersVisiblePreference: Bool = true,
         locale: Locale = .current
     ) -> PanelHeaderModel {
-        let isRU = locale.language.languageCode?.identifier == "ru"
+        _ = locale
+        let passwords = tab == .passwords
         return PanelHeaderModel(
-            showsFilterBar: tab != .passwords && filtersVisiblePreference,
+            showsFilterBar: !passwords && filtersVisiblePreference,
             showsPreviewButton: true,
-            searchPlaceholder: isRU ? "Поиск" : "Search",
-            searchTooltip: isRU
-                ? "Можно уточнить: type:ссылка app:Safari"
-                : "You can refine: type:link app:Safari"
+            searchPlaceholder: passwords ? L10n.searchPlaceholderPasswords : L10n.searchPlaceholder,
+            searchTooltip: passwords ? L10n.searchTooltipPasswords : L10n.searchTooltip
         )
     }
 }

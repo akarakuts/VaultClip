@@ -81,36 +81,28 @@ enum RowPresentationBuilder {
         switch summary.kind {
         case .password:
             let comment = summary.passwordComment?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-            return comment.isEmpty ? localized("Password", "Пароль", locale: locale) : comment
+            return comment.isEmpty ? L10n.rowKindPassword : comment
         case .link:
             if let host = summary.linkHost, !host.isEmpty { return host }
             return collapseFirstLine(summary.title)
         case .file(let count):
             guard let first = summary.fileNames.first else {
-                return localized("File", "Файл", locale: locale)
+                return L10n.rowKindFile
             }
             if count <= 1 || summary.fileNames.count <= 1 { return first }
-            let more = count - 1
-            let suffix = locale.language.languageCode?.identifier == "ru"
-                ? "и ещё \(more)"
-                : "and \(more) more"
-            return "\(first) · \(suffix)"
+            return "\(first) · \(L10n.rowAndMore(count - 1))"
         case .image:
             let format = summary.imageFormat ?? "PNG"
             if let size = summary.imagePixelSize {
                 let w = Int(size.width)
                 let h = Int(size.height)
-                let prefix = localized("Image", "Изображение", locale: locale)
-                return "\(prefix) \(format) · \(w)×\(h)"
+                return "\(L10n.rowKindImage) \(format) · \(w)×\(h)"
             }
-            return "\(localized("Image", "Изображение", locale: locale)) \(format)"
+            return "\(L10n.rowKindImage) \(format)"
         case .pdf:
             if !summary.title.isEmpty { return collapseFirstLine(summary.title) }
             if let pages = summary.pdfPageCount {
-                let label = locale.language.languageCode?.identifier == "ru"
-                    ? "PDF · \(pages) стр."
-                    : "PDF · \(pages) pages"
-                return label
+                return L10n.rowPdfPages(pages)
             }
             return "PDF"
         case .color:
@@ -161,27 +153,23 @@ enum RowPresentationBuilder {
     }
 
     private static func meta(for summary: ItemSummary, locale: Locale) -> String? {
+        _ = locale
         switch summary.kind {
         case .link:
-            return localized("link", "ссылка", locale: locale)
+            return L10n.rowMetaLink
         case .file(let count):
-            return locale.language.languageCode?.identifier == "ru"
-                ? "\(count) \(russianPlural(count, one: "файл", few: "файла", many: "файлов"))"
-                : (count == 1 ? "1 file" : "\(count) files")
+            return L10n.rowMetaFile(count)
         case .richText:
             return "RTF"
         case .text:
             if summary.lineCount > 1 {
-                let n = summary.lineCount
-                return locale.language.languageCode?.identifier == "ru"
-                    ? "\(n) \(russianPlural(n, one: "строка", few: "строки", many: "строк"))"
-                    : "\(n) lines"
+                return L10n.rowMetaLines(summary.lineCount)
             }
             if summary.charCount > 0 {
-                let formatted = NumberFormatter.localizedString(from: NSNumber(value: summary.charCount), number: .decimal)
-                return locale.language.languageCode?.identifier == "ru"
-                    ? "\(formatted) симв."
-                    : "\(formatted) chars"
+                let formatted = NumberFormatter.localizedString(
+                    from: NSNumber(value: summary.charCount), number: .decimal
+                )
+                return L10n.rowMetaChars(formatted)
             }
             return nil
         default:
@@ -191,20 +179,16 @@ enum RowPresentationBuilder {
 
     /// Compact age («5 мин», «2 ч», «3 дн.», then a short date) — never a signed offset.
     static func relativeTime(from date: Date, to now: Date, locale: Locale) -> String {
-        let ru = locale.language.languageCode?.identifier == "ru"
         let seconds = max(0, now.timeIntervalSince(date))
         switch seconds {
         case ..<60:
-            return ru ? "только что" : "now"
+            return L10n.relativeJustNow
         case ..<3600:
-            let m = Int(seconds / 60)
-            return ru ? "\(m) мин" : "\(m) min"
+            return L10n.relativeMinutes(Int(seconds / 60))
         case ..<86_400:
-            let h = Int(seconds / 3600)
-            return ru ? "\(h) ч" : "\(h) h"
+            return L10n.relativeHours(Int(seconds / 3600))
         case ..<(7 * 86_400):
-            let d = Int(seconds / 86_400)
-            return ru ? "\(d) дн." : "\(d) d"
+            return L10n.relativeDays(Int(seconds / 86_400))
         default:
             let formatter = DateFormatter()
             formatter.locale = locale
@@ -219,9 +203,5 @@ enum RowPresentationBuilder {
         if mod10 == 1, mod100 != 11 { return one }
         if (2...4).contains(mod10), !(12...14).contains(mod100) { return few }
         return many
-    }
-
-    private static func localized(_ en: String, _ ru: String, locale: Locale) -> String {
-        locale.language.languageCode?.identifier == "ru" ? ru : en
     }
 }

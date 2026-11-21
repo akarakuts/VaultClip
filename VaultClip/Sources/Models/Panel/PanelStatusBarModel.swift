@@ -6,7 +6,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 //
 import CoreGraphics
-import CoreGraphics
 import Foundation
 
 enum PanelHintContext: Equatable {
@@ -25,6 +24,8 @@ struct PanelStatusBarInput: Equatable {
     var availableWidth: CGFloat
     var showKeyHints: Bool
     var locale: Locale
+    /// Active type/app filter label («Текст · Safari»), shown in the counter.
+    var filterSummary: String? = nil
 }
 
 struct PanelStatusBarModel: Equatable {
@@ -45,52 +46,42 @@ enum PanelStatusBarPresenter {
     }
 
     static func counter(for input: PanelStatusBarInput) -> String {
-        let ru = input.locale.language.languageCode?.identifier == "ru"
+        _ = input.locale
+        let base: String
         if input.isLoading {
-            return ru ? "Загрузка…" : "Loading…"
+            base = L10n.statusLoading
+        } else if input.selectedCount > 1 {
+            base = L10n.statusSelected(input.selectedCount)
+        } else if input.isSearch {
+            base = L10n.statusFoundOf(visible: input.visibleCount, total: input.totalCount)
+        } else {
+            base = L10n.countItems(input.totalCount)
         }
-        if input.selectedCount > 1 {
-            return ru ? "\(input.selectedCount) выбрано" : "\(input.selectedCount) selected"
+        if let filter = input.filterSummary, !filter.isEmpty {
+            return base + " · " + filter
         }
-        if input.isSearch {
-            return ru
-                ? "Найдено \(input.visibleCount) из \(input.totalCount)"
-                : "Found \(input.visibleCount) of \(input.totalCount)"
-        }
-        if ru {
-            return "\(input.totalCount) \(russianItemsWord(input.totalCount))"
-        }
-        return input.totalCount == 1 ? "1 item" : "\(input.totalCount) items"
+        return base
     }
 
     static func hints(for input: PanelStatusBarInput) -> [String] {
         guard input.showKeyHints else { return [] }
-        let ru = input.locale.language.languageCode?.identifier == "ru"
-        let all: [String]
+        _ = input.locale
+        var all: [String]
         switch input.hintContext {
         case .list:
-            all = ru
-                ? ["⏎ Вставить", "⌘K Действия", "⌘/ Клавиши"]
-                : ["⏎ Paste", "⌘K Actions", "⌘/ Keys"]
+            // With an active filter, surface clear early — width trim drops the tail.
+            if input.filterSummary != nil {
+                all = [L10n.hintPaste, L10n.command_clearFilters, L10n.hintKeys]
+            } else {
+                all = [L10n.hintPaste, L10n.hintActions, L10n.hintKeys]
+            }
         case .multiSelect(let count):
-            all = ru
-                ? ["⏎ Вставить \(count)", "Esc Снять выделение"]
-                : ["⏎ Paste \(count)", "Esc Clear selection"]
+            all = [L10n.hintPasteCount(count), L10n.hintClearSelection]
         case .editor:
-            all = ru
-                ? ["⌘⏎ Вставить", "⌘S Сохранить", "Esc Отмена"]
-                : ["⌘⏎ Paste", "⌘S Save", "Esc Cancel"]
+            all = [L10n.hintPasteEdit, L10n.hintSaveEdit, L10n.hintCancel]
         }
-        // Drop from the end when width is tight (~90pt per hint).
+        // Drop from the end when width is tight (~90pt per hint) so “⏎ Paste” stays.
         let maxHints = max(0, Int(input.availableWidth / 90))
         return Array(all.prefix(min(3, maxHints)))
-    }
-
-    private static func russianItemsWord(_ n: Int) -> String {
-        let mod10 = n % 10
-        let mod100 = n % 100
-        if mod10 == 1, mod100 != 11 { return "элемент" }
-        if (2...4).contains(mod10), !(12...14).contains(mod100) { return "элемента" }
-        return "элементов"
     }
 }

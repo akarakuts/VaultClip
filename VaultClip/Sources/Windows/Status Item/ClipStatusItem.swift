@@ -29,7 +29,10 @@ enum ClipStatusItem {
         )
         // Prefer a distinct symbol when paused instead of dimming alpha (U27).
         if isPaused {
-            button.image = NSImage(systemSymbolName: "pause.circle", accessibilityDescription: nil)
+            button.image = NSImage(
+                systemSymbolName: "pause.circle",
+                accessibilityDescription: L10n.menuPauseCapture
+            )
             button.image?.isTemplate = true
         } else {
             button.image = statusItemButtonImage

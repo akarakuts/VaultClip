@@ -35,6 +35,24 @@ struct FilterState: Equatable {
 
     var isActive: Bool { type != .all || !(appQuery?.isEmpty ?? true) }
 
+    /// Short human label for the footer / search chrome («Текст · Safari»).
+    var summaryLabel: String? {
+        guard isActive else { return nil }
+        var parts: [String] = []
+        switch type {
+        case .all: break
+        case .text: parts.append(L10n.filterTypeText)
+        case .link: parts.append(L10n.filterTypeLinks)
+        case .image: parts.append(L10n.filterTypeImages)
+        case .file: parts.append(L10n.filterTypeFiles)
+        case .color: parts.append(L10n.filterTypeColors)
+        }
+        if let appQuery, !appQuery.isEmpty {
+            parts.append(appQuery)
+        }
+        return parts.isEmpty ? nil : parts.joined(separator: " · ")
+    }
+
     func matches(kind: ItemKind, sourceBundleId: String?, appDisplayName: String?) -> Bool {
         guard type.matches(kind) else { return false }
         guard let appQuery, !appQuery.isEmpty else { return true }

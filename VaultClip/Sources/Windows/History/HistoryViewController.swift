@@ -116,6 +116,8 @@ class HistoryViewController: NSViewController {
             self.applyListFilter()
         }
         searchBar.placeholderString = L10n.searchPlaceholder
+        searchBar.setAccessibilityLabel(L10n.searchPlaceholder)
+        searchBar.setAccessibilityIdentifier(Accessibility.identifiers.historySearchField)
         historyListView.historyDelegate = self
         
         appState.showsRichText.distinctUntilChanged().subscribe(onNext: onShowsRichText).disposed(by: disposeBag)
@@ -124,7 +126,15 @@ class HistoryViewController: NSViewController {
         itemGroupScrollView.configure(with: HistoryListMode.tabDefinitions)
         listMode
             .bind(onNext: { [weak self] mode in
-                self?.itemGroupScrollView.selectTab(at: mode.rawValue)
+                guard let self else { return }
+                self.itemGroupScrollView.selectTab(at: mode.rawValue)
+                let header = PanelHeaderPresenter.model(
+                    tab: mode,
+                    filtersVisiblePreference: self.appSettings.showsFilterBarPreference
+                )
+                self.searchBar.placeholderString = header.searchPlaceholder
+                self.searchBar.toolTip = header.searchTooltip
+                self.searchBar.setAccessibilityLabel(header.searchPlaceholder)
             })
             .disposed(by: disposeBag)
         
@@ -639,12 +649,23 @@ class HistoryViewController: NSViewController {
         if event.keyCode == 53, event.modifierFlags.isDisjoint(with: [.command, .control, .option, .shift]) {
             return performEscape()
         }
-        // Inline editor keeps typing, ⏎ and arrows; only ⌘⏎ pastes the edit (U24).
+        // Inline editor keeps typing/arrows; ⌘⏎ pastes, ⌘S saves — other chords stay text-view.
         if embeddedPreview.isEditing {
-            let mods = event.modifierFlags.intersection([.command, .control, .option, .shift])
-            if mods == .command, event.keyCode == 36 || event.keyCode == 76 {
-                pasteEditedPreviewText()
-                return true
+            if case .command(let id) = route {
+                switch id {
+                case .pasteEdit, .paste:
+                    pasteEditedPreviewText()
+                    return true
+                case .saveEdit:
+                    saveEditedPreviewText()
+                    return true
+                case .closePanel:
+                    return performEscape()
+                case .commandPalette, .cheatSheet, .openSettings:
+                    return performPanelCommand(id)
+                default:
+                    break
+                }
             }
             return false
         }
@@ -685,13 +706,11 @@ class HistoryViewController: NSViewController {
             return true
         case .warnEditorDiscard:
             editorDiscardArmed = true
-            showToast(Locale.current.language.languageCode?.identifier == "ru"
-                ? "Правка не вставлена. Esc ещё раз — отменить"
-                : "Edit not pasted. Press Esc again to discard")
+            showToast(L10n.toastEditDiscardArmed)
             return true
         case .leaveEditor:
             editorDiscardArmed = false
-            embeddedPreview.endEditing()
+            embeddedPreview.endEditing(keepText: false)
             restorePanelFocus()
             refreshFooterHints()
             return true
@@ -1108,8 +1127,9 @@ class HistoryViewController: NSViewController {
     }
 
     private func countLabelText(for results: Results) -> String {
+        let base: String
         if selectionModel.isMulti {
-            return PanelStatusBarPresenter.counter(for: PanelStatusBarInput(
+            base = PanelStatusBarPresenter.counter(for: PanelStatusBarInput(
                 totalCount: results.items.count,
                 visibleCount: results.items.count,
                 isSearch: results.isSearchResult,
@@ -1120,19 +1140,27 @@ class HistoryViewController: NSViewController {
                 showKeyHints: false,
                 locale: .current
             ))
+        } else {
+            let count = results.items.count
+            if results.isSearchResult {
+                base = L10n.countMatches(count)
+            } else {
+                switch listMode.value {
+                case .history:
+                    base = L10n.countItems(count)
+                case .favorites:
+                    base = count == 1 ? L10n.countFavoriteOne : L10n.countFavorites(count)
+                case .passwords:
+                    base = count == 1 ? L10n.countPasswordOne : L10n.countPasswords(count)
+                }
+            }
         }
-        let count = results.items.count
-        if results.isSearchResult {
-            return L10n.countMatches(count)
-        }
-        switch listMode.value {
-        case .history:
-            return L10n.countItems(count)
-        case .favorites:
-            return count == 1 ? L10n.countFavoriteOne : L10n.countFavorites(count)
-        case .passwords:
-            return count == 1 ? L10n.countPasswordOne : L10n.countPasswords(count)
-        }
+        return withFilterSuffix(base)
+    }
+
+    private func withFilterSuffix(_ base: String) -> String {
+        guard let filter = filterState.summaryLabel, !filter.isEmpty else { return base }
+        return base + " · " + filter
     }
     
     private func setupEmptyListLabel() {

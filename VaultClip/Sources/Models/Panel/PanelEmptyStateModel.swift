@@ -24,11 +24,11 @@ enum PanelEmptyStatePresenter {
         otherTab: HistoryListMode?,
         locale: Locale = .current
     ) -> PanelEmptyStateModel? {
-        let ru = locale.language.languageCode?.identifier == "ru"
+        _ = locale // catalog follows Bundle/system; kept for call-site compatibility / tests
         if isLoading {
             return PanelEmptyStateModel(
                 symbolName: "arrow.triangle.2.circlepath",
-                title: ru ? "Загрузка истории…" : "Loading history…",
+                title: L10n.historyLoading,
                 description: "",
                 primaryButtonTitle: nil
             )
@@ -39,57 +39,47 @@ enum PanelEmptyStatePresenter {
             if isCapturePaused {
                 return PanelEmptyStateModel(
                     symbolName: "pause.circle",
-                    title: ru ? "Захват приостановлен" : "Capture paused",
-                    description: ru
-                        ? "История пуста, и новые копии не записываются."
-                        : "History is empty and new copies are not being recorded.",
-                    primaryButtonTitle: ru ? "Возобновить" : "Resume"
+                    title: L10n.emptyHistoryPausedTitle,
+                    description: L10n.emptyHistoryPausedBody,
+                    primaryButtonTitle: L10n.emptyHistoryResume
                 )
             }
             return PanelEmptyStateModel(
                 symbolName: "doc.on.clipboard",
-                title: ru ? "Здесь появится всё, что вы копируете" : "Everything you copy will show up here",
-                description: ru
-                    ? "Скопируйте текст, ссылку или картинку в любом приложении"
-                    : "Copy text, a link, or an image in any app",
+                title: L10n.emptyHistoryTitle,
+                description: L10n.emptyHistoryBody,
                 primaryButtonTitle: nil
             )
         case .favorites:
             return PanelEmptyStateModel(
                 symbolName: "star",
-                title: ru ? "Нет избранного" : "No favorites",
-                description: ru
-                    ? "Выделите элемент и нажмите ⌘D или ★"
-                    : "Select an item and press ⌘D or ★",
+                title: L10n.emptyFavoritesTitle,
+                description: L10n.emptyFavoritesBody,
                 primaryButtonTitle: nil
             )
         case .passwords:
             return PanelEmptyStateModel(
                 symbolName: "key",
-                title: ru ? "Нет сохранённых паролей" : "No saved passwords",
-                description: ru
-                    ? "Копии из менеджеров паролей не записываются. Чтобы сохранить пароль, выберите элемент → ⌘K → «Сохранить в пароли»"
-                    : "Copies from password managers are never recorded. To save a password, select an item → ⌘K → Save to Passwords",
+                title: L10n.emptyPasswordsTitle,
+                description: "\(L10n.emptyPasswordsBodyManagers)\n\(L10n.emptyPasswordsBodySave)",
                 primaryButtonTitle: nil
             )
         case .noResults(let query):
             var description = ""
-            var button: String? = filtersActive ? (ru ? "Сбросить фильтры" : "Clear filters") : nil
+            var button: String? = filtersActive ? L10n.emptyClearFilters : nil
             if let count = otherTabHitCount, let tab = otherTab, count > 0 {
                 let tabName: String
                 switch tab {
-                case .history: tabName = ru ? "История" : "History"
-                case .favorites: tabName = ru ? "Избранное" : "Favorites"
-                case .passwords: tabName = ru ? "Пароли" : "Passwords"
+                case .history: tabName = L10n.tabHistory
+                case .favorites: tabName = L10n.tabFavorites
+                case .passwords: tabName = L10n.tabPasswords
                 }
-                description = ru
-                    ? "Найдено \(count) во вкладке «\(tabName)»"
-                    : "Found \(count) in “\(tabName)”"
-                button = ru ? "Перейти" : "Go"
+                description = L10n.emptyNoResultsOtherTab(count: count, tab: tabName)
+                button = L10n.emptyGo
             }
             return PanelEmptyStateModel(
                 symbolName: "magnifyingglass",
-                title: ru ? "Ничего не найдено по «\(query)»" : "No results for “\(query)”",
+                title: L10n.emptyNoResultsTitle(query),
                 description: description,
                 primaryButtonTitle: button
             )

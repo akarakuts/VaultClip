@@ -25,20 +25,15 @@ final class DateGroupingCoverageTests: XCTestCase {
         let bucket = DateGrouping.bucket(for: old, now: now, calendar: calendar)
         if case .month = bucket { } else { XCTFail("expected month") }
 
-        let en = Locale(identifier: "en_US")
-        let ru = Locale(identifier: "ru_RU")
-        XCTAssertEqual(DateGrouping.title(for: .today, now: now, calendar: calendar, locale: en), "Today")
-        XCTAssertEqual(DateGrouping.title(for: .today, now: now, calendar: calendar, locale: ru), "Сегодня")
-        XCTAssertEqual(DateGrouping.title(for: .yesterday, now: now, calendar: calendar, locale: en), "Yesterday")
-        XCTAssertEqual(DateGrouping.title(for: .yesterday, now: now, calendar: calendar, locale: ru), "Вчера")
-        XCTAssertEqual(DateGrouping.title(for: .last7Days, now: now, calendar: calendar, locale: en), "Previous 7 Days")
-        XCTAssertEqual(DateGrouping.title(for: .last7Days, now: now, calendar: calendar, locale: ru), "Последние 7 дней")
-        XCTAssertEqual(DateGrouping.title(for: .last30Days, now: now, calendar: calendar, locale: en), "Previous 30 Days")
-        XCTAssertEqual(DateGrouping.title(for: .last30Days, now: now, calendar: calendar, locale: ru), "Последние 30 дней")
-        let monthTitle = DateGrouping.title(for: .month(year: 2020, month: 1), now: now, calendar: calendar, locale: en)
+        let locale = Locale.current
+        XCTAssertEqual(DateGrouping.title(for: .today, now: now, calendar: calendar, locale: locale), L10n.dateToday)
+        XCTAssertEqual(DateGrouping.title(for: .yesterday, now: now, calendar: calendar, locale: locale), L10n.dateYesterday)
+        XCTAssertEqual(DateGrouping.title(for: .last7Days, now: now, calendar: calendar, locale: locale), L10n.dateLast7)
+        XCTAssertEqual(DateGrouping.title(for: .last30Days, now: now, calendar: calendar, locale: locale), L10n.dateLast30)
+        let monthTitle = DateGrouping.title(for: .month(year: 2020, month: 1), now: now, calendar: calendar, locale: locale)
         XCTAssertFalse(monthTitle.isEmpty)
         let sameYear = calendar.component(.year, from: now)
-        let sameYearTitle = DateGrouping.title(for: .month(year: sameYear, month: 3), now: now, calendar: calendar, locale: en)
+        let sameYearTitle = DateGrouping.title(for: .month(year: sameYear, month: 3), now: now, calendar: calendar, locale: locale)
         XCTAssertFalse(sameYearTitle.isEmpty)
     }
 }

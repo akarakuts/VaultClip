@@ -48,7 +48,10 @@ extension HistoryTableView {
                 menuItem.target = self
                 menuItem.isEnabled = entry.isEnabled
                 menuItem.representedObject = ContextMenuPayload(row: row, entry: entry)
-                menuItem.image = NSImage(systemSymbolName: entry.symbolName, accessibilityDescription: nil)
+                menuItem.image = NSImage(
+                    systemSymbolName: entry.symbolName,
+                    accessibilityDescription: menuItem.title
+                )
                 if let id = entry.commandID,
                    let chord = PanelCommandRegistry.command(id: id).bindings.first?.chord {
                     menuItem.toolTip = chord.displayString

@@ -42,6 +42,7 @@ class Accessibility {
         static let howToUseLabel = "howToUseLabel"
         
         static let historyTableView = "historyTableView"
+        static let historySearchField = "historySearchField"
         static let historyItemTextView = "HistoryItemTextView"
         static let favoriteButton = "favoriteButton"
         static let passwordButton = "passwordButton"

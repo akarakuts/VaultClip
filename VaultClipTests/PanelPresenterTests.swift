@@ -67,11 +67,9 @@ final class PanelPresenterTests: XCTestCase {
             pdfPageCount: nil,
             isRichText: false
         )
-        let title = RowPresentationBuilder.title(for: summary, locale: Locale(identifier: "en_US"))
-        XCTAssertEqual(title, "Password")
+        let title = RowPresentationBuilder.title(for: summary, locale: .current)
+        XCTAssertEqual(title, L10n.rowKindPassword)
         XCTAssertFalse(title.contains("s3cret"))
-        let ru = RowPresentationBuilder.title(for: summary, locale: Locale(identifier: "ru_RU"))
-        XCTAssertEqual(ru, "Пароль")
     }
 
     func testFormattingEnAndRuPlurals() {
@@ -92,10 +90,8 @@ final class PanelPresenterTests: XCTestCase {
             pdfPageCount: nil,
             isRichText: false
         )
-        let en = RowPresentationBuilder.title(for: files, locale: Locale(identifier: "en_US"))
-        XCTAssertTrue(en.contains("and 2 more"), en)
-        let ru = RowPresentationBuilder.title(for: files, locale: Locale(identifier: "ru_RU"))
-        XCTAssertTrue(ru.contains("и ещё 2"), ru)
+        let title = RowPresentationBuilder.title(for: files, locale: .current)
+        XCTAssertEqual(title, "a.txt · \(L10n.rowAndMore(2))")
     }
 
     func testShortcutNumbersSkipHeaders() {

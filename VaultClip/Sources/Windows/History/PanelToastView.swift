@@ -78,6 +78,13 @@ final class PanelToastView: NSVisualEffectView {
         isHidden = true
     }
 
+    /// Pass clicks through the chrome so the toast never steals list selection; only Undo is hittable.
+    override func hitTest(_ point: NSPoint) -> NSView? {
+        guard !isHidden, let hit = super.hitTest(point) else { return nil }
+        if hit === button || hit.isDescendant(of: button) { return hit }
+        return nil
+    }
+
     @objc private func buttonTapped() {
         let run = action
         dismiss()

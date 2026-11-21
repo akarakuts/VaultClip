@@ -35,12 +35,11 @@ enum DateGrouping {
     }
 
     static func title(for bucket: DateGroupBucket, now: Date, calendar: Calendar, locale: Locale) -> String {
-        let ru = locale.language.languageCode?.identifier == "ru"
         switch bucket {
-        case .today: return ru ? "Сегодня" : "Today"
-        case .yesterday: return ru ? "Вчера" : "Yesterday"
-        case .last7Days: return ru ? "Последние 7 дней" : "Previous 7 Days"
-        case .last30Days: return ru ? "Последние 30 дней" : "Previous 30 Days"
+        case .today: return L10n.dateToday
+        case .yesterday: return L10n.dateYesterday
+        case .last7Days: return L10n.dateLast7
+        case .last30Days: return L10n.dateLast30
         case .month(let year, let month):
             var comps = DateComponents()
             comps.year = year

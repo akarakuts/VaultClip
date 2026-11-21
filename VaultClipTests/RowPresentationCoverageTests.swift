@@ -40,33 +40,33 @@ final class RowPresentationCoverageTests: XCTestCase {
     }
 
     func testTitlesForEveryKind() {
-        let en = Locale(identifier: "en_US")
-        let ru = Locale(identifier: "ru_RU")
+        let locale = Locale.current
         let now = Date(timeIntervalSince1970: 100)
-        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .password), locale: en), "Password")
-        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .password, passwordComment: "  "), locale: ru), "Пароль")
-        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .password, passwordComment: "Bank"), locale: en), "Bank")
-        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .link, linkHost: "example.com"), locale: en), "example.com")
-        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .link, title: "https://x"), locale: en), "https://x")
-        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .file(1), fileNames: ["a.txt"]), locale: en), "a.txt")
-        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .file(3), fileNames: ["a.txt", "b"]), locale: en), "a.txt · and 2 more")
-        XCTAssertTrue(RowPresentationBuilder.title(for: summary(kind: .file(3), fileNames: ["a.txt", "b"]), locale: ru).contains("ещё"))
-        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .file(1)), locale: en), "File")
-        XCTAssertTrue(RowPresentationBuilder.title(for: summary(kind: .image, imagePixelSize: CGSize(width: 10, height: 20), imageFormat: "PNG"), locale: en).contains("10×20"))
-        XCTAssertTrue(RowPresentationBuilder.title(for: summary(kind: .image), locale: ru).contains("Изображение"))
-        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .pdf, title: "doc.pdf"), locale: en), "doc.pdf")
-        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .pdf, pdfPageCount: 3), locale: en), "PDF · 3 pages")
-        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .pdf, pdfPageCount: 3), locale: ru), "PDF · 3 стр.")
-        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .pdf), locale: en), "PDF")
-        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .color, colorHex: "#ABC"), locale: en), "#ABC")
-        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .color), locale: en), "#000000")
-        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .text, title: "line1\nline2"), locale: en), "line1")
+        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .password), locale: locale), L10n.rowKindPassword)
+        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .password, passwordComment: "  "), locale: locale), L10n.rowKindPassword)
+        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .password, passwordComment: "Bank"), locale: locale), "Bank")
+        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .link, linkHost: "example.com"), locale: locale), "example.com")
+        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .link, title: "https://x"), locale: locale), "https://x")
+        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .file(1), fileNames: ["a.txt"]), locale: locale), "a.txt")
+        XCTAssertEqual(
+            RowPresentationBuilder.title(for: summary(kind: .file(3), fileNames: ["a.txt", "b"]), locale: locale),
+            "a.txt · \(L10n.rowAndMore(2))"
+        )
+        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .file(1)), locale: locale), L10n.rowKindFile)
+        XCTAssertTrue(RowPresentationBuilder.title(for: summary(kind: .image, imagePixelSize: CGSize(width: 10, height: 20), imageFormat: "PNG"), locale: locale).contains("10×20"))
+        XCTAssertTrue(RowPresentationBuilder.title(for: summary(kind: .image), locale: locale).contains(L10n.rowKindImage))
+        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .pdf, title: "doc.pdf"), locale: locale), "doc.pdf")
+        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .pdf, pdfPageCount: 3), locale: locale), L10n.rowPdfPages(3))
+        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .pdf), locale: locale), "PDF")
+        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .color, colorHex: "#ABC"), locale: locale), "#ABC")
+        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .color), locale: locale), "#000000")
+        XCTAssertEqual(RowPresentationBuilder.title(for: summary(kind: .text, title: "line1\nline2"), locale: locale), "line1")
         let long = String(repeating: "x", count: 250)
         XCTAssertEqual(RowPresentationBuilder.collapseFirstLine(long).count, 200)
         let row = RowPresentationBuilder.presentation(
             id: UUID(),
             summary: summary(kind: .text, title: "hi", charCount: 2, lineCount: 2),
-            locale: en,
+            locale: locale,
             now: now
         )
         XCTAssertTrue(row.subtitle.contains("Safari"))
@@ -74,13 +74,13 @@ final class RowPresentationCoverageTests: XCTestCase {
         let pw = RowPresentationBuilder.presentation(
             id: UUID(),
             summary: summary(kind: .password, passwordComment: "x"),
-            locale: en,
+            locale: locale,
             now: now
         )
         XCTAssertEqual(pw.accessibilityLabel, "x")
-        _ = RowPresentationBuilder.subtitle(for: summary(kind: .link, linkHost: "h"), locale: en, now: now)
-        _ = RowPresentationBuilder.subtitle(for: summary(kind: .file(2), fileNames: ["a"]), locale: ru, now: now)
-        _ = RowPresentationBuilder.subtitle(for: summary(kind: .richText, title: "r", isRichText: true), locale: en, now: now)
-        _ = RowPresentationBuilder.subtitle(for: summary(kind: .text, title: "t", charCount: 12, lineCount: 1), locale: ru, now: now)
+        _ = RowPresentationBuilder.subtitle(for: summary(kind: .link, linkHost: "h"), locale: locale, now: now)
+        _ = RowPresentationBuilder.subtitle(for: summary(kind: .file(2), fileNames: ["a"]), locale: locale, now: now)
+        _ = RowPresentationBuilder.subtitle(for: summary(kind: .richText, title: "r", isRichText: true), locale: locale, now: now)
+        _ = RowPresentationBuilder.subtitle(for: summary(kind: .text, title: "t", charCount: 12, lineCount: 1), locale: locale, now: now)
     }
 }

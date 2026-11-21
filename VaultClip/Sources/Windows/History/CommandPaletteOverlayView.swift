@@ -30,7 +30,7 @@ final class CommandPaletteOverlayView: PanelOverlayListView {
     }
 
     private func configure() {
-        placeholder = Self.ru ? "Действие или команда…" : "Action or command…"
+        placeholder = L10n.paletteFilterPlaceholder
         onQueryChange = { [weak self] query in self?.reload(query: query) }
         onActivateRow = { [weak self] index in
             guard let self, let id = self.commandIDs[index] else { return }
@@ -61,14 +61,12 @@ final class CommandPaletteOverlayView: PanelOverlayListView {
         setRows(display)
     }
 
-    private static var ru: Bool { Locale.current.language.languageCode?.identifier == "ru" }
-
     private static func title(for section: CommandPaletteSection) -> String {
         switch section {
-        case .forSelection: return ru ? "Элемент" : "Item"
-        case .view: return ru ? "Вид" : "View"
-        case .filters: return ru ? "Фильтры" : "Filters"
-        case .app: return ru ? "Приложение" : "App"
+        case .forSelection: return L10n.paletteGroupSelection
+        case .view: return L10n.paletteGroupView
+        case .filters: return L10n.paletteGroupFilters
+        case .app: return L10n.paletteGroupApp
         }
     }
 }

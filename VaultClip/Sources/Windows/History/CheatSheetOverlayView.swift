@@ -24,7 +24,7 @@ final class CheatSheetOverlayView: PanelOverlayListView {
     }
 
     private func configure() {
-        placeholder = Self.ru ? "Найти сочетание…" : "Filter shortcuts…"
+        placeholder = L10n.cheatFilterPlaceholder
         onQueryChange = { [weak self] query in self?.reload(query) }
         onActivateRow = { _ in }
     }
@@ -49,15 +49,13 @@ final class CheatSheetOverlayView: PanelOverlayListView {
         setRows(display)
     }
 
-    private static var ru: Bool { Locale.current.language.languageCode?.identifier == "ru" }
-
     private static func title(for group: PanelCommandGroup) -> String {
         switch group {
-        case .item: return ru ? "Элемент и вставка" : "Item & paste"
-        case .view: return ru ? "Вид и навигация" : "View & navigation"
-        case .filter: return ru ? "Фильтры" : "Filters"
-        case .app: return ru ? "Приложение" : "App"
-        case .window: return ru ? "Окно" : "Window"
+        case .item: return L10n.cheatGroupItem
+        case .view: return L10n.cheatGroupView
+        case .filter: return L10n.cheatGroupFilter
+        case .app: return L10n.cheatGroupApp
+        case .window: return L10n.cheatGroupWindow
         }
     }
 }

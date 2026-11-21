@@ -454,18 +454,37 @@ extension HistoryItem {
 // MARK: - HistoryItem+NSPasteboardWriting
 extension HistoryItem: NSPasteboardWriting {
     func writableTypes(for pasteboard: NSPasteboard) -> [NSPasteboard.PasteboardType] {
-        return types.filter{
+        // Passwords never leave the panel via drag; internal reorder still needs the id type.
+        let kind = HistoryItemSummaryBuilder.shared.kind(for: self)
+        if DragOutPayload.externalTypes(for: kind, isPassword: isPassword).isEmpty {
+            return [Self.historyItemIdType]
+        }
+        var out = types.filter {
             pastesRichText || !richTextPasteboardTypes.contains($0.rawValue)
-        } + [Self.historyItemIdType]
+        }
+        // Color drops as HEX plain text so Finder/mail get a usable payload.
+        if kind == .color, !out.contains(.string) {
+            out.append(.string)
+        }
+        return out + [Self.historyItemIdType]
     }
-    
+
     func pasteboardPropertyList(forType type: NSPasteboard.PasteboardType) -> Any? {
         if type == Self.historyItemIdType {
             return fsId.uuidString
         }
+        if type == .string,
+           HistoryItemSummaryBuilder.shared.kind(for: self) == .color,
+           let color = getColor() {
+            let rgb = color.usingColorSpace(.sRGB) ?? color
+            return ColorFormat.hex(from: ColorComponents(
+                red: rgb.redComponent, green: rgb.greenComponent,
+                blue: rgb.blueComponent, alpha: rgb.alphaComponent
+            ))
+        }
         return data(forType: type)
     }
-    
+
     func writingOptions(forType type: NSPasteboard.PasteboardType, pasteboard: NSPasteboard) -> NSPasteboard.WritingOptions {
         // Synchronous delivery — required for reliable paste into other apps.
         return []

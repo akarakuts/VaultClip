@@ -108,7 +108,7 @@ extension HistoryViewController {
             return
         }
         let text = embeddedPreview.editedText
-        embeddedPreview.endEditing()
+        embeddedPreview.endEditing(keepText: true)
         close(reason: .paste)
         historyPanel.multiPasteJoined(text, items: [item])
     }
@@ -117,7 +117,8 @@ extension HistoryViewController {
     func saveEditedPreviewText() {
         guard embeddedPreview.isEditing else { return }
         let text = embeddedPreview.editedText
-        embeddedPreview.endEditing()
+        // Keep the edited body on screen — reverting would look like save failed.
+        embeddedPreview.endEditing(keepText: true)
         historyPanel.copyText(text)
         showToast(L10n.toastCopied)
         refreshFooterHints()
@@ -172,7 +173,14 @@ extension HistoryViewController {
         case .toggleFavorite: _ = historyPanel.toggleFavorite(item: item)
         case .more: performPanelCommand(.commandPalette)
         case .copyLogin: historyPanel.copyLogin(item: item)
-        case .copyPassword: historyPanel.copyPassword(item: item)
+        case .copyPassword:
+            historyPanel.copyPassword(item: item)
+            let clearIn = appSettings.passwordClipboardClearSeconds
+            if clearIn > 0 {
+                showToast("\(L10n.toastCopied) · \(L10n.toastClipboardClearsIn(clearIn))")
+            } else {
+                showToast(L10n.toastCopied)
+            }
         }
     }
 

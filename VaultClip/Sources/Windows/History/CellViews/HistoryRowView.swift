@@ -55,9 +55,11 @@ final class HistoryRowView: NSTableCellView {
         }
         if isPassword {
             accessoryView.image = NSImage(systemSymbolName: "lock.fill", accessibilityDescription: nil)
+            accessoryView.setAccessibilityElement(false)
             accessoryView.isHidden = false
         } else if isFavorite {
             accessoryView.image = NSImage(systemSymbolName: "star.fill", accessibilityDescription: nil)
+            accessoryView.setAccessibilityElement(false)
             accessoryView.isHidden = false
         } else {
             accessoryView.image = nil
@@ -197,7 +199,8 @@ final class HistoryRowView: NSTableCellView {
 
         actionsStack.translatesAutoresizingMaskIntoConstraints = false
         actionsStack.orientation = .horizontal
-        actionsStack.spacing = 0
+        // Gap so star and “more” are not hit as one target (P2).
+        actionsStack.spacing = 4
         actionsStack.isHidden = true
         actionsStack.setContentCompressionResistancePriority(.required, for: .horizontal)
 

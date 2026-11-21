@@ -18,7 +18,8 @@ extension HistoryViewController {
         footerHintsLabel.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
         footerHintsLabel.textColor = .tertiaryLabelColor
         footerHintsLabel.alignment = .right
-        footerHintsLabel.lineBreakMode = .byTruncatingHead
+        // Truncate the end so the lead verb (⏎ Paste) stays visible on a narrow edge panel.
+        footerHintsLabel.lineBreakMode = .byTruncatingTail
         footerHintsLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         itemCountLabel.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
         itemCountLabel.textColor = .secondaryLabelColor
@@ -40,7 +41,8 @@ extension HistoryViewController {
             return ids.contains(ObjectIdentifier(item))
         }
         NSLayoutConstraint.deactivate(view.constraints.filter { touches($0.firstItem) || touches($0.secondItem) })
-        storyboardLabels.forEach { $0.isHidden = true }
+        // Remove leftover IB labels entirely — hiding left dead gaps when their constraints lingered.
+        storyboardLabels.forEach { $0.removeFromSuperview() }
         managed.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
 
         let inset = PanelChrome.Metrics.panelContentInset
@@ -232,20 +234,92 @@ extension HistoryViewController {
             }
         case .color:
             if let color = item.getColor() {
-                return .color(color, caption: summary.colorHex ?? "")
+                let comps: ColorComponents = {
+                    let rgb = color.usingColorSpace(.sRGB) ?? color
+                    return ColorComponents(
+                        red: rgb.redComponent,
+                        green: rgb.greenComponent,
+                        blue: rgb.blueComponent,
+                        alpha: rgb.alphaComponent
+                    )
+                }()
+                let meta = PreviewMetadataFormatter.format(
+                    appName: summary.sourceAppName,
+                    bundleId: summary.sourceBundleId,
+                    copiedAt: item.copiedAt,
+                    lastUsedAt: item.lastUsedAt,
+                    byteCount: 0,
+                    typeIdentifiers: item.types.map(\.rawValue),
+                    locale: .current
+                )
+                let lines = [
+                    ColorFormat.hex(from: comps),
+                    ColorFormat.rgb(from: comps),
+                    ColorFormat.hsl(from: comps),
+                    L10n.previewMetaApp(meta.appName),
+                    L10n.previewMetaCopied(meta.copiedAtText)
+                ]
+                return .color(color, caption: lines.joined(separator: "\n"))
             }
         case .file:
             if let url = item.getFileUrl() {
-                return .files([url])
+                return .files([url], caption: previewMetaCaption(for: item, summary: summary, extra: nil))
             }
         case .link:
             let url = item.getUrl()?.absoluteString ?? summary.title
-            return .link(host: summary.linkHost ?? url, url: url)
+            let host = summary.linkHost ?? url
+            return .link(
+                host: host,
+                url: url,
+                caption: previewMetaCaption(for: item, summary: summary, extra: L10n.previewKindLink)
+            )
         default:
             break
         }
         let text = item.getPlainString() ?? item.getPdfDisplayString() ?? ""
-        return .text(text, monospaced: mono)
+        let isPdf = summary.kind == .pdf || item.getPdfDisplayString() != nil && item.getPlainString() == nil
+        let kindLabel = isPdf ? "PDF" : nil
+        return .text(
+            text,
+            monospaced: mono,
+            caption: previewMetaCaption(
+                for: item,
+                summary: summary,
+                extra: [kindLabel, L10n.previewChars(text.count)].compactMap { $0 }.joined(separator: " · ")
+            )
+        )
+    }
+
+    private func previewMetaCaption(
+        for item: HistoryItem,
+        summary: ItemSummary,
+        extra: String?
+    ) -> String {
+        var byteCount = 0
+        if let url = item.getFileUrl(),
+           let values = try? url.resourceValues(forKeys: [.fileSizeKey]),
+           let size = values.fileSize {
+            byteCount = size
+        } else if let text = item.getPlainString() ?? item.getPdfDisplayString() {
+            byteCount = text.utf8.count
+        }
+        let meta = PreviewMetadataFormatter.format(
+            appName: summary.sourceAppName,
+            bundleId: summary.sourceBundleId,
+            copiedAt: item.copiedAt,
+            lastUsedAt: item.lastUsedAt,
+            byteCount: byteCount,
+            typeIdentifiers: item.types.map(\.rawValue),
+            locale: .current
+        )
+        var lines: [String] = []
+        if let extra, !extra.isEmpty { lines.append(extra) }
+        lines.append(L10n.previewMetaApp(meta.appName))
+        lines.append(L10n.previewMetaCopied(meta.copiedAtText))
+        if byteCount > 0 {
+            lines.append(L10n.previewMetaSize(meta.sizeText))
+        }
+        return lines.joined(separator: "\n")
     }
 
     // ── Footer (U09) ──
@@ -257,13 +331,14 @@ extension HistoryViewController {
         let input = PanelStatusBarInput(
             totalCount: historyPanel.items.count,
             visibleCount: historyPanel.items.count,
-            isSearch: results.value.isSearchResult,
+            isSearch: results.value.isSearchResult || filterState.isActive,
             selectedCount: selectionModel.count,
             isLoading: !appState.isHistoryLoaded,
             hintContext: context,
             availableWidth: max(0, view.bounds.width - itemCountLabel.intrinsicContentSize.width - 48),
             showKeyHints: appSettings.showKeyHints,
-            locale: .current
+            locale: .current,
+            filterSummary: filterState.summaryLabel
         )
         footerHintsLabel.stringValue = PanelStatusBarPresenter.hints(for: input).joined(separator: "  ·  ")
     }
@@ -272,11 +347,11 @@ extension HistoryViewController {
 
     func installToast() {
         view.addSubview(toastView)
-        // Anchor to the list, not the footer, so a bottom preview's buttons stay clickable.
+        // Top of the list: undo toast must not cover the row the person just acted on.
         guard let scrollView = historyListView.enclosingScrollView else { return }
         NSLayoutConstraint.activate([
             toastView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            toastView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -10),
+            toastView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 10),
             toastView.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, constant: -32)
         ])
     }

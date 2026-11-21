@@ -97,8 +97,16 @@ final class PanelHeaderView: NSView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.bezelStyle = .inline
         button.isBordered = false
-        button.image = NSImage(systemSymbolName: symbol, accessibilityDescription: nil)
+        let label: String
+        switch action {
+        case #selector(filterTapped): label = L10n.a11yHeaderFilter
+        case #selector(previewTapped): label = L10n.a11yHeaderPreview
+        default: label = L10n.a11yHeaderMore
+        }
+        button.image = NSImage(systemSymbolName: symbol, accessibilityDescription: label)
         button.imagePosition = .imageOnly
+        button.toolTip = label
+        button.setAccessibilityLabel(label)
         button.target = self
         button.action = action
     }
