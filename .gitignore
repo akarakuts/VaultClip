@@ -100,3 +100,6 @@ scripts/demo-assets/desktop-wallpaper.png
 # ── Localization tooling (generated locally) ──────────────────────────────────
 scripts/.localization-venv/
 scripts/.localization-cache.json
+
+# ── Agent prompts (local, not shipped) ───────────────────────────────────────
+docs/prompts/
