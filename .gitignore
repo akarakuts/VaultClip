@@ -101,5 +101,7 @@ scripts/demo-assets/desktop-wallpaper.png
 scripts/.localization-venv/
 scripts/.localization-cache.json
 
-# ── Agent prompts (local, not shipped) ───────────────────────────────────────
+# ── Agent prompts / local AI notes (not shipped) ───────────────────────────────
 docs/prompts/
+QWEN.md
+.qwen/
