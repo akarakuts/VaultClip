@@ -16,7 +16,7 @@ final class HistoryTableGroupingTests: XCTestCase {
     func testHeadersInsertedPerBucketAndMappingRoundTrips() {
         let now = Date()
         let table = HistoryTableView(frame: .zero)
-        table.historyListItems = items(agesInHours: [0, 0.5, 30, 24 * 10], now: now)
+        table.historyListItems = items(agesInHours: [0, 0.5, 30, 240], now: now)
         table.groupsByDate = true
         table.rebuildDisplayRows(now: now)
 
@@ -34,7 +34,7 @@ final class HistoryTableGroupingTests: XCTestCase {
     func testUngroupedMapsOneToOne() {
         let now = Date()
         let table = HistoryTableView(frame: .zero)
-        table.historyListItems = items(agesInHours: [0, 1, 2], now: now)
+        table.historyListItems = items(agesInHours: [0.0, 1, 2], now: now)
         table.groupsByDate = false
         table.rebuildDisplayRows(now: now)
         XCTAssertEqual(table.row(forItemIndex: 2), 2)
@@ -45,7 +45,7 @@ final class HistoryTableGroupingTests: XCTestCase {
     func testSelectItemsMapsThroughDateHeaders() {
         let now = Date()
         let table = HistoryTableView(frame: .zero)
-        let list = items(agesInHours: [0, 0.5, 30], now: now)
+        let list = items(agesInHours: [0, 0.5, 30.0], now: now)
         table.historyListItems = list
         table.groupsByDate = true
         table.rebuildDisplayRows(now: now)
