@@ -12,6 +12,10 @@ When you ship a release, move items from **Unreleased** into a dated version sec
 
 ## [Unreleased]
 
+## [2.4.0] — 2026-11-22
+
+[Release](https://github.com/akarakuts/VaultClip/releases/tag/v2.4.0)
+
 ### Interface
 
 - UI redesign branch `ui-redesign-2026-11` (U00–U37): native panel chrome, fixed-height rows, type/app filters + search tokens, date groups, row actions, multi-select + multi-paste, undoable delete, embedded preview, ⌘K palette / ⌘/ cheat sheet, status-item click modes, SwiftUI SettingsStore tabs, empty states.

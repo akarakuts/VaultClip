@@ -2056,7 +2056,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 231;
+				CURRENT_PROJECT_VERSION = 240;
 				DEVELOPMENT_TEAM = PDQFD8QZA3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
@@ -2065,7 +2065,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.3.1;
+				MARKETING_VERSION = 2.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = VaultClip;
@@ -2082,7 +2082,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 231;
+				CURRENT_PROJECT_VERSION = 240;
 				DEVELOPMENT_TEAM = PDQFD8QZA3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
@@ -2091,7 +2091,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.3.1;
+				MARKETING_VERSION = 2.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = VaultClip;
@@ -2252,7 +2252,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 231;
+				CURRENT_PROJECT_VERSION = 240;
 				DEVELOPMENT_TEAM = PDQFD8QZA3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
@@ -2261,7 +2261,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.3.1;
+				MARKETING_VERSION = 2.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip.Beta;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "VaultClip Beta";
@@ -2375,7 +2375,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 231;
+				CURRENT_PROJECT_VERSION = 240;
 				DEVELOPMENT_TEAM = PDQFD8QZA3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
@@ -2384,7 +2384,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.3.1;
+				MARKETING_VERSION = 2.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClip.Beta;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "VaultClip Beta";
@@ -2505,7 +2505,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 231;
+				CURRENT_PROJECT_VERSION = 240;
 				DEVELOPMENT_TEAM = PDQFD8QZA3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "VaultClip/Supporting Files/Info.plist";
@@ -2514,7 +2514,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.3.1;
+				MARKETING_VERSION = 2.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karakuts.VaultClipXCTest;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";

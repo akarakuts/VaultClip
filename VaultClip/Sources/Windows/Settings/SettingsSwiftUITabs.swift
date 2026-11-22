@@ -255,8 +255,13 @@ struct SettingsPrivacyTab: View {
 
 struct SettingsShortcutsTab: View {
     @Bindable var store: SettingsStore
-    @State private var capturePhase: HotKeyCapturePhase = .idle
-    @State private var label: String = ""
+    // The app's `State` class would otherwise hide SwiftUI's property wrapper.
+    @SwiftUI.State private var capturePhase: HotKeyCapturePhase = .idle
+    @SwiftUI.State private var label: String = ""
+
+    init(store: SettingsStore) {
+        self.store = store
+    }
 
     var body: some View {
         Form {

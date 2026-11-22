@@ -1,6 +1,6 @@
 # VaultClip architecture (macOS)
 
-**Version:** 2.3.1 (ui-redesign branch)  
+**Version:** 2.4.0  
 **Minimum macOS:** 14.0  
 **Contact:** [aleksey@karakuts.com](mailto:aleksey@karakuts.com)
 

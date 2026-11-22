@@ -31,24 +31,27 @@ enum PerformanceBudget {
     }
 
     static func syntheticSummaries(count: Int, now: Date = Date()) -> [ItemSummary] {
-        (0..<count).map { i in
-            ItemSummary(
-                title: "Item \(i)",
-                charCount: 10,
-                lineCount: 1,
-                linkHost: nil,
-                fileNames: [],
-                imagePixelSize: nil,
-                imageFormat: nil,
-                colorHex: nil,
-                sourceBundleId: i % 3 == 0 ? "com.apple.Safari" : "com.apple.TextEdit",
-                copiedAt: now.addingTimeInterval(TimeInterval(-i)),
-                lastUsedAt: now.addingTimeInterval(TimeInterval(-i)),
-                kind: i % 5 == 0 ? .link : .text,
-                passwordComment: nil,
-                pdfPageCount: nil,
-                isRichText: false
-            )
-        }
+        (0..<count).map { summary(index: $0, now: now) }
+    }
+
+    private static func summary(index i: Int, now: Date) -> ItemSummary {
+        let when = now.addingTimeInterval(TimeInterval(-i))
+        return ItemSummary(
+            title: "Item \(i)",
+            charCount: 10,
+            lineCount: 1,
+            linkHost: nil,
+            fileNames: [],
+            imagePixelSize: nil,
+            imageFormat: nil,
+            colorHex: nil,
+            sourceBundleId: i % 3 == 0 ? "com.apple.Safari" : "com.apple.TextEdit",
+            copiedAt: when,
+            lastUsedAt: when,
+            kind: i % 5 == 0 ? .link : .text,
+            passwordComment: nil,
+            pdfPageCount: nil,
+            isRichText: false
+        )
     }
 }
