@@ -3,7 +3,7 @@
 **Ветка:** `ui-redesign-2026-11`  
 **Контакт:** Aleksey Karakuts — aleksey@karakuts.com  
 **Дата:** 2026-11-20  
-**Push / теги / релизы:** не выполнялись (по промпту).
+**Ветка на GitHub:** `ui-redesign-2026-11`. Релизный тег этой ветки не ставился.
 
 ## Гейты
 
@@ -16,7 +16,7 @@
 | TSan (`VaultClip XCTest`, только VaultClipTests) | **TEST SUCCEEDED**, гонок в коде VaultClip не видно |
 | SwiftLint `--lenient --baseline .swiftlint-baseline.yml` | 15 warnings, **0 errors** |
 
-Production Application Support не трогался; `.qwen/` / `QWEN.md` не коммитились.
+Production Application Support не трогался.
 
 ## Статус задач
 
@@ -64,7 +64,7 @@ Production Application Support не трогался; `.qwen/` / `QWEN.md` не 
 ## Ручная проверка (осталось)
 
 1. Визуально: шапка (U08), тосты/баннеры (U09), richer preview + edit-before-paste (U22–U24).
-2. Эталонные сценарии из промпта (поиск/вставка, multi-paste, пароли, шпаргалка).
+2. Сценарии панели: поиск и вставка, multi-paste, пароли, шпаргалка.
 3. VoiceOver проход (U33).
 4. Удаление legacy storyboard-сцен General/HotKey после полной уверенности в SwiftUI Settings.
 

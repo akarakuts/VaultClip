@@ -101,12 +101,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     .popUp(positioning: nil, at: NSPoint(x: rect.midX, y: rect.midY), in: table)
             }
         }
-        if let themeArg = args.first(where: { $0.hasPrefix("--preview-set-appearance=") }),
-           let theme = PanelAppearance(rawValue: String(themeArg.dropFirst("--preview-set-appearance=".count))) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
-                SettingsPersistence.apply { $0.panelAppearance = theme }
-            }
-        }
     }
 
     private var isPreviewLaunch: Bool {
