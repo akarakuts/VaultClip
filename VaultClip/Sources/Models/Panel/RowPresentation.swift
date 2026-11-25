@@ -32,7 +32,11 @@ struct RowPresentation: Equatable, Identifiable {
     var id: UUID
     var kind: ItemKind
     var title: String
+    /// Joined `source · time · meta` for VoiceOver and tooltip.
     var subtitle: String
+    var sourceName: String?
+    var timeText: String
+    var metaText: String?
     var accessibilityLabel: String
     var sourceBundleId: String?
 }
@@ -77,6 +81,9 @@ struct PanelPresenterOutput: Equatable {
 }
 
 enum RowPresentationBuilder {
+    /// First line shorter than this may append a second line via " — ".
+    private static let shortTitleLimit = 40
+
     static func title(for summary: ItemSummary, locale: Locale) -> String {
         switch summary.kind {
         case .password:
@@ -92,13 +99,10 @@ enum RowPresentationBuilder {
             if count <= 1 || summary.fileNames.count <= 1 { return first }
             return "\(first) · \(L10n.rowAndMore(count - 1))"
         case .image:
-            let format = summary.imageFormat ?? "PNG"
             if let size = summary.imagePixelSize {
-                let w = Int(size.width)
-                let h = Int(size.height)
-                return "\(L10n.rowKindImage) \(format) · \(w)×\(h)"
+                return "\(Int(size.width))×\(Int(size.height))"
             }
-            return "\(L10n.rowKindImage) \(format)"
+            return summary.imageFormat ?? L10n.rowKindImage
         case .pdf:
             if !summary.title.isEmpty { return collapseFirstLine(summary.title) }
             if let pages = summary.pdfPageCount {
@@ -108,16 +112,22 @@ enum RowPresentationBuilder {
         case .color:
             return summary.colorHex ?? "#000000"
         case .richText, .text:
-            return collapseFirstLine(summary.title)
+            return textTitle(from: summary.title)
         }
+    }
+
+    static func sourceName(for summary: ItemSummary) -> String? {
+        if let name = summary.sourceAppName, !name.isEmpty { return name }
+        if let bundle = summary.sourceBundleId, let name = bundle.split(separator: ".").last {
+            return String(name)
+        }
+        return nil
     }
 
     static func subtitle(for summary: ItemSummary, locale: Locale, now: Date) -> String {
         var parts: [String] = []
-        if let name = summary.sourceAppName, !name.isEmpty {
+        if let name = sourceName(for: summary) {
             parts.append(name)
-        } else if let bundle = summary.sourceBundleId, let name = bundle.split(separator: ".").last {
-            parts.append(String(name))
         }
         parts.append(relativeTime(from: summary.lastUsedAt, to: now, locale: locale))
         if let meta = meta(for: summary, locale: locale) {
@@ -128,6 +138,9 @@ enum RowPresentationBuilder {
 
     static func presentation(id: UUID, summary: ItemSummary, locale: Locale, now: Date) -> RowPresentation {
         let title = title(for: summary, locale: locale)
+        let source = sourceName(for: summary)
+        let time = relativeTime(from: summary.lastUsedAt, to: now, locale: locale)
+        let meta = meta(for: summary, locale: locale)
         let subtitle = subtitle(for: summary, locale: locale, now: now)
         // Never include password secrets in a11y labels.
         let a11y = summary.kind == .password ? title : "\(title). \(subtitle)"
@@ -136,20 +149,37 @@ enum RowPresentationBuilder {
             kind: summary.kind,
             title: title,
             subtitle: subtitle,
+            sourceName: source,
+            timeText: time,
+            metaText: meta,
             accessibilityLabel: a11y,
             sourceBundleId: summary.sourceBundleId
         )
     }
 
     static func collapseFirstLine(_ text: String) -> String {
-        let line = text
+        let line = nonEmptyLines(from: text).first ?? ""
+        if line.count <= 200 { return line }
+        return String(line.prefix(200))
+    }
+
+    /// First non-empty line; if short, append second via " — " (still one visual row).
+    static func textTitle(from text: String) -> String {
+        let lines = nonEmptyLines(from: text)
+        guard let first = lines.first else { return "" }
+        let head = first.count <= 200 ? first : String(first.prefix(200))
+        guard head.count < shortTitleLimit, lines.count >= 2 else { return head }
+        let combined = "\(head) — \(lines[1])"
+        if combined.count <= 200 { return combined }
+        return String(combined.prefix(200))
+    }
+
+    private static func nonEmptyLines(from text: String) -> [String] {
+        text
             .split(whereSeparator: \.isNewline)
             .map { $0.trimmingCharacters(in: .whitespaces) }
-            .first(where: { !$0.isEmpty })
-            .map { String($0) } ?? ""
-        let collapsed = line.replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
-        if collapsed.count <= 200 { return collapsed }
-        return String(collapsed.prefix(200))
+            .filter { !$0.isEmpty }
+            .map { $0.replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression) }
     }
 
     private static func meta(for summary: ItemSummary, locale: Locale) -> String? {
@@ -159,6 +189,14 @@ enum RowPresentationBuilder {
             return L10n.rowMetaLink
         case .file(let count):
             return L10n.rowMetaFile(count)
+        case .image:
+            return summary.imageFormat
+        case .pdf:
+            // Pages in the tail only when the title already shows a document name.
+            if !summary.title.isEmpty, let pages = summary.pdfPageCount {
+                return L10n.rowPdfPages(pages)
+            }
+            return nil
         case .richText:
             return "RTF"
         case .text:

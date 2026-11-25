@@ -21,6 +21,9 @@ final class HistoryRowView: NSTableCellView {
     private var textToActions: [NSLayoutConstraint] = []
     private var isHovering = false
     private var isRowSelected = false
+    private var subtitleSource = ""
+    private var subtitleTime = ""
+    private var subtitleMeta: String?
     var onAction: ((RowActionButtonID) -> Void)?
 
     override init(frame frameRect: NSRect) {
@@ -44,10 +47,13 @@ final class HistoryRowView: NSTableCellView {
         tab: HistoryListMode = .history
     ) {
         titleLabel.stringValue = presentation.title.isEmpty ? " " : presentation.title
-        subtitleLabel.stringValue = presentation.subtitle
+        subtitleSource = presentation.sourceName ?? ""
+        subtitleTime = presentation.timeText
+        subtitleMeta = presentation.metaText
         titleLabel.font = PanelTheme.titleFont(for: textSize)
         subtitleLabel.font = PanelTheme.subtitleFont(for: textSize)
         shortcutLabel.font = PanelTheme.shortcutFont(for: textSize)
+        refreshSubtitleAppearance()
         if let n = shortcutNumber {
             shortcutLabel.stringValue = "⌘\(n)"
         } else {
@@ -93,9 +99,7 @@ final class HistoryRowView: NSTableCellView {
         didSet {
             let emphasized = backgroundStyle == .emphasized
             titleLabel.textColor = emphasized ? .alternateSelectedControlTextColor : .labelColor
-            subtitleLabel.textColor = emphasized
-                ? NSColor.alternateSelectedControlTextColor.withAlphaComponent(0.8)
-                : .secondaryLabelColor
+            refreshSubtitleAppearance()
             shortcutLabel.textColor = emphasized
                 ? NSColor.alternateSelectedControlTextColor.withAlphaComponent(0.8)
                 : .tertiaryLabelColor
@@ -103,6 +107,66 @@ final class HistoryRowView: NSTableCellView {
             actionButtons.values.forEach { $0.contentTintColor = tint }
             accessoryView.contentTintColor = emphasized ? .alternateSelectedControlTextColor : .systemYellow
         }
+    }
+
+    /// App + time in secondary; meta tail in tertiary so it drops first on truncate.
+    private func refreshSubtitleAppearance() {
+        let font = subtitleLabel.font ?? PanelTheme.subtitleFont(for: .m)
+        let highContrast = NSWorkspace.shared.accessibilityDisplayShouldIncreaseContrast
+        let emphasized = backgroundStyle == .emphasized
+        let primary: NSColor
+        let tertiary: NSColor
+        if emphasized {
+            let selected = NSColor.alternateSelectedControlTextColor.withAlphaComponent(0.8)
+            primary = selected
+            tertiary = selected
+        } else if highContrast {
+            primary = .labelColor
+            tertiary = .labelColor
+        } else {
+            primary = .secondaryLabelColor
+            tertiary = .tertiaryLabelColor
+        }
+        subtitleLabel.attributedStringValue = Self.attributedSubtitle(
+            source: subtitleSource,
+            time: subtitleTime,
+            meta: subtitleMeta,
+            font: font,
+            primary: primary,
+            tertiary: tertiary
+        )
+    }
+
+    static func attributedSubtitle(
+        source: String,
+        time: String,
+        meta: String?,
+        font: NSFont,
+        primary: NSColor,
+        tertiary: NSColor
+    ) -> NSAttributedString {
+        let result = NSMutableAttributedString()
+        let primaryAttrs: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: primary
+        ]
+        let tertiaryAttrs: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: tertiary
+        ]
+        var leading: [String] = []
+        if !source.isEmpty { leading.append(source) }
+        if !time.isEmpty { leading.append(time) }
+        if !leading.isEmpty {
+            result.append(NSAttributedString(string: leading.joined(separator: " · "), attributes: primaryAttrs))
+        }
+        if let meta, !meta.isEmpty {
+            if result.length > 0 {
+                result.append(NSAttributedString(string: " · ", attributes: primaryAttrs))
+            }
+            result.append(NSAttributedString(string: meta, attributes: tertiaryAttrs))
+        }
+        return result
     }
 
     override func updateTrackingAreas() {

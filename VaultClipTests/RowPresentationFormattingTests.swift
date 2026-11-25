@@ -53,6 +53,46 @@ final class RowPresentationFormattingTests: XCTestCase {
         XCTAssertTrue(RowPresentationBuilder.subtitle(for: summary, locale: locale, now: now).lowercased().contains("finder"))
     }
 
+    func testSubtitlePartsKeepMetaInTail() {
+        let summary = ItemSummary(
+            title: "hello", charCount: 5, lineCount: 1, linkHost: nil, fileNames: [],
+            imagePixelSize: nil, imageFormat: nil, colorHex: nil,
+            sourceBundleId: "com.apple.Safari", copiedAt: now, lastUsedAt: now,
+            kind: .text, passwordComment: nil, pdfPageCount: nil, isRichText: false,
+            sourceAppName: "Safari"
+        )
+        let row = RowPresentationBuilder.presentation(id: UUID(), summary: summary, locale: locale, now: now)
+        XCTAssertEqual(row.sourceName, "Safari")
+        XCTAssertEqual(row.timeText, L10n.relativeJustNow)
+        XCTAssertEqual(row.metaText, L10n.rowMetaChars("5"))
+        XCTAssertEqual(row.subtitle, "Safari · \(L10n.relativeJustNow) · \(L10n.rowMetaChars("5"))")
+    }
+
+    func testTextTitleAppendsShortSecondLine() {
+        XCTAssertEqual(RowPresentationBuilder.textTitle(from: "Hi\nthere"), "Hi — there")
+        XCTAssertEqual(RowPresentationBuilder.textTitle(from: "line1\nline2"), "line1 — line2")
+        let longFirst = String(repeating: "a", count: 40)
+        XCTAssertEqual(RowPresentationBuilder.textTitle(from: "\(longFirst)\nsecond"), longFirst)
+        let truncated = RowPresentationBuilder.textTitle(from: String(repeating: "x", count: 250))
+        XCTAssertEqual(truncated.count, 200)
+    }
+
+    func testImageTitleIsSizeWithFormatInMeta() {
+        var summary = ItemSummary(
+            title: "", charCount: 0, lineCount: 1, linkHost: nil, fileNames: [],
+            imagePixelSize: CGSize(width: 640, height: 480), imageFormat: "PNG", colorHex: nil,
+            sourceBundleId: "com.apple.Safari", copiedAt: now, lastUsedAt: now,
+            kind: .image, passwordComment: nil, pdfPageCount: nil, isRichText: false,
+            sourceAppName: "Safari"
+        )
+        let row = RowPresentationBuilder.presentation(id: UUID(), summary: summary, locale: locale, now: now)
+        XCTAssertEqual(row.title, "640×480")
+        XCTAssertFalse(row.title.contains(L10n.rowKindImage))
+        XCTAssertEqual(row.metaText, "PNG")
+        summary.imagePixelSize = nil
+        XCTAssertEqual(RowPresentationBuilder.title(for: summary, locale: locale), "PNG")
+    }
+
     func testLegacyColorPasteboardTypeClassifiesAsColor() {
         let kind = ItemKindClassifier.classify(.init(
             isPassword: false, typeIdentifiers: ["NSColorPboardType"], plainText: nil, fileURLCount: 0
